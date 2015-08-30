@@ -1,15 +1,14 @@
 //
-//  NumericalTests.swift
-//  NumericalTests
+//  Numerical2Tests.swift
+//  Numerical2Tests
 //
-//  Created by Andrew J Clark on 30/07/2015.
-//  Copyright (c) 2015 Very Tiny Machines. All rights reserved.
+//  Created by Andrew J Clark on 31/07/2015.
+//  Copyright © 2015 Very Tiny Machines. All rights reserved.
 //
 
-import UIKit
 import XCTest
 
-class NumericalTests: XCTestCase {
+class Numerical2Tests: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -23,7 +22,7 @@ class NumericalTests: XCTestCase {
     
     func testExample() {
         // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
     
     func testPerformanceExample() {

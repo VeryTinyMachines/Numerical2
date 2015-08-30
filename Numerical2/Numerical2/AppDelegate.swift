@@ -1,9 +1,9 @@
 //
 //  AppDelegate.swift
-//  Numerical
+//  Numerical2
 //
-//  Created by Andrew J Clark on 30/07/2015.
-//  Copyright (c) 2015 Very Tiny Machines. All rights reserved.
+//  Created by Andrew J Clark on 31/07/2015.
+//  Copyright © 2015 Very Tiny Machines. All rights reserved.
 //
 
 import UIKit

@@ -10,7 +10,13 @@ import Foundation
 
 public class NaturalLanguageParser {
     
-    class func translateString(var string: String) -> String? {
+    var singleTermDictionary = [String: String]()
+    
+    static let sharedInstance = NaturalLanguageParser()
+    private init() {} //This prevents others from using the default '()' initializer for this class.
+    
+    
+    public func translateString(var string: String) -> String? {
         
         // Load the dictionary
         var singleTermDictionary = [String: String]()
@@ -41,11 +47,12 @@ public class NaturalLanguageParser {
             string = string.stringByReplacingOccurrencesOfString("  ", withString: " ")
         }
         
+        print("string: \(string)")
         
         
         //        var wordArray = string.lowercaseString.componentsSeparatedByString(" ")
         
-        var wordArray = Evaluator.termArrayFromString(string.lowercaseString, allowNonLegalCharacters: true)
+        var wordArray = Evaluator.termArrayFromString(string.lowercaseString, allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
         
         print("wordArray: \(wordArray)", appendNewline: false)
         

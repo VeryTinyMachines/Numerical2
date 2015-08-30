@@ -211,8 +211,6 @@ public class Evaluator {
     class func solveString(string: String) -> (String?) {
         // First solve the brackets, then solve the string
         
-        print("solve string: \(string)", appendNewline: false)
-        
         let cleanedString = cleanString(string)
         
         if let bracketsResolvedString = solveBracketsInString(cleanedString) {
@@ -227,7 +225,7 @@ public class Evaluator {
         
         // Inserts "*" between brackets and numbers
         
-        var termArray = termArrayFromString(string, allowNonLegalCharacters: false)
+        var termArray = termArrayFromString(string, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
         
         if termArray.count > 1 {
             var index = 0
@@ -236,7 +234,7 @@ public class Evaluator {
                 let term = termArray[index]
                 let nextTerm = termArray[index + 1]
                 
-                print("term: \(term)  nextTerm: \(nextTerm)", appendNewline: false)
+//                print("term: \(term)  nextTerm: \(nextTerm)", appendNewline: false)
                 
                 if term == ")" && nextTerm == "(" {
                     termArray.insert("*", atIndex: index + 1)
@@ -346,7 +344,7 @@ public class Evaluator {
     
     class func processTermArray(var termArray: Array<String>, theOperator: String, operatorType: OperatorType) -> Array<String>? {
         
-        print("processTermArray: \(termArray)", appendNewline: false)
+//        print("processTermArray: \(termArray)", appendNewline: false)
         
         let leftTerm = NumberTerm()
         let operandTerm = OperandTerm()
@@ -549,10 +547,12 @@ public class Evaluator {
     class func solveOperatorsInString(string: String) -> (String?) {
         
         // Convert the string into a termArray
-        var termArray = termArrayFromString(string, allowNonLegalCharacters: false)
+        var termArray = termArrayFromString(string, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
+        
+//        print("termArray: \(termArray)")
         
         // Solve PreOperators
-        let preOperatorArray = [String(SymbolCharacter.sqrt), String(SymbolCharacter.sin), String(SymbolCharacter.cos), String(SymbolCharacter.tan), String(SymbolCharacter.log), String(SymbolCharacter.log2), String(SymbolCharacter.log10)]
+        let preOperatorArray = [String(SymbolCharacter.sqrt), String(SymbolCharacter.sin), String(SymbolCharacter.cos), String(SymbolCharacter.tan), String(SymbolCharacter.log), String(SymbolCharacter.log2), String(SymbolCharacter.log10), String(SymbolCharacter.sinh), String(SymbolCharacter.cosh), String(SymbolCharacter.tanh)]
         
         if let newTermArray = solveTermArray(termArray, operatorArray: preOperatorArray, operatorType: OperatorType.PreOperator) {
             termArray = newTermArray
@@ -606,7 +606,7 @@ public class Evaluator {
         let numerator = NSDecimalNumber(string: components.numerator).doubleValue
         let denominator = NSDecimalNumber(string: components.denominator).doubleValue
         
-        print("Original Answer: \(numerator) over \(denominator)", appendNewline: false)
+//        print("Original Answer: \(numerator) over \(denominator)", appendNewline: false)
         
         if numerator % 1 == 0 && denominator % 1 == 0 {
             // These are whole numbers
@@ -631,7 +631,7 @@ public class Evaluator {
                 var v = Int(denominator)
                 
                 while v > 0 {
-                    print("v: \(v)", appendNewline: false)
+//                    print("v: \(v)", appendNewline: false)
                     let temp = u % v
                     u = v
                     v = temp
@@ -640,7 +640,7 @@ public class Evaluator {
                 let numeratorAnswer = Int(numerator) / u
                 let denominatorAnswer = Int(denominator) / u
                 
-                print("Reduced Answer: \(numeratorAnswer) over \(denominatorAnswer)", appendNewline: false)
+//                print("Reduced Answer: \(numeratorAnswer) over \(denominatorAnswer)", appendNewline: false)
                 
                 let fraction = SymbolCharacter.fraction
                 
@@ -660,7 +660,7 @@ public class Evaluator {
         let numerator = NSDecimalNumber(string: components.numerator).doubleValue
         let denominator = NSDecimalNumber(string: components.denominator).doubleValue
         
-        print("Original Answer: \(numerator) over \(denominator)", appendNewline: false)
+//        print("Original Answer: \(numerator) over \(denominator)", appendNewline: false)
         
         if numerator % 1 == 0 && denominator % 1 == 0 {
             // These are whole numbers
@@ -717,7 +717,7 @@ public class Evaluator {
                 
                 if denominatorAnswer == minimumDenominatorA || denominatorAnswer == minimumDenominatorB {
                     let fraction = SymbolCharacter.fraction
-                    print("Reduced Answer: \(numeratorAnswer) over \(denominatorAnswer)", appendNewline: false)
+//                    print("Reduced Answer: \(numeratorAnswer) over \(denominatorAnswer)", appendNewline: false)
                     return "\(numeratorAnswer)\(fraction)\(denominatorAnswer)"
                 } else {
                     return nil
@@ -805,9 +805,7 @@ public class Evaluator {
     }
     
     
-    class func termArrayFromString(string: String, allowNonLegalCharacters: Bool) -> (Array<String>) {
-        
-//        print("string: \(string)")
+    class func termArrayFromString(string: String, allowNonLegalCharacters: Bool, treatConstantsAsNumbers: Bool) -> (Array<String>) {
         
         // Divide the string into terms and solve.
         var terms = [String]()
@@ -816,15 +814,26 @@ public class Evaluator {
         
         var lastTermType = TermType.Unknown
         
+        var operatorSet: Set<Character> = Set(["+","-","*","/","^","%","(",")",SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh])
+        
+        var numberSet = Set([Character("1"),Character("2"),Character("3"),Character("4"),Character("5"),Character("6"),Character("7"),Character("8"),Character("9"),Character("0"),Character("."),SymbolCharacter.fraction])
+        
+        if treatConstantsAsNumbers {
+            numberSet.insert(SymbolCharacter.pi)
+            numberSet.insert(SymbolCharacter.e)
+            numberSet.insert(SymbolCharacter.infinity)
+        } else {
+            operatorSet.insert(SymbolCharacter.pi)
+            operatorSet.insert(SymbolCharacter.e)
+            operatorSet.insert(SymbolCharacter.infinity)
+        }
         
         while evaluationString.characters.count > 0 {
             
             let startIndex = evaluationString.startIndex
             let character = evaluationString[startIndex]
             
-            let operatorSet: Set<Character> = Set(["+","-","*","/","^","%","(",")",SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, SymbolCharacter.percentage])
             
-            let numberSet = Set([Character("1"),Character("2"),Character("3"),Character("4"),Character("5"),Character("6"),Character("7"),Character("8"),Character("9"),Character("0"),Character("."),SymbolCharacter.fraction])
             
             if(operatorSet.contains(character)) {
                 // It's an operator
@@ -870,7 +879,13 @@ public class Evaluator {
                 // Invalid Character - Just skip it
                 
                 if character == " " {
+                    
                     terms.append("")
+                    
+//                    if lastTermType == TermType.Number || lastTermType == TermType.Operator {
+//                        terms.append("")
+//                    }
+                    
                 } else {
                     
                     if lastTermType != .Unknown {
@@ -900,7 +915,7 @@ public class Evaluator {
             evaluationString = evaluationString.substringWithRange(newStartIndex..<newEndIndex)
         }
         
-        print("terms: \(terms)", appendNewline: false)
+//        print("terms: \(terms)", appendNewline: false)
         
         return terms
     }
@@ -909,6 +924,8 @@ public class Evaluator {
     
     class func solveUnknownNumber(numberA: String?, theOperator: Character?, numberB: String?, operatorType: OperatorType, endPercentage: Bool) -> String? {
         // Determine if any number here is a fraction, if not send it to solveNonFraction
+        
+//        print("solveUnknownNumber: \(numberA) \(theOperator) \(numberB)")
         
         var fractionFound = false
         
@@ -933,7 +950,6 @@ public class Evaluator {
                 
                 var fractionA:Int = 1
                 var fractionB:Int = 1
-                
                 
                 let theNumberA = fractionComponents(numberA!)
                 let theNumberB = fractionComponents(numberB!)
@@ -1125,8 +1141,6 @@ public class Evaluator {
             }
         }
         
-        
-        
         return ("","")
     }
     
@@ -1160,25 +1174,6 @@ public class Evaluator {
         
         numberA = Glossary.replaceConstant(numberA)
         numberB = Glossary.replaceConstant(numberB)
-        
-//        if let theNumberA = numberA {
-//            if theNumberA == String(SymbolCharacter.e) {
-//                numberA = SymbolConstant.eulerValue
-//            } else if theNumberA == String(SymbolCharacter.pi) {
-//                numberA = SymbolConstant.piValue
-//            }
-//            
-//            
-//        }
-//        
-//        if let theNumberB = numberB {
-//            if theNumberB == String(SymbolCharacter.e) {
-//                numberB = SymbolConstant.eulerValue
-//            } else if theNumberB == String(SymbolCharacter.pi) {
-//                numberB = SymbolConstant.piValue
-//            }
-//        }
-//        
         
         var theNumberA = ""
         var theNumberB = ""
@@ -1240,6 +1235,12 @@ public class Evaluator {
             answer = cos(rightDouble)
         } else if theOperator == SymbolCharacter.tan {
             answer = tan(rightDouble)
+        }  else if theOperator == SymbolCharacter.sinh {
+            answer = sinh(rightDouble)
+        } else if theOperator == SymbolCharacter.cosh {
+            answer = cosh(rightDouble)
+        } else if theOperator == SymbolCharacter.tanh {
+            answer = tanh(rightDouble)
         } else if theOperator == SymbolCharacter.sqrt {
             answer = sqrt(rightDouble)
         } else if theOperator == SymbolCharacter.ee {
@@ -1406,6 +1407,24 @@ public class Evaluator {
             } else if theOperator == SymbolCharacter.tan {
                 // Tan
                 let result = tan(rightDecimalNumber.doubleValue)
+                let resultNumber = NSNumber(double: result)
+                return resultNumber.stringValue
+                
+            }  else if theOperator == SymbolCharacter.sinh {
+                // Sin
+                let result = sinh(rightDecimalNumber.doubleValue)
+                let resultNumber = NSNumber(double: result)
+                return resultNumber.stringValue
+                
+            } else if theOperator == SymbolCharacter.cosh {
+                // Cos
+                let result = cosh(rightDecimalNumber.doubleValue)
+                let resultNumber = NSNumber(double: result)
+                return resultNumber.stringValue
+                
+            } else if theOperator == SymbolCharacter.tanh {
+                // Tan
+                let result = tanh(rightDecimalNumber.doubleValue)
                 let resultNumber = NSNumber(double: result)
                 return resultNumber.stringValue
                 
