@@ -207,7 +207,10 @@ public class NaturalLanguageParser {
                 // Convert number into hundred
                 if Glossary.isStringNumber(word) && nextWord == "hundred" {
                     let newRange = Range(start: index, end: index + 2)
-                    if let newNumber = Evaluator.solveUnknownNumber(word, theOperator: "*", numberB: "100", operatorType: OperatorType.MidOperator, endPercentage: false) {
+                    
+                    let answerBundle = Evaluator.solveUnknownNumber(word, theOperator: "*", numberB: "100", operatorType: OperatorType.MidOperator, endPercentage: false)
+                    
+                    if let newNumber = answerBundle.answer {
                         newTermArray.replaceRange(newRange, with: [newNumber])
                         print("newTermArray after replacement: \(newTermArray)", appendNewline: false)
                         //                            index -= 1
@@ -257,12 +260,16 @@ public class NaturalLanguageParser {
                         
                         if word.substringFromIndex(advance(word.startIndex, word.characters.count - nextWord.characters.count)) == zeroStringKey {
                             let newRange = Range(start: index, end: index + 2)
-                            if let newNumber = Evaluator.solveUnknownNumber(word, theOperator: "+", numberB: nextWord, operatorType: OperatorType.MidOperator, endPercentage: false) {
+                            
+                            let answerBundle = Evaluator.solveUnknownNumber(word, theOperator: "+", numberB: nextWord, operatorType: OperatorType.MidOperator, endPercentage: false)
+                            
+                            if let newNumber = answerBundle.answer {
                                 newTermArray.replaceRange(newRange, with: [newNumber])
                                 print("newTermArray after replacement: \(newTermArray)")
                                 //                            index -= 1
                                 continue
                             }
+                            
                         }
                     }
                 }

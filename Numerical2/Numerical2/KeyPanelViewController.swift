@@ -21,14 +21,12 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     var cachedViews = Dictionary<ViewType,AnyObject>()
     
     var pageController: UIPageViewController?
-    var pageContent = Array<UIViewController>()
     
     var nextIndex:Int?
-    var currentIndex = 0
     
     var currentView = ViewType.StandardKeypad
-    
     var currentLegalKeys:Set<Character> = []
+    var currentPage:AnyObject?
     
     @IBOutlet weak var pageControl: UIPageControl!
     
@@ -43,31 +41,12 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
         }
     }
     
-    func viewControllerAtIndex(index: Int) -> UIViewController? {
-        
-        if (pageContent.count == 0) || (index >= pageContent.count) {
-                return nil
-        }
-        
-        
-        
-        return pageContent[index]
-    }
-    
-    func indexOfViewController(viewController: UIViewController) -> Int {
-        
-        if pageContent.contains(viewController) {
-            return pageContent.indexOf(viewController)!
-        }
-        
-        return NSNotFound
-    }
     
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
         if viewIsWideForSize(self.view.bounds.size) {
-            if let view = viewController as? KeypadViewController {
+            if let _ = viewController as? KeypadViewController {
                 return viewForType(ViewType.AboutView)
             }
         } else {
@@ -83,19 +62,17 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
             }
         }
         
-        
         return nil
-        
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         
         
         if viewIsWideForSize(self.view.bounds.size) {
-            if let view = viewController as? KeypadViewController {
+            if let _ = viewController as? KeypadViewController {
                 return nil
             } else {
-                return viewForType(ViewType.AboutView)
+                return viewForType(ViewType.ScientificKeypad)
             }
         } else {
             if let view = viewController as? KeypadViewController {
@@ -117,16 +94,6 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Load all the views
-        // TODO - Make this safe
-        
-        pageContent.append(viewForType(ViewType.AboutView)!)
-        pageContent.append(viewForType(ViewType.ScientificKeypad)!)
-        pageContent.append(viewForType(ViewType.StandardKeypad)!)
-
-//        viewForType(ViewType.StandardKeypad)
-//        viewForType(ViewType.ScientificKeypad)
-        
         
         pageController = UIPageViewController(
             transitionStyle: UIPageViewControllerTransitionStyle.Scroll,
@@ -137,7 +104,7 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
         if let startingViewController = viewForType(ViewType.StandardKeypad) {
             let viewControllers: Array = [startingViewController]
             
-            currentIndex = indexOfViewController(startingViewController)
+            currentPage = startingViewController
             
             pageController!.setViewControllers(viewControllers, direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
             
@@ -177,7 +144,6 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
         
         if let nextView = pendingViewControllers.first {
-            nextIndex = indexOfViewController(nextView)
             
             if let theKeyPad = nextView as? KeypadViewController {
                 if theKeyPad.originLayoutType == KeypadLayout.CompactScientific {
@@ -193,12 +159,8 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
         if completed {
-            if let theNextIndex = nextIndex {
-                currentIndex = theNextIndex
-            }
+            currentPage = pageViewController.viewControllers?.first
         }
-        
-        nextIndex = nil
         
         updatePageCount()
         
@@ -206,28 +168,30 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         
+        
         // Nullify the page view controller's data
         self.pageController?.dataSource = nil
         self.pageController?.dataSource = self
         
         // Get the current view, change it's type if necessary
-        if let theKeyPad = pageContent[currentIndex] as? KeypadViewController {
+        
+        if let theKeyPad = self.currentPage as? KeypadViewController {
             if theKeyPad.originLayoutType == KeypadLayout.CompactScientific {
-                layoutKeypad(theKeyPad, type: ViewType.ScientificKeypad, size: size)
+                self.layoutKeypad(theKeyPad, type: ViewType.ScientificKeypad, size: size)
             } else if theKeyPad.originLayoutType == KeypadLayout.CompactStandard {
-                layoutKeypad(theKeyPad, type: ViewType.StandardKeypad, size: size)
+                self.layoutKeypad(theKeyPad, type: ViewType.StandardKeypad, size: size)
             }
         }
 
-
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.updatePageCount()
+        })
+        
         coordinator.animateAlongsideTransition({ context in
             // do whatever with your context
             
             }, completion: { context in
                 // do whatever with your context
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.updatePageCount()
-                })
         })
     }
     
@@ -249,11 +213,11 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     
     func setLegalKeys(legalKeys: Set<Character>) {
         currentLegalKeys = legalKeys
-        if let theKeyPad = pageContent[currentIndex] as? KeypadViewController {
+        
+        if let theKeyPad = currentPage as? KeypadViewController {
             theKeyPad.setLegalKeys(legalKeys)
         }
     }
-    
     
     
     override func viewDidAppear(animated: Bool) {
@@ -263,8 +227,6 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     
     
     func viewForType(type: ViewType) -> UIViewController? {
-        
-        // Animate the keypad moving offscreen.
         
         // Let's get the currentView
         
@@ -329,37 +291,41 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
         }
     }
     
+    
     func updatePageCount() {
         
-        var currentPage = 0
+        
+        var currentPageIndex = 0
         var pageCount = 0
         
         if viewIsWideForSize(self.view.frame.size) {
             
-            if let theKeyPad = pageContent[currentIndex] as? KeypadViewController {
+            if let theKeyPad = currentPage as? KeypadViewController {
                 if theKeyPad.originLayoutType == KeypadLayout.CompactScientific {
-                    currentPage = 1
+                    currentPageIndex = 1
                 } else if theKeyPad.originLayoutType == KeypadLayout.CompactStandard {
-                    currentPage = 1
+                    currentPageIndex = 1
                 } else {
-                    currentPage = 0
+                    currentPageIndex = 0
                 }
             }
             
             pageCount = 2
         } else {
-            if let theKeyPad = pageContent[currentIndex] as? KeypadViewController {
+            
+            if let theKeyPad = currentPage as? KeypadViewController {
                 if theKeyPad.originLayoutType == KeypadLayout.CompactScientific {
-                    currentPage = 1
+                    currentPageIndex = 1
                 } else if theKeyPad.originLayoutType == KeypadLayout.CompactStandard {
-                    currentPage = 2
+                    currentPageIndex = 2
                 } else {
-                    currentPage = 0
+                    currentPageIndex = 0
                 }
             }
             pageCount = 3
         }
         self.pageControl.numberOfPages = pageCount
-        self.pageControl.currentPage = currentPage
+        self.pageControl.currentPage = currentPageIndex
+        
     }
 }

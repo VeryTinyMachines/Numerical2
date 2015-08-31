@@ -27,6 +27,7 @@ class CalcButton: UIButton {
         self.addTarget(self, action: Selector("touchUp"), forControlEvents: UIControlEvents.TouchUpInside)
         self.addTarget(self, action: Selector("touchUp"), forControlEvents: UIControlEvents.TouchDragExit)
         
+        self.updateEnabledState()
         
         
     }
@@ -35,8 +36,10 @@ class CalcButton: UIButton {
         
         if enabled {
             setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            self.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.25)
         } else {
             setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.33), forState: UIControlState.Normal)
+            self.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.0)
         }
         
     }
@@ -57,16 +60,8 @@ class CalcButton: UIButton {
     func touchUp() {
         // Add a UI View to the background, animate it, then remove it
         
-//        let backgroundBox = UIView(frame: self.bounds)
-        
-        self.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
-        
-        
-//        self.addSubview(backgroundBox)
-        
         UIView.animateWithDuration(0.075, delay: 0.0, options: UIViewAnimationOptions.AllowUserInteraction, animations: { () -> Void in
 //            backgroundBox.alpha = 0
-            self.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.0)
             self.layer.setAffineTransform(CGAffineTransformMakeScale(1.0, 1.0))
             self.updateEnabledState()
             }) { (complete) -> Void in

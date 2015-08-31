@@ -36,33 +36,27 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     
     func updateView() {
         
-        
         if var theQuestion = currentQuestion {
             
-            /*
             if theQuestion.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "abcdefghijklmnopqrstuvwxyz"), options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil) != nil {
                 
                 if let translatedString = NaturalLanguageParser.sharedInstance.translateString(theQuestion) {
                     theQuestion = translatedString
                 }
             }
-*/
             
-//            let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(theQuestion)
+            let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(theQuestion)
             
             if let theQuestionView = questionView {
-//                theQuestionView.questionString = bracketBalancedString
-                theQuestionView.questionString = theQuestion
+                theQuestionView.questionString = bracketBalancedString
+                //                theQuestionView.questionString = theQuestion
             }
-            
             
             CalculatorBrain.sharedBrain.delegate = self
             CalculatorBrain.sharedBrain.solveStringInQueue(theQuestion, completion: { (answer) -> Void in
-                
                 self.currentAnswer = answer
                 
                 let possibleAnswers = Glossary.possibleAnswersFromString(answer)
-                
                 
                 var formattedAnswers:Array<String> = []
                 
@@ -80,15 +74,8 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
                     theAnswerView.questionString = answersString
                     
                 }
-                
-                
-                }
-            )
-            
-            
+            })
         }
-
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -106,11 +93,6 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         if let theDelegate = delegate, theText = textField.text {
             theDelegate.questionChanged(theText, overwrite: false)
         }
-    }
-    
-    func answerProcessed(answer: String?) {
-        
-        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

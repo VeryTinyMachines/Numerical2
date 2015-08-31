@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol CalculatorBrainDelete {
-    func answerProcessed(answer: String?)
+    
 }
 
 public class CalculatorBrain {
@@ -51,22 +51,42 @@ public class CalculatorBrain {
                 
                 // This is still the current question
                 let result = Evaluator.solveString(string)
-                self.currentAnswer = result
+                self.currentAnswer = result.answer
                 
                 let readyTime = self.currentTimeMillis()
                 let readyTimeDelta = readyTime - startTime
                 
                 print("readyTimeDelta: \(readyTimeDelta)")
                 
-                if let completionBlock = completion, theResult = result {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        let endTime = self.currentTimeMillis()
-                        let endTimeDelta = endTime - startTime
-                        
-                        print("endTimeDelta: \(endTimeDelta)")
-                        
-                        completionBlock(answer: theResult)
-                    })
+                if let completionBlock = completion {
+                    
+                    if let theResult = result.answer {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            let endTime = self.currentTimeMillis()
+                            let endTimeDelta = endTime - startTime
+                            
+                            print("endTimeDelta: \(endTimeDelta)")
+                            
+                            completionBlock(answer: theResult)
+                        })
+                    } else {
+                        // An error occurred
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            
+                            if result.errorType == ErrorType.Overflow {
+                                completionBlock(answer: "Overflow Error: Answer is too big")
+                            } else if result.errorType == ErrorType.Underflow {
+                                completionBlock(answer: "Underflow Error: Answer is too small")
+                            } else if result.errorType == ErrorType.DivideByZero {
+                                completionBlock(answer: "Division by zero error")
+                            } else {
+                                completionBlock(answer: "Error")
+                            }
+                            
+                        })
+                    }
+                    
+                    
                 }
             }
 
