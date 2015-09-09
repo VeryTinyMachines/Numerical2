@@ -18,7 +18,7 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     @IBOutlet weak var questionLabel: UILabel!
     
     var currentQuestion:String?
-    var currentAnswer:String?
+    var currentAnswer:AnswerBundle?
     
     var questionView:QuestionCollectionViewController?
     var answerView:QuestionCollectionViewController?
@@ -48,33 +48,25 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
             let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(theQuestion)
             
             if let theQuestionView = questionView {
-                theQuestionView.questionString = bracketBalancedString
-                //                theQuestionView.questionString = theQuestion
+                theQuestionView.questionBundle = AnswerBundle(number: bracketBalancedString)
             }
             
             CalculatorBrain.sharedBrain.delegate = self
-            CalculatorBrain.sharedBrain.solveStringInQueue(theQuestion, completion: { (answer) -> Void in
-                self.currentAnswer = answer
+            
+            if let view = self.answerView {
                 
-                let possibleAnswers = Glossary.possibleAnswersFromString(answer)
-                
-                var formattedAnswers:Array<String> = []
-                
-                for anAnswer in possibleAnswers {
+                CalculatorBrain.sharedBrain.solveStringInQueue(theQuestion, completion: { (answer) -> Void in
+                    self.currentAnswer = answer
                     
-                    let formattedAnswer = Glossary.formattedStringForQuestion(anAnswer)
+                    view.isAnswerView = true
+                    view.questionBundle = self.currentAnswer
                     
-                    formattedAnswers.append(formattedAnswer)
-                }
+                })
                 
-                let answersString = "or".join(possibleAnswers)
                 
-                if let theAnswerView = self.answerView {
-                    
-                    theAnswerView.questionString = answersString
-                    
-                }
-            })
+            }
+            
+            
         }
     }
     
@@ -133,7 +125,6 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
                 textField.text = Glossary.formattedStringForQuestion(theCurrentQuestion)
             }
             
-            
             textField.becomeFirstResponder()
 
         } else {
@@ -150,7 +141,6 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
             }
             
             updateView()
-            
         }
     }
     
@@ -170,9 +160,5 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         
         return true
     }
-    
-    
-    
-    
     
 }

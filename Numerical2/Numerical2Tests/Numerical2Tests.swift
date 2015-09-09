@@ -30,6 +30,33 @@ class Numerical2Tests: XCTestCase {
         self.measureBlock() {
             // Put the code you want to measure the time of here.
         }
+        
+        
+        XCTAssertEqual(CalculatorBrain().solveString("1+2"), "3")
+        XCTAssertEqual(CalculatorBrain().solveString("1-2"), "-1")
+        XCTAssertEqual(CalculatorBrain().solveString("1*2"), "2")
+        XCTAssertEqual(CalculatorBrain().solveString("1/2"), "0.5")
+        XCTAssertEqual(CalculatorBrain().solveString("1^2"), "1")
+        
+        XCTAssertEqual(CalculatorBrain().solveString("7+25"), "32")
+        XCTAssertEqual(CalculatorBrain().solveString("7-25"), "-18")
+        XCTAssertEqual(CalculatorBrain().solveString("7*25"), "175")
+        XCTAssertEqual(CalculatorBrain().solveString("7/25"), "0.28")
+        XCTAssertEqual(CalculatorBrain().solveString("7^25"), "1341068619663964900807")
+        
+        
+        XCTAssertEqual(CalculatorBrain().solveString("((10+20)-(30*40)/50)^6"), "46656")
+        XCTAssertEqual(CalculatorBrain().solveString("----10----9---7---5---4---2---1"), "0")
+        XCTAssertEqual(CalculatorBrain().solveString("(2^3)^4"), "4096")
+        XCTAssertEqual(CalculatorBrain().solveString("10!"), "3628800")
+        
+        XCTAssertEqual(CalculatorBrain().solveString("20+5%"), "21")
+        XCTAssertEqual(CalculatorBrain().solveString("20-5%"), "19")
+        XCTAssertEqual(CalculatorBrain().solveString("20*5%"), "1")
+        XCTAssertEqual(CalculatorBrain().solveString("20/5%"), "400")
+        
+        
+        
     }
     
 }

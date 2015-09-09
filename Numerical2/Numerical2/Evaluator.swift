@@ -123,7 +123,7 @@ public enum ErrorType {
     case Underflow
 }
 
-class AnswerBundle {
+public class AnswerBundle {
     
     var answer: String?
     var error: Bool = false
@@ -143,7 +143,7 @@ class AnswerBundle {
 }
 
 
-class TermBundle {
+public class TermBundle {
     
     var termArray: Array<String>?
     var error: Bool = false
@@ -164,6 +164,60 @@ class TermBundle {
 
 
 public class Evaluator {
+    
+    class func fractionComponents(number: String) -> (numerator: String, denominator: String) {
+        
+        if number == "0" {
+            return ("0","1")
+        }
+        
+        var components = number.componentsSeparatedByString(String(SymbolCharacter.fraction))
+        
+        if components.count == 0 {
+            return ("0","1")
+        } else if components.count == 1 {
+            return (number, "1")
+        } else if components.count == 2 {
+            if components[1] == "" {
+                return (components[0], "1")
+            } else {
+                return (components[0], components[1])
+            }
+        } else {
+            // We have more than 2 components, need to convert into a series of mulitplies: 1/c and solve.
+            // For example: 1 over 2 over 3 over 4 = 1 over (2*3*4)
+            
+            while components.count > 2 {
+                // Multiply [1] and [2]
+                
+                let numberA = components[1]
+                let numberB = components[2]
+                
+                components.removeAtIndex(1)
+                components.removeAtIndex(1)
+                
+                let newAnswer = Evaluator.solveUnknownNumber(numberA, theOperator: "*", numberB: numberB, operatorType: OperatorType.MidOperator, endPercentage: false)
+                
+                if let newAnswerString = newAnswer.answer {
+                    components.insert(newAnswerString, atIndex: 1)
+                } else {
+                    // Could not solve multi-part fraction
+                    break
+                }
+                
+                
+            }
+            
+            // We should now have 2 components
+            
+            if components.count == 2 {
+                return (components[0], components[1])
+            }
+        }
+        
+        return ("","")
+    }
+    
     
     class func balanceBracketsForQuestionDisplay(string: String) -> String {
         
@@ -257,6 +311,8 @@ public class Evaluator {
     class func solveString(string: String) -> AnswerBundle {
         // First solve the brackets, then solve the string
         
+//        print("begin solving string: \(string)", appendNewline: true)
+        
         let cleanedString = cleanString(string)
         
         if let bracketsResolvedString = solveBracketsInString(cleanedString) {
@@ -288,9 +344,9 @@ public class Evaluator {
                 
                 if term == ")" && nextTerm == "(" {
                     termArray.insert("*", atIndex: index + 1)
-                } else if term == ")" && Glossary.isStringNumber(nextTerm) {
+                } else if term == ")" && Glossary.isStringNumber(nextTerm) && nextTerm != String(SymbolCharacter.fraction) {
                     termArray.insert("*", atIndex: index + 1)
-                } else if Glossary.isStringNumber(term) && nextTerm == "(" {
+                } else if Glossary.isStringNumber(term) && term != String(SymbolCharacter.fraction) && nextTerm == "(" {
                     termArray.insert("*", atIndex: index + 1)
                 }
                 
@@ -398,7 +454,7 @@ public class Evaluator {
     
     class func processTermArray(var termArray: Array<String>, theOperator: String, operatorType: OperatorType) -> TermBundle {
         
-//        print("processTermArray: \(termArray)", appendNewline: false)
+//        print("processTermArray: \(termArray) for operator: \(theOperator)", appendNewline: true)
         
         let leftTerm = NumberTerm()
         let operandTerm = OperandTerm()
@@ -511,20 +567,13 @@ public class Evaluator {
                         
                         var answer = AnswerBundle()
                         
-                        if operatorType == OperatorType.MidOperator
-                        {
+                        if operatorType == OperatorType.MidOperator {
                             answer = solveUnknownNumber(leftTerm.stringValue(), theOperator: operandTerm.characterValue(), numberB: rightTerm.stringValue(), operatorType: operatorType, endPercentage: false)
-                        }
-                        else if operatorType == OperatorType.PreOperator
-                        {
+                        } else if operatorType == OperatorType.PreOperator {
                             answer = solveUnknownNumber(nil, theOperator: operandTerm.characterValue(), numberB: rightTerm.stringValue(), operatorType: operatorType, endPercentage: false)
-                        }
-                        else if operatorType == OperatorType.PostOperator
-                        {
+                        } else if operatorType == OperatorType.PostOperator {
                             answer = solveUnknownNumber(leftTerm.stringValue(), theOperator: operandTerm.characterValue(), numberB: nil, operatorType: operatorType, endPercentage: false)
-                        }
-                        else if operatorType == OperatorType.PercentageCombine
-                        {
+                        } else if operatorType == OperatorType.PercentageCombine {
                             answer = solveUnknownNumber(leftTerm.stringValue(), theOperator: operandTerm.characterValue(), numberB: rightTerm.stringValue(), operatorType: operatorType, endPercentage: true)
                         }
                         
@@ -574,13 +623,14 @@ public class Evaluator {
             termArray.insert(answer, atIndex: startIndex)
         }
         
-        print("termArray: \(termArray)")
         
         return TermBundle(termArray: termArray)
     }
     
     
     class func solveTermArray(var termArray: Array<String>, var operatorArray: Array<String>, operatorType: OperatorType) -> TermBundle {
+        
+//        print("solveTermArray: \(termArray) for operatorArray: \(operatorArray)", appendNewline: true)
         
         while operatorArray.count > 0 {
             
@@ -599,10 +649,7 @@ public class Evaluator {
                         }else {
                             return TermBundle(error: ErrorType.Unknown)
                         }
-                        
-                        
                     }
-                    
                 }
             }
             
@@ -614,7 +661,7 @@ public class Evaluator {
     
     
     class func solveOperatorsInString(string: String) -> AnswerBundle {
-        print("solveOperatorsInString", appendNewLine: true)
+//        print("solveOperatorsInString: \(string)", appendNewLine: true)
         
         // Convert the string into a termArray
         var termArray = termArrayFromString(string, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
@@ -632,7 +679,7 @@ public class Evaluator {
             return AnswerBundle(error: ErrorType.Unknown)
         }
         
-        
+//        print("termArray (1): \(termArray)", appendNewLine: true)
         
         
         // Solve Smart Percentage Operator
@@ -648,6 +695,23 @@ public class Evaluator {
             return AnswerBundle(error: ErrorType.Unknown)
         }
         
+//        print("termArray (2): \(termArray)", appendNewLine: true)
+        
+        
+        // Solve Dumb Percentage Operator
+        
+        termBundle = solveTermArray(termArray, operatorArray: [String(SymbolCharacter.percentage)], operatorType: OperatorType.PostOperator)
+        
+        if let newTermArray = termBundle.termArray {
+            termArray = newTermArray
+        } else if let errorType = termBundle.errorType {
+            return AnswerBundle(error: errorType)
+        } else {
+            return AnswerBundle(error: ErrorType.Unknown)
+        }
+        
+//        print("termArray (3): \(termArray)", appendNewLine: true)
+        
         
         // Solve PostOperators
         let postOperatorArray = [String(SymbolCharacter.factorial), String(SymbolCharacter.percentage)]
@@ -662,18 +726,14 @@ public class Evaluator {
             return AnswerBundle(error: ErrorType.Unknown)
         }
         
+//        print("termArray (4): \(termArray)", appendNewLine: true)
+        
         // Add Multiply's between naked numbers
-        termArray = insertMultiplyBetweenNumbers(termArray)
+        termArray = insertMultiplyReduceFractions(termArray)
         
-        if let newTermArray = termBundle.termArray {
-            termArray = newTermArray
-        } else if let errorType = termBundle.errorType {
-            return AnswerBundle(error: errorType)
-        } else {
-            return AnswerBundle(error: ErrorType.Unknown)
-        }
+//        print("termArray (5): \(termArray)", appendNewLine: true)
         
-        // Solve regular operators
+        // Solve regular operators (and fraction as divisor)
         let operatorArray = [String(SymbolCharacter.ee),"^", "/", "*", "+" , "-"]
         
         termBundle = solveTermArray(termArray, operatorArray: operatorArray, operatorType: OperatorType.MidOperator)
@@ -692,7 +752,6 @@ public class Evaluator {
             return AnswerBundle(error: ErrorType.Unknown)
         }
     }
-    
     
     
     class func reduceFraction(string: String) -> String? {
@@ -825,17 +884,22 @@ public class Evaluator {
     }
     
     
-    class func insertMultiplyBetweenNumbers(var termArray: Array<String>) -> Array<String> {
+    class func insertMultiplyReduceFractions(var termArray: Array<String>) -> Array<String> {
         var lastTerm:String?
         
         var counter = 0
         
         for term in termArray {
             
-            if let theLastTerm = lastTerm {
+            if term == String(SymbolCharacter.fraction) {
+                // Replace naked fractions with "/"s
+                
+                termArray[counter] = "/"
+                
+            } else if let theLastTerm = lastTerm {
                 
                 // We have a term and a lastTerm check if they are both numbers, if they are insert a "*"
-                if Glossary.isStringNumber(term) && Glossary.isStringNumber(theLastTerm) {
+                if Glossary.isStringNumber(term) && Glossary.isStringNumber(theLastTerm) && term != String(SymbolCharacter.fraction) && lastTerm != String(SymbolCharacter.fraction) {
                     // They are both numbers
                     
                     termArray.insert("*", atIndex: counter)
@@ -846,6 +910,8 @@ public class Evaluator {
             lastTerm = term
             counter += 1
         }
+        
+//        print("termArray to return: \(termArray)", appendNewline: true)
         
         return termArray
     }
@@ -888,9 +954,6 @@ public class Evaluator {
                 if Glossary.isStringNumber(term) {
                     
                     return Glossary.replaceConstant(term)
-                    
-                    // Need to process number by adding it to 0, this will turn any special symbols into their string values.
-//                    return solveUnknownNumber(term, theOperator: "+", numberB: "0", operatorType: OperatorType.MidOperator, endPercentage: false)
                 } else {
                     return nil
                 }
@@ -953,19 +1016,26 @@ public class Evaluator {
                 
                 if var lastTerm = terms.last {
                     
-                    lastTerm.append(character)
-                    terms.removeLast()
-                    terms.append(lastTerm)
+                    // If the last term was a fraction then seperate it.
                     
+                    if lastTerm == String(SymbolCharacter.fraction) {
+                        
+                        // Start a new term with this number.
+                        
+                        let newString = String(character)
+                        terms.append(newString)
+                        
+                    } else {
+                        // We're continuing a number
+                        lastTerm.append(character)
+                        terms.removeLast()
+                        terms.append(lastTerm)
+                    }
                 } else {
                     // This is the first term being added
                     let newString = String(character)
-                    
                     terms.append(newString)
                 }
-                
-                
-                
                 
                 lastTermType = .Number
                 
@@ -1015,11 +1085,10 @@ public class Evaluator {
     }
     
     
-    
     class func solveUnknownNumber(numberA: String?, theOperator: Character?, numberB: String?, operatorType: OperatorType, endPercentage: Bool) -> AnswerBundle {
         // Determine if any number here is a fraction, if not send it to solveNonFraction
         
-//        print("solveUnknownNumber: \(numberA) \(theOperator) \(numberB)")
+//        print("solveUnknownNumber - numberA:\(numberA) theOperator:\(theOperator) numberB:\(numberB)")
         
         var fractionFound = false
         
@@ -1037,11 +1106,18 @@ public class Evaluator {
         
         if fractionFound {
             // Solve with fraction solver
-            
             let fractionAnswer = solveFraction(numberA, theOperator: theOperator, numberB: numberB, operatorType: operatorType, endPercentage: endPercentage)
-                
-                // We have a fraction answer. Let's first try and reduce it to one of numberA's denominator (if it has one)
-                
+            
+//            print("numberA: \(numberA)", appendNewLine: true)
+//            print("numberB: \(numberB)", appendNewLine: true)
+//            print("theOperator: \(theOperator)", appendNewLine: true)
+//            print("operatorType: \(operatorType)", appendNewLine: true)
+//            print("endPercentage: \(endPercentage)", appendNewLine: true)
+//            print("fractionAnswer.answer: \(fractionAnswer.answer)", appendNewLine: true)
+            
+            // We have a fraction answer. Let's first try and reduce it to one of numberA's denominator (if it has one)
+            
+            if numberA != nil && numberB != nil {
                 var fractionA:Int = 1
                 var fractionB:Int = 1
                 
@@ -1072,16 +1148,13 @@ public class Evaluator {
                     fractionB == fractionA
                 }
                 
+//                print("fractionA: \(fractionA)  fractionB: \(fractionB)", appendNewline: false)
                 
-                // ZZZ
-                print("fractionA: \(fractionA)  fractionB: \(fractionB)", appendNewline: false)
-            
-            if let fractionAnswerString = fractionAnswer.answer {
-                if let reducedAnswer = reduceFraction(fractionAnswerString, minimumDenominatorA: fractionA, minimumDenominatorB: fractionB) {
-                    return AnswerBundle(number: reducedAnswer)
+                if let fractionAnswerString = fractionAnswer.answer {
+                    if let reducedAnswer = reduceFraction(fractionAnswerString, minimumDenominatorA: fractionA, minimumDenominatorB: fractionB) {
+                        return AnswerBundle(number: reducedAnswer)
+                    }
                 }
-                
-                
             }
             
             return fractionAnswer
@@ -1097,8 +1170,7 @@ public class Evaluator {
     
     class func solveFraction(numberA: String?, theOperator: Character?, numberB: String?, operatorType: OperatorType, endPercentage: Bool) -> AnswerBundle {
         
-        
-        print("solveFraction \(numberA) \(theOperator) \(numberB) ", appendNewline: false)
+//        print("solveFraction \(numberA) \(theOperator) \(numberB) ", appendNewline: false)
         
         if operatorType == OperatorType.MidOperator, let theNumberA = numberA, theNumberB = numberB, fractionOperator = theOperator {
             // This is a Midoperator and we have 2 valid strings.
@@ -1108,8 +1180,8 @@ public class Evaluator {
             let fractionA =  fractionComponents(theNumberA)
             let fractionB =  fractionComponents(theNumberB)
             
-            print("fractionA: \(fractionA)", appendNewline: false)
-            print("fractionB: \(fractionB)", appendNewline: false)
+//            print("fractionA: \(fractionA)", appendNewline: false)
+//            print("fractionB: \(fractionB)", appendNewline: false)
             
             if fractionOperator == "+" || fractionOperator == "-" {
                 
@@ -1182,12 +1254,8 @@ public class Evaluator {
             
             return AnswerBundle(error: ErrorType.Unknown)
         }
-            
-    
-            
-            
-        // We couldn't solve this using fraction specific math. Resolve the incoming numbers into decimals and solve
         
+        // We couldn't solve this using fraction specific math. Resolve the incoming numbers into decimals and solve
         
         var decimalFractionA:String?
         var decimalFractionB:String?
@@ -1212,61 +1280,6 @@ public class Evaluator {
         return decimalForm.answer
     }
     
-    
-    class func fractionComponents(number: String) -> (numerator: String, denominator: String) {
-        
-        if number == "0" {
-            return ("0","1")
-        }
-        
-        var components = number.componentsSeparatedByString(String(SymbolCharacter.fraction))
-        
-        if components.count == 0 {
-            return ("0","1")
-        } else if components.count == 1 {
-            return (number, "1")
-        } else if components.count == 2 {
-            if components[1] == "" {
-                return (components[0], "1")
-            } else {
-                return (components[0], components[1])
-            }
-        } else {
-            // We have more than 2 components, need to convert into a series of mulitplies: 1/c and solve.
-            // For example: 1 over 2 over 3 over 4 = 1 over (2*3*4)
-            
-            while components.count > 2 {
-                // Multiply [1] and [2]
-                
-                let numberA = components[1]
-                let numberB = components[2]
-                
-                components.removeAtIndex(1)
-                components.removeAtIndex(1)
-                
-                
-                
-                let newAnswer = solveUnknownNumber(numberA, theOperator: "*", numberB: numberB, operatorType: OperatorType.MidOperator, endPercentage: false)
-                
-                if let newAnswerString = newAnswer.answer {
-                    components.insert(newAnswerString, atIndex: 1)
-                } else {
-                    // Could not solve multi-part fraction
-                    break
-                }
-                
-                
-            }
-            
-            // We should now have 2 components
-            
-            if components.count == 2 {
-                return (components[0], components[1])
-            }
-        }
-        
-        return ("","")
-    }
     
     class func solveNonFraction(numberA: String?, theOperator: Character?, numberB: String?, operatorType: OperatorType, endPercentage: Bool) -> AnswerBundle {
         
@@ -1324,10 +1337,10 @@ public class Evaluator {
         
         var answer:Double?
         
-        print("evaluateInfinityStringNumber: \(numberA) \(theOperator) \(numberB)", appendNewline: false)
+//        print("evaluateInfinityStringNumber: \(numberA) \(theOperator) \(numberB)", appendNewline: false)
         
-        print("numberA: \(numberA)", appendNewline: false)
-        print("numberB: \(numberB)", appendNewline: false)
+//        print("numberA: \(numberA)", appendNewline: false)
+//        print("numberB: \(numberB)", appendNewline: false)
         
         if Glossary.isStringInfinity(theNumberA) == InfinityType.Positive {
             leftDouble = Double.infinity
@@ -1388,7 +1401,7 @@ public class Evaluator {
             return AnswerBundle(error: ErrorType.Unknown)
         }
         
-        print("answer: \(answer)", appendNewline: false)
+//        print("answer: \(answer)", appendNewline: false)
         
         let infinitySymbol = SymbolCharacter.infinity
         
@@ -1396,17 +1409,17 @@ public class Evaluator {
             
             if theAnswer == Double.infinity {
                 
-                print("theAnswer == Double.infinity", appendNewline: false)
+//                print("theAnswer == Double.infinity", appendNewline: false)
                 
                 return AnswerBundle(number: String(infinitySymbol))
                 
             } else if theAnswer == Double.infinity * -1 {
-                print("theAnswer == Double.infinity * -1", appendNewline: false)
+//                print("theAnswer == Double.infinity * -1", appendNewline: false)
                 
                 return AnswerBundle(number: "-\(infinitySymbol)")
                 
             } else {
-                print("theAnswer", appendNewline: false)
+//                print("theAnswer", appendNewline: false)
                 return AnswerBundle(number: "\(theAnswer)")
             }
             
@@ -1466,11 +1479,11 @@ public class Evaluator {
                     let result = leftDecimalNumber.decimalNumberByRaisingToPower(rightDecimalNumber.integerValue, withBehavior: errorHandler)
                     
                     
-                    print("result: \(result)")
+//                    print("result: \(result)")
                     
-                    if result == Double.NaN {
-                        print("number too large")
-                    }
+//                    if result == Double.NaN {
+//                        print("number too large")
+//                    }
                     
                     if let error = errorHandler.error {
                         if error == NSCalculationError.Overflow {
@@ -1496,8 +1509,6 @@ public class Evaluator {
                         return AnswerBundle(error: ErrorType.ImaginaryNumbersRequiredToSolve)
                         
                     } else {
-                        
-                        print("result as double: \(result)", appendNewline: false)
                         
                         let resultNumber = NSDecimalNumber(double: result)
                         
@@ -1620,7 +1631,7 @@ public class Evaluator {
             }
         } else if operatorType == OperatorType.PercentageCombine, let theNumberA = numberA, let theNumberB = numberB {
             
-            // Solve Percentage Combine
+            // Solve Smart Percentage Operations
             
             if theOperator == "+" {
                 return solveString("\(theNumberA)+(\(theNumberA)*\(theNumberB)/100)")
@@ -1638,7 +1649,6 @@ public class Evaluator {
 }
 
 
-
 class DefaultErrorHandler : NSDecimalNumberBehaviors {
     
     var error:NSCalculationError?
@@ -1654,10 +1664,6 @@ class DefaultErrorHandler : NSDecimalNumberBehaviors {
     }
     
     @objc func scale() -> Int16 {
-        return 16
+        return 20
     }
 }
-
-
-
-

@@ -53,7 +53,7 @@ public struct SymbolCharacter {
     public static let log10:Character = "⟈"
     
     public static let factorial:Character = "!"
-    public static let fraction:Character = "⟋"
+    public static let fraction:Character = "⟆"
     public static let percentage:Character = "%"
     public static let random:Character = "⟡"
     
@@ -78,13 +78,19 @@ public class Glossary {
         }
         
         if Glossary.isStringFractionNumber(answerString) {
-            // This is a fraction
-            answersArray.append(answerString)
             
-            // Let's try and reduce it and add it if it's different
+            // This is a fraction - only add it if it has no decimal.
+            if answerString.rangeOfString(".") == nil {
+                answersArray.append(answerString)
+            }
+            
+            // Let's try and reduce it and add it if it's different (and has no decimal)
             if let reducedAnswer = Evaluator.reduceFraction(answerString) {
                 if answerString != reducedAnswer {
-                    answersArray.append(reducedAnswer)
+                    
+                    if reducedAnswer.rangeOfString(".") == nil {
+                        answersArray.append(reducedAnswer)
+                    }
                 }
             }
             
@@ -94,7 +100,6 @@ public class Glossary {
                 if answersArray.contains(decimalAnswer) == false {
                     answersArray.append(decimalAnswer)
                 }
-                
             }
         } else {
             answersArray.append(answerString)
@@ -103,19 +108,23 @@ public class Glossary {
         return answersArray
     }
     
+    
+    class func isStringFrationWithDenominatorOfOne(string: String) -> Bool {
+        return false
+    }
+    
+    
     class func formattedStringForQuestion(string: String) -> String {
-        
+        print("formattedStringForQuestion")
         var formattedString = ""
         
         for character in string.characters {
-            
             formattedString += stringForCharacter(character)
-            
         }
-        
         
         return formattedString
     }
+    
     
     class func stringForCharacter(character: Character) -> String {
         
@@ -362,10 +371,9 @@ public class Glossary {
             string = " "
         }
         
-        var lastCharacter = string.characters.last
         
         let numberCharacters:Set<Character> = ["0","1","2","3","4","5","6","7","8","9","0",".",SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity]
-        let preOperatorCharacters:Set<Character> = [SymbolCharacter.cos,SymbolCharacter.log, SymbolCharacter.log10, SymbolCharacter.log2, SymbolCharacter.sin, SymbolCharacter.sqrt, SymbolCharacter.tan, SymbolCharacter.percentage, SymbolCharacter.sinh,SymbolCharacter.cosh,SymbolCharacter.tanh]
+        let preOperatorCharacters:Set<Character> = [SymbolCharacter.cos,SymbolCharacter.log, SymbolCharacter.log10, SymbolCharacter.log2, SymbolCharacter.sin, SymbolCharacter.sqrt, SymbolCharacter.tan, SymbolCharacter.sinh,SymbolCharacter.cosh,SymbolCharacter.tanh]
         let midOperatorCharacters:Set<Character> = ["+","-","*","/","^",SymbolCharacter.fraction, SymbolCharacter.ee]
         let postOperatorCharacters:Set<Character> = [SymbolCharacter.factorial, SymbolCharacter.percentage]
         
@@ -377,18 +385,6 @@ public class Glossary {
         
         // Replace lastCharacter with pre/post/mid if appropriate
         
-        if let theLastCharacter = lastCharacter {
-            if preOperatorCharacters.contains(theLastCharacter) {
-                lastCharacter = pre
-            } else if midOperatorCharacters.contains(theLastCharacter) && theLastCharacter != "+" && theLastCharacter != "-" {
-                lastCharacter = mid
-            } else if postOperatorCharacters.contains(theLastCharacter) {
-                lastCharacter = post
-            }
-        }
-        
-        
-        
         
         
         var legalCombinations:[Character: String] =
@@ -399,10 +395,24 @@ public class Glossary {
             "-":"n-+(cd\(pre)",
             mid: "n-(cd\(pre)",
             pre: "n-(cd",
-            post:"n-()cd\(pre)\(mid)\(post)",
+            post:"n-+()cd\(pre)\(mid)\(post)",
             " ":"n-(\(pre)"]
+
         
-        if let theLastCharacter = lastCharacter {
+        if var theLastCharacter = string.characters.last {
+            print("theLastCharacter: \(theLastCharacter)", appendNewline: true)
+            
+            if theLastCharacter == SymbolCharacter.percentage {
+                print("", appendNewline: true)
+            }
+            
+            if preOperatorCharacters.contains(theLastCharacter) {
+                theLastCharacter = pre
+            } else if midOperatorCharacters.contains(theLastCharacter) && theLastCharacter != "+" && theLastCharacter != "-" {
+                theLastCharacter = mid
+            } else if postOperatorCharacters.contains(theLastCharacter) {
+                theLastCharacter = post
+            }
             
             var lastCharacterGeneric = theLastCharacter
             
@@ -417,6 +427,8 @@ public class Glossary {
                 // Convert combination into a set of characters
                 
                 var legalCharacterSet = Set<Character>()
+                
+                print("legalCharacterSet: \(legalCharacterSet)", appendNewLine: true)
                 
                 for character in combination.characters {
                     legalCharacterSet.insert(character)
@@ -495,9 +507,8 @@ public class Glossary {
                 
                 return nil
             }
-            
+
         } else {
-            
             // There are no characters in this string.
             
             if let emptyLegalCharacters = legalCombinations[" "] {
@@ -514,7 +525,8 @@ public class Glossary {
             } else {
                 return nil
             }
-            
         }
+        
+        
     }
 }

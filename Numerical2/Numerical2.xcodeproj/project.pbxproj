@@ -13,6 +13,9 @@
 		510D3ABF1B6B657F00D1A07F /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
 		510D3AC01B6B657F00D1A07F /* NaturalLanguageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */; };
 		510D3AC21B6B659E00D1A07F /* KeypadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AC11B6B659E00D1A07F /* KeypadViewController.swift */; };
+		5117D8461B941A2B003DF8DA /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
+		5117D8491B941B3D003DF8DA /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
+		5117D84A1B941B3F003DF8DA /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; };
 		51279AE31B739D260036DF3D /* KeyStackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51279AE21B739D260036DF3D /* KeyStackView.xib */; };
 		51279AE51B739D6D0036DF3D /* KeyStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51279AE41B739D6D0036DF3D /* KeyStackView.swift */; };
 		51279AE71B73A8720036DF3D /* KeypadConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51279AE61B73A8720036DF3D /* KeypadConstructor.swift */; };
@@ -336,6 +339,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5117D8491B941B3D003DF8DA /* Glossary.swift in Sources */,
+				5117D84A1B941B3F003DF8DA /* Evaluator.swift in Sources */,
+				5117D8461B941A2B003DF8DA /* CalculatorBrain.swift in Sources */,
 				513197251B6ADD5900E9B802 /* Numerical2Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

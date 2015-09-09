@@ -270,6 +270,111 @@
 		<string>divided</string>
 		<string>of</string>
 	</array>
+	<key>⟆</key>
+	<array>
+		<string>over</string>
+		<string>fraction</string>
+		<string>faction</string>
+	</array>
+	<key>⟆2</key>
+	<array>
+		<string>halved</string>
+		<string>halves</string>
+		<string>half</string>
+	</array>
+	<key>⟆3</key>
+	<array>
+		<string>thirds</string>
+		<string>turds</string>
+	</array>
+	<key>⟆4</key>
+	<array>
+		<string>fourths</string>
+		<string>forths</string>
+		<string>floors</string>
+		<string>quarters</string>
+		<string>quartered</string>
+	</array>
+	<key>⟆5</key>
+	<array>
+		<string>fifths</string>
+		<string>fifth</string>
+	</array>
+	<key>⟆6</key>
+	<array>
+		<string>sixth</string>
+		<string>sixths</string>
+	</array>
+	<key>⟆7</key>
+	<array>
+		<string>seventh</string>
+		<string>sevenths</string>
+	</array>
+	<key>⟆8</key>
+	<array>
+		<string>eighth</string>
+		<string>eighths</string>
+	</array>
+	<key>⟆9</key>
+	<array>
+		<string>ninth</string>
+		<string>ninths</string>
+	</array>
+	<key>⟆10</key>
+	<array>
+		<string>tenth</string>
+		<string>tenths</string>
+	</array>
+	<key>⟆11</key>
+	<array>
+		<string>eleventh</string>
+		<string>elevenths</string>
+	</array>
+	<key>⟆12</key>
+	<array>
+		<string>twelfth</string>
+		<string>twelfths</string>
+	</array>
+	<key>⟆13</key>
+	<array>
+		<string>thirteenth</string>
+		<string>thirteenths</string>
+	</array>
+	<key>⟆14</key>
+	<array>
+		<string>fourteenth</string>
+		<string>fourteenths</string>
+	</array>
+	<key>⟆15</key>
+	<array>
+		<string>fifteenth</string>
+		<string>fifteenths</string>
+	</array>
+	<key>⟆16</key>
+	<array>
+		<string>sixteenth</string>
+		<string>sixteenths</string>
+	</array>
+	<key>⟆17</key>
+	<array>
+		<string>seventeenth</string>
+		<string>seventeenths</string>
+	</array>
+	<key>⟆18</key>
+	<array>
+		<string>eighteenth</string>
+		<string>eighteenths</string>
+	</array>
+	<key>⟆19</key>
+	<array>
+		<string>ninteenth</string>
+		<string>ninteenths</string>
+	</array>
+	<key>⟆20</key>
+	<array>
+		<string>twentieth</string>
+		<string>twentieths</string>
+	</array>
 	<key>-</key>
 	<array>
 		<string>minus</string>
@@ -302,6 +407,12 @@
 		<string>addition</string>
 		<string>combine</string>
 	</array>
+	<key>%</key>
+	<array>
+		<string>percentage</string>
+		<string>percent</string>
+		<string>per cent</string>
+	</array>
 	<key>.</key>
 	<array>
 		<string>dot</string>
@@ -324,7 +435,6 @@
 		<string>euler</string>
 		<string>euler constant</string>
 		<string>eulers constant</string>
-		<string>euler&apos;s constant</string>
 	</array>
 	<key>∞</key>
 	<array>
@@ -365,7 +475,7 @@
 		<string>tan</string>
 		<string>tangent</string>
 	</array>
-	<key>⟆</key>
+	<key>√</key>
 	<array>
 		<string>square of</string>
 		<string>squareroot</string>

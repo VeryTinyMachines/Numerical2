@@ -12,14 +12,19 @@ public class NaturalLanguageParser {
     
     var singleTermDictionary = [String: String]()
     
+    var legalCharacters = Set<Character>()
+    
     static let sharedInstance = NaturalLanguageParser()
-    private init() {} //This prevents others from using the default '()' initializer for this class.
+    private init() {
     
-    
-    public func translateString(var string: String) -> String? {
+        print("", appendNewline: true)
+        
+        for character in " abcdefghijklmnopqrstuvwxyz".characters {
+            legalCharacters.insert(character)
+        }
         
         // Load the dictionary
-        var singleTermDictionary = [String: String]()
+        singleTermDictionary = [String: String]()
         
         if let filePath = NSBundle.mainBundle().pathForResource("Dictionary_English", ofType: "plist") {
             if let myDict = NSDictionary(contentsOfFile: filePath) as? [String:Array<String>] {
@@ -27,10 +32,20 @@ public class NaturalLanguageParser {
                     
                     singleTermDictionary[outputTerm] = outputTerm
                     
+                    // Add the output term characters to legalCharacters
+                    for character in outputTerm.characters {
+                        legalCharacters.insert(character)
+                    }
+                    
+                    
                     for inputTerm in inputTermArray {
                         
                         singleTermDictionary[inputTerm] = outputTerm
                         
+                        // Add the characters from inputTerm to the legalCharacters set
+                        for character in inputTerm.characters {
+                            legalCharacters.insert(character)
+                        }
                     }
                 }
             } else {
@@ -38,8 +53,16 @@ public class NaturalLanguageParser {
             }
         }
         
-        // thur teen
         
+        // Setup a legal character array
+        
+        print("legalCharacters: \(legalCharacters)", appendNewline: true)
+        
+        
+    }
+    
+    
+    public func translateString(var string: String) -> String? {
         
         // Remove any instances of double spaces
         
@@ -47,15 +70,28 @@ public class NaturalLanguageParser {
             string = string.stringByReplacingOccurrencesOfString("  ", withString: " ")
         }
         
+        
         print("string: \(string)")
         
         
-        //        var wordArray = string.lowercaseString.componentsSeparatedByString(" ")
+        
+        // Remove non legal characters
+        
+        var newString = ""
+        
+        for character in string.characters {
+            
+            if legalCharacters.contains(character) {
+                newString.append(character)
+            }
+            
+        }
+        
+        string = newString
         
         var wordArray = Evaluator.termArrayFromString(string.lowercaseString, allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
         
         print("wordArray: \(wordArray)", appendNewline: false)
-        
         
         // Check that any five word combo's do not need to be replaced
         
@@ -457,7 +493,6 @@ public class NaturalLanguageParser {
             }
         }
         
-        
         // Automatically add brackets where appropriate.
         
         if (newTermArray.count > 0) {
@@ -484,9 +519,9 @@ public class NaturalLanguageParser {
             }
         }
         
-        let newString = "".join(newTermArray)
+        let finalString = "".join(newTermArray)
         
-        return newString
+        return finalString
     }
     
     struct SubstitutionSet {

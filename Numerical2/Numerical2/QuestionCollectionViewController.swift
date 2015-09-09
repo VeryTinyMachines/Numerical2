@@ -12,141 +12,199 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     
     var isAnswerView = false
     
-    var questionString = "" {
+    
+    var questionBundle: AnswerBundle? {
         didSet {
             
             // Divide up the questionString into components
-            
+           
+            if let theAnswer = self.questionBundle?.answer {
+                // We have an answer
                 
-                let questionComponents = Evaluator.termArrayFromString(self.questionString, allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
-                
-                //            print("\nquestionComponents: \(questionComponents)\n")
-                
-                // If a component has more than one fraction in it then split it up
-                
-                var newQuestionComponents:Array<String> = []
-                
-                for string in questionComponents {
+                if self.isAnswerView {
                     
-                    let firstCharacter = string.characters.first
+                    let possibleAnswers = Glossary.possibleAnswersFromString(theAnswer)
                     
-                    if Glossary.isStringFractionNumber(string) && firstCharacter != SymbolCharacter.fraction {
-                        
-                        var fractionComponents = string.componentsSeparatedByString(String(SymbolCharacter.fraction))
-                        
-                        if fractionComponents.count > 2 {
-                            
-                            newQuestionComponents.append("\(fractionComponents[0])\(SymbolCharacter.fraction)\(fractionComponents[1])")
-                            
-                            fractionComponents.removeAtIndex(0)
-                            fractionComponents.removeAtIndex(0)
-                            
-                            for component in fractionComponents {
-                                newQuestionComponents.append("|")
-                                newQuestionComponents.append(component)
-                            }
-                            
-                            
-                        } else {
-                            newQuestionComponents.append(string)
-                        }
-                        
-                        
-                        
-                    } else {
-                        
-                        if string == "or" {
-                            newQuestionComponents.append("or")
-                        } else {
-                            newQuestionComponents.append(string)
-                        }
-                        
-                        
-                    }
-                }
-                
-                // Now we need to see which parts of the this new array need reloading.
-                
-                var indexNeedsReload:Array<Int> = []
-                
-                var indexNeedsInsertion:Array<Int> = []
-                
-                for index in 0...self.questionArray.count {
+                    var formattedAnswers:Array<String> = []
                     
-                    if index < self.questionArray.count && index < newQuestionComponents.count {
-                        if self.questionArray[index] != newQuestionComponents[index] {
-                            print("need to reload \(index)", appendNewline: true)
-                            indexNeedsReload.append(index)
-                        }
-                    }
-                }
-                
-                if self.questionArray.count < newQuestionComponents.count {
-                    
-                    // Need to add the index's
-                    
-                    for index in self.questionArray.count...newQuestionComponents.count-1 {
-                        print("need to insert \(index)", appendNewline: true)
-                        indexNeedsInsertion.append(index)
+                    for anAnswer in possibleAnswers {
+                        
+                        let formattedAnswer = Glossary.formattedStringForQuestion(anAnswer)
+                        
+                        formattedAnswers.append(formattedAnswer)
                     }
                     
+                    let answersString = " or ".join(possibleAnswers)
                     
-                }
-                
-                
-                // Reload anything that needs reloading
-                
-                var indexSetToReload:Array<NSIndexPath> = []
-                
-                for index in indexNeedsReload {
-                    let newIndexPath = NSIndexPath(forRow: index, inSection: 0)
-                    indexSetToReload.append(newIndexPath)
-                }
-                
-                
-                var indexSetToInsert:Array<NSIndexPath> = []
-                
-                for index in indexNeedsInsertion {
-                    let newIndexPath = NSIndexPath(forRow: index, inSection: 0)
-                    indexSetToInsert.append(newIndexPath)
-                }
-                
-                print("indexSetToReload: \(indexSetToReload)", appendNewline: true)
-                
-                print("indexSetToInsert: \(indexSetToInsert)", appendNewline: true)
-                
-                // Insert anything that needs inserting
-                
-                
-                
-                let previousCount = self.questionArray.count
-                
-                if previousCount > 0 && self.questionArray.count <= newQuestionComponents.count {
+                    let questionComponents = answersString.componentsSeparatedByString(" ")
                     
-                    self.questionArray = newQuestionComponents
-                    
-                    UIView.performWithoutAnimation({ () -> Void in
-                        if indexSetToInsert.count > 0 {
-                            self.collecitonView.insertItemsAtIndexPaths(indexSetToInsert)
-                        }
-                        
-                        if indexSetToReload.count > 0 {
-                            self.collecitonView.reloadItemsAtIndexPaths(indexSetToReload)
-                        }
-                        
-                        let lastItem = self.questionArray.count - 1
-                        
-                        if lastItem > 0 {
-                            self.collecitonView.scrollToItemAtIndexPath(NSIndexPath(forItem: lastItem, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.Right, animated: false)
-                        }
-                    })
-                    
+                    self.updateQuestionArrayWithComponents(questionComponents)
                     
                 } else {
-                    self.questionArray = newQuestionComponents
-                    self.reloadCollectionView()
+                    self.updateQuestionArrayWithString(theAnswer)
                 }
+                
+                
+                
+                
+            } else if let errorType = self.questionBundle?.errorType {
+                // There is an error
+                
+                var errorString:String?
+                
+                switch errorType {
+                case ErrorType.DivideByZero:
+                    errorString = "Division by zero"
+                case ErrorType.ImaginaryNumbersRequiredToSolve:
+                    errorString = "Imginary numbers required to solve"
+                case ErrorType.Overflow:
+                    errorString = "Overflow error"
+                case ErrorType.Underflow:
+                    errorString = "Underflow error"
+                default:
+                    errorString = "Error"
+                }
+                
+                if let theErrorString = errorString {
+                    self.questionArray = [theErrorString]
+                }
+                
+                self.reloadCollectionView()
+                
+            }
+            
         }
+        
+    }
+
+    
+    func updateQuestionArrayWithString(questionString: String) {
+        
+        
+        let questionComponents = Evaluator.termArrayFromString(questionString, allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
+        
+        // If a component has more than one fraction in it then split it up
+        
+        var newQuestionComponents:Array<String> = []
+        
+        for string in questionComponents {
+            
+            let firstCharacter = string.characters.first
+            
+            if Glossary.isStringFractionNumber(string) && firstCharacter != SymbolCharacter.fraction {
+                
+                var fractionComponents = string.componentsSeparatedByString(String(SymbolCharacter.fraction))
+                
+                if fractionComponents.count > 2 {
+                    
+                    newQuestionComponents.append("\(fractionComponents[0])\(SymbolCharacter.fraction)\(fractionComponents[1])")
+                    
+                    fractionComponents.removeAtIndex(0)
+                    fractionComponents.removeAtIndex(0)
+                    
+                    for component in fractionComponents {
+                        newQuestionComponents.append("|")
+                        newQuestionComponents.append(component)
+                    }
+                    
+                } else {
+                    newQuestionComponents.append(string)
+                }
+                
+            } else {
+                
+                if string == "or" {
+                    newQuestionComponents.append("or")
+                } else {
+                    newQuestionComponents.append(string)
+                }
+            }
+        }
+        
+        updateQuestionArrayWithComponents(newQuestionComponents)
+        
+    }
+    
+    
+    func updateQuestionArrayWithComponents(newQuestionComponents: Array<String>) {
+        
+        // Now we need to see which parts of the this new array need reloading.
+        
+        var indexNeedsReload:Array<Int> = []
+        
+        var indexNeedsInsertion:Array<Int> = []
+        
+        for index in 0...self.questionArray.count {
+            
+            if index < self.questionArray.count && index < newQuestionComponents.count {
+                if self.questionArray[index] != newQuestionComponents[index] {
+                    //                            print("need to reload \(index)", appendNewline: true)
+                    indexNeedsReload.append(index)
+                }
+            }
+        }
+        
+        if self.questionArray.count < newQuestionComponents.count {
+            
+            // Need to add the index's
+            for index in self.questionArray.count...newQuestionComponents.count-1 {
+                print("need to insert \(index)", appendNewline: true)
+                indexNeedsInsertion.append(index)
+            }
+        }
+        
+        
+        // Reload anything that needs reloading
+        
+        var indexSetToReload:Array<NSIndexPath> = []
+        
+        for index in indexNeedsReload {
+            let newIndexPath = NSIndexPath(forRow: index, inSection: 0)
+            indexSetToReload.append(newIndexPath)
+        }
+        
+        
+        var indexSetToInsert:Array<NSIndexPath> = []
+        
+        for index in indexNeedsInsertion {
+            let newIndexPath = NSIndexPath(forRow: index, inSection: 0)
+            indexSetToInsert.append(newIndexPath)
+        }
+        
+        print("indexSetToReload: \(indexSetToReload)", appendNewline: true)
+        
+        print("indexSetToInsert: \(indexSetToInsert)", appendNewline: true)
+        
+        // Insert anything that needs inserting
+        let previousCount = self.questionArray.count
+        
+        if previousCount > 0 && self.questionArray.count <= newQuestionComponents.count {
+            
+            self.questionArray = newQuestionComponents
+            
+            UIView.performWithoutAnimation({ () -> Void in
+                if indexSetToInsert.count > 0 {
+                    self.collecitonView.insertItemsAtIndexPaths(indexSetToInsert)
+                }
+                
+                if indexSetToReload.count > 0 {
+                    self.collecitonView.reloadItemsAtIndexPaths(indexSetToReload)
+                }
+                
+                let lastItem = self.questionArray.count - 1
+                
+                if lastItem > 0 {
+                    self.collecitonView.scrollToItemAtIndexPath(NSIndexPath(forItem: lastItem, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.Right, animated: false)
+                }
+            })
+            
+            
+        } else {
+            self.questionArray = newQuestionComponents
+            self.reloadCollectionView()
+        }
+        
+        
     }
     
     var questionArray:Array<String> = []
@@ -214,7 +272,8 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                     theCell.denominatorLabel.text = Glossary.formattedStringForQuestion(fractionComponents[1])
                 }
                 
-                theCell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+//                theCell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+                theCell.backgroundColor = UIColor.clearColor()
                 theCell.setAnswerCell(isAnswerView)
             }
             
@@ -225,7 +284,8 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             if let theCell = cell as? EquationViewCell {
                 theCell.mainLabel.text = Glossary.formattedStringForQuestion(questionArray[indexPath.row])
                 
-                theCell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+//                theCell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+                theCell.backgroundColor = UIColor.clearColor()
                 theCell.setAnswerCell(isAnswerView)
             }
             

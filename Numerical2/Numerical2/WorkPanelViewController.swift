@@ -10,7 +10,7 @@ import UIKit
 
 class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFieldDelegate {
     
-    var question: String = "10^10000000"
+    var question: String = "what is two thirds plus eight thirteenths plus three"
     
     var answer: String = ""
     
@@ -27,7 +27,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
             }
         }
 
-        
         if let theView = equationView {
             theView.setQuestion(question)
         }
@@ -39,9 +38,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     func pressedKey(key: Character) {
         
         
-//        question.append(key)
-        
-
         if key == SymbolCharacter.clear {
             // Clear
             question = ""
@@ -90,6 +86,9 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        
+        
+        
         updateLegalKeys()
     }
     
@@ -97,6 +96,9 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
         super.viewDidLoad()
         
         // Setup notifiction for UIContentSizeCategoryDidChangeNotification
+        let answer = Evaluator.solveString(question)
+        
+        
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "dynamicTypeChanged", name: UIContentSizeCategoryDidChangeNotification, object: nil)
         
