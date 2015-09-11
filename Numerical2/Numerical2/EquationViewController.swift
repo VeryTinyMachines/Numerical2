@@ -34,8 +34,18 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         updateView()
     }
     
+    func setAnswer(answer: AnswerBundle) {
+        
+        currentAnswer = answer
+        
+        updateView()
+    }
+    
+    
     func updateView() {
         
+
+        /*
         if var theQuestion = currentQuestion {
             
             if theQuestion.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "abcdefghijklmnopqrstuvwxyz"), options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil) != nil {
@@ -62,12 +72,32 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
                     view.questionBundle = self.currentAnswer
                     
                 })
-                
-                
             }
             
             
         }
+*/
+        
+        
+        if let theQuestionView = questionView, var theQuestion = currentQuestion {
+            
+            if theQuestion.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "abcdefghijklmnopqrstuvwxyz"), options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil) != nil {
+                
+                if let translatedString = NaturalLanguageParser.sharedInstance.translateString(theQuestion) {
+                    theQuestion = translatedString
+                }
+            }
+            
+            let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(theQuestion)
+            
+            theQuestionView.questionBundle = AnswerBundle(number: bracketBalancedString)
+        }
+        
+        if let theAnswerView = answerView, answer = currentAnswer {
+            theAnswerView.questionBundle = answer
+        }
+        
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -75,7 +105,6 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         
         textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
         
-        updateView()
     }
     
     

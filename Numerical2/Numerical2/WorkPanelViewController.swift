@@ -10,84 +10,140 @@ import UIKit
 
 class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFieldDelegate {
     
-    var question: String = "what is two thirds plus eight thirteenths plus three"
-    
-    var answer: String = ""
+    var currentEquation: Equation?
     
     var equationView:EquationViewController?
     var keyPanelView:KeyPanelViewController?
     
+    var delegate: KeypadDelegate?
+    
     func questionChanged(newQuestion: String, overwrite: Bool) {
+//        updateLegalKeys()
+    }
+    
+    func updateViews() {
         
-        question = newQuestion
-        
-        if overwrite {
-            if let translatedString = NaturalLanguageParser.sharedInstance.translateString(newQuestion) {
-                question = translatedString
+        if let theView = equationView {
+            
+            if let question = currentEquation?.question {
+                theView.setQuestion(question)
+                
+                // Solve this question
+                
+                CalculatorBrain.sharedBrain.solveStringInQueue(question, completion: { (answer) -> Void in
+                    self.currentEquation?.answer = answer.answer
+                    EquationStore.sharedStore.save()
+                    
+                    if let equation = self.currentEquation {
+                        equation.answer = answer.answer
+                    }
+                    
+                    theView.setAnswer(answer)
+                    
+                })
+                
+            } else {
+                theView.setQuestion("")
+                theView.setAnswer(AnswerBundle(number: ""))
             }
         }
-
-        if let theView = equationView {
-            theView.setQuestion(question)
-        }
-        
-        updateLegalKeys()
-        
     }
+    
     
     func pressedKey(key: Character) {
         
-        
         if key == SymbolCharacter.clear {
-            // Clear
-            question = ""
-        } else if key == SymbolCharacter.delete {
-            // Delete
-            
-            if question.characters.count > 0 {
-                question = question.substringToIndex(question.endIndex.predecessor())
+            if let equation = currentEquation {
+                // Clear - Need to load a new equation from the EquationStore
+                
+                equation.lastModifiedDate = NSDate()
+                currentEquation = nil
             }
-            
-        } else if key == SymbolCharacter.smartBracket {
-            
-            
-            if let legalKeys = Glossary.legalCharactersToAppendString(question) {
-                if legalKeys.contains(")") {
-                    question.append(Character(")"))
-                } else if legalKeys.contains("(") {
-                    question.append(Character("("))
-                }
-            }
-            
         } else {
             
-            
-            if Glossary.shouldAddClosingBracketToAppendString(question, newOperator: key) {
-                question.append(Character(")"))
+            if currentEquation == nil {
+                currentEquation = EquationStore.sharedStore.newEquation()
             }
-            
-            question.append(key)
         }
-
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if let theView = self.equationView {
-                theView.setQuestion(self.question)
+        
+        if let equation = currentEquation {
+            
+            
+            if key == SymbolCharacter.delete {
+                // Delete
+                
+                if let question = equation.question {
+                    if question.characters.count > 0 {
+                        equation.question = question.substringToIndex(question.endIndex.predecessor())
+                    }
+                }
+                
+            } else if key == SymbolCharacter.smartBracket {
+                
+                if var question = currentEquation?.question {
+                    if let legalKeys = Glossary.legalCharactersToAppendString(question) {
+                        if legalKeys.contains(")") {
+                            question.append(Character(")"))
+                        } else if legalKeys.contains("(") {
+                            question.append(Character("("))
+                        }
+                    }
+                    
+                    equation.question = question
+                }
+                
+            } else {
+                
+                if var question = equation.question {
+                    
+                    if Glossary.shouldAddClosingBracketToAppendString(question, newOperator: key) {
+                        question.append(Character(")"))
+                    }
+                    
+                    question.append(key)
+                    
+                    equation.question = question
+                    
+                } else {
+                    equation.question = String(key)
+                }
             }
-        })
+        }
         
-
-//        print(question)
+        EquationStore.sharedStore.save()
         
+        updateViews()
         updateLegalKeys()
-
-
+        
+        if let theDelegate = delegate {
+            theDelegate.pressedKey(key)
+        }
+        
     }
+    
+    
+//    func updateEquationView() {
+//        
+//        
+//        if let view = equationView {
+//            
+//            if let question = currentEquation?.question {
+//                view.setQuestion(question)
+//            }
+//            
+//            if let answer = currentEquation?.answer {
+//                view.setAnswer(AnswerBundle(number: answer))
+//            }
+//            
+//            
+//        }
+//        
+//        
+//        
+//    }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        
-        
         
         updateLegalKeys()
     }
@@ -95,14 +151,30 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         // Setup notifiction for UIContentSizeCategoryDidChangeNotification
-        let answer = Evaluator.solveString(question)
-        
-        
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "dynamicTypeChanged", name: UIContentSizeCategoryDidChangeNotification, object: nil)
         
-        questionChanged(question, overwrite: true)
+        // Find out how many equations are in the equation store.
+        
+        if let equations = EquationStore.sharedStore.equationArrayForPad(nil) {
+            
+            for equation in equations {
+                print("\(equation.question) = \(equation.answer)")
+                
+            }
+            
+            if let lastEquation = equations.last {
+                print("retrieved equation from store")
+                currentEquation = lastEquation
+            }
+            
+        }
+        
+        
+        updateViews()
+        
         
     }
     
@@ -121,10 +193,13 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     
     func updateLegalKeys() {
         // Determine Legal Keys
-        
-        if let legalKeys = Glossary.legalCharactersToAppendString(question), theKeyPanel = keyPanelView {
-            theKeyPanel.setLegalKeys(legalKeys)
+        if let question = currentEquation?.question {
+            if let legalKeys = Glossary.legalCharactersToAppendString(question), theKeyPanel = keyPanelView {
+                theKeyPanel.setLegalKeys(legalKeys)
+            }
         }
+        
+        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -135,8 +210,10 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
             
             theView.delegate = self
             equationView = theView
-            equationView?.currentQuestion = question
             
+            if let question = currentEquation?.question {
+                equationView?.currentQuestion = question
+            }
         }
     }
     

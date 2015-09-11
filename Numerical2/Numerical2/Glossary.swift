@@ -73,7 +73,7 @@ public class Glossary {
     class func possibleAnswersFromString(var answerString: String) -> Array<String> {
         var answersArray:Array<String> = []
         
-        if answerString.substringFromIndex(answerString.endIndex.predecessor()) == String(SymbolCharacter.fraction) {
+        if answerString.characters.count > 0 && answerString.substringFromIndex(answerString.endIndex.predecessor()) == String(SymbolCharacter.fraction) {
             answerString += "1"
         }
         
@@ -115,7 +115,7 @@ public class Glossary {
     
     
     class func formattedStringForQuestion(string: String) -> String {
-        print("formattedStringForQuestion")
+        
         var formattedString = ""
         
         for character in string.characters {
