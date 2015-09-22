@@ -168,30 +168,29 @@ public class EquationStore {
 		let newEquation = NSEntityDescription.insertNewObjectForEntityForName("Equation", inManagedObjectContext: mainContext) as! Equation
 		newEquation.pad = self.currentPad
         
-        let frc = equationsFetchedResultsController()
+        let fetchRequest = NSFetchRequest(entityName: "Equation")
+        
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "sortOrder", ascending: false)]
+        fetchRequest.fetchLimit = 1
         
         do {
-            try frc.performFetch()
+            if let equation = try self.mainContext.executeFetchRequest(fetchRequest).first as? Equation {
+                if let equationSortOrder = equation.sortOrder?.doubleValue {
+                    newEquation.sortOrder = NSNumber(double: equationSortOrder + 1)
+                }
+            }
         } catch {
-            print("error")
             
         }
         
-        
-        if let count = frc.fetchedObjects?.count {
-            let newSortOrder:Double = Double(count) + 1
-            
-            // Set the sort order to the current date and time as a single integer
-            newEquation.sortOrder = NSNumber(double: newSortOrder)
+        if newEquation.sortOrder == nil {
+            newEquation.sortOrder = NSNumber(double: 0)
         }
-        
-        
-        
-        print("newEquation.sortOrder: \(newEquation.sortOrder?.doubleValue)")
         
 		self.cdStack.saveContext()
 		return newEquation
 	}
+    
 	
 	public func deleteEquation(equation:Equation) {
 		// Check to see if we are deleting the current equation

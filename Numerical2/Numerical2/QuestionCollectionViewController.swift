@@ -148,7 +148,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             
             // Need to add the index's
             for index in self.questionArray.count...newQuestionComponents.count-1 {
-                print("need to insert \(index)", appendNewline: true)
+//                print("need to insert \(index)", appendNewline: true)
                 indexNeedsInsertion.append(index)
             }
         }
@@ -171,16 +171,21 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             indexSetToInsert.append(newIndexPath)
         }
         
-        print("indexSetToReload: \(indexSetToReload)", appendNewline: true)
-        
-        print("indexSetToInsert: \(indexSetToInsert)", appendNewline: true)
+//        print("indexSetToReload: \(indexSetToReload)", appendNewline: true)
+//        print("indexSetToInsert: \(indexSetToInsert)", appendNewline: true)
         
         // Insert anything that needs inserting
         let previousCount = self.questionArray.count
         
-        if previousCount > 0 && self.questionArray.count <= newQuestionComponents.count {
+//        print("previousCount: \(previousCount)", appendNewline: true)
+        
+        if previousCount > 1 && self.questionArray.count <= newQuestionComponents.count {
+            
+//            print("self.questionArray before: \(self.questionArray)", appendNewline: true)
             
             self.questionArray = newQuestionComponents
+            
+//            print("self.questionArray after: \(self.questionArray)", appendNewline: true)
             
             UIView.performWithoutAnimation({ () -> Void in
                 if indexSetToInsert.count > 0 {
@@ -197,7 +202,6 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                     self.collecitonView.scrollToItemAtIndexPath(NSIndexPath(forItem: lastItem, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.Right, animated: false)
                 }
             })
-            
             
         } else {
             self.questionArray = newQuestionComponents

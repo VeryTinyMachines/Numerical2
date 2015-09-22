@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol WorkPanelDelegate {
+    func updateEquation(equation: Equation?)
+}
+
 class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFieldDelegate {
+    
+    @IBOutlet weak var equationViewHeightConstraint: NSLayoutConstraint!
     
     var currentEquation: Equation?
     
@@ -17,8 +23,12 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     
     var delegate: KeypadDelegate?
     
+    var showEquationView: Bool = true
+    
+    var workPanelDelegate: WorkPanelDelegate?
+    
     func questionChanged(newQuestion: String, overwrite: Bool) {
-//        updateLegalKeys()
+        
     }
     
     func updateViews() {
@@ -58,16 +68,25 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
                 
                 equation.lastModifiedDate = NSDate()
                 currentEquation = nil
+                
+                if let theWorkPanelDelegate = workPanelDelegate {
+                    theWorkPanelDelegate.updateEquation(currentEquation)
+                }
+                
             }
         } else {
             
             if currentEquation == nil {
                 currentEquation = EquationStore.sharedStore.newEquation()
+                
+                if let theWorkPanelDelegate = workPanelDelegate {
+                    theWorkPanelDelegate.updateEquation(currentEquation)
+                }
             }
+            
         }
         
         if let equation = currentEquation {
-            
             
             if key == SymbolCharacter.delete {
                 // Delete
@@ -122,26 +141,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     }
     
     
-//    func updateEquationView() {
-//        
-//        
-//        if let view = equationView {
-//            
-//            if let question = currentEquation?.question {
-//                view.setQuestion(question)
-//            }
-//            
-//            if let answer = currentEquation?.answer {
-//                view.setAnswer(AnswerBundle(number: answer))
-//            }
-//            
-//            
-//        }
-//        
-//        
-//        
-//    }
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -151,30 +150,10 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         // Setup notifiction for UIContentSizeCategoryDidChangeNotification
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "dynamicTypeChanged", name: UIContentSizeCategoryDidChangeNotification, object: nil)
         
-        // Find out how many equations are in the equation store.
-        
-        if let equations = EquationStore.sharedStore.equationArrayForPad(nil) {
-            
-            for equation in equations {
-                print("\(equation.question) = \(equation.answer)")
-                
-            }
-            
-            if let lastEquation = equations.last {
-                print("retrieved equation from store")
-                currentEquation = lastEquation
-            }
-            
-        }
-        
-        
         updateViews()
-        
         
     }
     
@@ -186,8 +165,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
         }
         
         updateLegalKeys()
-        
-        
     }
     
     
@@ -197,6 +174,27 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
             if let legalKeys = Glossary.legalCharactersToAppendString(question), theKeyPanel = keyPanelView {
                 theKeyPanel.setLegalKeys(legalKeys)
             }
+        } else {
+            if let legalKeys = Glossary.legalCharactersToAppendString(""), theKeyPanel = keyPanelView {
+                theKeyPanel.setLegalKeys(legalKeys)
+            }
+        }
+    }
+    
+    func updateLayout() {
+        
+        if let theEquationView = equationView {
+            if showEquationView {
+                equationViewHeightConstraint.constant = 110
+                equationView?.view.hidden = false
+            } else {
+                equationViewHeightConstraint.constant = 0
+                equationView?.view.hidden = true
+            }
+        }
+        
+        if let keyPanel = keyPanelView {
+            keyPanel.updateKeyLayout()
         }
         
         

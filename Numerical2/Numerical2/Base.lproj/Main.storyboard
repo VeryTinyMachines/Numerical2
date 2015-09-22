@@ -62,19 +62,22 @@
                                     <segue destination="Lny-yk-P8H" kind="embed" identifier="HistoryView" id="eEq-eo-A4x"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T4S-PI-YnM">
-                                <rect key="frame" x="550" y="20" width="50" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T4S-PI-YnM">
+                                <rect key="frame" x="570" y="20" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="UbB-o8-ePB"/>
                                     <constraint firstAttribute="width" constant="50" id="yeB-un-chw"/>
                                 </constraints>
-                                <state key="normal" title="History"/>
+                                <state key="normal" title="Edit"/>
+                                <connections>
+                                    <action selector="toggleEditing:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ECm-do-NTW"/>
+                                </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bjw-FC-ipK" userLabel="Workpanel Container">
                                 <rect key="frame" x="0.0" y="120" width="600" height="480"/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="37h-B1-32V" appends="YES" id="7Ag-UL-XTj"/>
-                                    <outletCollection property="gestureRecognizers" destination="4Ql-g0-796" appends="YES" id="pYE-ZH-HEh"/>
+                                    <outletCollection property="gestureRecognizers" destination="dgY-aK-xmJ" appends="YES" id="t71-5G-VYi"/>
                                     <segue destination="5tH-pi-VH2" kind="embed" identifier="WorkPanelView" id="cE5-z7-iJa"/>
                                 </connections>
                             </containerView>
@@ -93,9 +96,6 @@
                             <constraint firstItem="Bjw-FC-ipK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="wOR-UH-pqk"/>
                             <constraint firstAttribute="trailing" secondItem="Bjw-FC-ipK" secondAttribute="trailing" id="xbL-no-Rr1"/>
                         </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="37h-B1-32V" appends="YES" id="xWv-CW-261"/>
-                        </connections>
                     </view>
                     <connections>
                         <outlet property="workPanelBottomConstraint" destination="89Q-Wd-7D3" id="haz-NE-bQK"/>
@@ -103,14 +103,14 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="up" id="4Ql-g0-796" userLabel="Swipe Up">
-                    <connections>
-                        <action selector="swipeUp:" destination="BYZ-38-t0r" id="5fl-aO-n7x"/>
-                    </connections>
-                </swipeGestureRecognizer>
                 <swipeGestureRecognizer direction="down" id="37h-B1-32V" userLabel="Swipe Down">
                     <connections>
                         <action selector="swipeDown:" destination="BYZ-38-t0r" id="T3q-GZ-z3O"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="up" id="dgY-aK-xmJ" userLabel="Swipe Up">
+                    <connections>
+                        <action selector="swipeUp:" destination="BYZ-38-t0r" id="ek8-hH-D3Q"/>
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
@@ -167,6 +167,9 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
+                    <connections>
+                        <outlet property="equationViewHeightConstraint" destination="QTm-5Q-vk6" id="gDb-uA-3Rv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6bh-dT-OiH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

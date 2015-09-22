@@ -168,6 +168,35 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         
+        // Nullify the page view controller's data
+        self.pageController?.dataSource = nil
+        self.pageController?.dataSource = self
+        
+        // Get the current view, change it's type if necessary
+        
+        if let theKeyPad = self.currentPage as? KeypadViewController {
+            if theKeyPad.originLayoutType == KeypadLayout.CompactScientific {
+                self.layoutKeypad(theKeyPad, type: ViewType.ScientificKeypad, size: size)
+            } else if theKeyPad.originLayoutType == KeypadLayout.CompactStandard {
+                self.layoutKeypad(theKeyPad, type: ViewType.StandardKeypad, size: size)
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.updatePageCount()
+        })
+        
+        coordinator.animateAlongsideTransition({ context in
+            // do whatever with your context
+            
+            }, completion: { context in
+                // do whatever with your context
+        })
+    }
+    
+    func updateKeyLayout() {
+        
+        let size = self.view.frame.size
         
         // Nullify the page view controller's data
         self.pageController?.dataSource = nil
@@ -182,19 +211,11 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
                 self.layoutKeypad(theKeyPad, type: ViewType.StandardKeypad, size: size)
             }
         }
-
+        
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.updatePageCount()
         })
-        
-        coordinator.animateAlongsideTransition({ context in
-            // do whatever with your context
-            
-            }, completion: { context in
-                // do whatever with your context
-        })
     }
-    
     
     func viewIsWideForSize(size: CGSize) -> Bool {
         
