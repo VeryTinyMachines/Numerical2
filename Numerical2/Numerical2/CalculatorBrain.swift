@@ -35,7 +35,6 @@ public class CalculatorBrain {
     }
     
     public func solveString(string: String) -> String {
-        
         let answer = Evaluator.solveString(string)
         
         if let answerString = answer.answer {
@@ -43,12 +42,9 @@ public class CalculatorBrain {
         } else {
             return ""
         }
-        
-        
-        
     }
     
-    public func solveStringInQueue(string: String, completion: ((answer: AnswerBundle) -> Void)? ) {
+    public func solveStringAsyncQueue(string: String, completion: ((answer: AnswerBundle) -> Void)? ) {
         
         currentQuestion = string
         
@@ -59,7 +55,7 @@ public class CalculatorBrain {
         
         dispatch_async(backgroundQueue, {
             
-            print("start time: \(startTime)", appendNewline: true)
+            print("start time: \(startTime)", terminator: "\n")
             
             if self.currentQuestion == string {
                 
@@ -84,8 +80,6 @@ public class CalculatorBrain {
                     })
                 }
             }
-
         })
-
     }
 }

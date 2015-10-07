@@ -64,11 +64,12 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
             
             tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
         }
+    }
+    
+    func focusOnEquation(equation: Equation?, alignmentRect: CGRect) {
+        print("focusOnEquation")
         
-        
-        
-        
-        
+        print(alignmentRect)
         
     }
     
@@ -158,26 +159,26 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
             
             if sourceIndexPath.row < destinationIndexPath.row {
                 // We are moving DOWN therefore we will be "below" the destination cell, needs to have a sort order between the destination cell and the cell following it
-                print("moved down", appendNewline: true)
+//                print("moved down", appendNewline: true)
                 
                 let belowDesinationIndex = NSIndexPath(forRow: destinationIndexPath.row + 1, inSection: destinationIndexPath.section)
                 
                 if destinationIndexPath.row >= tableView.numberOfRowsInSection(destinationIndexPath.section) - 1 {
                     // We are at the bottom of the row
-                    print("bottom of row", appendNewline: true)
+//                    print("bottom of row", appendNewline: true)
                     
                     if let destinationEquation = fetchedResultsController.objectAtIndexPath(destinationIndexPath) as? Equation {
                         
                         if let destinationDesinationSortOrder = destinationEquation.sortOrder?.doubleValue {
                             
-                            print("destinationDesinationSortOrder: \(destinationDesinationSortOrder)", appendNewline: true)
+//                            print("destinationDesinationSortOrder: \(destinationDesinationSortOrder)", appendNewline: true)
                             
                             let sortOrder = destinationDesinationSortOrder + 1
                             
                             sourceEquation.sortOrder = NSNumber(double: sortOrder)
-                            print("set to equation above + 1", appendNewline: true)
+//                            print("set to equation above + 1", appendNewline: true)
                             
-                            print("sourceEquation: \(sourceEquation)", appendNewline: true)
+//                            print("sourceEquation: \(sourceEquation)", appendNewline: true)
                         }
                     }
                     
@@ -187,20 +188,20 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
                         
                         if let belowDesinationSortOrder = belowDestinationEquation.sortOrder?.doubleValue {
                             
-                            print("belowDesinationSortOrder: \(belowDesinationSortOrder)", appendNewline: true)
+//                            print("belowDesinationSortOrder: \(belowDesinationSortOrder)", appendNewline: true)
                             
                             
                             let sortOrder = (destinationSortOrder + belowDesinationSortOrder) / 2
                             
                             sourceEquation.sortOrder = NSNumber(double: sortOrder)
                             
-                            print("sourceEquation: \(sourceEquation)", appendNewline: true)
+//                            print("sourceEquation: \(sourceEquation)", appendNewline: true)
                         }
                     }
                 }
                 
             } else if sourceIndexPath.row > destinationIndexPath.row {
-                print("moved up", appendNewline: true)
+//                print("moved up", appendNewline: true)
                 // We are moving UP, therefore we will be "above" the destination equation.
                 
                 let aboveDesinationIndex = NSIndexPath(forRow: destinationIndexPath.row - 1, inSection: destinationIndexPath.section)
@@ -215,12 +216,12 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
                     if let destinationEquation = fetchedResultsController.objectAtIndexPath(destinationIndexPath) as? Equation {
                         
                         if let desinationSortOrder = destinationEquation.sortOrder?.doubleValue {
-                            print("destinationEquation: \(destinationEquation)", appendNewline: true)
+//                            print("destinationEquation: \(destinationEquation)", appendNewline: true)
                             
                             let sortOrder = desinationSortOrder - 1
                             
                             sourceEquation.sortOrder = NSNumber(double: sortOrder)
-                            print("sourceEquation: \(sourceEquation)", appendNewline: true)
+//                            print("sourceEquation: \(sourceEquation)", appendNewline: true)
                         }
                         
                     }
@@ -232,13 +233,13 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
                         
                         if let aboveDesinationSortOrder = aboveDestinationEquation.sortOrder?.doubleValue {
                             
-                            print("destinationEquation: \(destinationEquation)", appendNewline: true)
+//                            print("destinationEquation: \(destinationEquation)", appendNewline: true)
                             
                             let sortOrder = (destinationSortOrder + aboveDesinationSortOrder) / 2
                             
                             sourceEquation.sortOrder = NSNumber(double: sortOrder)
                             
-                            print("sourceEquation: \(sourceEquation)", appendNewline: true)
+//                            print("sourceEquation: \(sourceEquation)", appendNewline: true)
                         }
                     }
                 }
@@ -309,8 +310,6 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
             if let theIndexPath = indexPath {
                 self.tableView.deleteRowsAtIndexPaths([theIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
             }
-        default:
-            return
         }
     }
     

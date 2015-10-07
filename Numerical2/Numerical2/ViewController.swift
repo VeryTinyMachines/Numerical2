@@ -8,21 +8,27 @@
 
 import UIKit
 
+public enum KeypadSize {
+    case Maximum
+    case Medium
+    case Minimum
+}
+
 class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate {
     
     var historyView: HistoryViewController?
     var workPanelView: WorkPanelViewController?
     var currentEquation: Equation?
+    var currentSize = KeypadSize.Maximum
+    var workPanelShowEquation = true
     
     @IBOutlet weak var workPanelBottomConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var workPanelHeightProportion: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
-        // Find out how many equations are in the equation store.
+        presentKeypad()
         
         if let equations = EquationStore.sharedStore.equationArrayForPad(nil) {
             
@@ -47,10 +53,9 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         }
     }
     
-
     
     func selectedEquation(equation: Equation) {
-        print("equation: \(equation)", appendNewline: true)
+//        print("equation: \(equation)", appendNewline: true)
         
         currentEquation = equation
         
@@ -66,10 +71,12 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         }
     }
     
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -91,12 +98,16 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         }
     }
     
+    
     func pressedKey(key: Character) {
         // A key was pressed. we need to reload the history view
-        
-        
-        
     }
+    
+    
+    func viewIsWide() -> Bool {
+        return false
+    }
+    
     
     func updateEquation(equation: Equation?) {
         
@@ -104,8 +115,18 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
         if let theHistoryView = historyView {
             theHistoryView.updateSelectedEquation(currentEquation)
+            
+            if currentSize == KeypadSize.Medium {
+                
+                // Get the keypanels current size
+                
+                if let workPanelFrame = workPanelView?.view, _ = currentEquation {
+                    theHistoryView.focusOnEquation(currentEquation, alignmentRect: workPanelFrame.frame)
+                }
+            }
         }
     }
+    
     
     func delectedEquation(equation: Equation) {
         
@@ -117,9 +138,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
                 theWorkPanel.updateLegalKeys()
                 theWorkPanel.updateViews()
             }
-            
         }
-        
     }
     
     
@@ -127,8 +146,8 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         super.viewDidAppear(animated)
         
         updateHistoryContentInsets()
-        
     }
+    
 
     func updateHistoryContentInsets() {
         if let view = historyView, workView = workPanelView {
@@ -148,60 +167,76 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         }
     }
     
-    func hideKeypad() {
-//        workPanelBottomConstraint.constant = (workPanelHeightProportion.multiplier * self.view.bounds.height * -1) + 110
+    
+    func updateKeypad() {
         
-        // Remove the height constraint, then make a new one.
-        
-        
-        
-        changeHeightMultipler(0.5)
+        switch currentSize {
+        case .Maximum:
+            workPanelBottomConstraint.constant = 0
+            changeHeightMultipler(0.95)
+            workPanelShowEquation = true
+        case .Medium:
+            workPanelBottomConstraint.constant = 0
+            changeHeightMultipler(0.45)
+            workPanelShowEquation = true
+        case .Minimum:
+            workPanelBottomConstraint.constant = (workPanelHeightProportion.multiplier * self.view.bounds.height * -1) + 110
+            changeHeightMultipler(0.45)
+            workPanelShowEquation = true
+        }
         
         if let workView = self.workPanelView {
-            workView.showEquationView = false
-            workView.updateLayout()
+            workView.showEquationView = self.workPanelShowEquation
+            workView.updateEquationViewSize()
         }
         
         UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
             
             self.view.layoutIfNeeded()
-            self.updateHistoryContentInsets()
+            
+            if let workView = self.workPanelView {
+                workView.updateLayout()
+            }
             }) { (complete) -> Void in
+                self.updateHistoryContentInsets()
+                self.view.layoutIfNeeded()
                 
+                if let workView = self.workPanelView {
+                    workView.updateLayout()
+                }
         }
     }
+    
+    
+    func hideKeypad() {
+        if currentSize == KeypadSize.Maximum {
+            currentSize = KeypadSize.Medium
+        } else {
+            currentSize = KeypadSize.Minimum
+        }
+        
+        updateKeypad()
+    }
+    
     
     func presentKeypad() {
-        //        workPanelBottomConstraint.constant = -0
-        
-        changeHeightMultipler(1.0)
-        
-        if let workView = self.workPanelView {
-            workView.showEquationView = true
-            workView.updateLayout()
+        if currentSize == KeypadSize.Minimum {
+            currentSize = KeypadSize.Medium
+        } else {
+            currentSize = KeypadSize.Maximum
         }
         
-        UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-            
-            self.view.layoutIfNeeded()
-            self.updateHistoryContentInsets()
-            
-            }) { (complete) -> Void in
-                
-        }
+        updateKeypad()
     }
+    
     
     @IBAction func swipeDown(sender: UISwipeGestureRecognizer) {
-        
         hideKeypad()
-        
     }
-    
     
     
     @IBAction func swipeUp(sender: UISwipeGestureRecognizer) {
         presentKeypad()
-        
     }
 
     @IBAction func toggleEditing(sender: AnyObject) {

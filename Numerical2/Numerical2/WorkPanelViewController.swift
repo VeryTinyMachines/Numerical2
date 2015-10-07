@@ -40,7 +40,7 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
                 
                 // Solve this question
                 
-                CalculatorBrain.sharedBrain.solveStringInQueue(question, completion: { (answer) -> Void in
+                CalculatorBrain.sharedBrain.solveStringAsyncQueue(question, completion: { (answer) -> Void in
                     self.currentEquation?.answer = answer.answer
                     EquationStore.sharedStore.save()
                     
@@ -140,6 +140,9 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
         
     }
     
+    func viewIsWide() -> Bool {
+        return false
+    }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -181,20 +184,24 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
         }
     }
     
-    func updateLayout() {
-        
-        if let theEquationView = equationView {
-            if showEquationView {
-                equationViewHeightConstraint.constant = 110
-                equationView?.view.hidden = false
-            } else {
-                equationViewHeightConstraint.constant = 0
-                equationView?.view.hidden = true
-            }
+    
+    func updateEquationViewSize() {
+        if showEquationView {
+            equationViewHeightConstraint.constant = 110
+        } else {
+            equationViewHeightConstraint.constant = 0
         }
+    }
+    
+    
+    func updateLayout() {
         
         if let keyPanel = keyPanelView {
             keyPanel.updateKeyLayout()
+        }
+        
+        if let theEquationView = equationView {
+            theEquationView.updateView()
         }
         
         

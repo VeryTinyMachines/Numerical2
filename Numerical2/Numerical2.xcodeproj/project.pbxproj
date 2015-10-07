@@ -43,7 +43,9 @@
 		51D28B121B6D100A009A0AEC /* EquationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B111B6D100A009A0AEC /* EquationViewCell.swift */; };
 		51D28B4E1B6D1BA9009A0AEC /* FractionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51D28B4D1B6D1BA9009A0AEC /* FractionViewCell.xib */; };
 		51D28B501B6D1C0F009A0AEC /* FractionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */; };
+		51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; settings = {ASSET_TAGS = (); }; };
 		51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E84D301B8B5C3B00C3E28E /* CalcButton.swift */; };
+		51EE5BA01BC5203A001C9D38 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */; };
 		51F2F44D1B6C3FAE00B845CA /* KeyPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */; };
 		51F2F44F1B6C421B00B845CA /* WorkPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */; };
 /* End PBXBuildFile section */
@@ -106,7 +108,10 @@
 		51D28B111B6D100A009A0AEC /* EquationViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquationViewCell.swift; sourceTree = "<group>"; };
 		51D28B4D1B6D1BA9009A0AEC /* FractionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FractionViewCell.xib; sourceTree = "<group>"; };
 		51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FractionViewCell.swift; sourceTree = "<group>"; };
+		51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleFormatter.swift; sourceTree = "<group>"; };
 		51E84D301B8B5C3B00C3E28E /* CalcButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalcButton.swift; sourceTree = "<group>"; };
+		51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Numerical2.entitlements; sourceTree = "<group>"; };
+		51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyPanelViewController.swift; sourceTree = "<group>"; };
 		51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkPanelViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -116,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51EE5BA01BC5203A001C9D38 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +145,7 @@
 		513197031B6ADD5900E9B802 = {
 			isa = PBXGroup;
 			children = (
+				51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */,
 				5131970E1B6ADD5900E9B802 /* Numerical2 */,
 				513197231B6ADD5900E9B802 /* Numerical2Tests */,
 				5131972E1B6ADD5900E9B802 /* Numerical2UITests */,
@@ -159,31 +166,13 @@
 		5131970E1B6ADD5900E9B802 /* Numerical2 */ = {
 			isa = PBXGroup;
 			children = (
-				519B1B0D1BA03CAE00C06E70 /* Sinkable User Defaults */,
-				519B1AFA1BA03C9700C06E70 /* Equation Store */,
+				51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */,
 				5131970F1B6ADD5900E9B802 /* AppDelegate.swift */,
-				513197111B6ADD5900E9B802 /* ViewController.swift */,
-				510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */,
-				510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */,
-				510D3AB81B6B657F00D1A07F /* Evaluator.swift */,
-				51D28B0B1B6C4B7C009A0AEC /* EquationViewController.swift */,
-				510D3AB91B6B657F00D1A07F /* Glossary.swift */,
-				510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */,
-				51279AE61B73A8720036DF3D /* KeypadConstructor.swift */,
-				510D3AC11B6B659E00D1A07F /* KeypadViewController.swift */,
-				51279AE41B739D6D0036DF3D /* KeyStackView.swift */,
-				51E84D301B8B5C3B00C3E28E /* CalcButton.swift */,
-				51279AE21B739D260036DF3D /* KeyStackView.xib */,
-				51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */,
-				51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */,
-				51D28B0D1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift */,
-				51D28B4D1B6D1BA9009A0AEC /* FractionViewCell.xib */,
-				51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */,
-				51D28B0F1B6D0FE1009A0AEC /* EquationViewCell.xib */,
-				51D28B111B6D100A009A0AEC /* EquationViewCell.swift */,
-				519B1B101BA04F1C00C06E70 /* HistoryViewController.swift */,
-				519B1B121BA0532A00C06E70 /* HistoryCell.swift */,
 				513197131B6ADD5900E9B802 /* Main.storyboard */,
+				51D7A8371BBA7D320064AA4B /* View Hierarchy */,
+				51D7A8361BBA7D060064AA4B /* Evaluator */,
+				519B1AFA1BA03C9700C06E70 /* Equation Store */,
+				519B1B0D1BA03CAE00C06E70 /* Sinkable User Defaults */,
 				513197161B6ADD5900E9B802 /* Assets.xcassets */,
 				513197181B6ADD5900E9B802 /* LaunchScreen.storyboard */,
 				5131971B1B6ADD5900E9B802 /* Info.plist */,
@@ -230,6 +219,114 @@
 				519B1B0E1BA03CAE00C06E70 /* SinkableUserDefaults.swift */,
 			);
 			path = "Sinkable User Defaults";
+			sourceTree = "<group>";
+		};
+		51D7A8361BBA7D060064AA4B /* Evaluator */ = {
+			isa = PBXGroup;
+			children = (
+				510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */,
+				510D3AB91B6B657F00D1A07F /* Glossary.swift */,
+				51D7A8401BBA7DF00064AA4B /* Evaluator */,
+				51D7A83F1BBA7DE60064AA4B /* Natural Language Parser */,
+			);
+			name = Evaluator;
+			sourceTree = "<group>";
+		};
+		51D7A8371BBA7D320064AA4B /* View Hierarchy */ = {
+			isa = PBXGroup;
+			children = (
+				513197111B6ADD5900E9B802 /* ViewController.swift */,
+				51D7A8391BBA7D4A0064AA4B /* Work Panel View Controller */,
+				51D7A8381BBA7D3D0064AA4B /* History View Controller */,
+			);
+			name = "View Hierarchy";
+			sourceTree = "<group>";
+		};
+		51D7A8381BBA7D3D0064AA4B /* History View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				519B1B101BA04F1C00C06E70 /* HistoryViewController.swift */,
+				519B1B121BA0532A00C06E70 /* HistoryCell.swift */,
+			);
+			name = "History View Controller";
+			sourceTree = "<group>";
+		};
+		51D7A8391BBA7D4A0064AA4B /* Work Panel View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				51D7A83B1BBA7D740064AA4B /* Equation View Controller */,
+				51D7A83A1BBA7D670064AA4B /* Key Panel View Controller */,
+				51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */,
+			);
+			name = "Work Panel View Controller";
+			sourceTree = "<group>";
+		};
+		51D7A83A1BBA7D670064AA4B /* Key Panel View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */,
+				51D7A83D1BBA7D970064AA4B /* Keypad View Controller */,
+			);
+			name = "Key Panel View Controller";
+			sourceTree = "<group>";
+		};
+		51D7A83B1BBA7D740064AA4B /* Equation View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				51D28B0B1B6C4B7C009A0AEC /* EquationViewController.swift */,
+				51D7A83C1BBA7D840064AA4B /* Question / Answer Collection View Controller */,
+			);
+			name = "Equation View Controller";
+			sourceTree = "<group>";
+		};
+		51D7A83C1BBA7D840064AA4B /* Question / Answer Collection View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				51D28B0D1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift */,
+				51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */,
+				51D28B4D1B6D1BA9009A0AEC /* FractionViewCell.xib */,
+				51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */,
+				51D28B0F1B6D0FE1009A0AEC /* EquationViewCell.xib */,
+				51D28B111B6D100A009A0AEC /* EquationViewCell.swift */,
+			);
+			name = "Question / Answer Collection View Controller";
+			sourceTree = "<group>";
+		};
+		51D7A83D1BBA7D970064AA4B /* Keypad View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				51279AE61B73A8720036DF3D /* KeypadConstructor.swift */,
+				510D3AC11B6B659E00D1A07F /* KeypadViewController.swift */,
+				51D7A83E1BBA7DAB0064AA4B /* Key Stack View */,
+			);
+			name = "Keypad View Controller";
+			sourceTree = "<group>";
+		};
+		51D7A83E1BBA7DAB0064AA4B /* Key Stack View */ = {
+			isa = PBXGroup;
+			children = (
+				51E84D301B8B5C3B00C3E28E /* CalcButton.swift */,
+				51279AE41B739D6D0036DF3D /* KeyStackView.swift */,
+				51279AE21B739D260036DF3D /* KeyStackView.xib */,
+			);
+			name = "Key Stack View";
+			sourceTree = "<group>";
+		};
+		51D7A83F1BBA7DE60064AA4B /* Natural Language Parser */ = {
+			isa = PBXGroup;
+			children = (
+				510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */,
+				510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */,
+			);
+			name = "Natural Language Parser";
+			sourceTree = "<group>";
+		};
+		51D7A8401BBA7DF00064AA4B /* Evaluator */ = {
+			isa = PBXGroup;
+			children = (
+				510D3AB81B6B657F00D1A07F /* Evaluator.swift */,
+			);
+			name = Evaluator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,6 +397,20 @@
 					5131970B1B6ADD5900E9B802 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = C583RN882K;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					5131971F1B6ADD5900E9B802 = {
 						CreatedOnToolsVersion = 7.0;
@@ -371,6 +482,7 @@
 				51D28B0C1B6C4B7C009A0AEC /* EquationViewController.swift in Sources */,
 				510D3AC21B6B659E00D1A07F /* KeypadViewController.swift in Sources */,
 				519B1B0A1BA03C9700C06E70 /* Pad+CoreDataProperties.swift in Sources */,
+				51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */,
 				51D28B501B6D1C0F009A0AEC /* FractionViewCell.swift in Sources */,
 				51F2F44D1B6C3FAE00B845CA /* KeyPanelViewController.swift in Sources */,
 				519B1B081BA03C9700C06E70 /* EquationStore.swift in Sources */,
@@ -538,11 +650,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Numerical2/Numerical2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.Numerical2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -550,11 +665,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Numerical2/Numerical2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.Numerical2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

@@ -14,13 +14,18 @@ class FractionViewCell:UICollectionViewCell {
     @IBOutlet weak var denominatorLabel: UILabel!
     
     func setAnswerCell(answer: Bool) {
+        
         if answer {
-            numeratorLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-            denominatorLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+            let font = StyleFormatter.preferredFontForContext(FontDisplayContext.AnswerFraction)
+            numeratorLabel.font = font
+            denominatorLabel.font = font
         } else {
-            numeratorLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-            denominatorLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+            let font = StyleFormatter.preferredFontForContext(FontDisplayContext.QuestionFraction)
+            numeratorLabel.font = font
+            denominatorLabel.font = font
         }
+        
+        
     }
     
 }

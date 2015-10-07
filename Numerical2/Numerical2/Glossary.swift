@@ -300,10 +300,8 @@ public class Glossary {
                 
                 for index in 1...termArray.count {
                     
-                    
                     let currentIndex = termArray.count - index
                     let currentTerm = termArray[currentIndex]
-                    print(termArray[currentIndex], appendNewline: false)
                     
                     if currentTerm == ")" {
                         currentBracketLevel += 1
@@ -371,7 +369,6 @@ public class Glossary {
             string = " "
         }
         
-        
         let numberCharacters:Set<Character> = ["0","1","2","3","4","5","6","7","8","9","0",".",SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity]
         let preOperatorCharacters:Set<Character> = [SymbolCharacter.cos,SymbolCharacter.log, SymbolCharacter.log10, SymbolCharacter.log2, SymbolCharacter.sin, SymbolCharacter.sqrt, SymbolCharacter.tan, SymbolCharacter.sinh,SymbolCharacter.cosh,SymbolCharacter.tanh]
         let midOperatorCharacters:Set<Character> = ["+","-","*","/","^",SymbolCharacter.fraction, SymbolCharacter.ee]
@@ -386,9 +383,8 @@ public class Glossary {
         // Replace lastCharacter with pre/post/mid if appropriate
         
         
-        
         var legalCombinations:[Character: String] =
-        ["n":"n\(mid))cd\(pre)\(post)",
+           ["n":"n\(mid))cd\(pre)\(post)",
             "(":"n-)cd\(pre)",
             ")":"n)(cd\(pre)\(mid)\(post)",
             "+":"n-+(cd\(pre)",
@@ -400,11 +396,7 @@ public class Glossary {
 
         
         if var theLastCharacter = string.characters.last {
-            print("theLastCharacter: \(theLastCharacter)", appendNewline: true)
-            
-            if theLastCharacter == SymbolCharacter.percentage {
-                print("", appendNewline: true)
-            }
+//            print("theLastCharacter: \(theLastCharacter)", appendNewline: true)
             
             if preOperatorCharacters.contains(theLastCharacter) {
                 theLastCharacter = pre
@@ -428,7 +420,7 @@ public class Glossary {
                 
                 var legalCharacterSet = Set<Character>()
                 
-                print("legalCharacterSet: \(legalCharacterSet)", appendNewLine: true)
+//                print("legalCharacterSet: \(legalCharacterSet)", appendNewLine: true)
                 
                 for character in combination.characters {
                     legalCharacterSet.insert(character)

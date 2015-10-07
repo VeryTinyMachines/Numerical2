@@ -16,7 +16,8 @@ public enum KeypadLayout {
 }
 
 protocol KeypadDelegate {
-     func pressedKey(key: Character)
+    func pressedKey(key: Character)
+    func viewIsWide() -> Bool
 }
 
 

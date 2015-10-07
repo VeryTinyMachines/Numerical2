@@ -14,9 +14,9 @@ class EquationViewCell:UICollectionViewCell {
     
     func setAnswerCell(answer: Bool) {
         if answer {
-            mainLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+            mainLabel.font = StyleFormatter.preferredFontForContext(FontDisplayContext.Answer)
         } else {
-            mainLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+            mainLabel.font = StyleFormatter.preferredFontForContext(FontDisplayContext.Question)
         }
     }
     

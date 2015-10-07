@@ -41,7 +41,9 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
         }
     }
     
-    
+    func viewIsWide() -> Bool {
+        return false
+    }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
@@ -219,16 +221,11 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     
     func viewIsWideForSize(size: CGSize) -> Bool {
         
-        let ratio = size.width / size.height
-        
-        if ratio > 1.4 {
-            // Regular
-            return true
+        if let theDelegate = delegate {
+            return theDelegate.viewIsWide()
         } else {
-            // Wide
             return false
         }
-        
     }
     
     

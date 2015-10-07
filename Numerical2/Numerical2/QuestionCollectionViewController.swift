@@ -34,7 +34,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                         formattedAnswers.append(formattedAnswer)
                     }
                     
-                    let answersString = " or ".join(possibleAnswers)
+                    let answersString = possibleAnswers.joinWithSeparator(" or ")
                     
                     let questionComponents = answersString.componentsSeparatedByString(" ")
                     
@@ -130,6 +130,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         
         // Now we need to see which parts of the this new array need reloading.
         
+        /*
         var indexNeedsReload:Array<Int> = []
         
         var indexNeedsInsertion:Array<Int> = []
@@ -148,11 +149,9 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             
             // Need to add the index's
             for index in self.questionArray.count...newQuestionComponents.count-1 {
-//                print("need to insert \(index)", appendNewline: true)
                 indexNeedsInsertion.append(index)
             }
         }
-        
         
         // Reload anything that needs reloading
         
@@ -163,7 +162,6 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             indexSetToReload.append(newIndexPath)
         }
         
-        
         var indexSetToInsert:Array<NSIndexPath> = []
         
         for index in indexNeedsInsertion {
@@ -171,21 +169,12 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             indexSetToInsert.append(newIndexPath)
         }
         
-//        print("indexSetToReload: \(indexSetToReload)", appendNewline: true)
-//        print("indexSetToInsert: \(indexSetToInsert)", appendNewline: true)
-        
         // Insert anything that needs inserting
         let previousCount = self.questionArray.count
         
-//        print("previousCount: \(previousCount)", appendNewline: true)
-        
         if previousCount > 1 && self.questionArray.count <= newQuestionComponents.count {
             
-//            print("self.questionArray before: \(self.questionArray)", appendNewline: true)
-            
             self.questionArray = newQuestionComponents
-            
-//            print("self.questionArray after: \(self.questionArray)", appendNewline: true)
             
             UIView.performWithoutAnimation({ () -> Void in
                 if indexSetToInsert.count > 0 {
@@ -207,7 +196,10 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             self.questionArray = newQuestionComponents
             self.reloadCollectionView()
         }
+*/
         
+        self.questionArray = newQuestionComponents
+        self.reloadCollectionView()
         
     }
     
@@ -276,8 +268,10 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                     theCell.denominatorLabel.text = Glossary.formattedStringForQuestion(fractionComponents[1])
                 }
                 
-//                theCell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
                 theCell.backgroundColor = UIColor.clearColor()
+//                theCell.backgroundColor = UIColor.redColor()
+                theCell.numeratorLabel.textColor = UIColor.whiteColor()
+                theCell.denominatorLabel.textColor = UIColor.whiteColor()
                 theCell.setAnswerCell(isAnswerView)
             }
             
@@ -287,9 +281,10 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             
             if let theCell = cell as? EquationViewCell {
                 theCell.mainLabel.text = Glossary.formattedStringForQuestion(questionArray[indexPath.row])
+                theCell.mainLabel.textColor = UIColor.whiteColor()
                 
-//                theCell.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
                 theCell.backgroundColor = UIColor.clearColor()
+//                theCell.backgroundColor = UIColor.redColor()
                 theCell.setAnswerCell(isAnswerView)
             }
             
@@ -312,44 +307,58 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             var width:CGFloat = 0.0
             
             for string in fractionComponents {
-                let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string))
+                let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Answer)
                 
                 if size.width > width {
                     width = size.width
                 }
             }
             
-            return CGSize(width: width, height: 44)
+            return CGSize(width: width + 5, height: 44)
             
         } else {
             
             if string == "or" {
-                let size = estimatedSizeOfString(" or ")
+                let size = estimatedSizeOfString(" or ", context: FontDisplayContext.Answer)
                 
                 return CGSize(width: size.width, height: 44)
             } else {
-                let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string))
                 
-                return CGSize(width: size.width, height: 44)
+                if isAnswerView {
+                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Answer)
+                    
+                    return CGSize(width: size.width + 10, height: 44)
+                } else {
+                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Question)
+                    
+                    return CGSize(width: size.width, height: 44)
+                }
+                
             }
-
         }
     }
     
-    func estimatedSizeOfString(string: String) -> CGSize {
+    func estimatedSizeOfString(string: String, context: FontDisplayContext) -> CGSize {
         
-        var font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+        let font = StyleFormatter.preferredFontForContext(context)
         
-        if isAnswerView {
-            font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-        }
         
         let attributedText = NSAttributedString(string: string, attributes: [NSFontAttributeName:font])
         
-        let rect = attributedText.boundingRectWithSize(CGSize(width: 2000, height: 2000), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
-        let size = rect.size
+        return attributedText.size()
         
-        return CGSize(width: size.width, height: size.height)
+//        let rect = attributedText.boundingRectWithSize(CGSize(width: 2000, height: 2000), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
+//        let size = rect.size
+        
+        
+        
+//        UIFont *fontText = [UIFont fontWithName:[AppHandlers zHandler].fontName size:16];
+//        // you can use your font.
+//        
+//        expectedLabelSize = [myString sizeWithAttributes:@{NSFontAttributeName:fontText}];
+        
+        
+//        return CGSize(width: size.width, height: size.height)
     }
     
     

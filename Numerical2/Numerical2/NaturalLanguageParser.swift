@@ -17,7 +17,7 @@ public class NaturalLanguageParser {
     static let sharedInstance = NaturalLanguageParser()
     private init() {
     
-        print("", appendNewline: true)
+//        print("", appendNewline: true)
         
         for character in " abcdefghijklmnopqrstuvwxyz".characters {
             legalCharacters.insert(character)
@@ -49,14 +49,14 @@ public class NaturalLanguageParser {
                     }
                 }
             } else {
-                print("Error: Dictionary could not be loaded", appendNewline: false)
+//                print("Error: Dictionary could not be loaded", appendNewline: false)
             }
         }
         
         
         // Setup a legal character array
         
-        print("legalCharacters: \(legalCharacters)", appendNewline: true)
+//        print("legalCharacters: \(legalCharacters)", appendNewline: true)
         
         
     }
@@ -91,7 +91,7 @@ public class NaturalLanguageParser {
         
         var wordArray = Evaluator.termArrayFromString(string.lowercaseString, allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
         
-        print("wordArray: \(wordArray)", appendNewline: false)
+//        print("wordArray: \(wordArray)", appendNewline: false)
         
         // Check that any five word combo's do not need to be replaced
         
@@ -205,7 +205,7 @@ public class NaturalLanguageParser {
         
         // If there is the word teen proceeded by a single digit number convert the digit number into a teen number
         
-        print("newTermArray: \(newTermArray)", appendNewline: false)
+//        print("newTermArray: \(newTermArray)", appendNewline: false)
         
         if newTermArray.count > 0 {
             var index = 0
@@ -248,7 +248,7 @@ public class NaturalLanguageParser {
                     
                     if let newNumber = answerBundle.answer {
                         newTermArray.replaceRange(newRange, with: [newNumber])
-                        print("newTermArray after replacement: \(newTermArray)", appendNewline: false)
+//                        print("newTermArray after replacement: \(newTermArray)", appendNewline: false)
                         //                            index -= 1
                         continue
                     }
@@ -281,7 +281,7 @@ public class NaturalLanguageParser {
                     continue
                 }
                 
-                print("word: \(word)  nextWord: \(nextWord)", appendNewline: false)
+//                print("word: \(word)  nextWord: \(nextWord)", appendNewline: false)
                 
                 // Combine instances of a number with some zeroes at the end with the following number
                 if Glossary.isStringNumber(word) && Glossary.isStringNumber(nextWord) {
@@ -294,14 +294,16 @@ public class NaturalLanguageParser {
                             zeroStringKey += "0"
                         }
                         
-                        if word.substringFromIndex(advance(word.startIndex, word.characters.count - nextWord.characters.count)) == zeroStringKey {
+                        
+                        
+                        if word.substringFromIndex(word.startIndex.advancedBy(word.characters.count - nextWord.characters.count)) == zeroStringKey {
                             let newRange = Range(start: index, end: index + 2)
                             
                             let answerBundle = Evaluator.solveUnknownNumber(word, theOperator: "+", numberB: nextWord, operatorType: OperatorType.MidOperator, endPercentage: false)
                             
                             if let newNumber = answerBundle.answer {
                                 newTermArray.replaceRange(newRange, with: [newNumber])
-                                print("newTermArray after replacement: \(newTermArray)")
+//                                print("newTermArray after replacement: \(newTermArray)")
                                 //                            index -= 1
                                 continue
                             }
@@ -327,7 +329,7 @@ public class NaturalLanguageParser {
                 let term = newTermArray[index]
                 let nextTerm = newTermArray[index + 1]
                 
-                print("term: \(term)  nextTerm: \(nextTerm)", appendNewline: false)
+//                print("term: \(term)  nextTerm: \(nextTerm)", appendNewline: false)
                 
                 if Glossary.isStringSpecialWord(term) && Glossary.isStringOperator(nextTerm) {
                     // Remove the term
@@ -359,7 +361,7 @@ public class NaturalLanguageParser {
                 if term == "|" {
                     
                     if let theLastTerm = lastTerm {
-                        print("", appendNewline: false)
+//                        print("", appendNewline: false)
                         
                         if let legalKeys = Glossary.legalCharactersToAppendString(theLastTerm) {
                             
@@ -395,13 +397,13 @@ public class NaturalLanguageParser {
             while index < newTermArray.count - 1 {
                 
                 let term = newTermArray[index]
-                print("term: \(term)", appendNewline: false)
+//                print("term: \(term)", appendNewline: false)
                 
-                print("current levelSet: \(levelSet)", appendNewline: false)
+//                print("current levelSet: \(levelSet)", appendNewline: false)
                 
                 if var subSet = levelSet[currentLevel] {
                     if term == "(" && subSet.foundBracketsAsNumbers == false && subSet.number.complete() == false {
-                        print("Found a starting bracket", appendNewline: false)
+//                        print("Found a starting bracket", appendNewline: false)
                         subSet.foundBracketsAsNumbers = true
                         levelSet[currentLevel] = subSet
                     }
@@ -426,13 +428,13 @@ public class NaturalLanguageParser {
                     }
                 } else {
                     
-                    print("term is not a starting term", appendNewline: false)
+//                    print("term is not a starting term", appendNewline: false)
                     
                     if var subSet = levelSet[currentLevel] {
                         // we DO have a set going for this level
-                        print("we have a subset", appendNewline: false)
+//                        print("we have a subset", appendNewline: false)
                         if Glossary.isStringSpecialWord(term) {
-                            print("'and' found", appendNewline: false)
+//                            print("'and' found", appendNewline: false)
                             
                             if subSet.number.complete() || subSet.foundBracketsAsNumbers == true {
                                 // We have reached an 'and' and the number is complete - let's do the swap!
@@ -446,10 +448,10 @@ public class NaturalLanguageParser {
                             }
                             
                         } else {
-                            print("not an and, need to process \(term)", appendNewline: false)
+//                            print("not an and, need to process \(term)", appendNewline: false)
                             
                             if term == "(" || term == ")" {
-                                print("We've found a bracket", appendNewline: false)
+//                                print("We've found a bracket", appendNewline: false)
                                 // This is a bracket and we can safely ignore it
                                 subSet.foundBracketsAsNumbers = true
                             } else {
@@ -457,7 +459,7 @@ public class NaturalLanguageParser {
                                     // We processed this term but it destroyed this number, therefore we should nil it
                                     levelSet[currentLevel] = nil
                                 } else {
-                                    print("number processed term successfully", appendNewline: false)
+//                                    print("number processed term successfully", appendNewline: false)
                                 }
                             }
                         }
@@ -503,14 +505,14 @@ public class NaturalLanguageParser {
             while index < newTermArray.count - 1 {
                 let term = newTermArray[index]
                 
-                print("term: \(term)", appendNewline: false)
+//                print("term: \(term)", appendNewline: false)
                 if Glossary.isStringOperator(term) {
                     if Glossary.shouldAddClosingBracketToAppendString(stringBuffer, newOperator: Character(term)) {
                         // Need to add a bracket
                         newTermArray.insert(")", atIndex: index)
                         stringBuffer += ")"
                         index += 1
-                        print("Need to add a bracket", appendNewline: false)
+//                        print("Need to add a bracket", appendNewline: false)
                     }
                 }
                 
@@ -519,7 +521,7 @@ public class NaturalLanguageParser {
             }
         }
         
-        let finalString = "".join(newTermArray)
+        let finalString = newTermArray.joinWithSeparator("")
         
         return finalString
     }

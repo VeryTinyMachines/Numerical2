@@ -352,7 +352,7 @@ public class Evaluator {
                 
                 index += 1
             }
-            return "".join(termArray)
+            return termArray.joinWithSeparator("")
         }
         
         return string
@@ -1073,7 +1073,7 @@ public class Evaluator {
                 lastTermType = .Unknown
             }
             
-            let newStartIndex = advance(evaluationString.startIndex, 1)
+            let newStartIndex = evaluationString.startIndex.advancedBy(1)
             let newEndIndex = evaluationString.endIndex
             
             evaluationString = evaluationString.substringWithRange(newStartIndex..<newEndIndex)
