@@ -48,6 +48,19 @@
 		51EE5BA01BC5203A001C9D38 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */; };
 		51F2F44D1B6C3FAE00B845CA /* KeyPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */; };
 		51F2F44F1B6C421B00B845CA /* WorkPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */; };
+		5627A7421BC68F3F0005495F /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7401BC68F3F0005495F /* Interface.storyboard */; };
+		5627A7441BC68F3F0005495F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7431BC68F3F0005495F /* Assets.xcassets */; };
+		5627A74B1BC68F3F0005495F /* Numerical2-Watch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5627A74A1BC68F3F0005495F /* Numerical2-Watch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5627A7501BC68F3F0005495F /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A74F1BC68F3F0005495F /* MainInterfaceController.swift */; };
+		5627A7521BC68F3F0005495F /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7511BC68F3F0005495F /* ExtensionDelegate.swift */; };
+		5627A7541BC68F3F0005495F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7531BC68F3F0005495F /* Assets.xcassets */; };
+		5627A7581BC68F3F0005495F /* Numerical2-Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5627A73E1BC68F3F0005495F /* Numerical2-Watch.app */; };
+		5627A7641BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7631BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift */; settings = {ASSET_TAGS = (); }; };
+		5627A7661BC74EA10005495F /* WatchKeyboardCalculatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7651BC74EA10005495F /* WatchKeyboardCalculatorController.swift */; settings = {ASSET_TAGS = (); }; };
+		5627A7681BC750EE0005495F /* WatchCalculatorOneButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7671BC750EE0005495F /* WatchCalculatorOneButtonRow.swift */; settings = {ASSET_TAGS = (); }; };
+		5627A7691BC7D5ED0005495F /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; settings = {ASSET_TAGS = (); }; };
+		5627A76A1BC7D6020005495F /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; settings = {ASSET_TAGS = (); }; };
+		5627A76B1BC7D60B0005495F /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +78,46 @@
 			remoteGlobalIDString = 5131970B1B6ADD5900E9B802;
 			remoteInfo = Numerical2;
 		};
+		5627A74C1BC68F3F0005495F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 513197041B6ADD5900E9B802 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5627A7491BC68F3F0005495F;
+			remoteInfo = "Numerical2-Watch Extension";
+		};
+		5627A7561BC68F3F0005495F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 513197041B6ADD5900E9B802 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5627A73D1BC68F3F0005495F;
+			remoteInfo = "Numerical2-Watch";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5627A75E1BC68F3F0005495F /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5627A74B1BC68F3F0005495F /* Numerical2-Watch Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5627A7601BC68F3F0005495F /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				5627A7581BC68F3F0005495F /* Numerical2-Watch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
@@ -114,6 +166,20 @@
 		51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyPanelViewController.swift; sourceTree = "<group>"; };
 		51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkPanelViewController.swift; sourceTree = "<group>"; };
+		5627A73E1BC68F3F0005495F /* Numerical2-Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Numerical2-Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5627A7411BC68F3F0005495F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		5627A7431BC68F3F0005495F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5627A7451BC68F3F0005495F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5627A74A1BC68F3F0005495F /* Numerical2-Watch Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Numerical2-Watch Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5627A74F1BC68F3F0005495F /* MainInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInterfaceController.swift; sourceTree = "<group>"; };
+		5627A7511BC68F3F0005495F /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		5627A7531BC68F3F0005495F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5627A7551BC68F3F0005495F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5627A7611BC722FC0005495F /* Numerical2-Watch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Numerical2-Watch.entitlements"; sourceTree = "<group>"; };
+		5627A7621BC72C630005495F /* Numerical2-Watch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Numerical2-Watch Extension.entitlements"; sourceTree = "<group>"; };
+		5627A7631BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCalculatorThreeButtonRow.swift; sourceTree = "<group>"; };
+		5627A7651BC74EA10005495F /* WatchKeyboardCalculatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchKeyboardCalculatorController.swift; sourceTree = "<group>"; };
+		5627A7671BC750EE0005495F /* WatchCalculatorOneButtonRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCalculatorOneButtonRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +205,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5627A7471BC68F3F0005495F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -149,6 +222,8 @@
 				5131970E1B6ADD5900E9B802 /* Numerical2 */,
 				513197231B6ADD5900E9B802 /* Numerical2Tests */,
 				5131972E1B6ADD5900E9B802 /* Numerical2UITests */,
+				5627A73F1BC68F3F0005495F /* Numerical2-Watch */,
+				5627A74E1BC68F3F0005495F /* Numerical2-Watch Extension */,
 				5131970D1B6ADD5900E9B802 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -159,6 +234,8 @@
 				5131970C1B6ADD5900E9B802 /* Numerical2.app */,
 				513197201B6ADD5900E9B802 /* Numerical2Tests.xctest */,
 				5131972B1B6ADD5900E9B802 /* Numerical2UITests.xctest */,
+				5627A73E1BC68F3F0005495F /* Numerical2-Watch.app */,
+				5627A74A1BC68F3F0005495F /* Numerical2-Watch Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -329,6 +406,32 @@
 			name = Evaluator;
 			sourceTree = "<group>";
 		};
+		5627A73F1BC68F3F0005495F /* Numerical2-Watch */ = {
+			isa = PBXGroup;
+			children = (
+				5627A7611BC722FC0005495F /* Numerical2-Watch.entitlements */,
+				5627A7401BC68F3F0005495F /* Interface.storyboard */,
+				5627A7431BC68F3F0005495F /* Assets.xcassets */,
+				5627A7451BC68F3F0005495F /* Info.plist */,
+			);
+			path = "Numerical2-Watch";
+			sourceTree = "<group>";
+		};
+		5627A74E1BC68F3F0005495F /* Numerical2-Watch Extension */ = {
+			isa = PBXGroup;
+			children = (
+				5627A7621BC72C630005495F /* Numerical2-Watch Extension.entitlements */,
+				5627A74F1BC68F3F0005495F /* MainInterfaceController.swift */,
+				5627A7511BC68F3F0005495F /* ExtensionDelegate.swift */,
+				5627A7631BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift */,
+				5627A7651BC74EA10005495F /* WatchKeyboardCalculatorController.swift */,
+				5627A7671BC750EE0005495F /* WatchCalculatorOneButtonRow.swift */,
+				5627A7531BC68F3F0005495F /* Assets.xcassets */,
+				5627A7551BC68F3F0005495F /* Info.plist */,
+			);
+			path = "Numerical2-Watch Extension";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -339,10 +442,12 @@
 				513197081B6ADD5900E9B802 /* Sources */,
 				513197091B6ADD5900E9B802 /* Frameworks */,
 				5131970A1B6ADD5900E9B802 /* Resources */,
+				5627A7601BC68F3F0005495F /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5627A7571BC68F3F0005495F /* PBXTargetDependency */,
 			);
 			name = Numerical2;
 			productName = Numerical2;
@@ -385,6 +490,40 @@
 			productReference = 5131972B1B6ADD5900E9B802 /* Numerical2UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		5627A73D1BC68F3F0005495F /* Numerical2-Watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5627A75F1BC68F3F0005495F /* Build configuration list for PBXNativeTarget "Numerical2-Watch" */;
+			buildPhases = (
+				5627A73C1BC68F3F0005495F /* Resources */,
+				5627A75E1BC68F3F0005495F /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5627A74D1BC68F3F0005495F /* PBXTargetDependency */,
+			);
+			name = "Numerical2-Watch";
+			productName = "Numerical2-Watch";
+			productReference = 5627A73E1BC68F3F0005495F /* Numerical2-Watch.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		5627A7491BC68F3F0005495F /* Numerical2-Watch Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5627A75D1BC68F3F0005495F /* Build configuration list for PBXNativeTarget "Numerical2-Watch Extension" */;
+			buildPhases = (
+				5627A7461BC68F3F0005495F /* Sources */,
+				5627A7471BC68F3F0005495F /* Frameworks */,
+				5627A7481BC68F3F0005495F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Numerical2-Watch Extension";
+			productName = "Numerical2-Watch Extension";
+			productReference = 5627A74A1BC68F3F0005495F /* Numerical2-Watch Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -396,7 +535,7 @@
 				TargetAttributes = {
 					5131970B1B6ADD5900E9B802 = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = C583RN882K;
+						DevelopmentTeam = 5XEWX37TS6;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -420,6 +559,24 @@
 						CreatedOnToolsVersion = 7.0;
 						TestTargetID = 5131970B1B6ADD5900E9B802;
 					};
+					5627A73D1BC68F3F0005495F = {
+						CreatedOnToolsVersion = 7.0.1;
+						DevelopmentTeam = 5XEWX37TS6;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
+					5627A7491BC68F3F0005495F = {
+						CreatedOnToolsVersion = 7.0.1;
+						DevelopmentTeam = 5XEWX37TS6;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = 513197071B6ADD5900E9B802 /* Build configuration list for PBXProject "Numerical2" */;
@@ -438,6 +595,8 @@
 				5131970B1B6ADD5900E9B802 /* Numerical2 */,
 				5131971F1B6ADD5900E9B802 /* Numerical2Tests */,
 				5131972A1B6ADD5900E9B802 /* Numerical2UITests */,
+				5627A73D1BC68F3F0005495F /* Numerical2-Watch */,
+				5627A7491BC68F3F0005495F /* Numerical2-Watch Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -468,6 +627,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5627A73C1BC68F3F0005495F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5627A7441BC68F3F0005495F /* Assets.xcassets in Resources */,
+				5627A7421BC68F3F0005495F /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5627A7481BC68F3F0005495F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5627A7541BC68F3F0005495F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,6 +704,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5627A7461BC68F3F0005495F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5627A7691BC7D5ED0005495F /* CalculatorBrain.swift in Sources */,
+				5627A76A1BC7D6020005495F /* Evaluator.swift in Sources */,
+				5627A7681BC750EE0005495F /* WatchCalculatorOneButtonRow.swift in Sources */,
+				5627A7661BC74EA10005495F /* WatchKeyboardCalculatorController.swift in Sources */,
+				5627A7521BC68F3F0005495F /* ExtensionDelegate.swift in Sources */,
+				5627A76B1BC7D60B0005495F /* Glossary.swift in Sources */,
+				5627A7641BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift in Sources */,
+				5627A7501BC68F3F0005495F /* MainInterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -540,6 +731,16 @@
 			isa = PBXTargetDependency;
 			target = 5131970B1B6ADD5900E9B802 /* Numerical2 */;
 			targetProxy = 5131972C1B6ADD5900E9B802 /* PBXContainerItemProxy */;
+		};
+		5627A74D1BC68F3F0005495F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5627A7491BC68F3F0005495F /* Numerical2-Watch Extension */;
+			targetProxy = 5627A74C1BC68F3F0005495F /* PBXContainerItemProxy */;
+		};
+		5627A7571BC68F3F0005495F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5627A73D1BC68F3F0005495F /* Numerical2-Watch */;
+			targetProxy = 5627A7561BC68F3F0005495F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -558,6 +759,14 @@
 				513197191B6ADD5900E9B802 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		5627A7401BC68F3F0005495F /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5627A7411BC68F3F0005495F /* Base */,
+			);
+			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -655,7 +864,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -670,7 +879,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -724,6 +933,85 @@
 			};
 			name = Release;
 		};
+		5627A7591BC68F3F0005495F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Numerical2-Watch/Numerical2-Watch.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Kevin Enax (S7TFF839Z5)";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				IBSC_MODULE = Numerical2_Watch_Extension;
+				INFOPLIST_FILE = "Numerical2-Watch/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh.watch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		5627A75A1BC68F3F0005495F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Numerical2-Watch/Numerical2-Watch.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				IBSC_MODULE = Numerical2_Watch_Extension;
+				INFOPLIST_FILE = "Numerical2-Watch/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh.watch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		5627A75B1BC68F3F0005495F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Numerical2-Watch Extension/Numerical2-Watch Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Numerical2-Watch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh.watch.extesion;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		5627A75C1BC68F3F0005495F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Numerical2-Watch Extension/Numerical2-Watch Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Numerical2-Watch Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh.watch.extesion;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -759,6 +1047,24 @@
 			buildConfigurations = (
 				5131973B1B6ADD5900E9B802 /* Debug */,
 				5131973C1B6ADD5900E9B802 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5627A75D1BC68F3F0005495F /* Build configuration list for PBXNativeTarget "Numerical2-Watch Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5627A75B1BC68F3F0005495F /* Debug */,
+				5627A75C1BC68F3F0005495F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5627A75F1BC68F3F0005495F /* Build configuration list for PBXNativeTarget "Numerical2-Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5627A7591BC68F3F0005495F /* Debug */,
+				5627A75A1BC68F3F0005495F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

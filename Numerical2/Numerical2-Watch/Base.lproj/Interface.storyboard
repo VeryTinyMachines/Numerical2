@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="8092"/>
+    </dependencies>
+    <scenes>
+        <!--Main Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller id="AgC-eL-Hgc" customClass="MainInterfaceController" customModule="Numerical2_Watch_Extension">
+                    <items>
+                        <label width="136" height="21" alignment="left" text="Numerical" id="leY-8I-V3b"/>
+                        <label width="136" alignment="left" text="A calculator with no equal" numberOfLines="2" id="1HB-ng-h5I">
+                            <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                        </label>
+                        <group width="140" height="70" alignment="left" id="G5b-ao-mfc">
+                            <items>
+                                <button width="0.5" height="1" alignment="left" backgroundImage="gridInput" id="gKg-I2-N8F">
+                                    <connections>
+                                        <action selector="gridButtonPressed" destination="AgC-eL-Hgc" id="8Mi-Ga-eoF"/>
+                                    </connections>
+                                </button>
+                                <button width="0.5" height="1" alignment="left" backgroundImage="voiceInput" id="BEi-Da-FQc">
+                                    <connections>
+                                        <action selector="speechButtonPressed" destination="AgC-eL-Hgc" id="IF8-Um-RYf"/>
+                                    </connections>
+                                </button>
+                            </items>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="mainLabel" destination="leY-8I-V3b" id="O5a-eB-ciB"/>
+                        <outlet property="subLabel" destination="1HB-ng-h5I" id="bUZ-fe-ZfM"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="418" y="399"/>
+        </scene>
+    </scenes>
+</document>
