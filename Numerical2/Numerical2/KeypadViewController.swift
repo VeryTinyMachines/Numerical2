@@ -22,14 +22,11 @@ protocol KeypadDelegate {
 
 
 
-class KeypadViewController: UIViewController, KeyStackViewDelegate {
+class KeypadViewController: UIViewController {
+    
+    @IBOutlet var buttons: [CalcButton]!
     
     var delegate: KeypadDelegate?
-    
-    @IBOutlet weak var stackView: UIStackView!
-    
-    var keyStackViews:Array<KeyStackView> = []
-    var keyStackArrays:Array<KeyStackType> = []
     
     var keyCharacters:Array<Character> = []
     
@@ -51,61 +48,27 @@ class KeypadViewController: UIViewController, KeyStackViewDelegate {
     
     func setupKeys() {
         
+        let standardLayout = ["c","7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", ")", "d", "/", "*", "-", "+"]
         
-        // Iterate through the keypad array and add stacks IF needed, remove unneeded ones.
-        
-        // When going from the compact layout to scientific + basic we need to insert the scientific ones.
-        // When going from wide layout to compact we need to remove the unneeded ones.
-        
-        if let theStackView = self.stackView {
-            var counter = 0
+        for button in buttons {
+            let tag = button.tag
             
-            for characterStack in KeypadConstructor.sharedInstance.keypadArray(KeypadLayout.All) {
+            if tag < standardLayout.count {
+                let character = standardLayout[tag]
                 
-                if keyStackArrays.contains(characterStack) {
+                if character == "c" {
+                    button.setTitle("CE", forState: UIControlState.Normal)
                     
-                    // This stack is accounted for
+                } else if character == "d" {
+                    button.setTitle("Del", forState: UIControlState.Normal)
                     
-                } else if let stack = NSBundle.mainBundle().loadNibNamed("KeyStackView", owner: self, options: nil)[0] as? KeyStackView {
-                    
-                    stack.backgroundColor = UIColor.blackColor()
-                    
-                    let newKeyCharacters = KeypadConstructor.sharedInstance.keyStack(characterStack)
-                    
-                    if newKeyCharacters.count > 0 {
-                        stack.keyCharacters = newKeyCharacters
-                        stack.delegate = self
-                        
-                        theStackView.insertArrangedSubview(stack, atIndex: counter)
-                        
-                        keyStackViews.insert(stack, atIndex: counter)
-                        
-                        keyStackArrays.insert(characterStack, atIndex: counter)
-                    }
-                }
-                
-                counter += 1
-            }
-            
-            // Need to go through all of the characterStacks, and hide/unhide the relevant views
-            
-            let keypadArray = KeypadConstructor.sharedInstance.keypadArray(layoutType)
-            
-            counter = 0
-            
-            for characterStack in self.keyStackArrays {
-                
-                let theView = self.keyStackViews[counter]
-                
-                if keypadArray.contains(characterStack) {
-                    theView.hidden = false
                 } else {
-                    theView.hidden = true
+                    let formattedCharacter = Glossary.stringForCharacter(character)
+                    
+                    button.setTitle(formattedCharacter, forState: UIControlState.Normal)
                 }
-                counter += 1
             }
         }
-
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -124,19 +87,9 @@ class KeypadViewController: UIViewController, KeyStackViewDelegate {
         }
     }
     
-    func pressedKey(key: Character) {
-        if let keyDelegate = delegate {
-            
-            keyDelegate.pressedKey(key)
-        }
-    }
-    
     func setLegalKeys(legalKeys: Set<Character>) {
 //        print("setLegalKeys: \(legalKeys)", appendNewline: true)
         
-        for keyStack in keyStackViews {
-            keyStack.setLegalKeys(legalKeys)
-        }
     }
     
     
