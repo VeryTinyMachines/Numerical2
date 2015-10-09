@@ -10,22 +10,54 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="MainInterfaceController" customModule="Numerical2_Watch_Extension">
                     <items>
-                        <label width="136" height="21" alignment="left" text="Numerical" id="leY-8I-V3b"/>
-                        <label width="136" alignment="left" text="A calculator with no equal" numberOfLines="2" id="1HB-ng-h5I">
-                            <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
-                        </label>
-                        <group width="140" height="70" alignment="left" id="G5b-ao-mfc">
+                        <group width="1" height="80" alignment="left" layout="vertical" spacing="8" id="UMe-Vd-rhJ">
                             <items>
-                                <button width="0.5" height="1" alignment="left" backgroundImage="gridInput" id="gKg-I2-N8F">
+                                <label width="136" height="21" alignment="left" text="Numerical" id="leY-8I-V3b">
+                                    <fontDescription key="font" style="UICTFontTextStyleTitle3"/>
+                                </label>
+                                <label width="136" alignment="left" text="A calculator with no equal" numberOfLines="2" id="1HB-ng-h5I">
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="font" style="UICTFontTextStyleCaption2"/>
+                                </label>
+                            </items>
+                            <edgeInsets key="margins" left="8" right="5" top="8" bottom="0.0"/>
+                        </group>
+                        <group width="1" height="92" alignment="left" spacing="6" id="G5b-ao-mfc">
+                            <items>
+                                <button alignment="center" backgroundImage="gridInput" id="gKg-I2-N8F">
                                     <connections>
                                         <action selector="gridButtonPressed" destination="AgC-eL-Hgc" id="8Mi-Ga-eoF"/>
+                                        <segue destination="3z8-ZC-fDx" kind="push" id="YQq-4o-aDZ"/>
                                     </connections>
                                 </button>
-                                <button width="0.5" height="1" alignment="left" backgroundImage="voiceInput" id="BEi-Da-FQc">
+                                <button alignment="center" backgroundImage="voiceInput" id="BEi-Da-FQc">
                                     <connections>
                                         <action selector="speechButtonPressed" destination="AgC-eL-Hgc" id="IF8-Um-RYf"/>
                                     </connections>
                                 </button>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="16" bottom="1"/>
+                        </group>
+                        <group width="1" alignment="left" verticalAlignment="bottom" layout="vertical" id="neQ-Br-oSS">
+                            <items>
+                                <label alignment="left" text="History" id="pjx-14-Ne2">
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                </label>
+                                <table alignment="left" id="MtT-xg-ciV">
+                                    <items>
+                                        <tableRow id="vf8-rq-n58">
+                                            <group key="rootItem" width="1" alignment="left" layout="vertical" id="jQJ-0d-Ct9">
+                                                <items>
+                                                    <label alignment="left" text="Result" id="xg7-SC-WKv"/>
+                                                    <label alignment="left" text="Equation" id="SXY-c6-8fY">
+                                                        <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="font" style="UICTFontTextStyleCaption2"/>
+                                                    </label>
+                                                </items>
+                                            </group>
+                                        </tableRow>
+                                    </items>
+                                </table>
                             </items>
                         </group>
                     </items>
@@ -35,7 +67,81 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="418" y="399"/>
+            <point key="canvasLocation" x="457" y="409.5"/>
+        </scene>
+        <!--Watch Keyboard Calculator Controller-->
+        <scene sceneID="ZYe-zS-O64">
+            <objects>
+                <controller hidesWhenLoading="NO" id="3z8-ZC-fDx" customClass="WatchKeyboardCalculatorController" customModule="Numerical2_Watch_Extension">
+                    <items>
+                        <group width="1" alignment="left" layout="vertical" id="VAV-jf-52j">
+                            <items>
+                                <label width="1" alignment="left" text="Label" id="AyX-Vh-E4z">
+                                    <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
+                                </label>
+                                <label width="1" alignment="left" text="Label+1" id="vDD-a2-xao">
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="font" style="UICTFontTextStyleCaption2"/>
+                                </label>
+                                <table alignment="left" spacing="2" id="Khb-wj-obK">
+                                    <items>
+                                        <tableRow identifier="ThreeButtonRow" selectable="NO" id="GQJ-TX-HzZ" customClass="WatchCalculatorThreeButtonRow" customModule="Numerical2_Watch_Extension">
+                                            <group key="rootItem" width="1" height="0.0" alignment="left" id="aou-UF-61C">
+                                                <items>
+                                                    <button width="0.33000000000000002" alignment="left" title="7" backgroundImage="gridItem" id="prJ-qC-GFn">
+                                                        <accessibilityTraits key="accessibilityTraits" button="YES" staticText="YES"/>
+                                                        <fontDescription key="font" type="system" pointSize="15"/>
+                                                        <connections>
+                                                            <action selector="leftButtonPressed" destination="GQJ-TX-HzZ" id="E3Y-Ml-r0L"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button width="0.33000000000000002" alignment="left" title="8" backgroundImage="gridItem" id="aVA-Jd-bqY">
+                                                        <accessibilityTraits key="accessibilityTraits" button="YES" staticText="YES"/>
+                                                        <connections>
+                                                            <action selector="middleButtonPressed" destination="GQJ-TX-HzZ" id="AM3-FB-RUh"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button width="0.33000000000000002" alignment="right" title="9" backgroundImage="gridItem" id="NZy-dY-qEZ">
+                                                        <accessibilityTraits key="accessibilityTraits" button="YES" staticText="YES"/>
+                                                        <connections>
+                                                            <action selector="rightButtonPressed" destination="GQJ-TX-HzZ" id="Nsh-5f-SVF"/>
+                                                        </connections>
+                                                    </button>
+                                                </items>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                                            </group>
+                                            <connections>
+                                                <outlet property="leftButton" destination="prJ-qC-GFn" id="ysR-xC-GZG"/>
+                                                <outlet property="middleButton" destination="aVA-Jd-bqY" id="u7Z-kS-Ama"/>
+                                                <outlet property="rightButton" destination="NZy-dY-qEZ" id="OcW-AV-kGs"/>
+                                            </connections>
+                                        </tableRow>
+                                        <tableRow identifier="OneButtonRow" selectable="NO" id="slb-Yt-Wbf" customClass="WatchCalculatorOneButtonRow" customModule="Numerical2_Watch_Extension">
+                                            <group key="rootItem" width="1" height="0.0" alignment="left" spacing="0.0" id="e6W-EF-ZWd">
+                                                <items>
+                                                    <button width="0.33000000000000002" alignment="left" title="√" backgroundImage="gridItem" id="qlC-qa-Ko8"/>
+                                                </items>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                                            </group>
+                                            <connections>
+                                                <outlet property="button" destination="qlC-qa-Ko8" id="avo-MB-A2S"/>
+                                            </connections>
+                                        </tableRow>
+                                    </items>
+                                </table>
+                            </items>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="buttonTable" destination="Khb-wj-obK" id="Qg6-78-ifs"/>
+                        <outlet property="equationLabel" destination="vDD-a2-xao" id="WGj-m7-VKN"/>
+                        <outlet property="resultLabel" destination="AyX-Vh-E4z" id="okV-nb-xfN"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="662" y="411.5"/>
         </scene>
     </scenes>
 </document>

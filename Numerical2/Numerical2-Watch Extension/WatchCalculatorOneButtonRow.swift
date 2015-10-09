@@ -9,5 +9,23 @@
 import WatchKit
 
 class WatchCalculatorOneButtonRow: NSObject {
+    
+    @IBOutlet var button: WKInterfaceButton!
+    var buttonTitle : String?
+
+    
+    var delegate : WatchButtonDelegate?
+    
+    func configureButtons(leftString:String) {
+        self.buttonTitle = leftString
+        button.setTitle(leftString)
+    
+    }
+    
+    @IBAction func leftButtonPressed() {
+        if let delegate = self.delegate, leftString = self.buttonTitle {
+            delegate.buttonPressedWithTitle(leftString);
+        }
+    }
 
 }

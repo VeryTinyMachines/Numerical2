@@ -21,10 +21,15 @@ class MainInterfaceController: WKInterfaceController {
         
         // Configure interface objects here.
     }
+    
+    
 
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        let attrNumericalString = NSAttributedString(string: "Numerical", attributes: [NSFontAttributeName : UIFont.systemFontOfSize(24)])
+        mainLabel.setAttributedText(attrNumericalString)
+        subLabel.setText("A calculator with\nno equal")
     }
 
     override func didDeactivate() {
