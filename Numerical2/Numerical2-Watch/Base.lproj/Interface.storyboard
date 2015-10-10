@@ -36,7 +36,7 @@
                                     </connections>
                                 </button>
                             </items>
-                            <edgeInsets key="margins" left="0.0" right="0.0" top="16" bottom="1"/>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="16" bottom="0.0"/>
                         </group>
                         <group width="1" alignment="left" verticalAlignment="bottom" layout="vertical" id="neQ-Br-oSS">
                             <items>
@@ -62,8 +62,10 @@
                         </group>
                     </items>
                     <connections>
+                        <outlet property="buttonContainer" destination="G5b-ao-mfc" id="xzb-R7-exK"/>
                         <outlet property="mainLabel" destination="leY-8I-V3b" id="O5a-eB-ciB"/>
                         <outlet property="subLabel" destination="1HB-ng-h5I" id="bUZ-fe-ZfM"/>
+                        <outlet property="topLabelGroup" destination="UMe-Vd-rhJ" id="6OS-08-gf4"/>
                     </connections>
                 </controller>
             </objects>
