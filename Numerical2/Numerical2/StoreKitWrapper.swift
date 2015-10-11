@@ -8,6 +8,11 @@
 
 import UIKit
 
+let ProductPurchaseSuccessNotificationName            = "ProductPurchaseSuccess"
+let ProductPurchaseFailureNotificationName            = "ProductPurchaseFailure"
+let ProductPurchaseRestorationSuccessNotificationName = "ProductPurchaseRestorationSuccess"
+let ProductPurchaseRestorationFailureNotificationName = "ProductPurchaseRestorationFailure"
+
 class StoreKitWrapper {
     
     init() {
@@ -17,8 +22,8 @@ class StoreKitWrapper {
     func purchaseProductWithID(id:String) {
         RMStore.defaultStore().addPayment(id, success: { (transaction) -> Void in
             RMStore.defaultStore().transactionPersistor?.persistTransaction(transaction)
-            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "ProductPurchaseSuccess", object: id))
-            }) { (transaction, error) -> Void in NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "ProductPurchaseFailure", object: error)) }
+            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: ProductPurchaseSuccessNotificationName, object: id))
+            }) { (transaction, error) -> Void in NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: ProductPurchaseFailureNotificationName, object: error)) }
     }
     
     func isPurchased(id:String) -> Bool {
@@ -32,10 +37,10 @@ class StoreKitWrapper {
         RMStore.defaultStore().restoreTransactionsOnSuccess({ (transactions) -> Void in
             for transaction:SKPaymentTransaction in transactions as! [SKPaymentTransaction] {
                 RMStore.defaultStore().transactionPersistor?.persistTransaction(transaction)
-              NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "ProductPurchaseRestorationSuccess", object: transaction.transactionIdentifier))
+              NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: ProductPurchaseRestorationSuccessNotificationName, object: transaction.transactionIdentifier))
             }
             }) { (error) -> Void in
-                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "ProductPurchaseRestorationFailure", object: error))
+                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: ProductPurchaseRestorationFailureNotificationName, object: error))
         }
     }
 
