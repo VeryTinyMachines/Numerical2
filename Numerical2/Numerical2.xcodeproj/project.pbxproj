@@ -68,6 +68,9 @@
 		5685FE961BCACA490019BC04 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE921BCACA490019BC04 /* OpenEars.framework */; settings = {ASSET_TAGS = (); }; };
 		5685FE971BCACA490019BC04 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE931BCACA490019BC04 /* Slt.framework */; settings = {ASSET_TAGS = (); }; };
 		5685FE9C1BCACBB40019BC04 /* OpenEarsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FE9B1BCACBB40019BC04 /* OpenEarsWrapper.m */; settings = {ASSET_TAGS = (); }; };
+		5685FEA01BCAE3340019BC04 /* RMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FE9F1BCAE3340019BC04 /* RMStore.m */; settings = {ASSET_TAGS = (); }; };
+		5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */; settings = {ASSET_TAGS = (); }; };
+		5685FEA51BCAE7A70019BC04 /* RMStoreKeychainPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,9 +196,14 @@
 		5685FE911BCACA490019BC04 /* AcousticModelSpanish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelSpanish.bundle; sourceTree = "<group>"; };
 		5685FE921BCACA490019BC04 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
 		5685FE931BCACA490019BC04 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
-		5685FE991BCACBB30019BC04 /* Numerical2-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Numerical2-Bridging-Header.h"; sourceTree = "<group>"; };
+		5685FE991BCACBB30019BC04 /* Numerical2-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Numerical2-Bridging-Header.h"; path = "Framework/Numerical2-Bridging-Header.h"; sourceTree = "<group>"; };
 		5685FE9A1BCACBB40019BC04 /* OpenEarsWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenEarsWrapper.h; sourceTree = "<group>"; };
 		5685FE9B1BCACBB40019BC04 /* OpenEarsWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenEarsWrapper.m; sourceTree = "<group>"; };
+		5685FE9E1BCAE3340019BC04 /* RMStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStore.h; sourceTree = "<group>"; };
+		5685FE9F1BCAE3340019BC04 /* RMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStore.m; sourceTree = "<group>"; };
+		5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreKitWrapper.swift; sourceTree = "<group>"; };
+		5685FEA31BCAE7A70019BC04 /* RMStoreKeychainPersistence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStoreKeychainPersistence.h; sourceTree = "<group>"; };
+		5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStoreKeychainPersistence.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,6 +273,8 @@
 		5131970E1B6ADD5900E9B802 /* Numerical2 */ = {
 			isa = PBXGroup;
 			children = (
+				5685FE991BCACBB30019BC04 /* Numerical2-Bridging-Header.h */,
+				5685FE9D1BCAE32B0019BC04 /* IAP */,
 				5685FE8F1BCACA490019BC04 /* OpenEars */,
 				51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */,
 				5131970F1B6ADD5900E9B802 /* AppDelegate.swift */,
@@ -464,10 +474,21 @@
 				5685FE931BCACA490019BC04 /* Slt.framework */,
 				5685FE9A1BCACBB40019BC04 /* OpenEarsWrapper.h */,
 				5685FE9B1BCACBB40019BC04 /* OpenEarsWrapper.m */,
-				5685FE991BCACBB30019BC04 /* Numerical2-Bridging-Header.h */,
 			);
 			name = OpenEars;
 			path = Framework;
+			sourceTree = "<group>";
+		};
+		5685FE9D1BCAE32B0019BC04 /* IAP */ = {
+			isa = PBXGroup;
+			children = (
+				5685FEA31BCAE7A70019BC04 /* RMStoreKeychainPersistence.h */,
+				5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */,
+				5685FE9E1BCAE3340019BC04 /* RMStore.h */,
+				5685FE9F1BCAE3340019BC04 /* RMStore.m */,
+				5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */,
+			);
+			name = IAP;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -697,6 +718,8 @@
 			files = (
 				510D3ABE1B6B657F00D1A07F /* Evaluator.swift in Sources */,
 				51D28B0C1B6C4B7C009A0AEC /* EquationViewController.swift in Sources */,
+				5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */,
+				5685FEA01BCAE3340019BC04 /* RMStore.m in Sources */,
 				510D3AC21B6B659E00D1A07F /* KeypadViewController.swift in Sources */,
 				519B1B0A1BA03C9700C06E70 /* Pad+CoreDataProperties.swift in Sources */,
 				51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */,
@@ -713,6 +736,7 @@
 				51D28B121B6D100A009A0AEC /* EquationViewCell.swift in Sources */,
 				519B1B071BA03C9700C06E70 /* Equation.swift in Sources */,
 				519B1B0B1BA03C9700C06E70 /* Pad.swift in Sources */,
+				5685FEA51BCAE7A70019BC04 /* RMStoreKeychainPersistence.m in Sources */,
 				51279AE71B73A8720036DF3D /* KeypadConstructor.swift in Sources */,
 				51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */,
 				519B1B111BA04F1C00C06E70 /* HistoryViewController.swift in Sources */,

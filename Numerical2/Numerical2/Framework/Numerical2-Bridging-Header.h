@@ -3,3 +3,5 @@
 //
 
 #import "OpenEarsWrapper.h"
+#import "RMStore.h"
+#import "RMStoreKeychainPersistence.h"
