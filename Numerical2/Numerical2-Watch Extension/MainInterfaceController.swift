@@ -12,8 +12,9 @@ import Foundation
 
 class MainInterfaceController: WKInterfaceController {
 
-    @IBOutlet var mainLabel: WKInterfaceLabel!
-    @IBOutlet var subLabel: WKInterfaceLabel!
+    @IBOutlet var resultLabel: WKInterfaceLabel!
+    @IBOutlet var equationLabel: WKInterfaceLabel!
+    var equationText : String = ""
     
     @IBOutlet var topLabelGroup: WKInterfaceGroup!
     @IBOutlet var buttonContainer: WKInterfaceGroup!
@@ -27,15 +28,21 @@ class MainInterfaceController: WKInterfaceController {
             buttonContainer.setContentInset(UIEdgeInsetsMake(0, 0, 0, 0))
         }
         let attrNumericalString = NSAttributedString(string: "Numerical", attributes: [NSFontAttributeName : UIFont.systemFontOfSize(24)])
-        mainLabel.setAttributedText(attrNumericalString)
-        subLabel.setText("A calculator with\nno equal")
+        resultLabel.setAttributedText(attrNumericalString)
+        equationLabel.setText("A calculator with\nno equal")
     }
 
     
     @IBAction func speechButtonPressed() {
         presentTextInputControllerWithSuggestions(nil, allowedInputMode: .Plain) { (results) -> Void in
             if let strings : [String] = results as? [String] where results!.count > 0 {
-                self.mainLabel.setText(strings.reduce("") { wholeString, partial in return wholeString! + partial })
+                self.equationText = strings.reduce("", combine: { (whole:String, partial:String) -> String in
+                    return whole + partial
+                })
+                self.equationLabel.setText(self.equationText)
+                CalculatorBrain().solveStringAsyncQueue(self.equationText, completion: { (answer) -> Void in
+                    if let answer : AnswerBundle = answer { self.resultLabel.setText(answer.answer) }
+                })
             }
         }
     }

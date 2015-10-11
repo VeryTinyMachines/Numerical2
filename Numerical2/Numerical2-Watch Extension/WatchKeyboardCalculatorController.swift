@@ -25,15 +25,7 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
     let OneButtonRowIdentifier = "OneButtonRow"
     let ThreeButtonRowIdentifier = "ThreeButtonRow"
     
-    let buttons = ["7", "8", "9",
-                   "4", "5", "6",
-                   "1", "2", "3",
-                   "0", ".", "C",
-                   "+", "÷", "x",  
-                   "-", "sin", "cos",
-                   "tan", "ln", "log",
-                   "!", "π", "e",
-                   "^", "(", ")"]
+
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
@@ -65,16 +57,16 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
         self.resultString = resultString
         self.resultLabel.setText(self.resultString)
     }
-
-    override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
-        super.willActivate()
-    }
-
-    override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
-        super.didDeactivate()
-    }
+    
+    let buttons = ["7", "8", "9",
+        "4", "5", "6",
+        "1", "2", "3",
+        "0", ".", "C",
+        "+", "÷", "x",
+        "-", "sin", "cos",
+        "tan", "ln", "log",
+        "!", "π", "e",
+        "^", "(", ")"]
     
     func configureTable() {
         buttonTable.insertRowsAtIndexes(NSIndexSet(index: 0), withRowType: OneButtonRowIdentifier)

@@ -63,8 +63,8 @@
                     </items>
                     <connections>
                         <outlet property="buttonContainer" destination="G5b-ao-mfc" id="xzb-R7-exK"/>
-                        <outlet property="mainLabel" destination="leY-8I-V3b" id="O5a-eB-ciB"/>
-                        <outlet property="subLabel" destination="1HB-ng-h5I" id="bUZ-fe-ZfM"/>
+                        <outlet property="equationLabel" destination="1HB-ng-h5I" id="f5t-Jn-qDd"/>
+                        <outlet property="resultLabel" destination="leY-8I-V3b" id="Wzf-aT-Kf2"/>
                         <outlet property="topLabelGroup" destination="UMe-Vd-rhJ" id="6OS-08-gf4"/>
                     </connections>
                 </controller>
@@ -78,10 +78,10 @@
                     <items>
                         <group width="1" alignment="left" layout="vertical" id="VAV-jf-52j">
                             <items>
-                                <label width="1" alignment="left" text="Label" id="AyX-Vh-E4z">
+                                <label width="1" alignment="left" text="0" id="AyX-Vh-E4z">
                                     <fontDescription key="font" style="UICTFontTextStyleTitle1"/>
                                 </label>
-                                <label width="1" alignment="left" text="Label+1" id="vDD-a2-xao">
+                                <label width="1" alignment="left" text="0" id="vDD-a2-xao">
                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                     <fontDescription key="font" style="UICTFontTextStyleCaption2"/>
                                 </label>
