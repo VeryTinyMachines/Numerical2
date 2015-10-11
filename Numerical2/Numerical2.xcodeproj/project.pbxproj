@@ -61,6 +61,12 @@
 		5627A7691BC7D5ED0005495F /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; settings = {ASSET_TAGS = (); }; };
 		5627A76A1BC7D6020005495F /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; settings = {ASSET_TAGS = (); }; };
 		5627A76B1BC7D60B0005495F /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; settings = {ASSET_TAGS = (); }; };
+		5685FE8C1BCACA2A0019BC04 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE8B1BCACA2A0019BC04 /* AVFoundation.framework */; };
+		5685FE8E1BCACA300019BC04 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE8D1BCACA300019BC04 /* AudioToolbox.framework */; };
+		5685FE941BCACA490019BC04 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5685FE901BCACA490019BC04 /* AcousticModelEnglish.bundle */; settings = {ASSET_TAGS = (); }; };
+		5685FE951BCACA490019BC04 /* AcousticModelSpanish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5685FE911BCACA490019BC04 /* AcousticModelSpanish.bundle */; settings = {ASSET_TAGS = (); }; };
+		5685FE961BCACA490019BC04 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE921BCACA490019BC04 /* OpenEars.framework */; settings = {ASSET_TAGS = (); }; };
+		5685FE971BCACA490019BC04 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE931BCACA490019BC04 /* Slt.framework */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -180,6 +186,12 @@
 		5627A7631BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCalculatorThreeButtonRow.swift; sourceTree = "<group>"; };
 		5627A7651BC74EA10005495F /* WatchKeyboardCalculatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchKeyboardCalculatorController.swift; sourceTree = "<group>"; };
 		5627A7671BC750EE0005495F /* WatchCalculatorOneButtonRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCalculatorOneButtonRow.swift; sourceTree = "<group>"; };
+		5685FE8B1BCACA2A0019BC04 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		5685FE8D1BCACA300019BC04 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		5685FE901BCACA490019BC04 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
+		5685FE911BCACA490019BC04 /* AcousticModelSpanish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelSpanish.bundle; sourceTree = "<group>"; };
+		5685FE921BCACA490019BC04 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
+		5685FE931BCACA490019BC04 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,7 +199,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5685FE971BCACA490019BC04 /* Slt.framework in Frameworks */,
+				5685FE8E1BCACA300019BC04 /* AudioToolbox.framework in Frameworks */,
+				5685FE8C1BCACA2A0019BC04 /* AVFoundation.framework in Frameworks */,
 				51EE5BA01BC5203A001C9D38 /* StoreKit.framework in Frameworks */,
+				5685FE961BCACA490019BC04 /* OpenEars.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +234,8 @@
 		513197031B6ADD5900E9B802 = {
 			isa = PBXGroup;
 			children = (
+				5685FE8D1BCACA300019BC04 /* AudioToolbox.framework */,
+				5685FE8B1BCACA2A0019BC04 /* AVFoundation.framework */,
 				51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */,
 				5131970E1B6ADD5900E9B802 /* Numerical2 */,
 				513197231B6ADD5900E9B802 /* Numerical2Tests */,
@@ -243,6 +261,7 @@
 		5131970E1B6ADD5900E9B802 /* Numerical2 */ = {
 			isa = PBXGroup;
 			children = (
+				5685FE8F1BCACA490019BC04 /* OpenEars */,
 				51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */,
 				5131970F1B6ADD5900E9B802 /* AppDelegate.swift */,
 				513197131B6ADD5900E9B802 /* Main.storyboard */,
@@ -432,6 +451,18 @@
 			path = "Numerical2-Watch Extension";
 			sourceTree = "<group>";
 		};
+		5685FE8F1BCACA490019BC04 /* OpenEars */ = {
+			isa = PBXGroup;
+			children = (
+				5685FE901BCACA490019BC04 /* AcousticModelEnglish.bundle */,
+				5685FE911BCACA490019BC04 /* AcousticModelSpanish.bundle */,
+				5685FE921BCACA490019BC04 /* OpenEars.framework */,
+				5685FE931BCACA490019BC04 /* Slt.framework */,
+			);
+			name = OpenEars;
+			path = Framework;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -607,6 +638,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				51279AE31B739D260036DF3D /* KeyStackView.xib in Resources */,
+				5685FE951BCACA490019BC04 /* AcousticModelSpanish.bundle in Resources */,
+				5685FE941BCACA490019BC04 /* AcousticModelEnglish.bundle in Resources */,
 				5131971A1B6ADD5900E9B802 /* LaunchScreen.storyboard in Resources */,
 				510D3ABC1B6B657F00D1A07F /* Dictionary_English.plist in Resources */,
 				51D28B101B6D0FE1009A0AEC /* EquationViewCell.xib in Resources */,
@@ -862,6 +895,10 @@
 				CODE_SIGN_ENTITLEMENTS = Numerical2/Numerical2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Numerical2/Framework",
+				);
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh;
@@ -877,6 +914,10 @@
 				CODE_SIGN_ENTITLEMENTS = Numerical2/Numerical2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Numerical2/Framework",
+				);
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh;
