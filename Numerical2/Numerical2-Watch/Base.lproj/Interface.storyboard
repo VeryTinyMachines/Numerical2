@@ -24,19 +24,28 @@
                         </group>
                         <group width="1" height="92" alignment="left" spacing="6" id="G5b-ao-mfc">
                             <items>
-                                <button alignment="center" backgroundImage="gridInput" id="gKg-I2-N8F">
-                                    <connections>
-                                        <action selector="gridButtonPressed" destination="AgC-eL-Hgc" id="8Mi-Ga-eoF"/>
-                                        <segue destination="3z8-ZC-fDx" kind="push" id="YQq-4o-aDZ"/>
-                                    </connections>
-                                </button>
-                                <button alignment="center" backgroundImage="voiceInput" id="BEi-Da-FQc">
-                                    <connections>
-                                        <action selector="speechButtonPressed" destination="AgC-eL-Hgc" id="IF8-Um-RYf"/>
-                                    </connections>
-                                </button>
+                                <group width="0.5" alignment="left" id="kMY-nN-Kmu">
+                                    <items>
+                                        <button alignment="center" backgroundImage="gridInput" id="gKg-I2-N8F">
+                                            <connections>
+                                                <action selector="gridButtonPressed" destination="AgC-eL-Hgc" id="8Mi-Ga-eoF"/>
+                                                <segue destination="3z8-ZC-fDx" kind="push" id="YQq-4o-aDZ"/>
+                                            </connections>
+                                        </button>
+                                    </items>
+                                </group>
+                                <group width="60" height="60" alignment="left" radius="30" id="Bhk-uf-oUP">
+                                    <items>
+                                        <button width="1" height="1" alignment="center" backgroundImage="gridItem" id="BEi-Da-FQc">
+                                            <connections>
+                                                <action selector="speechButtonPressed" destination="AgC-eL-Hgc" id="IF8-Um-RYf"/>
+                                            </connections>
+                                        </button>
+                                    </items>
+                                    <color key="backgroundColor" red="0.86200241820000001" green="0.0" blue="0.077245551339999996" alpha="1" colorSpace="calibratedRGB"/>
+                                </group>
                             </items>
-                            <edgeInsets key="margins" left="0.0" right="0.0" top="16" bottom="0.0"/>
+                            <edgeInsets key="margins" left="2" right="0.0" top="16" bottom="0.0"/>
                         </group>
                         <group width="1" alignment="left" verticalAlignment="bottom" layout="vertical" id="neQ-Br-oSS">
                             <items>
@@ -90,20 +99,20 @@
                                         <tableRow identifier="ThreeButtonRow" selectable="NO" id="GQJ-TX-HzZ" customClass="WatchCalculatorThreeButtonRow" customModule="Numerical2_Watch_Extension">
                                             <group key="rootItem" width="1" height="0.0" alignment="left" id="aou-UF-61C">
                                                 <items>
-                                                    <button width="0.33000000000000002" alignment="left" title="7" backgroundImage="gridItem" id="prJ-qC-GFn">
+                                                    <button width="0.33000000000000002" alignment="left" title="7" id="prJ-qC-GFn">
                                                         <accessibilityTraits key="accessibilityTraits" button="YES" staticText="YES"/>
                                                         <fontDescription key="font" type="system" pointSize="15"/>
                                                         <connections>
                                                             <action selector="leftButtonPressed" destination="GQJ-TX-HzZ" id="E3Y-Ml-r0L"/>
                                                         </connections>
                                                     </button>
-                                                    <button width="0.33000000000000002" alignment="left" title="8" backgroundImage="gridItem" id="aVA-Jd-bqY">
+                                                    <button width="0.33000000000000002" alignment="left" title="8" id="aVA-Jd-bqY">
                                                         <accessibilityTraits key="accessibilityTraits" button="YES" staticText="YES"/>
                                                         <connections>
                                                             <action selector="middleButtonPressed" destination="GQJ-TX-HzZ" id="AM3-FB-RUh"/>
                                                         </connections>
                                                     </button>
-                                                    <button width="0.33000000000000002" alignment="right" title="9" backgroundImage="gridItem" id="NZy-dY-qEZ">
+                                                    <button width="0.33000000000000002" alignment="right" title="9" id="NZy-dY-qEZ">
                                                         <accessibilityTraits key="accessibilityTraits" button="YES" staticText="YES"/>
                                                         <connections>
                                                             <action selector="rightButtonPressed" destination="GQJ-TX-HzZ" id="Nsh-5f-SVF"/>
@@ -122,7 +131,7 @@
                                         <tableRow identifier="OneButtonRow" selectable="NO" id="slb-Yt-Wbf" customClass="WatchCalculatorOneButtonRow" customModule="Numerical2_Watch_Extension">
                                             <group key="rootItem" width="1" height="0.0" alignment="left" spacing="0.0" id="e6W-EF-ZWd">
                                                 <items>
-                                                    <button width="0.33000000000000002" alignment="left" title="√" backgroundImage="gridItem" id="qlC-qa-Ko8"/>
+                                                    <button width="0.33000000000000002" alignment="left" title="√" id="qlC-qa-Ko8"/>
                                                 </items>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
@@ -143,7 +152,8 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="662" y="411.5"/>
+            <point key="canvasLocation" x="662" y="388"/>
         </scene>
     </scenes>
+    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
 </document>
