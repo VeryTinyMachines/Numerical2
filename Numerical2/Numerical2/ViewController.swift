@@ -167,6 +167,18 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         }
     }
     
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        
+        coordinator.animateAlongsideTransition({ (context) -> Void in
+            self.updateKeypad()
+            }) { (context) -> Void in
+                
+        }
+        
+        
+    }
     
     func updateKeypad() {
         
@@ -180,7 +192,8 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             changeHeightMultipler(0.45)
             workPanelShowEquation = true
         case .Minimum:
-            workPanelBottomConstraint.constant = (workPanelHeightProportion.multiplier * self.view.bounds.height * -1) + 110
+            workPanelBottomConstraint.constant = (workPanelHeightProportion.multiplier * self.view.bounds.height * -1) + 130
+            
             changeHeightMultipler(0.45)
             workPanelShowEquation = true
         }
@@ -226,6 +239,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             currentSize = KeypadSize.Maximum
         }
         
+        
         updateKeypad()
     }
     
@@ -243,6 +257,10 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         if let view = historyView {
             view.toggleEditing()
         }
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
 }
 

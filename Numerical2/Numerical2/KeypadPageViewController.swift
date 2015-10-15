@@ -8,18 +8,22 @@
 
 import UIKit
 
+protocol KeypadPageViewDelegate {
+    func updatePageControl(currentPage: NSInteger, numberOfPages: NSInteger)
+}
+
 class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, KeypadDelegate {
     
     var delegate: KeypadDelegate?
+    var pageViewDelegate: KeypadPageViewDelegate?
     
     var pageViewController : UIPageViewController?
-    
-    var pageTitles : Array<String> = ["God vs Man", "Cool Breeze", "Fire Sky"]
-    var pageImages : Array<String> = ["page1.png", "page2.png", "page3.png"]
     
     var currentIndex : Int = 0
     
     var regularView: Bool = false
+    
+    var currentLegalKeys:Set<Character> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +56,6 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
     }
     
 
-    
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         
         if size.width > size.height {
@@ -74,17 +77,14 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
                     self.pageViewController?.view.alpha = 1.0
                     }) { (complete) -> Void in
                         
-                        
-                        
+                        if let keypad = self.pageViewController?.viewControllers?.first as? KeypadViewController {
+                            keypad.updateLegalKeys()
+                            self.updateDelegatePageControl(keypad)
+                        }
                 }
-                
-                
         }
-        
-        
-        
-//        setupPageView()
     }
+    
     
     func setupPageView() {
         
@@ -109,12 +109,15 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
             pageViewController!.view.frame = self.view.bounds
             
             pageViewController!.dataSource = self
+            pageViewController!.delegate = self
             
             pageViewController!.setViewControllers([vc], direction: .Forward, animated: false, completion: nil)
             
             addChildViewController(pageViewController!)
             view.addSubview(pageViewController!.view)
             pageViewController!.didMoveToParentViewController(self)
+            
+            updateDelegatePageControl(vc)
         }
 
     }
@@ -169,12 +172,14 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
             if let keypad = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("CompactKeypadViewController") as? KeypadViewController {
                 keypad.delegate = self
                 keypad.layoutType = layout
+                keypad.setLegalKeys(currentLegalKeys)
                 return keypad
             }
         } else if layout == KeypadLayout.Regular {
             if let keypad = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("RegularKeypadViewController") as? KeypadViewController {
                 keypad.delegate = self
                 keypad.layoutType = layout
+                keypad.setLegalKeys(currentLegalKeys)
                 return keypad
             }
         }
@@ -182,11 +187,58 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
         return nil
     }
     
+    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
+        
+
+        if let vc = pendingViewControllers.first as? KeypadViewController {
+            updateDelegatePageControl(vc)
+        }
+    }
+    
+    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        
+        if let vc = pageViewController.viewControllers?.first as? KeypadViewController {
+            updateDelegatePageControl(vc)
+        }
+        
+    }
+    
     func pressedKey(key: Character) {
         print("pressedKey")
         
         if let theDelegate = delegate {
             theDelegate.pressedKey(key)
+        }
+    }
+    
+    func setLegalKeys(legalKeys: Set<Character>) {
+        currentLegalKeys = legalKeys
+        
+        if let keyPad = pageViewController?.viewControllers?.first as? KeypadViewController {
+            keyPad.setLegalKeys(currentLegalKeys)
+        }
+        
+    }
+    
+    func updateDelegatePageControl(keypadViewController: KeypadViewController) {
+        
+        
+        switch keypadViewController.layoutType {
+        case .CompactScientific:
+            updateDelegatePageControl(0, numberOfPages: 2)
+        case .CompactStandard:
+            updateDelegatePageControl(1, numberOfPages: 2)
+        case .Regular:
+            updateDelegatePageControl(0, numberOfPages: 0)
+        case .All:
+            updateDelegatePageControl(0, numberOfPages: 0)
+        }
+    }
+    
+    func updateDelegatePageControl(currentPage: NSInteger, numberOfPages: NSInteger) {
+        
+        if let theDelegate = pageViewDelegate {
+            theDelegate.updatePageControl(currentPage, numberOfPages: numberOfPages)
         }
     }
     

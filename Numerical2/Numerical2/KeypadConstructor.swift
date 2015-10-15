@@ -71,7 +71,6 @@ public class KeypadConstructor {
             keypadArray.append(KeyStackType.Standard2)
             keypadArray.append(KeyStackType.Standard3)
             keypadArray.append(KeyStackType.Standard4)
-            
         }
         
         return keypadArray

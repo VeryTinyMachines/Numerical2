@@ -135,11 +135,10 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
             theKeypad.layoutType = KeypadLayout.Regular
         } else {
             theKeypad.layoutType = theKeypad.originLayoutType
-            
         }
+        
         theKeypad.setLegalKeys(currentLegalKeys)
         theKeypad.setupKeys()
-        
     }
     
     func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {

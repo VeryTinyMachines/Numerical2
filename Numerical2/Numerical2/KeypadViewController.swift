@@ -33,6 +33,8 @@ class KeypadViewController: UIViewController {
     
     var originLayoutType = KeypadLayout.All
     
+    var currentLegalKeys:Set<Character> = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        view.backgroundColor = UIColor.clearColor()
@@ -44,7 +46,6 @@ class KeypadViewController: UIViewController {
         let compactStandard = [SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", ")", SymbolCharacter.delete, "/", "*", "-", "+"]
         
         let compactScientific = [SymbolCharacter.clear, SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", SymbolCharacter.delete, SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")"]
-        
         
         let regular = [" ", SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", " ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")", SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", ")", SymbolCharacter.delete, "/", "*", "-", "+"]
         
@@ -74,6 +75,7 @@ class KeypadViewController: UIViewController {
                     button.highlightColor = UIColor(red: 166 / 255, green: 183/255, blue: 255/255, alpha: 1.0)
                     
                 } else if character == " " {
+                    button.setTitle("", forState: UIControlState.Normal)
                     button.alpha = 0.0
                     button.enabled = false
                 } else {
@@ -81,13 +83,17 @@ class KeypadViewController: UIViewController {
                     
                     button.setTitle(formattedCharacter, forState: UIControlState.Normal)
                 }
+                
+                print(button.bounds.size)
+                button.titleLabel?.font = StyleFormatter.preferredFontForButtonOfSize(button.bounds.size)
             }
         }
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.setupKeys()
+        setupKeys()
+        updateLegalKeys()
     }
     
     
@@ -97,34 +103,50 @@ class KeypadViewController: UIViewController {
         print("pressedKey with tag \(sender.tag) with character \(character)")
         
         if let keyDelegate = delegate {
-            
-            
             keyDelegate.pressedKey(character)
         }
     }
     
+    
     func setLegalKeys(legalKeys: Set<Character>) {
 //        print("setLegalKeys: \(legalKeys)", appendNewline: true)
         
-        for button in buttons {
-            
-            let tag = button.tag
-            
-            if tag < keyCharacters.count {
-                let character = keyCharacters[tag]
+        currentLegalKeys = legalKeys
+        updateLegalKeys()
+    }
+    
+    
+    func updateLegalKeys() {
+        if let theButtons = buttons {
+            for button in theButtons {
                 
-                if legalKeys.contains(character) {
-                    // This button is legal
-                    button.alpha = 1.0
-                    button.enabled = true
-                } else {
-                    // This button is not legal
-                    button.alpha = 0.0
-                    button.enabled = false
+                let tag = button.tag
+                
+                if tag < keyCharacters.count {
+                    let character = keyCharacters[tag]
+                    
+                    if currentLegalKeys.contains(character) {
+                        // This button is legal
+                        button.alpha = 1.0
+                        button.enabled = true
+                    } else {
+                        if button.titleLabel == "" {
+                            // This button is not legal
+                            button.alpha = 0.0
+                            button.enabled = false
+                        } else {
+                            // This button is not legal
+                            button.alpha = 0.8
+                            button.enabled = false
+                        }
+                    }
+                    
+                    button.titleLabel?.font = StyleFormatter.preferredFontForButtonOfSize(button.frame.size)
                 }
-                
             }
         }
+
+        
         
     }
     

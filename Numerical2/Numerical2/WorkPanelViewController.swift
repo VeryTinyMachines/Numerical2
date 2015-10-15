@@ -12,14 +12,15 @@ protocol WorkPanelDelegate {
     func updateEquation(equation: Equation?)
 }
 
-class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFieldDelegate {
+class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewDelegate, EquationTextFieldDelegate {
     
     @IBOutlet weak var equationViewHeightConstraint: NSLayoutConstraint!
     
     var currentEquation: Equation?
     
     var equationView:EquationViewController?
-    var keyPanelView:KeyPanelViewController?
+    
+    var keyPanelView:KeypadPageViewController?
     
     var delegate: KeypadDelegate?
     
@@ -27,8 +28,15 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     
     var workPanelDelegate: WorkPanelDelegate?
     
+    @IBOutlet weak var pageControl: UIPageControl!
+    
     func questionChanged(newQuestion: String, overwrite: Bool) {
         
+    }
+    
+    func updatePageControl(currentPage: NSInteger, numberOfPages: NSInteger) {
+        pageControl.numberOfPages = numberOfPages
+        pageControl.currentPage = currentPage        
     }
     
     func updateViews() {
@@ -49,7 +57,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
                     }
                     
                     theView.setAnswer(answer)
-                    
                 })
                 
             } else {
@@ -176,10 +183,12 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
         if let question = currentEquation?.question {
             if let legalKeys = Glossary.legalCharactersToAppendString(question), theKeyPanel = keyPanelView {
                 theKeyPanel.setLegalKeys(legalKeys)
+//                theKeyPanel.setLegalKeys(legalKeys)
             }
         } else {
             if let legalKeys = Glossary.legalCharactersToAppendString(""), theKeyPanel = keyPanelView {
                 theKeyPanel.setLegalKeys(legalKeys)
+//                theKeyPanel.setLegalKeys(legalKeys)
             }
         }
     }
@@ -196,9 +205,9 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     
     func updateLayout() {
         
-        if let keyPanel = keyPanelView {
-            keyPanel.updateKeyLayout()
-        }
+//        if let keyPanel = keyPanelView {
+//            keyPanel.updateKeyLayout()
+//        }
         
         if let theEquationView = equationView {
             theEquationView.updateView()
@@ -210,7 +219,8 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let keyPad = segue.destinationViewController as? KeypadPageViewController {
             keyPad.delegate = self
-//            keyPanelView = keyPad
+            keyPad.pageViewDelegate = self
+            keyPanelView = keyPad
         } else if let theView = segue.destinationViewController as? EquationViewController {
             
             theView.delegate = self
