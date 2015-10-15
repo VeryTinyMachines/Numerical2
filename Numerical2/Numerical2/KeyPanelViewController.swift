@@ -69,7 +69,6 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         
-        
         if viewIsWideForSize(self.view.bounds.size) {
             if let _ = viewController as? KeypadViewController {
                 return nil
@@ -221,11 +220,13 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     
     func viewIsWideForSize(size: CGSize) -> Bool {
         
-        if let theDelegate = delegate {
-            return theDelegate.viewIsWide()
-        } else {
-            return false
-        }
+        return false
+        
+//        if let theDelegate = delegate {
+//            return theDelegate.viewIsWide()
+//        } else {
+//            return false
+//        }
     }
     
     

@@ -17,7 +17,6 @@ public enum KeypadLayout {
 
 protocol KeypadDelegate {
     func pressedKey(key: Character)
-    func viewIsWide() -> Bool
 }
 
 
@@ -30,38 +29,53 @@ class KeypadViewController: UIViewController {
     
     var keyCharacters:Array<Character> = []
     
-    var standardCharacters:Array<Character> = ["c","(",")","d","7","8","9","/","4","5","6","*","1","2","3","-","0",".","%","+"]
-    
-    var scientificCharacters:Array<Character> = ["c", "^", SymbolCharacter.fraction, "d", SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.pi, "/", SymbolCharacter.sin, SymbolCharacter.log2, SymbolCharacter.e, "*", SymbolCharacter.cos, SymbolCharacter.log10, SymbolCharacter.infinity, "-", SymbolCharacter.tan, SymbolCharacter.ee, SymbolCharacter.factorial, "+"]
-    
-    var scientificKeySet = false
-    
     var layoutType = KeypadLayout.CompactStandard
     
-    var originLayoutType = KeypadLayout.CompactStandard
-    
+    var originLayoutType = KeypadLayout.All
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        view.backgroundColor = UIColor.clearColor()
         setupKeys()
     }
     
     func setupKeys() {
         
-        let standardLayout = ["c","7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", ")", "d", "/", "*", "-", "+"]
+        let compactStandard = [SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", ")", SymbolCharacter.delete, "/", "*", "-", "+"]
+        
+        let compactScientific = [SymbolCharacter.clear, SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", SymbolCharacter.delete, SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")"]
+        
+        
+        let regular = [" ", SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", " ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")", SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", ")", SymbolCharacter.delete, "/", "*", "-", "+"]
+        
+        if layoutType == KeypadLayout.CompactStandard {
+            keyCharacters = compactStandard
+        } else if layoutType == KeypadLayout.CompactScientific {
+            keyCharacters = compactScientific
+        } else if layoutType == KeypadLayout.Regular {
+            keyCharacters = regular
+        }
         
         for button in buttons {
             let tag = button.tag
             
-            if tag < standardLayout.count {
-                let character = standardLayout[tag]
+            if tag < keyCharacters.count {
+                let character = keyCharacters[tag]
+                
+                button.alpha = 1.0
+                button.enabled = true
                 
                 if character == "c" {
-                    button.setTitle("CE", forState: UIControlState.Normal)
+                    button.setTitle("C", forState: UIControlState.Normal)
                     
                 } else if character == "d" {
-                    button.setTitle("Del", forState: UIControlState.Normal)
+                    button.setTitle("⬅︎", forState: UIControlState.Normal)
+                    button.baseColor = UIColor(red: 0 / 255, green: 122/255, blue: 255/255, alpha: 1.0)
+                    button.highlightColor = UIColor(red: 166 / 255, green: 183/255, blue: 255/255, alpha: 1.0)
                     
+                } else if character == " " {
+                    button.alpha = 0.0
+                    button.enabled = false
                 } else {
                     let formattedCharacter = Glossary.stringForCharacter(character)
                     
@@ -78,17 +92,39 @@ class KeypadViewController: UIViewController {
     
     
     @IBAction func pressedKey(sender: UIButton) {
-        print("pressedKey with tag \(sender.tag)")
+        let character = keyCharacters[sender.tag]
+        
+        print("pressedKey with tag \(sender.tag) with character \(character)")
         
         if let keyDelegate = delegate {
             
-            let character = keyCharacters[sender.tag]
+            
             keyDelegate.pressedKey(character)
         }
     }
     
     func setLegalKeys(legalKeys: Set<Character>) {
 //        print("setLegalKeys: \(legalKeys)", appendNewline: true)
+        
+        for button in buttons {
+            
+            let tag = button.tag
+            
+            if tag < keyCharacters.count {
+                let character = keyCharacters[tag]
+                
+                if legalKeys.contains(character) {
+                    // This button is legal
+                    button.alpha = 1.0
+                    button.enabled = true
+                } else {
+                    // This button is not legal
+                    button.alpha = 0.0
+                    button.enabled = false
+                }
+                
+            }
+        }
         
     }
     

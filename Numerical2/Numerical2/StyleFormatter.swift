@@ -13,6 +13,7 @@ public enum FontDisplayContext {
     case QuestionFraction
     case Answer
     case AnswerFraction
+    case AnswerOr
 }
 
 class StyleFormatter {
@@ -26,9 +27,11 @@ class StyleFormatter {
         case .QuestionFraction:
             return UIFont.systemFontOfSize(14.0)
         case .Answer:
-            return UIFont.boldSystemFontOfSize(30.0)
+            return UIFont.systemFontOfSize(72.0, weight: -0.75)
         case .AnswerFraction:
-            return UIFont.boldSystemFontOfSize(30.0)
+            return UIFont.systemFontOfSize(14.0)
+        case .AnswerOr:
+            return UIFont.systemFontOfSize(14.0)
         }
     }
     

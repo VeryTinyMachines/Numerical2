@@ -212,9 +212,13 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         
         let lastItem = questionArray.count - 1
         
-        if lastItem > 0 {
+        if isAnswerView {
+            collecitonView.scrollToItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.Right, animated: false)
+        } else if lastItem > 0 {
             collecitonView.scrollToItemAtIndexPath(NSIndexPath(forItem: lastItem, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.Right, animated: false)
         }
+
+        
         
     }
     
@@ -231,7 +235,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         let nib = UINib(nibName: "EquationViewCell", bundle: nil)
         collecitonView.registerNib(nib, forCellWithReuseIdentifier: "StringCell")
         
-        collecitonView.backgroundColor = UIColor.clearColor()
+//        collecitonView.backgroundColor = UIColor.clearColor()
         
         let nib2 = UINib(nibName: "FractionViewCell", bundle: nil)
         collecitonView.registerNib(nib2, forCellWithReuseIdentifier: "FractionCell")
@@ -268,7 +272,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                     theCell.denominatorLabel.text = Glossary.formattedStringForQuestion(fractionComponents[1])
                 }
                 
-                theCell.backgroundColor = UIColor.clearColor()
+//                theCell.backgroundColor = UIColor.clearColor()
 //                theCell.backgroundColor = UIColor.redColor()
                 theCell.numeratorLabel.textColor = UIColor.whiteColor()
                 theCell.denominatorLabel.textColor = UIColor.whiteColor()
@@ -280,18 +284,22 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("StringCell", forIndexPath: indexPath)
             
             if let theCell = cell as? EquationViewCell {
-                theCell.mainLabel.text = Glossary.formattedStringForQuestion(questionArray[indexPath.row])
+                
+                let string = Glossary.formattedStringForQuestion(questionArray[indexPath.row])
+                
+                if string == "or" {
+                    theCell.mainLabel.text = "  or  "
+                } else {
+                    theCell.mainLabel.text = string
+                }
+                
                 theCell.mainLabel.textColor = UIColor.whiteColor()
                 
-                theCell.backgroundColor = UIColor.clearColor()
-//                theCell.backgroundColor = UIColor.redColor()
+//                theCell.backgroundColor = UIColor.clearColor()
                 theCell.setAnswerCell(isAnswerView)
             }
-            
             return cell
         }
-        
-        
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -314,24 +322,25 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                 }
             }
             
-            return CGSize(width: width + 5, height: 44)
+            return CGSize(width: width + 5, height: collectionView.bounds.height)
             
         } else {
             
             if string == "or" {
                 let size = estimatedSizeOfString(" or ", context: FontDisplayContext.Answer)
                 
-                return CGSize(width: size.width, height: 44)
+                return CGSize(width: size.width, height: collectionView.bounds.height)
             } else {
                 
                 if isAnswerView {
                     let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Answer)
                     
-                    return CGSize(width: size.width + 10, height: 44)
+                    return CGSize(width: size.width, height: collectionView.bounds.height)
+                    
                 } else {
                     let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Question)
                     
-                    return CGSize(width: size.width, height: 44)
+                    return CGSize(width: size.width, height: collectionView.bounds.height)
                 }
                 
             }
@@ -341,24 +350,10 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     func estimatedSizeOfString(string: String, context: FontDisplayContext) -> CGSize {
         
         let font = StyleFormatter.preferredFontForContext(context)
-        
-        
         let attributedText = NSAttributedString(string: string, attributes: [NSFontAttributeName:font])
         
         return attributedText.size()
         
-//        let rect = attributedText.boundingRectWithSize(CGSize(width: 2000, height: 2000), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
-//        let size = rect.size
-        
-        
-        
-//        UIFont *fontText = [UIFont fontWithName:[AppHandlers zHandler].fontName size:16];
-//        // you can use your font.
-//        
-//        expectedLabelSize = [myString sizeWithAttributes:@{NSFontAttributeName:fontText}];
-        
-        
-//        return CGSize(width: size.width, height: size.height)
     }
     
     

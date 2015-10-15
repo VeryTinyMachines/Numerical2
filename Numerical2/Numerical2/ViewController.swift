@@ -244,6 +244,5 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             view.toggleEditing()
         }
     }
-    
 }
 
