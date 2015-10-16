@@ -60,8 +60,10 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
         
         if size.width > size.height {
             regularView = true
+            self.pageViewController?.dataSource = nil
         } else {
             regularView = false
+            self.pageViewController?.dataSource = self
         }
         
         let duration = coordinator.transitionDuration()
@@ -71,6 +73,11 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
             }) { (complete) -> Void in
                 
                 self.setupPageView()
+                
+                if size.width > size.height {
+                    self.pageViewController?.dataSource = nil
+                }
+                
                 self.pageViewController?.view.alpha = 0.0
                 
                 UIView.animateWithDuration(duration / 2, animations: { () -> Void in

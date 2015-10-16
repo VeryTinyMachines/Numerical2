@@ -35,7 +35,7 @@
                                     <action selector="toggleEditing:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ECm-do-NTW"/>
                                 </connections>
                             </button>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bjw-FC-ipK" userLabel="Workpanel Container">
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bjw-FC-ipK" userLabel="Workpanel Container">
                                 <rect key="frame" x="0.0" y="120" width="600" height="480"/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="37h-B1-32V" appends="YES" id="7Ag-UL-XTj"/>
@@ -47,29 +47,21 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Bjw-FC-ipK" secondAttribute="bottom" id="89Q-Wd-7D3"/>
                             <constraint firstAttribute="trailing" secondItem="T4S-PI-YnM" secondAttribute="trailing" id="EUk-nU-udN"/>
-                            <constraint firstItem="sTE-ia-Cj5" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="FIf-iz-z2c"/>
-                            <constraint firstItem="Bjw-FC-ipK" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.8" id="FgO-ck-NQD"/>
                             <constraint firstItem="T4S-PI-YnM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="GjY-cm-GzN"/>
-                            <constraint firstItem="sTE-ia-Cj5" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="NKE-gR-Fpr"/>
                             <constraint firstItem="sTE-ia-Cj5" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="OCK-dc-ly7"/>
+                            <constraint firstItem="Bjw-FC-ipK" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="nZa-rw-tsk"/>
+                            <constraint firstAttribute="bottom" secondItem="Bjw-FC-ipK" secondAttribute="bottom" id="o4k-HN-3PU"/>
                             <constraint firstItem="sTE-ia-Cj5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="oTM-R8-zVr"/>
                             <constraint firstAttribute="trailing" secondItem="sTE-ia-Cj5" secondAttribute="trailing" id="rvC-yG-DFZ"/>
                             <constraint firstAttribute="bottom" secondItem="sTE-ia-Cj5" secondAttribute="bottom" id="vyA-me-5sJ"/>
                             <constraint firstItem="Bjw-FC-ipK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="wOR-UH-pqk"/>
                             <constraint firstAttribute="trailing" secondItem="Bjw-FC-ipK" secondAttribute="trailing" id="xbL-no-Rr1"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="FIf-iz-z2c"/>
-                                <exclude reference="NKE-gR-Fpr"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
-                        <outlet property="workPanelBottomConstraint" destination="89Q-Wd-7D3" id="haz-NE-bQK"/>
-                        <outlet property="workPanelHeightProportion" destination="FgO-ck-NQD" id="tjH-GC-dnr"/>
+                        <outlet property="workPanelBottomConstraint" destination="o4k-HN-3PU" id="5Rp-Xs-wDo"/>
+                        <outlet property="workPanelHeight" destination="nZa-rw-tsk" id="ewQ-va-UCc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -113,7 +105,7 @@
                                                     <rect key="frame" x="15" y="0.0" width="570" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -136,7 +128,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="duR-vt-oof" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="14" y="1752"/>
+            <point key="canvasLocation" x="54" y="1747"/>
         </scene>
         <!--Work Panel View Controller-->
         <scene sceneID="0eF-rh-V1D">

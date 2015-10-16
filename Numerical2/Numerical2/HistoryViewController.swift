@@ -56,23 +56,22 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         
         // If we now have currentEquation = nil we should scroll to the bottom of the view.
         
-        if currentEquation == nil {
-            
-            // Get the final row.
-            
-            let count = self.tableView(tableView, numberOfRowsInSection: 0)
-            
-            let indexPath = NSIndexPath(forRow: count - 1, inSection: 0)
-            
-            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
-        }
+//        if currentEquation == nil {
+//            
+//            // Get the final row.
+//            
+//            let count = self.tableView(tableView, numberOfRowsInSection: 0)
+//            
+//            let indexPath = NSIndexPath(forRow: count - 1, inSection: 0)
+//            
+//            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+//        }
     }
     
     func focusOnEquation(equation: Equation?, alignmentRect: CGRect) {
         print("focusOnEquation")
         
         print(alignmentRect)
-        
     }
     
     override func viewDidLoad() {
@@ -86,6 +85,11 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         tableView!.dataSource = self
         
         tableView!.separatorColor = UIColor(white: 1.0, alpha: 0.4)
+        
+        tableView!.backgroundColor = UIColor(red: 0.0/255.0, green: 11.0/255.0, blue: 24.0/255.0, alpha: 1.0)
+        
+        tableView!.backgroundView?.backgroundColor  = tableView!.backgroundColor
+        
 //        tableView.backgroundColor = UIColor.redColor()
 //        tableView.backgroundView?.backgroundColor = UIColor.greenColor()
     }
@@ -273,7 +277,11 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
             
             if let equation = fetchedResultsController.objectAtIndexPath(indexPath) as? Equation {
                 if let answer = equation.answer, question = equation.question, sortOrder = equation.sortOrder {
-                    cell.textLabel?.text = "\(question) = \(answer) (\(sortOrder.doubleValue))"
+                    
+                    let formattedQuestion = Glossary.formattedStringForQuestion(question)
+                    let formattedAnswer = Glossary.formattedStringForQuestion(answer)
+                    
+                    cell.textLabel?.text = "\(formattedQuestion) = \(formattedAnswer)"
                 } else {
                     cell.textLabel?.text = ""
                 }
