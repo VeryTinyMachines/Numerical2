@@ -33,7 +33,10 @@ class WatchCalculatorThreeButtonRow: NSObject {
         
         self.rightString = rightString
         rightButton.setTitle(rightString)
-        rightButton.setBackgroundColor(defaultColor)
+        if rightString == "C" {
+        } else {
+            rightButton.setBackgroundColor(defaultColor)
+        }
     }
     
     @IBAction func leftButtonPressed() {
@@ -62,10 +65,26 @@ class WatchCalculatorThreeButtonRow: NSObject {
         if let delegate = self.delegate, rightString = self.rightString {
             delegate.buttonPressedWithTitle(rightString);
         }
+        var normalColor : UIColor = defaultColor
+        var highlightedColor : UIColor = self.highlightedColor
+        if rightString == "C" {
+            highlightedColor = lightenColor(normalColor)
+        }
         rightButton.setBackgroundColor(highlightedColor)
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
-            self.rightButton.setBackgroundColor(self.defaultColor)
+            self.rightButton.setBackgroundColor(normalColor)
         }
+    }
+    
+    func lightenColor(color:UIColor) -> UIColor {
+        var hue : CGFloat = 0.0
+        var saturation : CGFloat = 0.0
+        var brightness : CGFloat = 0.0
+        var alpha : CGFloat = 0.0
+        if(color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)) {
+            return UIColor(hue: hue, saturation: saturation, brightness: brightness*1.3, alpha: alpha)
+        }
+        return color
     }
 }
