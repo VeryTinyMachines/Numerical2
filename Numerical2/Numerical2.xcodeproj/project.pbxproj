@@ -595,7 +595,7 @@
 				TargetAttributes = {
 					5131970B1B6ADD5900E9B802 = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 5XEWX37TS6;
+						DevelopmentTeam = C583RN882K;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -621,7 +621,7 @@
 					};
 					5627A73D1BC68F3F0005495F = {
 						CreatedOnToolsVersion = 7.0.1;
-						DevelopmentTeam = 5XEWX37TS6;
+						DevelopmentTeam = C583RN882K;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -630,7 +630,7 @@
 					};
 					5627A7491BC68F3F0005495F = {
 						CreatedOnToolsVersion = 7.0.1;
-						DevelopmentTeam = 5XEWX37TS6;
+						DevelopmentTeam = C583RN882K;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -929,13 +929,14 @@
 				CODE_SIGN_ENTITLEMENTS = Numerical2/Numerical2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Numerical2/Framework",
 				);
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh;
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Numerical2/Framework/Numerical2-Bridging-Header.h";
@@ -951,13 +952,14 @@
 				CODE_SIGN_ENTITLEMENTS = Numerical2/Numerical2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Numerical2/Framework",
 				);
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh;
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Numerical2/Framework/Numerical2-Bridging-Header.h";
@@ -1023,7 +1025,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = Numerical2_Watch_Extension;
 				INFOPLIST_FILE = "Numerical2-Watch/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh.watch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.watch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1044,7 +1046,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = Numerical2_Watch_Extension;
 				INFOPLIST_FILE = "Numerical2-Watch/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh.watch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.watch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1062,7 +1064,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Numerical2-Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh.watch.extesion;
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.watch.extension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -1081,7 +1083,7 @@
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Numerical2-Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.goatella.numericalArgh.watch.extesion;
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.watch.extension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
