@@ -56,12 +56,6 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
     
     
     func persistEquation() {
-//        if WCSession.isSupported() {
-//            let message = ["key":"value"]
-//            WCSession.defaultSession().sendMessage(message, replyHandler: { (reply:[String : AnyObject]) -> Void in
-//                
-//                }, errorHandler: nil)
-//        }
         if equationString != "0" {
             WatchEquation(equationString: self.equationString, answerString: self.resultString, deviceIDString: WKInterfaceDevice.currentDevice().model).persist()
         }

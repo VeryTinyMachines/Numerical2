@@ -74,9 +74,7 @@
 		5685FEA01BCAE3340019BC04 /* RMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FE9F1BCAE3340019BC04 /* RMStore.m */; };
 		5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */; };
 		5685FEA51BCAE7A70019BC04 /* RMStoreKeychainPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */; };
-		56F951351BD1BEF200D81E1A /* Numerical2-Watch Extension.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7621BC72C630005495F /* Numerical2-Watch Extension.entitlements */; };
-		56F951361BD1BEF600D81E1A /* Numerical2-Watch.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7611BC722FC0005495F /* Numerical2-Watch.entitlements */; };
-		56F951371BD1BEFB00D81E1A /* Numerical2.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */; };
+		56DE8F1C1BD309EE00D79DC7 /* PhoneCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE8F1B1BD309EE00D79DC7 /* PhoneCommunicator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,6 +209,7 @@
 		5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreKitWrapper.swift; sourceTree = "<group>"; };
 		5685FEA31BCAE7A70019BC04 /* RMStoreKeychainPersistence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStoreKeychainPersistence.h; sourceTree = "<group>"; };
 		5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStoreKeychainPersistence.m; sourceTree = "<group>"; };
+		56DE8F1B1BD309EE00D79DC7 /* PhoneCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneCommunicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -469,6 +468,7 @@
 				5627A7531BC68F3F0005495F /* Assets.xcassets */,
 				5627A7551BC68F3F0005495F /* Info.plist */,
 				5638AC081BD06F910028C41E /* WatchEquation.swift */,
+				56DE8F1B1BD309EE00D79DC7 /* PhoneCommunicator.swift */,
 			);
 			path = "Numerical2-Watch Extension";
 			sourceTree = "<group>";
@@ -791,6 +791,7 @@
 				564DA2331BCD244500EFD28B /* SinkableUserDefaults.swift in Sources */,
 				5638AC091BD06F910028C41E /* WatchEquation.swift in Sources */,
 				5627A76B1BC7D60B0005495F /* Glossary.swift in Sources */,
+				56DE8F1C1BD309EE00D79DC7 /* PhoneCommunicator.swift in Sources */,
 				5627A7641BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift in Sources */,
 				5627A7501BC68F3F0005495F /* MainInterfaceController.swift in Sources */,
 			);
