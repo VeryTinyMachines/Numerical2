@@ -19,6 +19,7 @@ class MainInterfaceController: WKInterfaceController {
     @IBOutlet var topLabelGroup: WKInterfaceGroup!
     @IBOutlet var buttonContainer: WKInterfaceGroup!
     
+    @IBOutlet var coloredButtonContainer: WKInterfaceGroup!
 
     override func willActivate() {
         super.willActivate()
@@ -27,9 +28,15 @@ class MainInterfaceController: WKInterfaceController {
             topLabelGroup.setContentInset(UIEdgeInsetsMake(0, 8, 0, 5))
             buttonContainer.setContentInset(UIEdgeInsetsMake(0, 0, 0, 0))
         }
-        let attrNumericalString = NSAttributedString(string: "Numerical", attributes: [NSFontAttributeName : UIFont.systemFontOfSize(24)])
-        resultLabel.setAttributedText(attrNumericalString)
-        equationLabel.setText("A calculator with\nno equal")
+        
+        if let latestEquation : String = SinkableUserDefaults.standardUserDefaults.objectForKey("latestWatchEquation") as? String, latestAnswer : String = SinkableUserDefaults.standardUserDefaults.objectForKey("latestWatchResult") as? String {
+            resultLabel.setText(latestAnswer)
+            equationLabel.setText(latestEquation)
+        } else {
+            let attrNumericalString = NSAttributedString(string: "Numerical", attributes: [NSFontAttributeName : UIFont.systemFontOfSize(24)])
+            resultLabel.setAttributedText(attrNumericalString)
+            equationLabel.setText("A calculator with\nno equal")
+        }
     }
 
     
