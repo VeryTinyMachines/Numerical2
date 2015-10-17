@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="9058" systemVersion="15A284" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="8092"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9048"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="9019"/>
     </dependencies>
     <scenes>
         <!--Main Interface Controller-->
@@ -36,7 +36,7 @@
                                 </group>
                                 <group width="60" height="60" alignment="left" radius="30" id="Bhk-uf-oUP">
                                     <items>
-                                        <button width="1" height="1" alignment="center" backgroundImage="gridItem" id="BEi-Da-FQc">
+                                        <button width="0.5" height="0.59999999999999998" alignment="center" verticalAlignment="center" backgroundImage="dictation_icon" id="BEi-Da-FQc">
                                             <connections>
                                                 <action selector="speechButtonPressed" destination="AgC-eL-Hgc" id="IF8-Um-RYf"/>
                                             </connections>
@@ -72,6 +72,7 @@
                     </items>
                     <connections>
                         <outlet property="buttonContainer" destination="G5b-ao-mfc" id="xzb-R7-exK"/>
+                        <outlet property="coloredButtonContainer" destination="Bhk-uf-oUP" id="B1K-zx-H5G"/>
                         <outlet property="equationLabel" destination="1HB-ng-h5I" id="f5t-Jn-qDd"/>
                         <outlet property="resultLabel" destination="leY-8I-V3b" id="Wzf-aT-Kf2"/>
                         <outlet property="topLabelGroup" destination="UMe-Vd-rhJ" id="6OS-08-gf4"/>
@@ -152,7 +153,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="662" y="388"/>
+            <point key="canvasLocation" x="686" y="410"/>
         </scene>
     </scenes>
     <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
