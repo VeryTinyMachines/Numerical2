@@ -10,7 +10,7 @@ import WatchKit
 import Foundation
 
 
-class MainInterfaceController: WKInterfaceController {
+class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate {
 
     @IBOutlet var resultLabel: WKInterfaceLabel!
     @IBOutlet var equationLabel: WKInterfaceLabel!
@@ -27,11 +27,22 @@ class MainInterfaceController: WKInterfaceController {
         if device.screenBounds.width < 156.0 {
             topLabelGroup.setContentInset(UIEdgeInsetsMake(0, 8, 0, 5))
             buttonContainer.setContentInset(UIEdgeInsetsMake(0, 0, 0, 0))
+            PhoneCommunicator.delegate = self
         }
         
-        if let latestEquation : String = SinkableUserDefaults.standardUserDefaults.objectForKey("latestWatchEquation") as? String, latestAnswer : String = SinkableUserDefaults.standardUserDefaults.objectForKey("latestWatchResult") as? String {
-            resultLabel.setText(latestAnswer)
-            equationLabel.setText(latestEquation)
+        setLabelStringsWithDictionary(PhoneCommunicator.latestEquationDict)
+        coloredButtonContainer.setBackgroundColor(PhoneCommunicator.currentTint())
+    }
+    
+    func contextDidChangeWithNewLatestEquation(newEquation: [String : String]?, newTintColor: UIColor) {
+            setLabelStringsWithDictionary(newEquation)
+    }
+    
+    func setLabelStringsWithDictionary(optionalEquationDict:[String:String]?) {
+        coloredButtonContainer.setBackgroundColor(PhoneCommunicator.currentTint())
+        if let latestEquation = optionalEquationDict {
+            resultLabel.setText(latestEquation[""])
+            equationLabel.setText(latestEquation[""])
         } else {
             let attrNumericalString = NSAttributedString(string: "Numerical", attributes: [NSFontAttributeName : UIFont.systemFontOfSize(24)])
             resultLabel.setAttributedText(attrNumericalString)
@@ -47,9 +58,13 @@ class MainInterfaceController: WKInterfaceController {
                     return whole + partial
                 })
                 self.equationLabel.setText(self.equationText)
-                CalculatorBrain().solveStringAsyncQueue(self.equationText, completion: { (answer) -> Void in
-                    if let answer : AnswerBundle = answer { self.resultLabel.setText(answer.answer) }
-                })
+                if let parsedString = NaturalLanguageParser.sharedInstance.translateString(self.equationText){
+                    CalculatorBrain().solveStringAsyncQueue(parsedString, completion: { (answer) -> Void in
+                        if let answer : AnswerBundle = answer { self.resultLabel.setText(answer.answer) }
+                    })
+                } else {
+                    //maybe show error
+                }
             }
         }
     }

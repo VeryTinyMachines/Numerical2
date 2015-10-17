@@ -26,7 +26,7 @@ struct WatchEquation {
         self.dateString = dateString
     }
     
-    func toJSON() -> Dictionary<String, String> {
+    func toDictionary() -> Dictionary<String, String> {
         var dict = Dictionary<String, String>()
         dict["equationString"] = equationString
         dict["answerString"] = answerString
@@ -36,21 +36,8 @@ struct WatchEquation {
     }
     
     func persist() {
-        let fileURL = NSFileManager.defaultManager().containerURLForSecurityApplicationGroupIdentifier(AppGroupId)?.URLByAppendingPathComponent(dateString + ".json")
-        if let os = NSOutputStream(toFileAtPath: (fileURL?.absoluteString)!, append: true) {
-            os.open()
-            NSJSONSerialization.writeJSONObject(self.toJSON(), toStream: os, options: .PrettyPrinted, error: nil)
-            os.close()
-        }
-        SinkableUserDefaults.standardUserDefaults.setObject(equationString, forKey: "latestWatchEquation")
-        SinkableUserDefaults.standardUserDefaults.setObject(answerString, forKey: "latestWatchResult")
-    }
-    
-    static func getWatchEquationsAndPurgeCache() -> [WatchEquation]? {
-        if let equationPaths = allEquationPaths() {
-            return equationPaths.flatMap(yankWatchEquationAtPath)
-        }
-        return nil
+        PhoneCommunicator.sendEquationDictToPhone(self.toDictionary())
+        PhoneCommunicator.latestEquationDict = self.toDictionary()
     }
     
      static private func yankWatchEquationAtPath(equationPath:String) -> WatchEquation? {
@@ -58,29 +45,15 @@ struct WatchEquation {
             if let data = NSFileManager.defaultManager().contentsAtPath(equationPath){
                 try NSFileManager.defaultManager().removeItemAtPath(equationPath)
                 let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! Dictionary<String, String>
-                if let equation = WatchEquation.fromJSON(json) {
+                if let equation = WatchEquation.fromDictionary(json) {
                     return equation
                 }
             }
         } catch _ {}
         return nil
     }
-    
-    static func equationStore() -> String? {
-        if let sharedContainer = sharedContainer() {
-            return sharedContainer.URLByAppendingPathComponent("equations", isDirectory: true).absoluteString
-        }
-        return nil
-    }
-    
-    static private func allEquationPaths() -> [String]? {
-        do {
-            if let equationStore = equationStore() { return try NSFileManager.defaultManager().contentsOfDirectoryAtPath(equationStore) }
-        } catch _ {}
-        return nil
-    }
 
-    static func fromJSON(json:Dictionary<String, String>) -> WatchEquation? {
+    static func fromDictionary(json:Dictionary<String, String>) -> WatchEquation? {
         if let equationString = json["equationString"], answerString = json["answerString"], deviceIDString = json["deviceIDString"], dateString = json["dateString"] {
             return WatchEquation(equationString: equationString, answerString: answerString, deviceIDString: deviceIDString, dateString: dateString)
         }

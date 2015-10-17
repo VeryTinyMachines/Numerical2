@@ -6,8 +6,8 @@
 //  Copyright © 2015 Very Tiny Machines. All rights reserved.
 //
 
-import Foundation
 import WatchConnectivity
+import UIKit
 
 protocol PhoneCommunicatorDelegate {
     func contextDidChangeWithNewLatestEquation(newEquation:[String:String]?, newTintColor:UIColor)

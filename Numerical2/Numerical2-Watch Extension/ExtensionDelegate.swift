@@ -8,15 +8,10 @@
 
 import WatchKit
 
-let AppGroupId = "group.andrewjclark.numericalapp"
-
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidFinishLaunching() {
-        SinkableUserDefaults.standardUserDefaults.appGroupID = AppGroupId
-        if let equationStore = WatchEquation.equationStore() {
-            do { try NSFileManager.defaultManager().createDirectoryAtPath(equationStore, withIntermediateDirectories: false, attributes: nil) } catch _ {}
-        }
+        PhoneCommunicator.sharedCommunicator
     }
 
     func applicationDidBecomeActive() {
@@ -29,6 +24,3 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     }
 
 }
-
-
-func sharedContainer() -> NSURL? { return NSFileManager.defaultManager().containerURLForSecurityApplicationGroupIdentifier(AppGroupId) }

@@ -8,7 +8,7 @@
 
 import WatchKit
 
-class WatchCalculatorThreeButtonRow: NSObject {
+class WatchCalculatorThreeButtonRow: NSObject, PhoneCommunicatorDelegate {
 
     @IBOutlet var leftButton: WKInterfaceButton!
     var leftString : String?
@@ -34,8 +34,16 @@ class WatchCalculatorThreeButtonRow: NSObject {
         self.rightString = rightString
         rightButton.setTitle(rightString)
         if rightString == "C" {
+            PhoneCommunicator.delegate = self
+            rightButton.setBackgroundColor(SinkableUserDefaults.standardUserDefaults.watchTintColor())
         } else {
             rightButton.setBackgroundColor(defaultColor)
+        }
+    }
+    
+    func contextDidChangeWithNewLatestEquation(newEquation: [String : String]?, newTintColor: UIColor) {
+        if rightString == "C" {
+            rightButton.setBackgroundColor(newTintColor)
         }
     }
     
@@ -68,6 +76,7 @@ class WatchCalculatorThreeButtonRow: NSObject {
         var normalColor : UIColor = defaultColor
         var highlightedColor : UIColor = self.highlightedColor
         if rightString == "C" {
+            normalColor = PhoneCommunicator.currentTint()
             highlightedColor = lightenColor(normalColor)
         }
         rightButton.setBackgroundColor(highlightedColor)
