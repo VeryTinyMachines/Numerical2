@@ -75,6 +75,8 @@
 		5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */; };
 		5685FEA51BCAE7A70019BC04 /* RMStoreKeychainPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */; };
 		56DE8F1C1BD309EE00D79DC7 /* PhoneCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE8F1B1BD309EE00D79DC7 /* PhoneCommunicator.swift */; };
+		56DE8F1D1BD312E800D79DC7 /* WatchEquation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5638AC081BD06F910028C41E /* WatchEquation.swift */; };
+		56DE8F1F1BD316F600D79DC7 /* WatchCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE8F1E1BD316F600D79DC7 /* WatchCommunicator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -210,6 +212,7 @@
 		5685FEA31BCAE7A70019BC04 /* RMStoreKeychainPersistence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStoreKeychainPersistence.h; sourceTree = "<group>"; };
 		5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStoreKeychainPersistence.m; sourceTree = "<group>"; };
 		56DE8F1B1BD309EE00D79DC7 /* PhoneCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneCommunicator.swift; sourceTree = "<group>"; };
+		56DE8F1E1BD316F600D79DC7 /* WatchCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCommunicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,6 +295,7 @@
 				513197161B6ADD5900E9B802 /* Assets.xcassets */,
 				513197181B6ADD5900E9B802 /* LaunchScreen.storyboard */,
 				5131971B1B6ADD5900E9B802 /* Info.plist */,
+				56DE8F1E1BD316F600D79DC7 /* WatchCommunicator.swift */,
 			);
 			path = Numerical2;
 			sourceTree = "<group>";
@@ -731,6 +735,7 @@
 				510D3AC21B6B659E00D1A07F /* KeypadViewController.swift in Sources */,
 				519B1B0A1BA03C9700C06E70 /* Pad+CoreDataProperties.swift in Sources */,
 				51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */,
+				56DE8F1D1BD312E800D79DC7 /* WatchEquation.swift in Sources */,
 				51D28B501B6D1C0F009A0AEC /* FractionViewCell.swift in Sources */,
 				51F2F44D1B6C3FAE00B845CA /* KeyPanelViewController.swift in Sources */,
 				519B1B081BA03C9700C06E70 /* EquationStore.swift in Sources */,
@@ -745,6 +750,7 @@
 				519B1B071BA03C9700C06E70 /* Equation.swift in Sources */,
 				519B1B0B1BA03C9700C06E70 /* Pad.swift in Sources */,
 				5685FEA51BCAE7A70019BC04 /* RMStoreKeychainPersistence.m in Sources */,
+				56DE8F1F1BD316F600D79DC7 /* WatchCommunicator.swift in Sources */,
 				51279AE71B73A8720036DF3D /* KeypadConstructor.swift in Sources */,
 				51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */,
 				519B1B111BA04F1C00C06E70 /* HistoryViewController.swift in Sources */,
