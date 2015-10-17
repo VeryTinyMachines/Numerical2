@@ -43,7 +43,7 @@
 		51D28B121B6D100A009A0AEC /* EquationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B111B6D100A009A0AEC /* EquationViewCell.swift */; };
 		51D28B4E1B6D1BA9009A0AEC /* FractionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51D28B4D1B6D1BA9009A0AEC /* FractionViewCell.xib */; };
 		51D28B501B6D1C0F009A0AEC /* FractionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */; };
-		51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; settings = {ASSET_TAGS = (); }; };
+		51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; };
 		51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E84D301B8B5C3B00C3E28E /* CalcButton.swift */; };
 		51EE5BA01BC5203A001C9D38 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */; };
 		51F2F44D1B6C3FAE00B845CA /* KeyPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */; };
@@ -55,22 +55,28 @@
 		5627A7521BC68F3F0005495F /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7511BC68F3F0005495F /* ExtensionDelegate.swift */; };
 		5627A7541BC68F3F0005495F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7531BC68F3F0005495F /* Assets.xcassets */; };
 		5627A7581BC68F3F0005495F /* Numerical2-Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5627A73E1BC68F3F0005495F /* Numerical2-Watch.app */; };
-		5627A7641BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7631BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift */; settings = {ASSET_TAGS = (); }; };
-		5627A7661BC74EA10005495F /* WatchKeyboardCalculatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7651BC74EA10005495F /* WatchKeyboardCalculatorController.swift */; settings = {ASSET_TAGS = (); }; };
-		5627A7681BC750EE0005495F /* WatchCalculatorOneButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7671BC750EE0005495F /* WatchCalculatorOneButtonRow.swift */; settings = {ASSET_TAGS = (); }; };
-		5627A7691BC7D5ED0005495F /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; settings = {ASSET_TAGS = (); }; };
-		5627A76A1BC7D6020005495F /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; settings = {ASSET_TAGS = (); }; };
-		5627A76B1BC7D60B0005495F /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; settings = {ASSET_TAGS = (); }; };
+		5627A7641BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7631BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift */; };
+		5627A7661BC74EA10005495F /* WatchKeyboardCalculatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7651BC74EA10005495F /* WatchKeyboardCalculatorController.swift */; };
+		5627A7681BC750EE0005495F /* WatchCalculatorOneButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7671BC750EE0005495F /* WatchCalculatorOneButtonRow.swift */; };
+		5627A7691BC7D5ED0005495F /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
+		5627A76A1BC7D6020005495F /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; };
+		5627A76B1BC7D60B0005495F /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
+		5638AC091BD06F910028C41E /* WatchEquation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5638AC081BD06F910028C41E /* WatchEquation.swift */; };
+		564CB5D31BCE8616008F8666 /* NaturalLanguageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */; };
+		564DA2331BCD244500EFD28B /* SinkableUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1B0E1BA03CAE00C06E70 /* SinkableUserDefaults.swift */; };
 		5685FE8C1BCACA2A0019BC04 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE8B1BCACA2A0019BC04 /* AVFoundation.framework */; };
 		5685FE8E1BCACA300019BC04 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE8D1BCACA300019BC04 /* AudioToolbox.framework */; };
-		5685FE941BCACA490019BC04 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5685FE901BCACA490019BC04 /* AcousticModelEnglish.bundle */; settings = {ASSET_TAGS = (); }; };
-		5685FE951BCACA490019BC04 /* AcousticModelSpanish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5685FE911BCACA490019BC04 /* AcousticModelSpanish.bundle */; settings = {ASSET_TAGS = (); }; };
-		5685FE961BCACA490019BC04 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE921BCACA490019BC04 /* OpenEars.framework */; settings = {ASSET_TAGS = (); }; };
-		5685FE971BCACA490019BC04 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE931BCACA490019BC04 /* Slt.framework */; settings = {ASSET_TAGS = (); }; };
-		5685FE9C1BCACBB40019BC04 /* OpenEarsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FE9B1BCACBB40019BC04 /* OpenEarsWrapper.m */; settings = {ASSET_TAGS = (); }; };
-		5685FEA01BCAE3340019BC04 /* RMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FE9F1BCAE3340019BC04 /* RMStore.m */; settings = {ASSET_TAGS = (); }; };
-		5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */; settings = {ASSET_TAGS = (); }; };
-		5685FEA51BCAE7A70019BC04 /* RMStoreKeychainPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */; settings = {ASSET_TAGS = (); }; };
+		5685FE941BCACA490019BC04 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5685FE901BCACA490019BC04 /* AcousticModelEnglish.bundle */; };
+		5685FE951BCACA490019BC04 /* AcousticModelSpanish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5685FE911BCACA490019BC04 /* AcousticModelSpanish.bundle */; };
+		5685FE961BCACA490019BC04 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE921BCACA490019BC04 /* OpenEars.framework */; };
+		5685FE971BCACA490019BC04 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE931BCACA490019BC04 /* Slt.framework */; };
+		5685FE9C1BCACBB40019BC04 /* OpenEarsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FE9B1BCACBB40019BC04 /* OpenEarsWrapper.m */; };
+		5685FEA01BCAE3340019BC04 /* RMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FE9F1BCAE3340019BC04 /* RMStore.m */; };
+		5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */; };
+		5685FEA51BCAE7A70019BC04 /* RMStoreKeychainPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */; };
+		56F951351BD1BEF200D81E1A /* Numerical2-Watch Extension.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7621BC72C630005495F /* Numerical2-Watch Extension.entitlements */; };
+		56F951361BD1BEF600D81E1A /* Numerical2-Watch.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7611BC722FC0005495F /* Numerical2-Watch.entitlements */; };
+		56F951371BD1BEFB00D81E1A /* Numerical2.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +196,7 @@
 		5627A7631BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCalculatorThreeButtonRow.swift; sourceTree = "<group>"; };
 		5627A7651BC74EA10005495F /* WatchKeyboardCalculatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchKeyboardCalculatorController.swift; sourceTree = "<group>"; };
 		5627A7671BC750EE0005495F /* WatchCalculatorOneButtonRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCalculatorOneButtonRow.swift; sourceTree = "<group>"; };
+		5638AC081BD06F910028C41E /* WatchEquation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchEquation.swift; sourceTree = "<group>"; };
 		5685FE8B1BCACA2A0019BC04 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5685FE8D1BCACA300019BC04 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5685FE901BCACA490019BC04 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
@@ -461,6 +468,7 @@
 				5627A7671BC750EE0005495F /* WatchCalculatorOneButtonRow.swift */,
 				5627A7531BC68F3F0005495F /* Assets.xcassets */,
 				5627A7551BC68F3F0005495F /* Info.plist */,
+				5638AC081BD06F910028C41E /* WatchEquation.swift */,
 			);
 			path = "Numerical2-Watch Extension";
 			sourceTree = "<group>";
@@ -776,9 +784,12 @@
 			files = (
 				5627A7691BC7D5ED0005495F /* CalculatorBrain.swift in Sources */,
 				5627A76A1BC7D6020005495F /* Evaluator.swift in Sources */,
+				564CB5D31BCE8616008F8666 /* NaturalLanguageParser.swift in Sources */,
 				5627A7681BC750EE0005495F /* WatchCalculatorOneButtonRow.swift in Sources */,
 				5627A7661BC74EA10005495F /* WatchKeyboardCalculatorController.swift in Sources */,
 				5627A7521BC68F3F0005495F /* ExtensionDelegate.swift in Sources */,
+				564DA2331BCD244500EFD28B /* SinkableUserDefaults.swift in Sources */,
+				5638AC091BD06F910028C41E /* WatchEquation.swift in Sources */,
 				5627A76B1BC7D60B0005495F /* Glossary.swift in Sources */,
 				5627A7641BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift in Sources */,
 				5627A7501BC68F3F0005495F /* MainInterfaceController.swift in Sources */,
