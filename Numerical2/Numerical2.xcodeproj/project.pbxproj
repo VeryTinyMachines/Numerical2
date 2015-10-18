@@ -48,6 +48,8 @@
 		51EE5BA01BC5203A001C9D38 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */; };
 		51F2F44D1B6C3FAE00B845CA /* KeyPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */; };
 		51F2F44F1B6C421B00B845CA /* WorkPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */; };
+		5623BDF51BD40FDB0046B84D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623BDF41BD40FDB0046B84D /* Constants.swift */; };
+		5623BDF61BD40FDB0046B84D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623BDF41BD40FDB0046B84D /* Constants.swift */; };
 		5627A7421BC68F3F0005495F /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7401BC68F3F0005495F /* Interface.storyboard */; };
 		5627A7441BC68F3F0005495F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7431BC68F3F0005495F /* Assets.xcassets */; };
 		5627A74B1BC68F3F0005495F /* Numerical2-Watch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5627A74A1BC68F3F0005495F /* Numerical2-Watch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -180,6 +182,7 @@
 		51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyPanelViewController.swift; sourceTree = "<group>"; };
 		51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkPanelViewController.swift; sourceTree = "<group>"; };
+		5623BDF41BD40FDB0046B84D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5627A73E1BC68F3F0005495F /* Numerical2-Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Numerical2-Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5627A7411BC68F3F0005495F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		5627A7431BC68F3F0005495F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -292,6 +295,7 @@
 				513197181B6ADD5900E9B802 /* LaunchScreen.storyboard */,
 				5131971B1B6ADD5900E9B802 /* Info.plist */,
 				56DE8F1E1BD316F600D79DC7 /* WatchCommunicator.swift */,
+				5623BDF41BD40FDB0046B84D /* Constants.swift */,
 			);
 			path = Numerical2;
 			sourceTree = "<group>";
@@ -723,6 +727,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				510D3ABE1B6B657F00D1A07F /* Evaluator.swift in Sources */,
+				5623BDF51BD40FDB0046B84D /* Constants.swift in Sources */,
 				51D28B0C1B6C4B7C009A0AEC /* EquationViewController.swift in Sources */,
 				5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */,
 				5685FEA01BCAE3340019BC04 /* RMStore.m in Sources */,
@@ -792,6 +797,7 @@
 				56DE8F1C1BD309EE00D79DC7 /* PhoneCommunicator.swift in Sources */,
 				5627A7641BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift in Sources */,
 				5627A7501BC68F3F0005495F /* MainInterfaceController.swift in Sources */,
+				5623BDF61BD40FDB0046B84D /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

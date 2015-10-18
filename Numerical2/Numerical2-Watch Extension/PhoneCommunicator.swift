@@ -32,22 +32,11 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
     
     static var latestEquationDict : [String : String]?  {
         get {
-        var dictionaryToUse = session.applicationContext
-            if let latestSentTimestamp = session.applicationContext["timestamp"] as! NSTimeInterval? {
-                if let latestReceivedTimestamp = session.receivedApplicationContext["timestamp"] as! NSTimeInterval? {
-                    dictionaryToUse = latestReceivedTimestamp > latestSentTimestamp ? session.receivedApplicationContext : session.applicationContext
-        
-                }
-        
-            } else if session.receivedApplicationContext["timestamp"] != nil {
-                dictionaryToUse = session.receivedApplicationContext
-            }
-        
-            return dictionaryToUse["latestEquation"] as? [String:String]
+            return latestContext()[LatestEquationKey] as? [String:String]
         }
         set {
-            var currentContext = session.receivedApplicationContext
-            currentContext["latestEquation"] = newValue
+            var currentContext = latestContext()
+            currentContext[LatestEquationKey] = newValue
             currentContext["timestamp"] = NSDate().timeIntervalSince1970
             do {
                 try session.updateApplicationContext(currentContext)
@@ -62,10 +51,24 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
     }
     
     static func currentTint() -> UIColor {
-        if let colorData = session.receivedApplicationContext["colorData"] as! NSData? {
+        if let colorData = latestContext()["colorData"] as! NSData? {
             return NSKeyedUnarchiver.unarchiveObjectWithData(colorData) as! UIColor
         }
         return UIColor.purpleColor()
+    }
+    
+    static private func latestContext() -> [String:AnyObject] {
+        var dictionaryToUse = session.applicationContext
+        if let latestSentTimestamp = session.applicationContext["timestamp"] as! NSTimeInterval? {
+            if let latestReceivedTimestamp = session.receivedApplicationContext["timestamp"] as! NSTimeInterval? {
+                dictionaryToUse = latestReceivedTimestamp > latestSentTimestamp ? session.receivedApplicationContext : session.applicationContext
+                
+            }
+            
+        } else if session.receivedApplicationContext["timestamp"] != nil {
+            dictionaryToUse = session.receivedApplicationContext
+        }
+        return dictionaryToUse
     }
     
     
@@ -73,7 +76,7 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
         if let delegate = PhoneCommunicator.delegate{
             var colorToSend = PhoneCommunicator.currentTint()
             var equationDict : [String:String]? = nil
-            if let realDict = applicationContext["latestEquation"] as! [String:String]? {
+            if let realDict = applicationContext[LatestEquationKey] as! [String:String]? {
                 equationDict = realDict
             }
             
