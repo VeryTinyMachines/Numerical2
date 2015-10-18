@@ -34,14 +34,28 @@ class WatchCommunicator : NSObject, WCSessionDelegate {
     
     static var latestEquationDict : [String : String]?  {
         get {
-            return WatchCommunicator.session.receivedApplicationContext["latestEquation"] as? [String:String]
+        var dictionaryToUse = session.applicationContext
+        if let latestSentTimestamp = session.applicationContext["timestamp"] as! NSTimeInterval? {
+        if let latestReceivedTimestamp = session.receivedApplicationContext["timestamp"] as! NSTimeInterval? {
+        dictionaryToUse = latestReceivedTimestamp > latestSentTimestamp ? session.receivedApplicationContext : session.applicationContext
+        
+        }
+        
+    } else if session.receivedApplicationContext["timestamp"] != nil {
+        dictionaryToUse = session.receivedApplicationContext
+        }
+        
+        return dictionaryToUse["latestEquation"] as? [String:String]
         }
         set {
-            var currentContext = WatchCommunicator.session.receivedApplicationContext
+            var currentContext = session.receivedApplicationContext
             currentContext["latestEquation"] = newValue
+            currentContext["timestamp"] = NSDate().timeIntervalSince1970
             do {
                 try session.updateApplicationContext(currentContext)
-            } catch let error {print(error)}
+            } catch let error {
+                print(error)
+            }
         }
     }
     

@@ -27,8 +27,8 @@ class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate 
         if device.screenBounds.width < 156.0 {
             topLabelGroup.setContentInset(UIEdgeInsetsMake(0, 8, 0, 5))
             buttonContainer.setContentInset(UIEdgeInsetsMake(0, 0, 0, 0))
-            PhoneCommunicator.delegate = self
         }
+        PhoneCommunicator.delegate = self
         
         setLabelStringsWithDictionary(PhoneCommunicator.latestEquationDict)
         coloredButtonContainer.setBackgroundColor(PhoneCommunicator.currentTint())
@@ -39,10 +39,9 @@ class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate 
     }
     
     func setLabelStringsWithDictionary(optionalEquationDict:[String:String]?) {
-        coloredButtonContainer.setBackgroundColor(PhoneCommunicator.currentTint())
         if let latestEquation = optionalEquationDict {
-            resultLabel.setText(latestEquation[""])
-            equationLabel.setText(latestEquation[""])
+            resultLabel.setText(latestEquation["answerString"])
+            equationLabel.setText(latestEquation["equationString"])
         } else {
             let attrNumericalString = NSAttributedString(string: "Numerical", attributes: [NSFontAttributeName : UIFont.systemFontOfSize(24)])
             resultLabel.setAttributedText(attrNumericalString)
