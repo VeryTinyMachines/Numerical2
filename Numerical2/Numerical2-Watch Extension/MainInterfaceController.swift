@@ -36,6 +36,7 @@ class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate 
     
     func contextDidChangeWithNewLatestEquation(newEquation: [String : String]?, newTintColor: UIColor) {
             setLabelStringsWithDictionary(newEquation)
+            coloredButtonContainer.setBackgroundColor(newTintColor)
     }
     
     func setLabelStringsWithDictionary(optionalEquationDict:[String:String]?) {

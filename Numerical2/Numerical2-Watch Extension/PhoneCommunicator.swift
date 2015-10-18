@@ -68,10 +68,19 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
         return UIColor.purpleColor()
     }
     
-    @objc private static func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
-        if let delegate = self.delegate{
-            let equationDict = applicationContext["latestEquation"] as! [String:String]
-            delegate.contextDidChangeWithNewLatestEquation(equationDict, newTintColor: self.currentTint())
+    
+    @objc internal func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
+        if let delegate = PhoneCommunicator.delegate{
+            var colorToSend = PhoneCommunicator.currentTint()
+            var equationDict : [String:String]? = nil
+            if let realDict = applicationContext["latestEquation"] as! [String:String]? {
+                equationDict = realDict
+            }
+            
+            if let colorData = applicationContext["colorData"] as! NSData? {
+                colorToSend =  NSKeyedUnarchiver.unarchiveObjectWithData(colorData) as! UIColor
+            }
+            delegate.contextDidChangeWithNewLatestEquation(equationDict, newTintColor: colorToSend)
         }
     }
     
