@@ -16,7 +16,7 @@ let ProductPurchaseRestorationFailureNotificationName = "ProductPurchaseRestorat
 class StoreKitWrapper {
     
     init() {
-        RMStore.defaultStore().transactionPersistor = RMStoreKeychainPersistence()
+        RMStore.defaultStore().transactionPersistor = SinkableUserDefaults.standardUserDefaults
     }
     
     func purchaseProductWithID(id:String) {
@@ -27,8 +27,8 @@ class StoreKitWrapper {
     }
     
     func isPurchased(id:String) -> Bool {
-        if let transactionPersistor = RMStore.defaultStore().transactionPersistor as! RMStoreKeychainPersistence? {
-            return transactionPersistor.isPurchasedProductOfIdentifier(id)
+        if let transactionPersistor = RMStore.defaultStore().transactionPersistor as! SinkableUserDefaults? {
+            return transactionPersistor.isProducPurchasedWithID(id)
         }
         return false
     }

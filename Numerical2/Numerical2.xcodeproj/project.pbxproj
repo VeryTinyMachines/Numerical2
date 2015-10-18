@@ -63,7 +63,6 @@
 		5627A76B1BC7D60B0005495F /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
 		5638AC091BD06F910028C41E /* WatchEquation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5638AC081BD06F910028C41E /* WatchEquation.swift */; };
 		564CB5D31BCE8616008F8666 /* NaturalLanguageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */; };
-		564DA2331BCD244500EFD28B /* SinkableUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1B0E1BA03CAE00C06E70 /* SinkableUserDefaults.swift */; };
 		5685FE8C1BCACA2A0019BC04 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE8B1BCACA2A0019BC04 /* AVFoundation.framework */; };
 		5685FE8E1BCACA300019BC04 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE8D1BCACA300019BC04 /* AudioToolbox.framework */; };
 		5685FE941BCACA490019BC04 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5685FE901BCACA490019BC04 /* AcousticModelEnglish.bundle */; };
@@ -73,7 +72,6 @@
 		5685FE9C1BCACBB40019BC04 /* OpenEarsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FE9B1BCACBB40019BC04 /* OpenEarsWrapper.m */; };
 		5685FEA01BCAE3340019BC04 /* RMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FE9F1BCAE3340019BC04 /* RMStore.m */; };
 		5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */; };
-		5685FEA51BCAE7A70019BC04 /* RMStoreKeychainPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */; };
 		56DE8F1C1BD309EE00D79DC7 /* PhoneCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE8F1B1BD309EE00D79DC7 /* PhoneCommunicator.swift */; };
 		56DE8F1D1BD312E800D79DC7 /* WatchEquation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5638AC081BD06F910028C41E /* WatchEquation.swift */; };
 		56DE8F1F1BD316F600D79DC7 /* WatchCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE8F1E1BD316F600D79DC7 /* WatchCommunicator.swift */; };
@@ -209,8 +207,6 @@
 		5685FE9E1BCAE3340019BC04 /* RMStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStore.h; sourceTree = "<group>"; };
 		5685FE9F1BCAE3340019BC04 /* RMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStore.m; sourceTree = "<group>"; };
 		5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreKitWrapper.swift; sourceTree = "<group>"; };
-		5685FEA31BCAE7A70019BC04 /* RMStoreKeychainPersistence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStoreKeychainPersistence.h; sourceTree = "<group>"; };
-		5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStoreKeychainPersistence.m; sourceTree = "<group>"; };
 		56DE8F1B1BD309EE00D79DC7 /* PhoneCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneCommunicator.swift; sourceTree = "<group>"; };
 		56DE8F1E1BD316F600D79DC7 /* WatchCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCommunicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -494,8 +490,6 @@
 		5685FE9D1BCAE32B0019BC04 /* IAP */ = {
 			isa = PBXGroup;
 			children = (
-				5685FEA31BCAE7A70019BC04 /* RMStoreKeychainPersistence.h */,
-				5685FEA41BCAE7A70019BC04 /* RMStoreKeychainPersistence.m */,
 				5685FE9E1BCAE3340019BC04 /* RMStore.h */,
 				5685FE9F1BCAE3340019BC04 /* RMStore.m */,
 				5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */,
@@ -749,7 +743,6 @@
 				51D28B121B6D100A009A0AEC /* EquationViewCell.swift in Sources */,
 				519B1B071BA03C9700C06E70 /* Equation.swift in Sources */,
 				519B1B0B1BA03C9700C06E70 /* Pad.swift in Sources */,
-				5685FEA51BCAE7A70019BC04 /* RMStoreKeychainPersistence.m in Sources */,
 				56DE8F1F1BD316F600D79DC7 /* WatchCommunicator.swift in Sources */,
 				51279AE71B73A8720036DF3D /* KeypadConstructor.swift in Sources */,
 				51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */,
@@ -794,7 +787,6 @@
 				5627A7681BC750EE0005495F /* WatchCalculatorOneButtonRow.swift in Sources */,
 				5627A7661BC74EA10005495F /* WatchKeyboardCalculatorController.swift in Sources */,
 				5627A7521BC68F3F0005495F /* ExtensionDelegate.swift in Sources */,
-				564DA2331BCD244500EFD28B /* SinkableUserDefaults.swift in Sources */,
 				5638AC091BD06F910028C41E /* WatchEquation.swift in Sources */,
 				5627A76B1BC7D60B0005495F /* Glossary.swift in Sources */,
 				56DE8F1C1BD309EE00D79DC7 /* PhoneCommunicator.swift in Sources */,

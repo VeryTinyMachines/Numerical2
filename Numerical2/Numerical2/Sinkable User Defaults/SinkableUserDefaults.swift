@@ -23,7 +23,7 @@ Use the *syncronize()* method to insure you have the most recent values.
 
 When changes are imported from iCloud a *SinkableUserDefaultsDidImportUserPreferenceChangesNotification* is posted with a userInfo dictionary containing an array of keys that were updated during the import.
 */
-public class SinkableUserDefaults {
+public class SinkableUserDefaults : NSObject, RMStoreTransactionPersistor  {
 /// The Shared Singleton Instance. Use *SinkableUserDefaults.standardUserDefaults()* for any preferences you want synced via iCloud. Use *SinkableUserDefaults.standardUserDefaults.localDefaults()* to set local only preferences you don't wish synced via iCloud.
 	public static let standardUserDefaults = SinkableUserDefaults()	// MARK: - Properties
 /**
@@ -164,7 +164,7 @@ Call this method near the first launch of your app to make sure you have the mos
 				if let changedKeys = userInfo[NSUbiquitousKeyValueStoreChangedKeysKey] as? Array<String> {
 					// We need to update the local defaults to match
 					// the new incoming values from iCloud KVS.
-					changedKeys.map{
+					_ = changedKeys.map{
 						let cloudValue = self.cloudDefaults.objectForKey($0)
 						self.localDefaults.setObject(cloudValue, forKey:$0)
 //						print("SinkableUserDefaults Set local value: \(cloudValue!) for Key:\($0)")
@@ -180,11 +180,19 @@ Call this method near the first launch of your app to make sure you have the mos
 		})
 		return iCloudDefaults
 		}()
+    
+    public func persistTransaction(transaction: SKPaymentTransaction!) {
+        self.setBool(true, forKey: "Purchased | " + transaction.payment.productIdentifier)
+    }
+    
+    public func isProducPurchasedWithID(productId:String) -> Bool {
+        return self.boolForKey("Purchased | " + productId)
+    }
 	
 	private lazy var notificationCenter:NSNotificationCenter  = {
 //		print("Loading NSNotificationCenter")
 		return NSNotificationCenter.defaultCenter()
 		}()
 
-	private init() {} // we dont want external calls to init()
+	private override init() {} // we dont want external calls to init()
 }
