@@ -8,30 +8,31 @@
 
 import Foundation
 
+
 struct WatchEquation {
     let equationString : String
     let answerString:String
     let deviceIDString:String
-    let dateString:String
+    let creationTimestampString:String
     init(equationString:String, answerString:String, deviceIDString:String) {
         self.answerString = answerString
         self.deviceIDString = deviceIDString
         self.equationString = equationString
-        self.dateString = "\(NSDate().timeIntervalSince1970)"
+        self.creationTimestampString = "\(NSDate().timeIntervalSince1970)"
     }
     init(equationString:String, answerString:String, deviceIDString:String, dateString:String) {
         self.answerString = answerString
         self.deviceIDString = deviceIDString
         self.equationString = equationString
-        self.dateString = dateString
+        self.creationTimestampString = dateString
     }
     
     func toDictionary() -> Dictionary<String, String> {
         var dict = Dictionary<String, String>()
-        dict["equationString"] = equationString
-        dict["answerString"] = answerString
-        dict["dateString"] = dateString
-        dict["deviceIDString"] = deviceIDString
+        dict[EquationStringKey] = equationString
+        dict[AnswerStringKey] = answerString
+        dict[TimestampKey] = creationTimestampString
+        dict[DeviceIdStringKey] = deviceIDString
         return dict
     }
     
@@ -41,22 +42,9 @@ struct WatchEquation {
         PhoneCommunicator.latestEquationDict = self.toDictionary()
     }
     #endif
-    
-     static private func yankWatchEquationAtPath(equationPath:String) -> WatchEquation? {
-        do {
-            if let data = NSFileManager.defaultManager().contentsAtPath(equationPath){
-                try NSFileManager.defaultManager().removeItemAtPath(equationPath)
-                let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! Dictionary<String, String>
-                if let equation = WatchEquation.fromDictionary(json) {
-                    return equation
-                }
-            }
-        } catch _ {}
-        return nil
-    }
 
     static func fromDictionary(dictionary:[String:String]) -> WatchEquation? {
-        if let equationString = dictionary["equationString"], answerString = dictionary["answerString"], deviceIDString = dictionary["deviceIDString"], dateString = dictionary["dateString"] {
+        if let equationString = dictionary[EquationStringKey], answerString = dictionary[AnswerStringKey], deviceIDString = dictionary[DeviceIdStringKey], dateString = dictionary[TimestampKey] {
             return WatchEquation(equationString: equationString, answerString: answerString, deviceIDString: deviceIDString, dateString: dateString)
         }
         return nil

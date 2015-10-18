@@ -37,7 +37,7 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
         set {
             var currentContext = latestContext()
             currentContext[LatestEquationKey] = newValue
-            currentContext["timestamp"] = NSDate().timeIntervalSince1970
+            currentContext[TimestampKey] = NSDate().timeIntervalSince1970
             do {
                 try session.updateApplicationContext(currentContext)
             } catch let error {
@@ -51,7 +51,7 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
     }
     
     static func currentTint() -> UIColor {
-        if let colorData = latestContext()["colorData"] as! NSData? {
+        if let colorData = latestContext()[ColorDataKey] as! NSData? {
             return NSKeyedUnarchiver.unarchiveObjectWithData(colorData) as! UIColor
         }
         return UIColor.purpleColor()
@@ -59,13 +59,13 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
     
     static private func latestContext() -> [String:AnyObject] {
         var dictionaryToUse = session.applicationContext
-        if let latestSentTimestamp = session.applicationContext["timestamp"] as! NSTimeInterval? {
-            if let latestReceivedTimestamp = session.receivedApplicationContext["timestamp"] as! NSTimeInterval? {
+        if let latestSentTimestamp = session.applicationContext[TimestampKey] as! NSTimeInterval? {
+            if let latestReceivedTimestamp = session.receivedApplicationContext[TimestampKey] as! NSTimeInterval? {
                 dictionaryToUse = latestReceivedTimestamp > latestSentTimestamp ? session.receivedApplicationContext : session.applicationContext
                 
             }
             
-        } else if session.receivedApplicationContext["timestamp"] != nil {
+        } else if session.receivedApplicationContext[TimestampKey] != nil {
             dictionaryToUse = session.receivedApplicationContext
         }
         return dictionaryToUse
@@ -80,7 +80,7 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
                 equationDict = realDict
             }
             
-            if let colorData = applicationContext["colorData"] as! NSData? {
+            if let colorData = applicationContext[ColorDataKey] as! NSData? {
                 colorToSend =  NSKeyedUnarchiver.unarchiveObjectWithData(colorData) as! UIColor
             }
             delegate.contextDidChangeWithNewLatestEquation(equationDict, newTintColor: colorToSend)

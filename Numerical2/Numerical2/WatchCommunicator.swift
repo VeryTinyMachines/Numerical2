@@ -41,7 +41,7 @@ class WatchCommunicator : NSObject, WCSessionDelegate {
         set {
             var currentContext = latestContext()
             currentContext[LatestEquationKey] = newValue
-            currentContext["timestamp"] = NSDate().timeIntervalSince1970
+            currentContext[TimestampKey] = NSDate().timeIntervalSince1970
             do {
                 try session.updateApplicationContext(currentContext)
             } catch let error {
@@ -53,8 +53,8 @@ class WatchCommunicator : NSObject, WCSessionDelegate {
     static func setCurrentTint(tintColor:UIColor) {
         let colorData =  NSKeyedArchiver.archivedDataWithRootObject(tintColor)
         var currentContext = latestContext()
-        currentContext["colorData"] = colorData
-        currentContext["timestamp"] = NSDate().timeIntervalSince1970
+        currentContext[ColorDataKey] = colorData
+        currentContext[TimestampKey] = NSDate().timeIntervalSince1970
         do{
             try session.updateApplicationContext(currentContext)
         } catch let error {print(error)}
@@ -63,13 +63,13 @@ class WatchCommunicator : NSObject, WCSessionDelegate {
     
     static private func latestContext() -> [String:AnyObject] {
         var dictionaryToUse = session.applicationContext
-        if let latestSentTimestamp = session.applicationContext["timestamp"] as! NSTimeInterval? {
-            if let latestReceivedTimestamp = session.receivedApplicationContext["timestamp"] as! NSTimeInterval? {
+        if let latestSentTimestamp = session.applicationContext[TimestampKey] as! NSTimeInterval? {
+            if let latestReceivedTimestamp = session.receivedApplicationContext[TimestampKey] as! NSTimeInterval? {
                 dictionaryToUse = latestReceivedTimestamp > latestSentTimestamp ? session.receivedApplicationContext : session.applicationContext
                 
             }
             
-        } else if session.receivedApplicationContext["timestamp"] != nil {
+        } else if session.receivedApplicationContext[TimestampKey] != nil {
             dictionaryToUse = session.receivedApplicationContext
         }
         return dictionaryToUse

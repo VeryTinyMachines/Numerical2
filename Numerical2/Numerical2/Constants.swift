@@ -9,3 +9,8 @@
 import Foundation
 
 let LatestEquationKey = "latestEquation"
+let TimestampKey = "timestamp"
+let ColorDataKey = "colorData"
+let EquationStringKey = "equationString"
+let AnswerStringKey = "answerString"
+let DeviceIdStringKey = "deviceIdString"

@@ -36,38 +36,16 @@
                                 </group>
                                 <group width="60" height="60" alignment="left" radius="30" id="Bhk-uf-oUP">
                                     <items>
-                                        <button width="0.5" height="0.59999999999999998" alignment="center" verticalAlignment="center" backgroundImage="dictation_icon" id="BEi-Da-FQc">
+                                        <button width="0.40000000000000002" height="0.59999999999999998" alignment="center" verticalAlignment="center" backgroundImage="dictation_icon" id="BEi-Da-FQc">
                                             <connections>
                                                 <action selector="speechButtonPressed" destination="AgC-eL-Hgc" id="IF8-Um-RYf"/>
                                             </connections>
                                         </button>
                                     </items>
-                                    <color key="backgroundColor" red="0.86200241820000001" green="0.0" blue="0.077245551339999996" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.87948753720238093" green="0.18843911243154446" blue="0.42110010641294754" alpha="1" colorSpace="calibratedRGB"/>
                                 </group>
                             </items>
                             <edgeInsets key="margins" left="2" right="0.0" top="16" bottom="0.0"/>
-                        </group>
-                        <group width="1" alignment="left" verticalAlignment="bottom" layout="vertical" id="neQ-Br-oSS">
-                            <items>
-                                <label alignment="left" text="History" id="pjx-14-Ne2">
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
-                                </label>
-                                <table alignment="left" id="MtT-xg-ciV">
-                                    <items>
-                                        <tableRow id="vf8-rq-n58">
-                                            <group key="rootItem" width="1" alignment="left" layout="vertical" id="jQJ-0d-Ct9">
-                                                <items>
-                                                    <label alignment="left" text="Result" id="xg7-SC-WKv"/>
-                                                    <label alignment="left" text="Equation" id="SXY-c6-8fY">
-                                                        <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
-                                                        <fontDescription key="font" style="UICTFontTextStyleCaption2"/>
-                                                    </label>
-                                                </items>
-                                            </group>
-                                        </tableRow>
-                                    </items>
-                                </table>
-                            </items>
                         </group>
                     </items>
                     <connections>
@@ -81,10 +59,10 @@
             </objects>
             <point key="canvasLocation" x="457" y="409.5"/>
         </scene>
-        <!--Watch Keyboard Calculator Controller-->
+        <!--Back-->
         <scene sceneID="ZYe-zS-O64">
             <objects>
-                <controller hidesWhenLoading="NO" id="3z8-ZC-fDx" customClass="WatchKeyboardCalculatorController" customModule="Numerical2_Watch_Extension">
+                <controller title="Back" hidesWhenLoading="NO" id="3z8-ZC-fDx" customClass="WatchKeyboardCalculatorController" customModule="Numerical2_Watch_Extension">
                     <items>
                         <group width="1" alignment="left" layout="vertical" id="VAV-jf-52j">
                             <items>

@@ -41,8 +41,8 @@ class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate 
     
     func setLabelStringsWithDictionary(optionalEquationDict:[String:String]?) {
         if let latestEquation = optionalEquationDict {
-            resultLabel.setText(latestEquation["answerString"])
-            equationLabel.setText(latestEquation["equationString"])
+            resultLabel.setText(latestEquation[AnswerStringKey])
+            equationLabel.setText(latestEquation[EquationStringKey])
         } else {
             let attrNumericalString = NSAttributedString(string: "Numerical", attributes: [NSFontAttributeName : UIFont.systemFontOfSize(24)])
             resultLabel.setAttributedText(attrNumericalString)
