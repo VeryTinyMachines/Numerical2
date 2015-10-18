@@ -46,7 +46,6 @@ static NSString *OEFileName = @"OEFiles";
 
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
     [self.delegate didDictateText:hypothesis];
-    [[OEPocketsphinxController sharedInstance] stopListening];
     NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
 }
 
@@ -59,7 +58,6 @@ static NSString *OEFileName = @"OEFiles";
 }
 
 - (void) pocketsphinxDidDetectFinishedSpeech {
-    [[OEPocketsphinxController sharedInstance] suspendRecognition];
     NSLog(@"Pocketsphinx has detected a period of silence, concluding an utterance.");
 }
 
