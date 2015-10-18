@@ -11,7 +11,7 @@ import WatchKit
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidFinishLaunching() {
-        PhoneCommunicator.sharedCommunicator
+        PhoneCommunicator.sharedCommunicator.setup()
     }
 
     func applicationDidBecomeActive() {

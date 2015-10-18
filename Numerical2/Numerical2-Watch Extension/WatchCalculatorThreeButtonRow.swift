@@ -35,7 +35,7 @@ class WatchCalculatorThreeButtonRow: NSObject, PhoneCommunicatorDelegate {
         rightButton.setTitle(rightString)
         if rightString == "C" {
             PhoneCommunicator.delegate = self
-            rightButton.setBackgroundColor(SinkableUserDefaults.standardUserDefaults.watchTintColor())
+            rightButton.setBackgroundColor(PhoneCommunicator.currentTint())
         } else {
             rightButton.setBackgroundColor(defaultColor)
         }

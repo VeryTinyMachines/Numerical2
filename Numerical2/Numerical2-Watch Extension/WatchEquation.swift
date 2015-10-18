@@ -35,10 +35,12 @@ struct WatchEquation {
         return dict
     }
     
+    #if os(watchOS)
     func persist() {
         PhoneCommunicator.sendEquationDictToPhone(self.toDictionary())
         PhoneCommunicator.latestEquationDict = self.toDictionary()
     }
+    #endif
     
      static private func yankWatchEquationAtPath(equationPath:String) -> WatchEquation? {
         do {
@@ -53,8 +55,8 @@ struct WatchEquation {
         return nil
     }
 
-    static func fromDictionary(json:Dictionary<String, String>) -> WatchEquation? {
-        if let equationString = json["equationString"], answerString = json["answerString"], deviceIDString = json["deviceIDString"], dateString = json["dateString"] {
+    static func fromDictionary(dictionary:[String:String]) -> WatchEquation? {
+        if let equationString = dictionary["equationString"], answerString = dictionary["answerString"], deviceIDString = dictionary["deviceIDString"], dateString = dictionary["dateString"] {
             return WatchEquation(equationString: equationString, answerString: answerString, deviceIDString: deviceIDString, dateString: dateString)
         }
         return nil

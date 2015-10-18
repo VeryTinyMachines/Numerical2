@@ -17,8 +17,11 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
     
     private override init(){
         super.init()
-        PhoneCommunicator.session.activateSession()
+    }
+    
+    func setup() {
         PhoneCommunicator.session.delegate = self
+        PhoneCommunicator.session.activateSession()
     }
     
     static let sharedCommunicator = PhoneCommunicator()
@@ -29,31 +32,34 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
     
     static var latestEquationDict : [String : String]?  {
         get {
-        return PhoneCommunicator.session.applicationContext["latestEquation"] as? [String:String]
+        return session.receivedApplicationContext["latestEquation"] as? [String:String]
         }
         set {
-            var currentContext = PhoneCommunicator.session.applicationContext
+            var currentContext = session.receivedApplicationContext
             currentContext["latestEquation"] = newValue
             do {
-                try PhoneCommunicator.session.updateApplicationContext(currentContext)
-            } catch _ {}
+                try session.updateApplicationContext(currentContext)
+            } catch let error {
+                print(error)
+            }
         }
     }
     
     static func sendEquationDictToPhone(equationDict:[String:String]) {
-        PhoneCommunicator.session.transferUserInfo(equationDict)
+        session.transferUserInfo(equationDict)
     }
     
     static func currentTint() -> UIColor {
-        if let colorData = PhoneCommunicator.session.applicationContext["colorData"] as! NSData? {
+        if let colorData = session.receivedApplicationContext["colorData"] as! NSData? {
             return NSKeyedUnarchiver.unarchiveObjectWithData(colorData) as! UIColor
         }
         return UIColor.purpleColor()
     }
     
     @objc private static func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
-        if let delegate = self.delegate {
-            delegate.contextDidChangeWithNewLatestEquation(self.latestEquationDict, newTintColor: self.currentTint())
+        if let delegate = self.delegate{
+            let equationDict = applicationContext["latestEquation"] as! [String:String]
+            delegate.contextDidChangeWithNewLatestEquation(equationDict, newTintColor: self.currentTint())
         }
     }
     
