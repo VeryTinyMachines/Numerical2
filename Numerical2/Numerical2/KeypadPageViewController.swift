@@ -28,10 +28,6 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        var startingLayout = KeypadLayout.CompactStandard
-        
-//        print(UIDevice.currentDevice().orientation.rawValue)
-        
         regularView = viewIsWide()
         
         setupPageView()
@@ -52,9 +48,7 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
             pageViewController!.didMoveToParentViewController(self)
         }
         */
-        
     }
-    
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         
