@@ -12,7 +12,6 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     
     var isAnswerView = false
     
-    
     var questionBundle: AnswerBundle? {
         didSet {
             
@@ -70,11 +69,8 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                 }
                 
                 self.reloadCollectionView()
-                
             }
-            
         }
-        
     }
 
     
@@ -106,13 +102,10 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                         newQuestionComponents.append("|")
                         newQuestionComponents.append(component)
                     }
-                    
                 } else {
                     newQuestionComponents.append(string)
                 }
-                
             } else {
-                
                 if string == "or" {
                     newQuestionComponents.append("or")
                 } else {
@@ -212,10 +205,11 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         
         let lastItem = questionArray.count - 1
         
-        if lastItem > 0 {
+        if isAnswerView {
+            collecitonView.scrollToItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.Left, animated: false)
+        } else if lastItem > 0 {
             collecitonView.scrollToItemAtIndexPath(NSIndexPath(forItem: lastItem, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.Right, animated: false)
         }
-        
     }
     
     
@@ -233,9 +227,14 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         
         collecitonView.backgroundColor = UIColor.clearColor()
         
+        if isAnswerView {
+//            collecitonView.backgroundColor = UIColor.blueColor()
+        } else {
+//            collecitonView.backgroundColor = UIColor.redColor()
+        }
+        
         let nib2 = UINib(nibName: "FractionViewCell", bundle: nil)
         collecitonView.registerNib(nib2, forCellWithReuseIdentifier: "FractionCell")
-        
         
         collecitonView.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         
@@ -266,13 +265,17 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                 if fractionComponents.count == 2 {
                     theCell.numeratorLabel.text = Glossary.formattedStringForQuestion(fractionComponents[0])
                     theCell.denominatorLabel.text = Glossary.formattedStringForQuestion(fractionComponents[1])
+                    if isAnswerView {
+                        // This is a fraction in the answer view
+                        theCell.setAnswerCell(FractionViewCellType.Answer)
+                    } else {
+                        // This is a fraction in the question view
+                        theCell.setAnswerCell(FractionViewCellType.Question)
+                    }
                 }
                 
-                theCell.backgroundColor = UIColor.clearColor()
-//                theCell.backgroundColor = UIColor.redColor()
                 theCell.numeratorLabel.textColor = UIColor.whiteColor()
                 theCell.denominatorLabel.textColor = UIColor.whiteColor()
-                theCell.setAnswerCell(isAnswerView)
             }
             
             return cell
@@ -280,86 +283,107 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("StringCell", forIndexPath: indexPath)
             
             if let theCell = cell as? EquationViewCell {
-                theCell.mainLabel.text = Glossary.formattedStringForQuestion(questionArray[indexPath.row])
+                
+                let string = Glossary.formattedStringForQuestion(questionArray[indexPath.row])
+                
+                var cellIsOr = false
+                
+                if string == "or" {
+                    cellIsOr = true
+                    theCell.mainLabel.text = "  or  "
+                } else {
+                    theCell.mainLabel.text = string
+                }
+                
                 theCell.mainLabel.textColor = UIColor.whiteColor()
                 
-                theCell.backgroundColor = UIColor.clearColor()
-//                theCell.backgroundColor = UIColor.redColor()
-                theCell.setAnswerCell(isAnswerView)
+                if cellIsOr {
+                    theCell.setAnswerCell(EquationViewCellType.Or)
+                } else {
+                    if isAnswerView {
+                        // This is a fraction in the answer view
+                        theCell.setAnswerCell(EquationViewCellType.Answer)
+                    } else {
+                        // This is a fraction in the question view
+                        theCell.setAnswerCell(EquationViewCellType.Question)
+                    }
+                }
             }
-            
             return cell
         }
-        
-        
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         // Estimate size with label
         
+        let viewWidth:CGFloat = 2000.0
+        
         let string = questionArray[indexPath.row]
         
         let firstCharacter = string.characters.first
         
+        var width:CGFloat = 0.0
+        
         if Glossary.isStringFractionNumber(string) && firstCharacter != SymbolCharacter.fraction {
+            
             let fractionComponents = string.componentsSeparatedByString(String(SymbolCharacter.fraction))
             
-            var width:CGFloat = 0.0
-            
-            for string in fractionComponents {
-                let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Answer)
-                
-                if size.width > width {
-                    width = size.width
+            if isAnswerView {
+                for string in fractionComponents {
+                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.AnswerFraction, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
+                    
+                    if size.width > width {
+                        width = size.width
+                    }
+                }
+            } else {
+                for string in fractionComponents {
+                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.QuestionFraction, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
+                    
+                    if size.width > width {
+                        width = size.width
+                    }
                 }
             }
-            
-            return CGSize(width: width + 5, height: 44)
             
         } else {
             
             if string == "or" {
-                let size = estimatedSizeOfString(" or ", context: FontDisplayContext.Answer)
+                let size = estimatedSizeOfString("  or  ", context: FontDisplayContext.AnswerOr, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
                 
-                return CGSize(width: size.width, height: 44)
+                return CGSize(width: size.width + 1, height: collectionView.bounds.height)
             } else {
                 
                 if isAnswerView {
-                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Answer)
+                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Answer, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
                     
-                    return CGSize(width: size.width + 10, height: 44)
+                    width = size.width + 1
                 } else {
-                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Question)
+                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Question, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
                     
-                    return CGSize(width: size.width, height: 44)
+                    width = size.width + 1
                 }
-                
             }
         }
+        
+        if width > viewWidth {
+            width = viewWidth
+        }
+        
+        return CGSize(width: width, height: collectionView.bounds.height)
     }
     
-    func estimatedSizeOfString(string: String, context: FontDisplayContext) -> CGSize {
+    
+    func estimatedSizeOfString(string: String, context: FontDisplayContext, cellHeight: CGFloat, viewWidth: CGFloat) -> CGSize {
         
         let font = StyleFormatter.preferredFontForContext(context)
-        
-        
         let attributedText = NSAttributedString(string: string, attributes: [NSFontAttributeName:font])
         
-        return attributedText.size()
+        let size = attributedText.boundingRectWithSize(CGSize(width: viewWidth, height: cellHeight), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil);
         
-//        let rect = attributedText.boundingRectWithSize(CGSize(width: 2000, height: 2000), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
-//        let size = rect.size
-        
-        
-        
-//        UIFont *fontText = [UIFont fontWithName:[AppHandlers zHandler].fontName size:16];
-//        // you can use your font.
-//        
-//        expectedLabelSize = [myString sizeWithAttributes:@{NSFontAttributeName:fontText}];
-        
-        
-//        return CGSize(width: size.width, height: size.height)
+        return size.size
     }
+    
     
     
     

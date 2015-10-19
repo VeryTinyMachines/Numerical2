@@ -15,11 +15,13 @@ protocol HistoryViewControllerDelegate {
     func delectedEquation(equation: Equation)
 }
 
-class HistoryViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var delegate:HistoryViewControllerDelegate?
     var fetchedResultsController = NSFetchedResultsController()
     var currentEquation:Equation?
+    
+    @IBOutlet weak var tableView: UITableView!
     
     func updateSelectedEquation(equation: Equation?) {
         
@@ -54,23 +56,22 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
         
         // If we now have currentEquation = nil we should scroll to the bottom of the view.
         
-        if currentEquation == nil {
-            
-            // Get the final row.
-            
-            let count = self.tableView(tableView, numberOfRowsInSection: 0)
-            
-            let indexPath = NSIndexPath(forRow: count - 1, inSection: 0)
-            
-            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
-        }
+//        if currentEquation == nil {
+//            
+//            // Get the final row.
+//            
+//            let count = self.tableView(tableView, numberOfRowsInSection: 0)
+//            
+//            let indexPath = NSIndexPath(forRow: count - 1, inSection: 0)
+//            
+//            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+//        }
     }
     
     func focusOnEquation(equation: Equation?, alignmentRect: CGRect) {
         print("focusOnEquation")
         
         print(alignmentRect)
-        
     }
     
     override func viewDidLoad() {
@@ -80,6 +81,17 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
         fetchedResultsController.delegate = self
         performFetch()
         
+        tableView!.delegate = self
+        tableView!.dataSource = self
+        
+        tableView!.separatorColor = UIColor(white: 1.0, alpha: 0.4)
+        
+        tableView!.backgroundColor = UIColor(red: 0.0/255.0, green: 11.0/255.0, blue: 24.0/255.0, alpha: 1.0)
+        
+        tableView!.backgroundView?.backgroundColor  = tableView!.backgroundColor
+        
+//        tableView.backgroundColor = UIColor.redColor()
+//        tableView.backgroundView?.backgroundColor = UIColor.greenColor()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -108,12 +120,12 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
     }
     
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
         
@@ -123,12 +135,12 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
     }
     
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if editingStyle == UITableViewCellEditingStyle.Delete {
             if let equation = fetchedResultsController.objectAtIndexPath(indexPath) as? Equation {
@@ -141,11 +153,11 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
     }
     
     
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         if let equation = fetchedResultsController.objectAtIndexPath(indexPath) as? Equation, theDelegate = delegate {
@@ -153,7 +165,7 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
         }
     }
     
-    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         
         if let sourceEquation = fetchedResultsController.objectAtIndexPath(sourceIndexPath) as? Equation, destinationEquation = fetchedResultsController.objectAtIndexPath(destinationIndexPath) as? Equation, destinationSortOrder = destinationEquation.sortOrder?.doubleValue {
             
@@ -253,7 +265,7 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
     }
     
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let info = self.fetchedResultsController.sections![section] as NSFetchedResultsSectionInfo
         return info.numberOfObjects
         
@@ -265,17 +277,22 @@ class HistoryViewController: UITableViewController, NSFetchedResultsControllerDe
             
             if let equation = fetchedResultsController.objectAtIndexPath(indexPath) as? Equation {
                 if let answer = equation.answer, question = equation.question, sortOrder = equation.sortOrder {
-                    cell.textLabel?.text = "\(question) = \(answer) (\(sortOrder.doubleValue))"
+                    
+                    let formattedQuestion = Glossary.formattedStringForQuestion(question)
+                    let formattedAnswer = Glossary.formattedStringForQuestion(answer)
+                    
+                    cell.textLabel?.text = "\(formattedQuestion) = \(formattedAnswer)"
                 } else {
                     cell.textLabel?.text = ""
                 }
                 
+                cell.backgroundColor = UIColor(red: 0.0/255.0, green: 11.0/255.0, blue: 24.0/255.0, alpha: 1.0)
+                cell.textLabel?.textColor = UIColor(white: 0.6, alpha: 1.0)
+                
                 if equation == currentEquation {
-                    cell.backgroundColor = UIColor.darkGrayColor()
-                    cell.textLabel?.textColor = UIColor.whiteColor()
+                    cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 1.0)
                 } else {
-                    cell.backgroundColor = UIColor.clearColor()
-                    cell.textLabel?.textColor = UIColor.darkGrayColor()
+                    cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 0.6)
                 }
             }
             

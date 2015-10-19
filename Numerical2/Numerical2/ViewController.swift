@@ -22,8 +22,16 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     var currentSize = KeypadSize.Maximum
     var workPanelShowEquation = true
     
+    var workPanelSlideOrigin:CGPoint?
+    var workPanelLastLocation:CGPoint?
+    var workPanelVerticalSpeed:CGFloat = 0.0
+    
+    
+    var workPanelPercentage:Float = 0.9
+    
+    @IBOutlet weak var workPanelHeight: NSLayoutConstraint!
+    
     @IBOutlet weak var workPanelBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var workPanelHeightProportion: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,9 +103,137 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             keyPad.workPanelDelegate = self
             keyPad.currentEquation = currentEquation
             keyPad.updateViews()
+            
+            // Add a gesture recogniser to the keypad
+            
+            let slideGesture = UIPanGestureRecognizer(target: self, action: "workPanelPanned:")
+            keyPad.view.addGestureRecognizer(slideGesture)
         }
     }
     
+    func workPanelPanned(sender: UIPanGestureRecognizer) {
+        print("workPanelPanned")
+        
+        let location = sender.locationInView(view)
+        print(location)
+        
+        switch sender.state {
+        case .Began:
+            print("began")
+            workPanelSlideOrigin = location
+            workPanelLastLocation = location
+            view.layer.removeAllAnimations()
+        case .Cancelled:
+            print("cancelled")
+        case .Changed:
+            print("changed")
+
+            // origin is where the touch started.
+            // location is where the touch is now.
+            // the work panel has it's own height as a percentage (workPanelPercentage)
+            // we need to determine, based on the 3 items above, what the new percentage is.
+            
+            if let origin = workPanelSlideOrigin {
+                let verticalDelta = location.y - origin.y
+                
+                print("verticalDelta: \(verticalDelta)")
+                
+                let verticalDeltaPercentage = verticalDelta / view.bounds.height
+                
+                print("verticalDeltaPercentage: \(verticalDeltaPercentage)")
+                
+                let newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
+                
+                print("newHeight: \(newHeight)")
+                
+                updateWorkPanelForHeight(Float(newHeight))
+                
+                view.layoutIfNeeded()
+            }
+            
+            
+            if let lastLocation = workPanelLastLocation {
+                workPanelVerticalSpeed = lastLocation.y - location.y
+                print("workPanelVerticalSpeed")
+                print(workPanelVerticalSpeed)
+            }
+            
+            workPanelLastLocation = location
+            
+        case .Ended:
+            print("ended")
+            
+            if let origin = workPanelSlideOrigin {
+                let verticalDelta = location.y - origin.y
+                
+                print("verticalDelta: \(verticalDelta)")
+                
+                let verticalDeltaPercentage = verticalDelta / view.bounds.height
+                
+                print("verticalDeltaPercentage: \(verticalDeltaPercentage)")
+                
+                let newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
+                
+                workPanelPercentage = Float(newHeight)
+                
+                updateWorkPanelForHeight(Float(newHeight))
+                
+                view.layoutIfNeeded()
+            }
+            
+            workPanelSlideOrigin = nil
+            
+            // Snap to presets
+            snapPercentageHeight(workPanelVerticalSpeed, viewSize: view.frame.size)
+            
+            updateWorkPanelForHeight(workPanelPercentage)
+            
+            UIView.animateWithDuration(0.25, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                    self.updateKeypad()
+                }, completion: { (complete) -> Void in
+                    self.updateKeypad()
+                    
+            })
+            
+            workPanelVerticalSpeed = 0
+            
+        case .Failed:
+            print("failed")
+        case .Possible:
+            print("possible")
+            
+        }
+        
+        
+    }
+    
+    func snapPercentageHeight(verticalSpeed: CGFloat, viewSize: CGSize) {
+        
+        print("snapPercentageHeight: \(verticalSpeed)")
+        
+        // Determine the height of equation as a percentage
+        let equationHeightPercentage = 130 / viewSize.height
+        workPanelPercentage += Float(verticalSpeed) / Float(viewSize.height) * 5
+        
+        if viewSize.width > viewSize.height {
+            // Landscape
+            if workPanelPercentage > 0.5 {
+                workPanelPercentage = 1.0
+            } else {
+                workPanelPercentage = Float(equationHeightPercentage)
+            }
+        } else {
+            // Portrait
+            if workPanelPercentage > 0.66 {
+                workPanelPercentage = 0.9
+            } else if workPanelPercentage > 0.33 {
+                workPanelPercentage = 0.5
+            } else {
+                workPanelPercentage = Float(equationHeightPercentage)
+            }
+        }
+        
+    }
     
     func pressedKey(key: Character) {
         // A key was pressed. we need to reload the history view
@@ -121,7 +257,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
                 // Get the keypanels current size
                 
                 if let workPanelFrame = workPanelView?.view, _ = currentEquation {
-                    theHistoryView.focusOnEquation(currentEquation, alignmentRect: workPanelFrame.frame)
+//                    theHistoryView.focusOnEquation(currentEquation, alignmentRect: workPanelFrame.frame)
                 }
             }
         }
@@ -144,67 +280,86 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
         updateHistoryContentInsets()
     }
     
 
     func updateHistoryContentInsets() {
-        if let view = historyView, workView = workPanelView {
-            view.updateContentInsets(UIEdgeInsetsMake(0, 0, workView.view.bounds.height + workPanelBottomConstraint.constant, 0))
+        if let theHistoryView = historyView {
+            
+            let bottomInset = view.bounds.height - 88
+            
+            theHistoryView.updateContentInsets(UIEdgeInsetsMake(0, 0, bottomInset, 0))
         }
+    }
+    
+    func updateWorkPanelForHeight(heightPercentage: Float) {
+        
+        // Between 1.0 and 0.5 the height shrinks. Below this the height remains the same but the position is offset.
+        
+        var newHeight = CGFloat(heightPercentage)
+        
+        if newHeight < 0 {
+            newHeight = 0
+        }
+        
+        if newHeight > 0.5 {
+            
+            changeHeightMultipler(CGFloat(newHeight))
+            workPanelBottomConstraint.constant = 0
+        } else {
+            changeHeightMultipler(CGFloat(0.5))
+            
+            let offset:CGFloat = (CGFloat(newHeight) - 0.5)
+            
+            workPanelBottomConstraint.constant = offset * view.bounds.height
+        }
+        
+        
+        
+        
+        
     }
     
     
     func changeHeightMultipler(height: CGFloat) {
         if let theWorkPanel = workPanelView?.view, view = self.view {
-            view.removeConstraint(workPanelHeightProportion)
+            view.removeConstraint(workPanelHeight)
             
             let newConstraint = NSLayoutConstraint(item: theWorkPanel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Height, multiplier: height, constant: 1.0)
             
-            workPanelHeightProportion = newConstraint
+            workPanelHeight = newConstraint
             view.addConstraint(newConstraint)
         }
     }
     
     
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        
+        snapPercentageHeight(0.0, viewSize: size)
+        
+        coordinator.animateAlongsideTransition({ (context) -> Void in
+            self.updateKeypad()
+            self.view.layoutIfNeeded()
+            }) { (context) -> Void in
+        }
+        
+    }
+    
+    
     func updateKeypad() {
         
-        switch currentSize {
-        case .Maximum:
-            workPanelBottomConstraint.constant = 0
-            changeHeightMultipler(0.95)
-            workPanelShowEquation = true
-        case .Medium:
-            workPanelBottomConstraint.constant = 0
-            changeHeightMultipler(0.45)
-            workPanelShowEquation = true
-        case .Minimum:
-            workPanelBottomConstraint.constant = (workPanelHeightProportion.multiplier * self.view.bounds.height * -1) + 110
-            changeHeightMultipler(0.45)
-            workPanelShowEquation = true
-        }
+        updateWorkPanelForHeight(workPanelPercentage)
+        updateHistoryContentInsets()
+        view.layoutIfNeeded()
         
         if let workView = self.workPanelView {
-            workView.showEquationView = self.workPanelShowEquation
-            workView.updateEquationViewSize()
+            workView.updateLayout()
         }
         
-        UIView.animateWithDuration(0.25, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-            
-            self.view.layoutIfNeeded()
-            
-            if let workView = self.workPanelView {
-                workView.updateLayout()
-            }
-            }) { (complete) -> Void in
-                self.updateHistoryContentInsets()
-                self.view.layoutIfNeeded()
-                
-                if let workView = self.workPanelView {
-                    workView.updateLayout()
-                }
-        }
+        
     }
     
     
@@ -226,6 +381,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             currentSize = KeypadSize.Maximum
         }
         
+        
         updateKeypad()
     }
     
@@ -245,5 +401,8 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         }
     }
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
 }
 

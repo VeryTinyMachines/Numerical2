@@ -8,24 +8,33 @@
 
 import UIKit
 
+public enum FractionViewCellType {
+    case Answer
+    case Question
+    case Or
+}
+
 class FractionViewCell:UICollectionViewCell {
     
     @IBOutlet weak var numeratorLabel: UILabel!
     @IBOutlet weak var denominatorLabel: UILabel!
     
-    func setAnswerCell(answer: Bool) {
+    func setAnswerCell(answer: FractionViewCellType) {
         
-        if answer {
-            let font = StyleFormatter.preferredFontForContext(FontDisplayContext.AnswerFraction)
-            numeratorLabel.font = font
-            denominatorLabel.font = font
-        } else {
-            let font = StyleFormatter.preferredFontForContext(FontDisplayContext.QuestionFraction)
-            numeratorLabel.font = font
-            denominatorLabel.font = font
+        var font:UIFont?
+        switch answer {
+        case .Answer:
+            font = StyleFormatter.preferredFontForContext(FontDisplayContext.AnswerFraction)
+        case .Question:
+            font = StyleFormatter.preferredFontForContext(FontDisplayContext.QuestionFraction)
+        case .Or:
+            font = StyleFormatter.preferredFontForContext(FontDisplayContext.AnswerOr)
         }
         
-        
+        if let theFont = font {
+            numeratorLabel.font = theFont
+            denominatorLabel.font = theFont
+        }
     }
     
 }

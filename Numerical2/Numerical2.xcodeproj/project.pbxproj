@@ -43,7 +43,8 @@
 		51D28B121B6D100A009A0AEC /* EquationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B111B6D100A009A0AEC /* EquationViewCell.swift */; };
 		51D28B4E1B6D1BA9009A0AEC /* FractionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51D28B4D1B6D1BA9009A0AEC /* FractionViewCell.xib */; };
 		51D28B501B6D1C0F009A0AEC /* FractionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */; };
-		51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; };
+		51D3AB2F1BC89AD40019B601 /* KeypadPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; settings = {ASSET_TAGS = (); }; };
 		51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E84D301B8B5C3B00C3E28E /* CalcButton.swift */; };
 		51EE5BA01BC5203A001C9D38 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */; };
 		51F2F44D1B6C3FAE00B845CA /* KeyPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */; };
@@ -176,6 +177,7 @@
 		51D28B111B6D100A009A0AEC /* EquationViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquationViewCell.swift; sourceTree = "<group>"; };
 		51D28B4D1B6D1BA9009A0AEC /* FractionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FractionViewCell.xib; sourceTree = "<group>"; };
 		51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FractionViewCell.swift; sourceTree = "<group>"; };
+		51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeypadPageViewController.swift; sourceTree = "<group>"; };
 		51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleFormatter.swift; sourceTree = "<group>"; };
 		51E84D301B8B5C3B00C3E28E /* CalcButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalcButton.swift; sourceTree = "<group>"; };
 		51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Numerical2.entitlements; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 			isa = PBXGroup;
 			children = (
 				513197111B6ADD5900E9B802 /* ViewController.swift */,
+				51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */,
 				51D7A8391BBA7D4A0064AA4B /* Work Panel View Controller */,
 				51D7A8381BBA7D3D0064AA4B /* History View Controller */,
 			);
@@ -754,6 +757,7 @@
 				519B1B111BA04F1C00C06E70 /* HistoryViewController.swift in Sources */,
 				51F2F44F1B6C421B00B845CA /* WorkPanelViewController.swift in Sources */,
 				51D28B0E1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift in Sources */,
+				51D3AB2F1BC89AD40019B601 /* KeypadPageViewController.swift in Sources */,
 				519B1B051BA03C9700C06E70 /* DeviceHelper.swift in Sources */,
 				519B1B0F1BA03CAE00C06E70 /* SinkableUserDefaults.swift in Sources */,
 				513197121B6ADD5900E9B802 /* ViewController.swift in Sources */,

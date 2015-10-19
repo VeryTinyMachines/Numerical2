@@ -10,6 +10,15 @@ import UIKit
 
 class CalcButton: UIButton {
     
+    var baseColor:UIColor = UIColor(red: 60 / 255, green: 68/255, blue: 78/255, alpha: 1.0) {
+        didSet {
+            updateEnabledState()
+        }
+    }
+    
+    var highlightColor:UIColor = UIColor(red: 100 / 255, green: 114/255, blue: 130/255, alpha: 1.0)
+    
+    
     override var enabled:Bool{
         didSet {
             updateEnabledState()
@@ -36,10 +45,10 @@ class CalcButton: UIButton {
         
         if enabled {
             setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-            self.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.25)
+            self.backgroundColor = baseColor
         } else {
             setTitleColor(UIColor.whiteColor().colorWithAlphaComponent(0.33), forState: UIControlState.Normal)
-            self.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.0)
+            self.backgroundColor = baseColor.colorWithAlphaComponent(0.0)
         }
         
     }
@@ -49,7 +58,7 @@ class CalcButton: UIButton {
         UIView.animateWithDuration(0.05, delay: 0.0, options: UIViewAnimationOptions.AllowUserInteraction, animations: { () -> Void in
             
             self.layer.setAffineTransform(CGAffineTransformMakeScale(0.9, 0.9))
-            self.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+            self.backgroundColor = self.highlightColor
             
             }) { (complete) -> Void in
                 
@@ -58,8 +67,6 @@ class CalcButton: UIButton {
     }
     
     func touchUp() {
-        // Add a UI View to the background, animate it, then remove it
-        
         UIView.animateWithDuration(0.075, delay: 0.0, options: UIViewAnimationOptions.AllowUserInteraction, animations: { () -> Void in
 //            backgroundBox.alpha = 0
             self.layer.setAffineTransform(CGAffineTransformMakeScale(1.0, 1.0))

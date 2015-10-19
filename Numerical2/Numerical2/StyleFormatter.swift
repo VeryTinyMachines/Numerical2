@@ -13,24 +13,29 @@ public enum FontDisplayContext {
     case QuestionFraction
     case Answer
     case AnswerFraction
+    case AnswerOr
 }
 
 class StyleFormatter {
     
-    
-    
     class func preferredFontForContext(context: FontDisplayContext) -> UIFont {
         switch context {
         case .Question:
-            return UIFont.systemFontOfSize(14.0)
+            return UIFont.systemFontOfSize(20.0)
         case .QuestionFraction:
             return UIFont.systemFontOfSize(14.0)
         case .Answer:
-            return UIFont.boldSystemFontOfSize(30.0)
+            return UIFont.systemFontOfSize(72.0, weight: -0.75)
         case .AnswerFraction:
-            return UIFont.boldSystemFontOfSize(30.0)
+            return UIFont.systemFontOfSize(28.0)
+        case .AnswerOr:
+            return UIFont.systemFontOfSize(18.0)
         }
     }
     
+    class func preferredFontForButtonOfSize(size: CGSize) -> UIFont {
+        
+        return UIFont.systemFontOfSize(20.0)
+    }
     
 }

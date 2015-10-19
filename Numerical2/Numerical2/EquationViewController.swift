@@ -12,7 +12,7 @@ protocol EquationTextFieldDelegate {
     func questionChanged(newQuestion: String, overwrite: Bool)
 }
 
-class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFieldDelegate {
+class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFieldDelegate, KeypadDelegate {
     
     @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var questionLabel: UILabel!
@@ -26,6 +26,10 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     var delegate:EquationTextFieldDelegate?
     
     @IBOutlet weak var textField: UITextField!
+    
+    func pressedKey(key: Character) {
+        
+    }
     
     func setQuestion(string: String) {
         
@@ -103,7 +107,7 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+//        textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
         
     }
     

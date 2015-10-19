@@ -12,14 +12,15 @@ protocol WorkPanelDelegate {
     func updateEquation(equation: Equation?)
 }
 
-class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFieldDelegate {
+class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewDelegate, EquationTextFieldDelegate {
     
     @IBOutlet weak var equationViewHeightConstraint: NSLayoutConstraint!
     
     var currentEquation: Equation?
     
     var equationView:EquationViewController?
-    var keyPanelView:KeyPanelViewController?
+    
+    var keyPanelView:KeypadPageViewController?
     
     var delegate: KeypadDelegate?
     
@@ -27,8 +28,15 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     
     var workPanelDelegate: WorkPanelDelegate?
     
+    @IBOutlet weak var pageControl: UIPageControl!
+    
     func questionChanged(newQuestion: String, overwrite: Bool) {
         
+    }
+    
+    func updatePageControl(currentPage: NSInteger, numberOfPages: NSInteger) {
+        pageControl.numberOfPages = numberOfPages
+        pageControl.currentPage = currentPage        
     }
     
     func updateViews() {
@@ -49,7 +57,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
                     }
                     
                     theView.setAnswer(answer)
-                    
                 })
                 
             } else {
@@ -61,7 +68,7 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     
     
     func pressedKey(key: Character) {
-        
+        print("pressedKey in WPVC")
         if key == SymbolCharacter.clear {
             if let equation = currentEquation {
                 // Clear - Need to load a new equation from the EquationStore
@@ -146,7 +153,7 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
+        view.backgroundColor = UIColor(red: 38 / 255, green: 47/255, blue: 58/255, alpha: 1.0)
         updateLegalKeys()
     }
     
@@ -176,29 +183,31 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
         if let question = currentEquation?.question {
             if let legalKeys = Glossary.legalCharactersToAppendString(question), theKeyPanel = keyPanelView {
                 theKeyPanel.setLegalKeys(legalKeys)
+//                theKeyPanel.setLegalKeys(legalKeys)
             }
         } else {
             if let legalKeys = Glossary.legalCharactersToAppendString(""), theKeyPanel = keyPanelView {
                 theKeyPanel.setLegalKeys(legalKeys)
+//                theKeyPanel.setLegalKeys(legalKeys)
             }
         }
     }
     
     
     func updateEquationViewSize() {
-        if showEquationView {
-            equationViewHeightConstraint.constant = 110
-        } else {
-            equationViewHeightConstraint.constant = 0
-        }
+//        if showEquationView {
+//            equationViewHeightConstraint.constant = 110
+//        } else {
+//            equationViewHeightConstraint.constant = 0
+//        }
     }
     
     
     func updateLayout() {
         
-        if let keyPanel = keyPanelView {
-            keyPanel.updateKeyLayout()
-        }
+//        if let keyPanel = keyPanelView {
+//            keyPanel.updateKeyLayout()
+//        }
         
         if let theEquationView = equationView {
             theEquationView.updateView()
@@ -208,8 +217,9 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, EquationTextFie
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let keyPad = segue.destinationViewController as? KeyPanelViewController {
+        if let keyPad = segue.destinationViewController as? KeypadPageViewController {
             keyPad.delegate = self
+            keyPad.pageViewDelegate = self
             keyPanelView = keyPad
         } else if let theView = segue.destinationViewController as? EquationViewController {
             
