@@ -26,6 +26,8 @@
 		5131971A1B6ADD5900E9B802 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 513197181B6ADD5900E9B802 /* LaunchScreen.storyboard */; };
 		513197251B6ADD5900E9B802 /* Numerical2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513197241B6ADD5900E9B802 /* Numerical2Tests.swift */; };
 		513197301B6ADD5900E9B802 /* Numerical2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */; };
+		514189A41BD5075800877633 /* Dictionary_English.plist in Resources */ = {isa = PBXBuildFile; fileRef = 510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */; settings = {ASSET_TAGS = (); }; };
+		514189A51BD5075900877633 /* Dictionary_English.plist in Resources */ = {isa = PBXBuildFile; fileRef = 510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */; settings = {ASSET_TAGS = (); }; };
 		519B1B051BA03C9700C06E70 /* DeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1AFB1BA03C9700C06E70 /* DeviceHelper.swift */; };
 		519B1B061BA03C9700C06E70 /* Equation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1AFC1BA03C9700C06E70 /* Equation+CoreDataProperties.swift */; };
 		519B1B071BA03C9700C06E70 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1AFD1BA03C9700C06E70 /* Equation.swift */; };
@@ -709,6 +711,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				514189A51BD5075900877633 /* Dictionary_English.plist in Resources */,
 				5627A7441BC68F3F0005495F /* Assets.xcassets in Resources */,
 				5627A7421BC68F3F0005495F /* Interface.storyboard in Resources */,
 			);
@@ -719,6 +722,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5627A7541BC68F3F0005495F /* Assets.xcassets in Resources */,
+				514189A41BD5075800877633 /* Dictionary_English.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

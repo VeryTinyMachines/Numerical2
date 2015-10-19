@@ -237,6 +237,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     
     func pressedKey(key: Character) {
         // A key was pressed. we need to reload the history view
+        
     }
     
     

@@ -268,7 +268,7 @@
 		<string>divided bi</string>
 		<string>into</string>
 		<string>divided</string>
-		<string>of</string>
+		<string>÷</string>
 	</array>
 	<key>⟆</key>
 	<array>
@@ -399,6 +399,8 @@
 		<string>tine</string>
 		<string>tie</string>
 		<string>x</string>
+		<string>×</string>
+		<string>of</string>
 	</array>
 	<key>+</key>
 	<array>
@@ -406,12 +408,15 @@
 		<string>add</string>
 		<string>addition</string>
 		<string>combine</string>
+		<string>+</string>
 	</array>
 	<key>%</key>
 	<array>
 		<string>percentage</string>
 		<string>percent</string>
 		<string>per cent</string>
+		<string>percent of</string>
+		<string>per cent of</string>
 	</array>
 	<key>.</key>
 	<array>
@@ -425,6 +430,7 @@
 		<string>pie</string>
 		<string>pye</string>
 		<string>pier</string>
+		<string>π</string>
 	</array>
 	<key>ℇ</key>
 	<array>
@@ -482,6 +488,7 @@
 		<string>squareroot of</string>
 		<string>square root</string>
 		<string>square root of</string>
+		<string>√</string>
 	</array>
 	<key>^</key>
 	<array>

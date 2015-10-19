@@ -48,7 +48,7 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                 
                 // Solve this question
                 
-                CalculatorBrain.sharedBrain.solveStringAsyncQueue(question, completion: { (answer) -> Void in
+                CalculatorBrain.sharedBrain.solveStringAsyncQueue(question, completion: { (answer: AnswerBundle) -> Void in
                     self.currentEquation?.answer = answer.answer
                     EquationStore.sharedStore.save()
                     
@@ -57,6 +57,19 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                     }
                     
                     theView.setAnswer(answer)
+                    
+                    
+                    var latestEquationDict = [String:String]()
+                    latestEquationDict[EquationStringKey] = question
+                    
+                    if let theAnswer = answer.answer {
+                        latestEquationDict[AnswerStringKey] = theAnswer
+                    } else {
+                        latestEquationDict[AnswerStringKey] = "Error"
+                    }
+                    
+                    print("latestEquationDict (to send): \(latestEquationDict)")
+                    WatchCommunicator.latestEquationDict = latestEquationDict
                 })
                 
             } else {

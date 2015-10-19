@@ -44,8 +44,8 @@ struct WatchEquation {
     #endif
 
     static func fromDictionary(dictionary:[String:String]) -> WatchEquation? {
-        if let equationString = dictionary[EquationStringKey], answerString = dictionary[AnswerStringKey], deviceIDString = dictionary[DeviceIdStringKey], dateString = dictionary[TimestampKey] {
-            return WatchEquation(equationString: equationString, answerString: answerString, deviceIDString: deviceIDString, dateString: dateString)
+        if let equationString = dictionary[EquationStringKey], dateString = dictionary[TimestampKey] {
+            return WatchEquation(equationString: equationString, answerString: "", deviceIDString: "", dateString: dateString)
         }
         return nil
     }

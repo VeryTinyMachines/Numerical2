@@ -23,6 +23,7 @@ class WatchCalculatorThreeButtonRow: NSObject, PhoneCommunicatorDelegate {
     var delegate : WatchButtonDelegate?
     
     func configureButtons(leftString:String, middleString:String, rightString:String) {
+        
         self.leftString = leftString
         leftButton.setTitle(leftString)
         leftButton.setBackgroundColor(defaultColor)

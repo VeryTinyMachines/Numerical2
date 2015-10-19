@@ -26,11 +26,8 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
     let OneButtonRowIdentifier = "OneButtonRow"
     let ThreeButtonRowIdentifier = "ThreeButtonRow"
     
-
-    
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
-        
         configureTable()
     }
     
@@ -46,10 +43,14 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
                 equationString += title
             }
             equationLabel.setText(equationString)
-            CalculatorBrain().solveStringAsyncQueue(equationString, completion: { (answer:AnswerBundle) -> Void in
-                if let answerString = answer.answer {
-                    self.storeResultString(answerString)
-                }
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                CalculatorBrain().solveStringSyncQueue(self.equationString, completion: { (answer:AnswerBundle) -> Void in
+                    if let answerString = answer.answer {
+                        self.storeResultString(answerString)
+                    } else {
+                        self.resultLabel.setText("Error")
+                    }
+                })
             })
         }
     }
@@ -71,7 +72,8 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
         self.resultLabel.setText(self.resultString)
     }
     
-    let buttons = ["7", "8", "9",
+    let buttons =
+        ["7", "8", "9",
         "4", "5", "6",
         "1", "2", "3",
         "0", ".", "C",
@@ -95,7 +97,6 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
             cell.configureButtons(buttons[row * 3], middleString:buttons[row * 3 + 1] , rightString: buttons[row * 3 + 2])
             cell.delegate = self
         }
-        
     }
 
 }

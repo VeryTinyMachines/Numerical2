@@ -76,13 +76,37 @@ class WatchCommunicator : NSObject, WCSessionDelegate {
     }
     
     @objc internal func session(session: WCSession, didReceiveUserInfo userInfo: [String : AnyObject]) {
-//        let equationDict = userInfo as! [String:String]
-//        let newWatchEquation = WatchEquation.fromDictionary(equationDict)
+        print("phone didReceiveUserInfo")
+        
+        if let dict = userInfo as? [String:String] {
+            print(dict)
+            
+            if let equation = dict[LatestEquationKey] {
+                print("equation: \(equation)")
+                
+                if let newEquation = EquationStore.sharedStore.newEquation() {
+                    print("newEquation: \(newEquation)")
+                    newEquation.question = equation
+                    newEquation.creationDate = NSDate()
+                    let answerBundle = Evaluator.solveString(equation)
+                    
+                    if let answer = answerBundle.answer {
+                        print("answer: \(answer)")
+                        newEquation.answer = answer
+                    }
+                    
+                    EquationStore.sharedStore.save()
+                }
+            }
+        }
+
     }
     
     @objc internal func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
-//        let equationDict = applicationContext[LatestEquationKey] as! [String:String]
-//        let newWatchEquation = WatchEquation.fromDictionary(equationDict)
+        print("phone didReceiveApplicationContext")
+        let equationDict = applicationContext[LatestEquationKey] as! [String:String]
+        let newWatchEquation = WatchEquation.fromDictionary(equationDict)
+        print(newWatchEquation)
         
     }
     

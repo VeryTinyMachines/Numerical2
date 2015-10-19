@@ -35,18 +35,30 @@ class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate 
     }
     
     func contextDidChangeWithNewLatestEquation(newEquation: [String : String]?, newTintColor: UIColor) {
+        print("contextDidChangeWithNewLatestEquation")
+        print("newEquation: \(newEquation)")
+        
             setLabelStringsWithDictionary(newEquation)
             coloredButtonContainer.setBackgroundColor(newTintColor)
     }
     
     func setLabelStringsWithDictionary(optionalEquationDict:[String:String]?) {
         if let latestEquation = optionalEquationDict {
-            resultLabel.setText(latestEquation[AnswerStringKey])
-            equationLabel.setText(latestEquation[EquationStringKey])
+            print("latestEquation: \(latestEquation)")
+            print(latestEquation[EquationStringKey])
+            if let equation = latestEquation[EquationStringKey] {
+                equationLabel.setText(equation)
+            }
+            
+            if let answer = latestEquation[AnswerStringKey] {
+                resultLabel.setText(answer)
+            }
+            
+            
         } else {
             let attrNumericalString = NSAttributedString(string: "Numerical", attributes: [NSFontAttributeName : UIFont.systemFontOfSize(24)])
             resultLabel.setAttributedText(attrNumericalString)
-            equationLabel.setText("A calculator with\nno equal")
+            equationLabel.setText("The calculator\nwithout equal")
         }
     }
 
@@ -55,15 +67,54 @@ class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate 
         presentTextInputControllerWithSuggestions(nil, allowedInputMode: .Plain) { (results) -> Void in
             if let strings : [String] = results as? [String] where results!.count > 0 {
                 self.equationText = strings.reduce("", combine: { (whole:String, partial:String) -> String in
+                    print("returning whole + partial")
                     return whole + partial
                 })
+                print("setting equationLabel")
                 self.equationLabel.setText(self.equationText)
-                if let parsedString = NaturalLanguageParser.sharedInstance.translateString(self.equationText){
-                    CalculatorBrain().solveStringAsyncQueue(parsedString, completion: { (answer) -> Void in
-                        if let answer : AnswerBundle = answer { self.resultLabel.setText(answer.answer) }
+                
+                if let parsedString = NaturalLanguageParser.sharedInstance.translateString(self.equationText) {
+                    print("parsedString: \(parsedString)")
+                    
+                    let cleanedString = Glossary.formattedStringForQuestion(parsedString)
+                    
+                    self.equationLabel.setText(cleanedString)
+                    self.equationText = cleanedString
+                    self.resultLabel.setText("...")
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        
+                        CalculatorBrain().solveStringSyncQueue(parsedString, completion: { (answer: AnswerBundle) -> Void in
+                            if let answerString = answer.answer {
+                                print("answer: \(answer)")
+                                print("answer.answer: \(answer.answer)")
+                                
+                                let cleanedAnswer = Glossary.formattedStringForQuestion(answerString)
+                                self.resultLabel.setText(cleanedAnswer)
+                                
+                                
+                                let fullEquation = parsedString
+                                
+                                var equationDict = [String:String]()
+                                
+                                equationDict[LatestEquationKey] = fullEquation
+                                equationDict[TimestampKey] = "\(NSDate().timeIntervalSince1970)"
+                                
+                                
+                                PhoneCommunicator.sendEquationDictToPhone(equationDict)
+                                
+                            } else {
+                                self.resultLabel.setText("Error")
+                            }
+                        })
+                        
                     })
+                    
+                    
+                    
                 } else {
                     //maybe show error
+                    print("an error occurred")
                 }
             }
         }
