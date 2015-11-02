@@ -70,6 +70,22 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
     func storeResultString(resultString:String) {
         self.resultString = resultString
         self.resultLabel.setText(self.resultString)
+        
+        var equationDict = [String:String]()
+        
+        equationDict[LatestEquationKey] = self.equationString
+        equationDict[TimestampKey] = "\(NSDate().timeIntervalSince1970)"
+        
+        print("equationDict: \(equationDict)")
+        print("")
+        
+        NSNotificationCenter.defaultCenter().postNotificationName("UserEnteredEquation", object: nil)
+        print("NSNotificationCenter")
+        
+//        PhoneCommunicator.sendEquationDictToPhone(equationDict)
+        
+        
+        
     }
     
     let buttons =

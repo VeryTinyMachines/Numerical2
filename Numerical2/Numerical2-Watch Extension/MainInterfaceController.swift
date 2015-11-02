@@ -32,14 +32,21 @@ class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate 
         
         setLabelStringsWithDictionary(PhoneCommunicator.latestEquationDict)
         coloredButtonContainer.setBackgroundColor(PhoneCommunicator.currentTint())
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("userEnteredEquation:"), name: "UserEnteredEquation", object: nil)
+    }
+    
+    func userEnteredEquation(notification: NSNotification) {
+        print("userEnteredEquation")
+        print("")
     }
     
     func contextDidChangeWithNewLatestEquation(newEquation: [String : String]?, newTintColor: UIColor) {
         print("contextDidChangeWithNewLatestEquation")
         print("newEquation: \(newEquation)")
         
-            setLabelStringsWithDictionary(newEquation)
-            coloredButtonContainer.setBackgroundColor(newTintColor)
+        setLabelStringsWithDictionary(newEquation)
+        coloredButtonContainer.setBackgroundColor(newTintColor)
     }
     
     func setLabelStringsWithDictionary(optionalEquationDict:[String:String]?) {
@@ -109,8 +116,6 @@ class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate 
                         })
                         
                     })
-                    
-                    
                     
                 } else {
                     //maybe show error

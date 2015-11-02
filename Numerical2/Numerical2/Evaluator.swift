@@ -786,7 +786,6 @@ public class Evaluator {
                 var v = Int(denominator)
                 
                 while v > 0 {
-//                    print("v: \(v)", appendNewline: false)
                     let temp = u % v
                     u = v
                     v = temp
