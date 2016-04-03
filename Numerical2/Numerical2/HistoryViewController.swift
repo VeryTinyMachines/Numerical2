@@ -25,6 +25,8 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
     
     func updateSelectedEquation(equation: Equation?) {
         
+        // Unhighlight the old equation.
+        
         if let theCurrentEquation = currentEquation, indexPath = fetchedResultsController.indexPathForObject(theCurrentEquation) {
             // Find index path of the current equation
             
@@ -38,7 +40,7 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         
         currentEquation = equation
         
-        // Perform a fetch
+        // Highlight and scroll to the new equation.
         
         if let theCurrentEquation = currentEquation, indexPath = fetchedResultsController.indexPathForObject(theCurrentEquation) {
             // Find the index path for this new equation
@@ -46,32 +48,17 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
             if let cell = tableView.cellForRowAtIndexPath(indexPath) {
                 configureCell(cell, atIndexPath: indexPath)
             }
-            
-            // If we can find it then get the cell
-            
-            // Highlight the cell
-            
         }
-        
-        
-        // If we now have currentEquation = nil we should scroll to the bottom of the view.
-        
-//        if currentEquation == nil {
-//            
-//            // Get the final row.
-//            
-//            let count = self.tableView(tableView, numberOfRowsInSection: 0)
-//            
-//            let indexPath = NSIndexPath(forRow: count - 1, inSection: 0)
-//            
-//            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
-//        }
     }
     
-    func focusOnEquation(equation: Equation?, alignmentRect: CGRect) {
-        print("focusOnEquation")
+    func focusOnCurrentEquation() {
         
-        print(alignmentRect)
+        if let theCurrentEquation = currentEquation, indexPath = fetchedResultsController.indexPathForObject(theCurrentEquation) {
+            // Find the index path for this new equation
+            
+            self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+        }
+        
     }
     
     override func viewDidLoad() {
@@ -86,12 +73,9 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         
         tableView!.separatorColor = UIColor(white: 1.0, alpha: 0.4)
         
-        tableView!.backgroundColor = UIColor(red: 0.0/255.0, green: 11.0/255.0, blue: 24.0/255.0, alpha: 1.0)
-        
-        tableView!.backgroundView?.backgroundColor  = tableView!.backgroundColor
-        
-//        tableView.backgroundColor = UIColor.redColor()
-//        tableView.backgroundView?.backgroundColor = UIColor.greenColor()
+        self.view.backgroundColor = UIColor.clearColor()
+        tableView!.backgroundColor = UIColor.clearColor()
+        tableView!.backgroundView?.backgroundColor  = UIColor.clearColor()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -286,13 +270,16 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
                     cell.textLabel?.text = ""
                 }
                 
-                cell.backgroundColor = UIColor(red: 0.0/255.0, green: 11.0/255.0, blue: 24.0/255.0, alpha: 1.0)
+//                cell.backgroundColor = UIColor(red: 0.0/255.0, green: 11.0/255.0, blue: 24.0/255.0, alpha: 1.0)
+                cell.backgroundColor = UIColor.clearColor()
                 cell.textLabel?.textColor = UIColor(white: 0.6, alpha: 1.0)
                 
                 if equation == currentEquation {
+                    cell.textLabel?.font = UIFont.boldSystemFontOfSize(15.0)
                     cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 1.0)
                 } else {
-                    cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 0.6)
+                    cell.textLabel?.font = UIFont.systemFontOfSize(15.0)
+                    cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 0.8)
                 }
             }
             
@@ -314,7 +301,6 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         case .Update:
             if let theIndexPath = indexPath {
                 if let cell = self.tableView.cellForRowAtIndexPath(theIndexPath) {
-                    self.configureCell(cell, atIndexPath: theIndexPath)
                     self.tableView.reloadRowsAtIndexPaths([theIndexPath], withRowAnimation: UITableViewRowAnimation.None)
                 }
             }

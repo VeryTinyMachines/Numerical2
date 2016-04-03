@@ -103,7 +103,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                     theWorkPanelDelegate.updateEquation(currentEquation)
                 }
             }
-            
         }
         
         if let equation = currentEquation {
@@ -114,6 +113,16 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                 if let question = equation.question {
                     if question.characters.count > 0 {
                         equation.question = question.substringToIndex(question.endIndex.predecessor())
+                        
+                        // If this equation is now empty then we need to delete the equation from the store.
+                        if "" == equation.question {
+                            EquationStore.sharedStore.deleteEquation(equation)
+                            currentEquation = nil
+                            
+                            if let theWorkPanelDelegate = workPanelDelegate {
+                                theWorkPanelDelegate.updateEquation(currentEquation)
+                            }
+                        }
                     }
                 }
                 
@@ -157,7 +166,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
         if let theDelegate = delegate {
             theDelegate.pressedKey(key)
         }
-        
     }
     
     func viewIsWide() -> Bool {
@@ -166,7 +174,8 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        view.backgroundColor = UIColor(red: 38 / 255, green: 47/255, blue: 58/255, alpha: 1.0)
+//        view.backgroundColor = UIColor(red: 38 / 255, green: 47/255, blue: 58/255, alpha: 1.0)
+        
         updateLegalKeys()
     }
     
@@ -196,12 +205,10 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
         if let question = currentEquation?.question {
             if let legalKeys = Glossary.legalCharactersToAppendString(question), theKeyPanel = keyPanelView {
                 theKeyPanel.setLegalKeys(legalKeys)
-//                theKeyPanel.setLegalKeys(legalKeys)
             }
         } else {
             if let legalKeys = Glossary.legalCharactersToAppendString(""), theKeyPanel = keyPanelView {
                 theKeyPanel.setLegalKeys(legalKeys)
-//                theKeyPanel.setLegalKeys(legalKeys)
             }
         }
     }

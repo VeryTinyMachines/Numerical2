@@ -14,7 +14,12 @@ protocol WatchButtonDelegate {
     func buttonPressedWithTitle(title:String)
 }
 
+protocol WatchKeyboardDelegate {
+    func userEquationChanged(equation: String, answer: String)
+}
+
 class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDelegate {
+    
     @IBOutlet var resultLabel: WKInterfaceLabel!
     var resultString : String = ""
     
@@ -26,8 +31,13 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
     let OneButtonRowIdentifier = "OneButtonRow"
     let ThreeButtonRowIdentifier = "ThreeButtonRow"
     
+    var delegate: MainInterfaceController?
+    
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
+        
+        self.delegate = context as? MainInterfaceController
+        print(self.delegate)
         configureTable()
     }
     
@@ -79,8 +89,9 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
         print("equationDict: \(equationDict)")
         print("")
         
-        NSNotificationCenter.defaultCenter().postNotificationName("UserEnteredEquation", object: nil)
-        print("NSNotificationCenter")
+        delegate?.userEquationChanged("a", answer: "b")
+//        NSNotificationCenter.defaultCenter().postNotificationName("UserEnteredEquation", object: nil)
+//        print("NSNotificationCenter")
         
 //        PhoneCommunicator.sendEquationDictToPhone(equationDict)
         

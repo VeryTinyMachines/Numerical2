@@ -10,13 +10,13 @@ import UIKit
 
 class CalcButton: UIButton {
     
-    var baseColor:UIColor = UIColor(red: 60 / 255, green: 68/255, blue: 78/255, alpha: 1.0) {
+    var baseColor:UIColor = UIColor(red: 255 / 255, green: 255 / 255, blue: 255 / 255, alpha: 0.1) {
         didSet {
             updateEnabledState()
         }
     }
     
-    var highlightColor:UIColor = UIColor(red: 100 / 255, green: 114/255, blue: 130/255, alpha: 1.0)
+    var highlightColor:UIColor = UIColor(red: 255 / 255, green: 255 / 255, blue: 255 / 255, alpha: 0.5)
     
     
     override var enabled:Bool{

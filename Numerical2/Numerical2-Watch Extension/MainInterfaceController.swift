@@ -10,19 +10,25 @@ import WatchKit
 import Foundation
 
 
-class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate {
+
+
+class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate, WatchKeyboardDelegate {
 
     @IBOutlet var resultLabel: WKInterfaceLabel!
     @IBOutlet var equationLabel: WKInterfaceLabel!
     var equationText : String = ""
+    var answerText : String = ""
+    
+    var firstLaunch = true
     
     @IBOutlet var topLabelGroup: WKInterfaceGroup!
     @IBOutlet var buttonContainer: WKInterfaceGroup!
     
     @IBOutlet var coloredButtonContainer: WKInterfaceGroup!
-
+    
     override func willActivate() {
         super.willActivate()
+        print("willActivate")
         let device = WKInterfaceDevice.currentDevice()
         if device.screenBounds.width < 156.0 {
             topLabelGroup.setContentInset(UIEdgeInsetsMake(0, 8, 0, 5))
@@ -30,15 +36,30 @@ class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate 
         }
         PhoneCommunicator.delegate = self
         
-        setLabelStringsWithDictionary(PhoneCommunicator.latestEquationDict)
-        coloredButtonContainer.setBackgroundColor(PhoneCommunicator.currentTint())
+        if firstLaunch == true {
+            setLabelStringsWithDictionary(PhoneCommunicator.latestEquationDict)
+            firstLaunch = false
+        }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("userEnteredEquation:"), name: "UserEnteredEquation", object: nil)
+        self.equationLabel.setText(equationText)
+        self.resultLabel.setText(answerText)
+        
+     coloredButtonContainer.setBackgroundColor(PhoneCommunicator.currentTint())
+        
+    }
+    
+    func userEquationChanged(equation: String, answer: String) {
+        
+        print("equation: \(equation)")
+        print("answer: \(answer)")
+        
+        equationText = equation
+        answerText = answer
+        
     }
     
     func userEnteredEquation(notification: NSNotification) {
-        print("userEnteredEquation")
-        print("")
+        
     }
     
     func contextDidChangeWithNewLatestEquation(newEquation: [String : String]?, newTintColor: UIColor) {
@@ -46,6 +67,10 @@ class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate 
         print("newEquation: \(newEquation)")
         
         setLabelStringsWithDictionary(newEquation)
+        
+        self.equationLabel.setText(equationText)
+        self.resultLabel.setText(answerText)
+        
         coloredButtonContainer.setBackgroundColor(newTintColor)
     }
     
@@ -54,21 +79,28 @@ class MainInterfaceController: WKInterfaceController, PhoneCommunicatorDelegate 
             print("latestEquation: \(latestEquation)")
             print(latestEquation[EquationStringKey])
             if let equation = latestEquation[EquationStringKey] {
-                equationLabel.setText(equation)
+//                equationLabel.setText(equation)
+                equationText = equation
             }
             
             if let answer = latestEquation[AnswerStringKey] {
-                resultLabel.setText(answer)
+//                resultLabel.setText(answer)
+                answerText = answer
             }
             
             
         } else {
-            let attrNumericalString = NSAttributedString(string: "Numerical", attributes: [NSFontAttributeName : UIFont.systemFontOfSize(24)])
-            resultLabel.setAttributedText(attrNumericalString)
-            equationLabel.setText("The calculator\nwithout equal")
+//            let attrNumericalString = NSAttributedString(string: "Numerical", attributes: [NSFontAttributeName : UIFont.systemFontOfSize(24)])
+//            resultLabel.setAttributedText(attrNumericalString)
+//            equationLabel.setText("The calculator\nwithout equal")
         }
     }
 
+    
+    @IBAction func gridButtonPressed() {
+        print("gridButtonPressed")
+        self.presentControllerWithName("WatchKeyboard", context: self)
+    }
     
     @IBAction func speechButtonPressed() {
         presentTextInputControllerWithSuggestions(nil, allowedInputMode: .Plain) { (results) -> Void in

@@ -311,8 +311,6 @@ public class Evaluator {
     class func solveString(string: String) -> AnswerBundle {
         // First solve the brackets, then solve the string
         
-//        print("begin solving string: \(string)", appendNewline: true)
-        
         let cleanedString = cleanString(string)
         
         if let bracketsResolvedString = solveBracketsInString(cleanedString) {
@@ -329,18 +327,20 @@ public class Evaluator {
     
     class func cleanString(string:String) -> String {
         
-        // Inserts "*" between brackets and numbers
+        let preOperatorArray = [String(SymbolCharacter.sqrt), String(SymbolCharacter.sin), String(SymbolCharacter.cos), String(SymbolCharacter.tan), String(SymbolCharacter.log), String(SymbolCharacter.log2), String(SymbolCharacter.log10), String(SymbolCharacter.sinh), String(SymbolCharacter.cosh), String(SymbolCharacter.tanh)]
+        
+        let midOperatorArray = ["+","-","*","/","^",String(SymbolCharacter.fraction), String(SymbolCharacter.ee)]
+        
+        // Insert "*" between brackets and numbers
         
         var termArray = termArrayFromString(string, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
         
-        if termArray.count > 1 {
+        if termArray.count > 0 {
             var index = 0
             
             while index < termArray.count - 1 {
                 let term = termArray[index]
                 let nextTerm = termArray[index + 1]
-                
-//                print("term: \(term)  nextTerm: \(nextTerm)", appendNewline: false)
                 
                 if term == ")" && nextTerm == "(" {
                     termArray.insert("*", atIndex: index + 1)
@@ -352,6 +352,20 @@ public class Evaluator {
                 
                 index += 1
             }
+            
+            // If the final term is a pre-operator remove it.
+            while termArray.count > 0 {
+                if let lastTerm = termArray.last {
+                    if preOperatorArray.contains(lastTerm) || lastTerm == "(" || midOperatorArray.contains(lastTerm) {
+                        termArray.removeLast()
+                    } else {
+                        break
+                    }
+                } else {
+                    break
+                }
+            }
+            
             return termArray.joinWithSeparator("")
         }
         

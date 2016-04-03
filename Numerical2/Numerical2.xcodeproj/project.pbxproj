@@ -16,6 +16,7 @@
 		5117D8461B941A2B003DF8DA /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
 		5117D8491B941B3D003DF8DA /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
 		5117D84A1B941B3F003DF8DA /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; };
+		5125B49D1C9EA66C006D7BDC /* background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5125B49C1C9EA66C006D7BDC /* background@2x.jpg */; };
 		51279AE31B739D260036DF3D /* KeyStackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51279AE21B739D260036DF3D /* KeyStackView.xib */; };
 		51279AE51B739D6D0036DF3D /* KeyStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51279AE41B739D6D0036DF3D /* KeyStackView.swift */; };
 		51279AE71B73A8720036DF3D /* KeypadConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51279AE61B73A8720036DF3D /* KeypadConstructor.swift */; };
@@ -26,8 +27,8 @@
 		5131971A1B6ADD5900E9B802 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 513197181B6ADD5900E9B802 /* LaunchScreen.storyboard */; };
 		513197251B6ADD5900E9B802 /* Numerical2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513197241B6ADD5900E9B802 /* Numerical2Tests.swift */; };
 		513197301B6ADD5900E9B802 /* Numerical2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */; };
-		514189A41BD5075800877633 /* Dictionary_English.plist in Resources */ = {isa = PBXBuildFile; fileRef = 510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */; settings = {ASSET_TAGS = (); }; };
-		514189A51BD5075900877633 /* Dictionary_English.plist in Resources */ = {isa = PBXBuildFile; fileRef = 510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */; settings = {ASSET_TAGS = (); }; };
+		514189A41BD5075800877633 /* Dictionary_English.plist in Resources */ = {isa = PBXBuildFile; fileRef = 510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */; };
+		514189A51BD5075900877633 /* Dictionary_English.plist in Resources */ = {isa = PBXBuildFile; fileRef = 510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */; };
 		519B1B051BA03C9700C06E70 /* DeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1AFB1BA03C9700C06E70 /* DeviceHelper.swift */; };
 		519B1B061BA03C9700C06E70 /* Equation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1AFC1BA03C9700C06E70 /* Equation+CoreDataProperties.swift */; };
 		519B1B071BA03C9700C06E70 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1AFD1BA03C9700C06E70 /* Equation.swift */; };
@@ -45,8 +46,8 @@
 		51D28B121B6D100A009A0AEC /* EquationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B111B6D100A009A0AEC /* EquationViewCell.swift */; };
 		51D28B4E1B6D1BA9009A0AEC /* FractionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51D28B4D1B6D1BA9009A0AEC /* FractionViewCell.xib */; };
 		51D28B501B6D1C0F009A0AEC /* FractionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */; };
-		51D3AB2F1BC89AD40019B601 /* KeypadPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; settings = {ASSET_TAGS = (); }; };
+		51D3AB2F1BC89AD40019B601 /* KeypadPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */; };
+		51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; };
 		51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E84D301B8B5C3B00C3E28E /* CalcButton.swift */; };
 		51EE5BA01BC5203A001C9D38 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */; };
 		51F2F44D1B6C3FAE00B845CA /* KeyPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */; };
@@ -145,6 +146,7 @@
 		510D3AB91B6B657F00D1A07F /* Glossary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Glossary.swift; sourceTree = "<group>"; };
 		510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NaturalLanguageParser.swift; sourceTree = "<group>"; };
 		510D3AC11B6B659E00D1A07F /* KeypadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeypadViewController.swift; sourceTree = "<group>"; };
+		5125B49C1C9EA66C006D7BDC /* background@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "background@2x.jpg"; sourceTree = "<group>"; };
 		51279AE21B739D260036DF3D /* KeyStackView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeyStackView.xib; sourceTree = "<group>"; };
 		51279AE41B739D6D0036DF3D /* KeyStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyStackView.swift; sourceTree = "<group>"; };
 		51279AE61B73A8720036DF3D /* KeypadConstructor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeypadConstructor.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */,
 				5131970F1B6ADD5900E9B802 /* AppDelegate.swift */,
 				513197131B6ADD5900E9B802 /* Main.storyboard */,
+				5125B49C1C9EA66C006D7BDC /* background@2x.jpg */,
 				51D7A8371BBA7D320064AA4B /* View Hierarchy */,
 				51D7A8361BBA7D060064AA4B /* Evaluator */,
 				519B1AFA1BA03C9700C06E70 /* Equation Store */,
@@ -689,6 +692,7 @@
 				51D28B101B6D0FE1009A0AEC /* EquationViewCell.xib in Resources */,
 				513197171B6ADD5900E9B802 /* Assets.xcassets in Resources */,
 				51D28B4E1B6D1BA9009A0AEC /* FractionViewCell.xib in Resources */,
+				5125B49D1C9EA66C006D7BDC /* background@2x.jpg in Resources */,
 				513197151B6ADD5900E9B802 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -43,11 +43,11 @@ class KeypadViewController: UIViewController {
     
     func setupKeys() {
         
-        let compactStandard = [SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", ")", SymbolCharacter.delete, "/", "*", "-", "+"]
+        let compactStandard = [SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket, SymbolCharacter.delete, "/", "*", "-", "+"]
         
         let compactScientific = [SymbolCharacter.clear, SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", SymbolCharacter.delete, SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")"]
         
-        let regular = [" ", SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", " ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")", SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", ")", SymbolCharacter.delete, "/", "*", "-", "+"]
+        let regular = [" ", SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", " ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")", SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket, SymbolCharacter.delete, "/", "*", "-", "+"]
         
         if layoutType == KeypadLayout.CompactStandard {
             keyCharacters = compactStandard
@@ -98,9 +98,22 @@ class KeypadViewController: UIViewController {
     
     
     @IBAction func pressedKey(sender: UIButton) {
-        let character = keyCharacters[sender.tag]
+        var character = keyCharacters[sender.tag]
         
         print("pressedKey with tag \(sender.tag) with character \(character)")
+        
+        // If this is a smart bracket button then figure out what kind of bracket it is
+        
+        if character == SymbolCharacter.smartBracket {
+            if currentLegalKeys.contains("(") {
+                character = "("
+            } else if currentLegalKeys.contains(")") {
+                character = ")"
+            } else {
+                character = "("
+            }
+        }
+        
         
         if let keyDelegate = delegate {
             keyDelegate.pressedKey(character)
@@ -109,7 +122,7 @@ class KeypadViewController: UIViewController {
     
     
     func setLegalKeys(legalKeys: Set<Character>) {
-//        print("setLegalKeys: \(legalKeys)", appendNewline: true)
+        print("setLegalKeys: \(legalKeys)")
         
         currentLegalKeys = legalKeys
         updateLegalKeys()
@@ -138,6 +151,19 @@ class KeypadViewController: UIViewController {
                             // This button is not legal
                             button.alpha = 0.8
                             button.enabled = false
+                        }
+                    }
+                    
+                    // Set the smart bracket button
+                    if character == SymbolCharacter.smartBracket {
+                        print("")
+                        
+                        if currentLegalKeys.contains("(") {
+                            button.setTitle("(", forState: UIControlState.Normal)
+                        } else if currentLegalKeys.contains(")") {
+                            button.setTitle(")", forState: UIControlState.Normal)
+                        } else {
+                            button.setTitle("(", forState: UIControlState.Normal)
                         }
                     }
                     

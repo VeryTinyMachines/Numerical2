@@ -95,7 +95,6 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         pageController = UIPageViewController(
             transitionStyle: UIPageViewControllerTransitionStyle.Scroll,
             navigationOrientation: .Horizontal,
@@ -115,9 +114,6 @@ class KeyPanelViewController: UIViewController, KeypadDelegate, UIPageViewContro
             
             updatePageCount()
         }
-        
-        
-        
         
         self.addChildViewController(pageController!)
         self.view.addSubview(self.pageController!.view)
