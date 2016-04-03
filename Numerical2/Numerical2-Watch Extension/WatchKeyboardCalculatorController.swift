@@ -14,7 +14,12 @@ protocol WatchButtonDelegate {
     func buttonPressedWithTitle(title:String)
 }
 
+protocol WatchKeyboardDelegate {
+    func userEquationChanged(equation: String, answer: String)
+}
+
 class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDelegate {
+    
     @IBOutlet var resultLabel: WKInterfaceLabel!
     var resultString : String = ""
     
@@ -26,11 +31,13 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
     let OneButtonRowIdentifier = "OneButtonRow"
     let ThreeButtonRowIdentifier = "ThreeButtonRow"
     
-
+    var delegate: MainInterfaceController?
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
+        self.delegate = context as? MainInterfaceController
+        print(self.delegate)
         configureTable()
     }
     
@@ -46,10 +53,14 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
                 equationString += title
             }
             equationLabel.setText(equationString)
-            CalculatorBrain().solveStringAsyncQueue(equationString, completion: { (answer:AnswerBundle) -> Void in
-                if let answerString = answer.answer {
-                    self.storeResultString(answerString)
-                }
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                CalculatorBrain().solveStringSyncQueue(self.equationString, completion: { (answer:AnswerBundle) -> Void in
+                    if let answerString = answer.answer {
+                        self.storeResultString(answerString)
+                    } else {
+                        self.resultLabel.setText("Error")
+                    }
+                })
             })
         }
     }
@@ -69,9 +80,27 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
     func storeResultString(resultString:String) {
         self.resultString = resultString
         self.resultLabel.setText(self.resultString)
+        
+        var equationDict = [String:String]()
+        
+        equationDict[LatestEquationKey] = self.equationString
+        equationDict[TimestampKey] = "\(NSDate().timeIntervalSince1970)"
+        
+        print("equationDict: \(equationDict)")
+        print("")
+        
+        delegate?.userEquationChanged("a", answer: "b")
+//        NSNotificationCenter.defaultCenter().postNotificationName("UserEnteredEquation", object: nil)
+//        print("NSNotificationCenter")
+        
+//        PhoneCommunicator.sendEquationDictToPhone(equationDict)
+        
+        
+        
     }
     
-    let buttons = ["7", "8", "9",
+    let buttons =
+        ["7", "8", "9",
         "4", "5", "6",
         "1", "2", "3",
         "0", ".", "C",
@@ -95,7 +124,6 @@ class WatchKeyboardCalculatorController: WKInterfaceController, WatchButtonDeleg
             cell.configureButtons(buttons[row * 3], middleString:buttons[row * 3 + 1] , rightString: buttons[row * 3 + 2])
             cell.delegate = self
         }
-        
     }
 
 }

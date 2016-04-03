@@ -73,6 +73,7 @@ public class EquationStore {
 	
 	public func save() {
 		self.cdStack.saveContext()
+        print("saved")
 	}
 	
 	//MARK: - Equation Handling -

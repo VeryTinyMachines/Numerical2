@@ -16,6 +16,8 @@ public enum KeypadSize {
 
 class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate {
     
+    @IBOutlet weak var statusBarBlur: UIVisualEffectView!
+    
     var historyView: HistoryViewController?
     var workPanelView: WorkPanelViewController?
     var currentEquation: Equation?
@@ -26,8 +28,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     var workPanelLastLocation:CGPoint?
     var workPanelVerticalSpeed:CGFloat = 0.0
     
-    
-    var workPanelPercentage:Float = 0.9
+    var workPanelPercentage:Float = 1.0
     
     @IBOutlet weak var workPanelHeight: NSLayoutConstraint!
     
@@ -35,6 +36,8 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = UIColor.greenColor()
         
         presentKeypad()
         
@@ -56,7 +59,6 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
                     theWorkPanel.currentEquation = lastEquation
                     theWorkPanel.updateViews()
                 }
-                
             }
         }
     }
@@ -212,7 +214,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         print("snapPercentageHeight: \(verticalSpeed)")
         
         // Determine the height of equation as a percentage
-        let equationHeightPercentage = 130 / viewSize.height
+        let equationHeightPercentage = 140 / viewSize.height
         workPanelPercentage += Float(verticalSpeed) / Float(viewSize.height) * 5
         
         if viewSize.width > viewSize.height {
@@ -225,7 +227,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         } else {
             // Portrait
             if workPanelPercentage > 0.66 {
-                workPanelPercentage = 0.9
+                workPanelPercentage = 1.0
             } else if workPanelPercentage > 0.33 {
                 workPanelPercentage = 0.5
             } else {
@@ -237,6 +239,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     
     func pressedKey(key: Character) {
         // A key was pressed. we need to reload the history view
+        
     }
     
     
@@ -251,15 +254,6 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
         if let theHistoryView = historyView {
             theHistoryView.updateSelectedEquation(currentEquation)
-            
-            if currentSize == KeypadSize.Medium {
-                
-                // Get the keypanels current size
-                
-                if let workPanelFrame = workPanelView?.view, _ = currentEquation {
-//                    theHistoryView.focusOnEquation(currentEquation, alignmentRect: workPanelFrame.frame)
-                }
-            }
         }
     }
     
@@ -281,6 +275,9 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         updateHistoryContentInsets()
+        
+        // Focus the history view on the current equation
+        historyView?.focusOnCurrentEquation()
     }
     
 
@@ -289,7 +286,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             
             let bottomInset = view.bounds.height - 88
             
-            theHistoryView.updateContentInsets(UIEdgeInsetsMake(0, 0, bottomInset, 0))
+            theHistoryView.updateContentInsets(UIEdgeInsetsMake(40, 0, bottomInset, 0))
         }
     }
     
@@ -298,6 +295,25 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         // Between 1.0 and 0.5 the height shrinks. Below this the height remains the same but the position is offset.
         
         var newHeight = CGFloat(heightPercentage)
+        
+        // Less the height by 10points (for the status bar)
+        
+        // If there is a status bar
+        
+        if UIApplication.sharedApplication().statusBarHidden {
+            // Status bar is NOT visible, hide the status bar blur view.
+            statusBarBlur.hidden = true
+            
+        } else {
+            // Status bar is visible
+            statusBarBlur.hidden = false
+//            newHeight = newHeight * ((view.bounds.height - 20) / (view.bounds.height - 0))
+        }
+        
+        
+        
+        
+        
         
         if newHeight < 0 {
             newHeight = 0

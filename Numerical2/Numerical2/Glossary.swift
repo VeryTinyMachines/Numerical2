@@ -493,6 +493,8 @@ public class Glossary {
                     }
                 }
                 
+                
+                print(legalCharacterSet)
                 return legalCharacterSet
                 
             } else {
@@ -501,24 +503,8 @@ public class Glossary {
             }
 
         } else {
-            // There are no characters in this string.
-            
-            if let emptyLegalCharacters = legalCombinations[" "] {
-                var legalCharacterSet = Set<Character>()
-                
-                for character in emptyLegalCharacters.characters {
-                    legalCharacterSet.insert(character)
-                }
-                
-                // Insert the decimal
-                legalCharacterSet.insert(".")
-                
-                return legalCharacterSet
-            } else {
-                return nil
-            }
+            // Something went very very wrong
+            return nil
         }
-        
-        
     }
 }

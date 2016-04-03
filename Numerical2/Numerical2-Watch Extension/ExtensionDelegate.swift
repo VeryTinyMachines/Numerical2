@@ -12,6 +12,26 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidFinishLaunching() {
         PhoneCommunicator.sharedCommunicator.setup()
+        
+        
+        // TEST evaluation
+        if let parsedString = NaturalLanguageParser.sharedInstance.translateString("2+2") {
+            print("watch parsedString: \(parsedString)")
+            CalculatorBrain().solveStringAsyncQueue(parsedString, completion: { (answer) -> Void in
+                if let answer : AnswerBundle = answer {
+                    print("watch answer: \(answer)")
+                    print("watch answer.answer: \(answer.answer)")
+                } else {
+                    print("watch AnswerBundle failed")
+                }
+            })
+        } else {
+            //maybe show error
+            print("watch an error occurred")
+        }
+        
+        
+        
     }
 
     func applicationDidBecomeActive() {

@@ -192,6 +192,7 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
         
 
         if let vc = pendingViewControllers.first as? KeypadViewController {
+            vc.setLegalKeys(currentLegalKeys)
             updateDelegatePageControl(vc)
         }
     }
@@ -199,14 +200,13 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
         if let vc = pageViewController.viewControllers?.first as? KeypadViewController {
+            vc.setLegalKeys(currentLegalKeys)
             updateDelegatePageControl(vc)
         }
         
     }
     
     func pressedKey(key: Character) {
-        print("pressedKey")
-        
         if let theDelegate = delegate {
             theDelegate.pressedKey(key)
         }
@@ -242,16 +242,4 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
             theDelegate.updatePageControl(currentPage, numberOfPages: numberOfPages)
         }
     }
-    
-//    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int
-//    {
-//        return self.pageTitles.count
-//    }
-//    
-//    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int
-//    {
-//        return 0
-//    }
-    
-    
 }

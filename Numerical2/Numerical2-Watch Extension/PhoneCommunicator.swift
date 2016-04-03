@@ -47,6 +47,7 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
     }
     
     static func sendEquationDictToPhone(equationDict:[String:String]) {
+        print("sendEquationDictToPhone")
         session.transferUserInfo(equationDict)
     }
     
@@ -59,10 +60,9 @@ class PhoneCommunicator : NSObject, WCSessionDelegate {
     
     static private func latestContext() -> [String:AnyObject] {
         var dictionaryToUse = session.applicationContext
-        if let latestSentTimestamp = session.applicationContext[TimestampKey] as! NSTimeInterval? {
-            if let latestReceivedTimestamp = session.receivedApplicationContext[TimestampKey] as! NSTimeInterval? {
+        if let latestSentTimestamp = session.applicationContext[TimestampKey] as? String {
+            if let latestReceivedTimestamp = session.receivedApplicationContext[TimestampKey] as? String {
                 dictionaryToUse = latestReceivedTimestamp > latestSentTimestamp ? session.receivedApplicationContext : session.applicationContext
-                
             }
             
         } else if session.receivedApplicationContext[TimestampKey] != nil {
