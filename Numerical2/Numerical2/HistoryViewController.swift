@@ -18,10 +18,9 @@ protocol HistoryViewControllerDelegate {
 class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var delegate:HistoryViewControllerDelegate?
-    
-//    var fetchedResultsController = NSFetchedResultsController()
-    
+    var fetchedResultsController = NSFetchedResultsController<Equation>()
     var currentEquation:Equation?
+    
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -29,7 +28,6 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         
         // Unhighlight the old equation.
         
-        /*
         if let theCurrentEquation = currentEquation, let indexPath = fetchedResultsController.indexPath(forObject: theCurrentEquation) {
             // Find index path of the current equation
             
@@ -38,24 +36,13 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
             if let cell = tableView.cellForRow(at: indexPath) {
                 configureCell(cell, atIndexPath: indexPath)
             }
+            
         }
-        */
         
         currentEquation = equation
-        reloadData()
         
         // Highlight and scroll to the new equation.
         
-        if let currentEquation = currentEquation {
-            if let position =  EquationStore.sharedStore.indexOfEquation(equation: currentEquation) {
-                DispatchQueue.main.async {
-                    let indexPath = IndexPath(row: position, section: 0)
-                    self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: true)
-                }
-            }
-        }
-        
-        /*
         if let theCurrentEquation = currentEquation, let indexPath = fetchedResultsController.indexPath(forObject: theCurrentEquation) {
             // Find the index path for this new equation
             
@@ -63,32 +50,23 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
                 configureCell(cell, atIndexPath: indexPath)
             }
         }
- */
-    }
-    
-    func reloadData() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
     }
     
     func focusOnCurrentEquation() {
-        /*
+        
         if let theCurrentEquation = currentEquation, let indexPath = fetchedResultsController.indexPath(forObject: theCurrentEquation) {
             // Find the index path for this new equation
             
             self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.top, animated: true)
         }
- */
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        fetchedResultsController = EquationStore.sharedStore.equationsFetchedResultsController()
-//        fetchedResultsController.delegate = self
-        
+        fetchedResultsController = EquationStore.sharedStore.equationsFetchedResultsController()
+        fetchedResultsController.delegate = self
         performFetch()
         
         tableView!.delegate = self
@@ -119,18 +97,13 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
     }
     
     func performFetch() {
-        /*
         do {
             try fetchedResultsController.performFetch()
         } catch {
             print("error")
         }
-         */
     }
     
-    func equation(indexPath:IndexPath) -> Equation {
-        return EquationStore.sharedStore.equations[indexPath.row]
-    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -139,7 +112,7 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
         
         self.configureCell(cell, atIndexPath: indexPath)
         
@@ -155,21 +128,11 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == UITableViewCellEditingStyle.delete {
-            let equation = self.equation(indexPath: indexPath)
-            
-            delegate?.delectedEquation(equation)
-            
-            let indexesToDelete = EquationStore.sharedStore.deleteEquation(equation: equation)
-            
-            if indexesToDelete.count > 0 {
-                
-                var indexPaths = [IndexPath]()
-                
-                for index in indexesToDelete {
-                    indexPaths.append(IndexPath(row: index, section: 0))
+            if let equation = fetchedResultsController.object(at: indexPath) as? Equation {
+                if let theDelegate = delegate  {
+                    theDelegate.delectedEquation(equation)
                 }
-                
-                self.tableView.deleteRows(at: indexPaths, with: UITableViewRowAnimation.automatic)
+                EquationStore.sharedStore.deleteEquation(equation: equation)
             }
         }
     }
@@ -179,16 +142,16 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         return true
     }
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let equation = self.equation(indexPath: indexPath)
-        delegate?.selectedEquation(equation)
+        if let equation = fetchedResultsController.object(at: indexPath) as? Equation, let theDelegate = delegate {
+            theDelegate.selectedEquation(equation)
+        }
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        /*
+        
         if let sourceEquation = fetchedResultsController.object(at: sourceIndexPath) as? Equation, let destinationEquation = fetchedResultsController.object(at: destinationIndexPath) as? Equation, let destinationSortOrder = destinationEquation.sortOrder?.doubleValue {
             
             if (sourceIndexPath as NSIndexPath).row < (destinationIndexPath as NSIndexPath).row {
@@ -279,9 +242,8 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
                 }
             }
         }
-         
-         EquationStore.sharedStore.save()
- */
+        
+        EquationStore.sharedStore.queueSave()
         
         performFetch()
         tableView.reloadData()
@@ -289,27 +251,47 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        /*
         let info = self.fetchedResultsController.sections![section] as NSFetchedResultsSectionInfo
         return info.numberOfObjects
-        */
-        return EquationStore.sharedStore.equations.count
+        
     }
     
     /* helper method to configure a `UITableViewCell`
     ask `NSFetchedResultsController` for the model */
     func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
-        let equation = self.equation(indexPath: indexPath)
-        
-        var isCurrent = false
-        
-        if equation.identifier == currentEquation?.identifier {
-            isCurrent = true
-        }
-        
-        if let cell = cell as? HistoryCell {
-            cell.layout(equation: equation, currentEquation: isCurrent)
-        }
+            
+            if let equation = fetchedResultsController.object(at: indexPath) as? Equation {
+                if let answer = equation.answer, let question = equation.question, let sortOrder = equation.sortOrder {
+                    
+                    let formattedQuestion = Glossary.formattedStringForQuestion(question)
+                    let formattedAnswer = Glossary.formattedStringForQuestion(answer)
+                    
+                    cell.textLabel?.text = "\(formattedQuestion) = \(formattedAnswer)"
+                    
+                    
+                    if let posted = equation.posted?.boolValue {
+                        if posted == false {
+                            cell.textLabel?.text = "\(formattedQuestion) = \(formattedAnswer) ..."
+                        }
+                    }
+                    
+                } else {
+                    cell.textLabel?.text = ""
+                }
+                
+//                cell.backgroundColor = UIColor(red: 0.0/255.0, green: 11.0/255.0, blue: 24.0/255.0, alpha: 1.0)
+                cell.backgroundColor = UIColor.clear
+                cell.textLabel?.textColor = UIColor(white: 0.6, alpha: 1.0)
+                
+                if equation == currentEquation {
+                    cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15.0)
+                    cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 1.0)
+                } else {
+                    cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0)
+                    cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 0.8)
+                }
+            }
+            
     }
     
     // fetched results controller delegate
@@ -327,7 +309,7 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
             }
         case .update:
             if let theIndexPath = indexPath {
-                if let _ = self.tableView.cellForRow(at: theIndexPath) {
+                if let cell = self.tableView.cellForRow(at: theIndexPath) {
                     self.tableView.reloadRows(at: [theIndexPath], with: UITableViewRowAnimation.none)
                 }
             }

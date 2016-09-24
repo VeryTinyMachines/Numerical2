@@ -30,6 +30,10 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     
     var workPanelPercentage:Float = 1.0
     
+    var panning = false
+    
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    
     @IBOutlet weak var workPanelHeight: NSLayoutConstraint!
     
     @IBOutlet weak var workPanelBottomConstraint: NSLayoutConstraint!
@@ -41,6 +45,11 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
         presentKeypad()
         
+        themeChanged()
+        
+        DispatchQueue.main.async {
+            NotificationCenter.default.addObserver(self, selector: #selector(ViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
+        }
         /*
         if let equations = EquationStore.sharedStore.equationArrayForPad(nil) {
             
@@ -65,6 +74,11 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
          */
     }
     
+    
+    func themeChanged() {
+        self.backgroundImageView.image = PremiumCoordinator.shared.imageForCurrentTheme()
+        
+    }
     
     func selectedEquation(_ equation: Equation) {
 //        print("equation: \(equation)", appendNewline: true)
@@ -120,7 +134,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
         let location = sender.location(in: view)
         print(location)
-        
+        // ZZZ
         switch sender.state {
         case .began:
             print("began")
@@ -138,34 +152,57 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             // we need to determine, based on the 3 items above, what the new percentage is.
             
             if let origin = workPanelSlideOrigin {
-                let verticalDelta = location.y - origin.y
                 
-                print("verticalDelta: \(verticalDelta)")
+                let verticalDelta = location.y - origin.y
                 
                 let verticalDeltaPercentage = verticalDelta / view.bounds.height
                 
-                print("verticalDeltaPercentage: \(verticalDeltaPercentage)")
+                if panning == false {
+                    if verticalDelta > 50 || verticalDelta < -50 {
+                        
+                        panning = true
+                        
+                        // Quickly animate to this pan point
+                        
+                        let newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
+                        
+                        updateWorkPanelForHeight(Float(newHeight))
+                        
+                        if workPanelVerticalSpeed > -10 && workPanelVerticalSpeed < 10 {
+                            // Panel is moving slowly
+                            UIView.animate(withDuration: 0.25, animations: {
+                                self.view.layoutIfNeeded()
+                                }, completion: { (complet) in
+                                    
+                            })
+                        } else {
+                            self.view.layoutIfNeeded()
+                        }
+                        
+                    }
+                } else {
+                    let newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
+                    
+                    print("newHeight: \(newHeight)")
+                    
+                    updateWorkPanelForHeight(Float(newHeight))
+                    
+                    view.layoutIfNeeded()
+
+                }
                 
-                let newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
-                
-                print("newHeight: \(newHeight)")
-                
-                updateWorkPanelForHeight(Float(newHeight))
-                
-                view.layoutIfNeeded()
             }
-            
             
             if let lastLocation = workPanelLastLocation {
                 workPanelVerticalSpeed = lastLocation.y - location.y
-                print("workPanelVerticalSpeed")
-                print(workPanelVerticalSpeed)
             }
             
             workPanelLastLocation = location
             
         case .ended:
             print("ended")
+            
+            panning = false
             
             if let origin = workPanelSlideOrigin {
                 let verticalDelta = location.y - origin.y
@@ -203,6 +240,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             
         case .failed:
             print("failed")
+            panning = false
         case .possible:
             print("possible")
         }
@@ -212,27 +250,72 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
         print("snapPercentageHeight: \(verticalSpeed)")
         
+        // Look at the vertical speed to decide what height to snap it to.
+        
+        
         // Determine the height of equation as a percentage
         let equationHeightPercentage = 140 / viewSize.height
+        
         workPanelPercentage += Float(verticalSpeed) / Float(viewSize.height) * 5
         
-        if viewSize.width > viewSize.height {
-            // Landscape
-            if workPanelPercentage > 0.5 {
-                workPanelPercentage = 1.0
+        
+        if verticalSpeed > 5 || verticalSpeed < -5 {
+            print("Speed is significant")
+            
+            if viewSize.width > viewSize.height {
+                // Landscape
+                if verticalSpeed > 0 {
+                    workPanelPercentage = 1.0
+                } else {
+                    workPanelPercentage = Float(equationHeightPercentage)
+                }
             } else {
-                workPanelPercentage = Float(equationHeightPercentage)
+                // Portrait
+                if workPanelPercentage > 0.66 {
+                    if verticalSpeed > 0 {
+                        workPanelPercentage = 1.0
+                    } else {
+                        workPanelPercentage = 0.5
+                    }
+                    
+                } else if workPanelPercentage > 0.33 {
+                    
+                    if verticalSpeed > 0 {
+                        workPanelPercentage = 0.5
+                    } else {
+                        workPanelPercentage = Float(equationHeightPercentage)
+                    }
+                    
+                } else {
+                    workPanelPercentage = Float(equationHeightPercentage)
+                }
             }
+            
         } else {
-            // Portrait
-            if workPanelPercentage > 0.66 {
-                workPanelPercentage = 1.0
-            } else if workPanelPercentage > 0.33 {
-                workPanelPercentage = 0.5
+            
+            if viewSize.width > viewSize.height {
+                // Landscape
+                if workPanelPercentage > 0.5 {
+                    workPanelPercentage = 1.0
+                } else {
+                    workPanelPercentage = Float(equationHeightPercentage)
+                }
             } else {
-                workPanelPercentage = Float(equationHeightPercentage)
+                // Portrait
+                if workPanelPercentage > 0.66 {
+                    workPanelPercentage = 1.0
+                } else if workPanelPercentage > 0.33 {
+                    workPanelPercentage = 0.5
+                } else {
+                    workPanelPercentage = Float(equationHeightPercentage)
+                }
             }
+            
         }
+        
+        
+        
+        
         
     }
     
@@ -308,11 +391,6 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             statusBarBlur.isHidden = false
 //            newHeight = newHeight * ((view.bounds.height - 20) / (view.bounds.height - 0))
         }
-        
-        
-        
-        
-        
         
         if newHeight < 0 {
             newHeight = 0

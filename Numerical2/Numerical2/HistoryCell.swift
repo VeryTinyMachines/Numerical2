@@ -29,7 +29,12 @@ class HistoryCell: UITableViewCell {
             let formattedQuestion = Glossary.formattedStringForQuestion(question)
             let formattedAnswer = Glossary.formattedStringForQuestion(answer)
             
-            textLabel?.text = "\(formattedQuestion) = \(formattedAnswer)"
+            textLabel?.text = "\(formattedQuestion) = \(formattedAnswer) (nil)"
+            
+            if let posted = equation.posted?.boolValue {
+                textLabel?.text = "\(formattedQuestion) = \(formattedAnswer) (\(posted))"
+            }
+            
         } else {
             textLabel?.text = "Error"
         }

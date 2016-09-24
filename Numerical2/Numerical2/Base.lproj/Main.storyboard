@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="68R-zT-cl3"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="68R-zT-cl3" userLabel="Background Image"/>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRv-bj-Wrb" userLabel="Seperator">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -88,6 +88,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backgroundImageView" destination="68R-zT-cl3" id="VWT-T1-MEd"/>
                         <outlet property="statusBarBlur" destination="1nY-TK-eHY" id="zW2-Eb-bus"/>
                         <outlet property="workPanelBottomConstraint" destination="o4k-HN-3PU" id="5Rp-Xs-wDo"/>
                         <outlet property="workPanelHeight" destination="nZa-rw-tsk" id="ewQ-va-UCc"/>
@@ -151,12 +152,12 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="tableView" destination="6CL-N5-5ys" id="Ogq-9D-y3E"/>
+                        <outlet property="tableView" destination="6CL-N5-5ys" id="eDb-2q-Ked"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="duR-vt-oof" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="54" y="1747"/>
+            <point key="canvasLocation" x="53.600000000000001" y="1746.4767616191905"/>
         </scene>
         <!--Work Panel View Controller-->
         <scene sceneID="0eF-rh-V1D">
@@ -445,10 +446,10 @@
             </objects>
             <point key="canvasLocation" x="1110" y="1672"/>
         </scene>
-        <!--View Controller-->
+        <!--About View Controller-->
         <scene sceneID="UAf-qR-Ono">
             <objects>
-                <viewController storyboardIdentifier="AboutViewController" id="Tvs-OL-ypp" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AboutViewController" id="Tvs-OL-ypp" customClass="AboutViewController" customModule="Numerical2" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="CfM-hi-niT"/>
                         <viewControllerLayoutGuide type="bottom" id="rYH-it-v8g"/>
@@ -457,21 +458,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="About Numerical" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f94-e2-F4V">
-                                <frame key="frameInset" minX="20" minY="20" width="560" height="580"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KxM-bZ-tDz">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="TWk-Pq-ip0" style="IBUITableViewCellStyleDefault" id="gS1-BS-Koj">
+                                        <rect key="frame" x="0.0" y="28" width="1000" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gS1-BS-Koj" id="Qrg-ba-qJ7">
+                                            <frame key="frameInset" width="1000" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TWk-Pq-ip0">
+                                                    <frame key="frameInset" minX="164" width="672" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.083293876262626299" green="0.083293876262626299" blue="0.083293876262626299" alpha="0.43813344594594594" colorSpace="calibratedRGB"/>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.98590970039367676" green="0.0" blue="0.15149955451488495" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="f94-e2-F4V" secondAttribute="trailing" id="Ilv-3G-ZIp"/>
-                            <constraint firstItem="f94-e2-F4V" firstAttribute="leading" secondItem="FNe-kT-5MD" secondAttribute="leadingMargin" id="Mpk-jg-Czb"/>
-                            <constraint firstItem="f94-e2-F4V" firstAttribute="top" secondItem="CfM-hi-niT" secondAttribute="bottom" id="eYh-is-gdZ"/>
-                            <constraint firstItem="rYH-it-v8g" firstAttribute="top" secondItem="f94-e2-F4V" secondAttribute="bottom" id="lgV-bw-aT0"/>
+                            <constraint firstAttribute="trailing" secondItem="KxM-bZ-tDz" secondAttribute="trailing" id="E90-WA-ek9"/>
+                            <constraint firstItem="rYH-it-v8g" firstAttribute="top" secondItem="KxM-bZ-tDz" secondAttribute="bottom" id="XhK-Dl-Bso"/>
+                            <constraint firstItem="KxM-bZ-tDz" firstAttribute="top" secondItem="CfM-hi-niT" secondAttribute="bottom" id="dyy-7d-9yd"/>
+                            <constraint firstItem="KxM-bZ-tDz" firstAttribute="leading" secondItem="FNe-kT-5MD" secondAttribute="leading" id="oDU-9W-tVP"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="KxM-bZ-tDz" id="6b9-bz-Lhp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JKh-gu-KG7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -486,7 +507,7 @@
                         <viewControllerLayoutGuide type="bottom" id="gxH-Mf-QZD"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="IXb-fI-W5R">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="52"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="z9V-HG-Fcz">
@@ -616,8 +637,7 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="gcn-bu-OSS">
-                                <frame key="frameInset" minX="76" minY="1" width="46" height="665"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="gcn-bu-OSS">
                                 <subviews>
                                     <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rcT-hr-fJN" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
@@ -651,8 +671,7 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="T6g-Ak-kLb">
-                                <frame key="frameInset" minX="151" minY="1" width="46" height="665"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="T6g-Ak-kLb">
                                 <subviews>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6kT-b7-RAc" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
@@ -686,8 +705,7 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="tbU-Vi-d51">
-                                <frame key="frameInset" minX="227" width="46" height="665"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="tbU-Vi-d51">
                                 <subviews>
                                     <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWn-Vb-Peb" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
@@ -721,8 +739,7 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="UY3-iv-bVD">
-                                <frame key="frameInset" minX="301" minY="1" width="46" height="665"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="UY3-iv-bVD">
                                 <subviews>
                                     <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zbg-r4-Jq5" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
@@ -756,8 +773,7 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="xhX-YK-EK1">
-                                <frame key="frameInset" minX="376" minY="1" width="46" height="665"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="xhX-YK-EK1">
                                 <subviews>
                                     <button opaque="NO" tag="25" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="79d-Hh-Oc4" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
@@ -791,8 +807,7 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Sq4-ZI-blt">
-                                <frame key="frameInset" minX="451" minY="1" width="46" height="665"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Sq4-ZI-blt">
                                 <subviews>
                                     <button opaque="NO" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x93-DD-ues" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
@@ -826,8 +841,7 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="CGz-5b-onC">
-                                <frame key="frameInset" minX="525" minY="1" width="46" height="665"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="CGz-5b-onC">
                                 <subviews>
                                     <button opaque="NO" tag="35" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lY-bQ-Uiw" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
@@ -949,7 +963,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t6a-BQ-LDQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1132" y="2298"/>
+            <point key="canvasLocation" x="1110" y="2334"/>
         </scene>
     </scenes>
     <resources>

@@ -17,7 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 //        WatchCommunicator.sharedCommunicator.setup()
         
-        EquationStore.sharedStore
+        
+        print(PremiumCoordinator.shared.themes)
+        
+        EquationStore.sharedStore.saveContext()
+        
+        EquationStore.sharedStore.fetchEquationWithIdentifier(string: "")
         return true
     }
 

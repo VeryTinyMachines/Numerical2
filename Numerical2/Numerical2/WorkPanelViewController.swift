@@ -86,20 +86,23 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
             if let equation = currentEquation {
                 // Clear - Need to load a new equation from the EquationStore
                 
-                equation.lastModifiedDate = Date()
+                equation.lastModifiedDate = NSDate()
                 currentEquation = nil
+                EquationStore.sharedStore.equationUpdated(equation: equation)
                 
                 if let theWorkPanelDelegate = workPanelDelegate {
                     theWorkPanelDelegate.updateEquation(currentEquation)
                 }
-                
             }
         } else {
             
             if currentEquation == nil {
-                currentEquation = Equation()
                 
-                currentEquation = EquationStore.sharedStore.newEquation()
+                let theNewEquation = EquationStore.sharedStore.newEquation()
+                
+                currentEquation = theNewEquation
+                
+                EquationStore.sharedStore.equationUpdated(equation: currentEquation!)
                 
                 if let theWorkPanelDelegate = workPanelDelegate {
                     theWorkPanelDelegate.updateEquation(currentEquation)
@@ -119,14 +122,15 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                         // If this equation is now empty then we need to delete the equation from the store.
                         if "" == equation.question {
                             
-                            
-//                            EquationStore.sharedStore.deleteEquation(equation)
+                            EquationStore.sharedStore.deleteEquation(equation: equation)
                             
                             currentEquation = nil
                             
                             if let theWorkPanelDelegate = workPanelDelegate {
                                 theWorkPanelDelegate.updateEquation(currentEquation)
                             }
+                        } else {
+                            EquationStore.sharedStore.equationUpdated(equation: equation)
                         }
                     }
                 }
@@ -143,6 +147,7 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                     }
                     
                     equation.question = question
+                    EquationStore.sharedStore.equationUpdated(equation: equation)
                 }
                 
             } else {
@@ -156,14 +161,14 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                     question.append(key) // ZZZ
                     
                     equation.question = question
-                    
+                    EquationStore.sharedStore.equationUpdated(equation: equation)
                 } else {
                     equation.question = String(key)
+                    EquationStore.sharedStore.equationUpdated(equation: equation)
                 }
             }
         }
         
-//        EquationStore.sharedStore.save()
         
         updateViews()
         updateLegalKeys()
