@@ -27,19 +27,13 @@
 		5131971A1B6ADD5900E9B802 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 513197181B6ADD5900E9B802 /* LaunchScreen.storyboard */; };
 		513197251B6ADD5900E9B802 /* Numerical2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513197241B6ADD5900E9B802 /* Numerical2Tests.swift */; };
 		513197301B6ADD5900E9B802 /* Numerical2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */; };
-		514189A41BD5075800877633 /* Dictionary_English.plist in Resources */ = {isa = PBXBuildFile; fileRef = 510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */; };
-		514189A51BD5075900877633 /* Dictionary_English.plist in Resources */ = {isa = PBXBuildFile; fileRef = 510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */; };
-		519B1B051BA03C9700C06E70 /* DeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1AFB1BA03C9700C06E70 /* DeviceHelper.swift */; };
-		519B1B061BA03C9700C06E70 /* Equation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1AFC1BA03C9700C06E70 /* Equation+CoreDataProperties.swift */; };
-		519B1B071BA03C9700C06E70 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1AFD1BA03C9700C06E70 /* Equation.swift */; };
-		519B1B081BA03C9700C06E70 /* EquationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1AFE1BA03C9700C06E70 /* EquationStore.swift */; };
-		519B1B091BA03C9700C06E70 /* NumericalDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 519B1AFF1BA03C9700C06E70 /* NumericalDataModel.xcdatamodeld */; };
-		519B1B0A1BA03C9700C06E70 /* Pad+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1B021BA03C9700C06E70 /* Pad+CoreDataProperties.swift */; };
-		519B1B0B1BA03C9700C06E70 /* Pad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1B031BA03C9700C06E70 /* Pad.swift */; };
-		519B1B0C1BA03C9700C06E70 /* SinkableCoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1B041BA03C9700C06E70 /* SinkableCoreDataStore.swift */; };
-		519B1B0F1BA03CAE00C06E70 /* SinkableUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1B0E1BA03CAE00C06E70 /* SinkableUserDefaults.swift */; };
+		517470CC1D95C7B000E70A74 /* EquationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517470CB1D95C7B000E70A74 /* EquationStore.swift */; };
+		517470CE1D95D35100E70A74 /* DataKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517470CD1D95D35100E70A74 /* DataKeyStore.swift */; };
 		519B1B111BA04F1C00C06E70 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1B101BA04F1C00C06E70 /* HistoryViewController.swift */; };
 		519B1B131BA0532A00C06E70 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1B121BA0532A00C06E70 /* HistoryCell.swift */; };
+		51B2A29B1D95C283002A9AD8 /* SinkableUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B2A29A1D95C283002A9AD8 /* SinkableUserDefaults.swift */; };
+		51B2A29D1D95C2C2002A9AD8 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B2A29C1D95C2C2002A9AD8 /* Equation.swift */; };
+		51B2A29F1D95C304002A9AD8 /* Pad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B2A29E1D95C304002A9AD8 /* Pad.swift */; };
 		51D28B0C1B6C4B7C009A0AEC /* EquationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B0B1B6C4B7C009A0AEC /* EquationViewController.swift */; };
 		51D28B0E1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B0D1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift */; };
 		51D28B101B6D0FE1009A0AEC /* EquationViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51D28B0F1B6D0FE1009A0AEC /* EquationViewCell.xib */; };
@@ -53,22 +47,6 @@
 		51F2F44D1B6C3FAE00B845CA /* KeyPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */; };
 		51F2F44F1B6C421B00B845CA /* WorkPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */; };
 		5623BDF51BD40FDB0046B84D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623BDF41BD40FDB0046B84D /* Constants.swift */; };
-		5623BDF61BD40FDB0046B84D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623BDF41BD40FDB0046B84D /* Constants.swift */; };
-		5627A7421BC68F3F0005495F /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7401BC68F3F0005495F /* Interface.storyboard */; };
-		5627A7441BC68F3F0005495F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7431BC68F3F0005495F /* Assets.xcassets */; };
-		5627A74B1BC68F3F0005495F /* Numerical2-Watch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5627A74A1BC68F3F0005495F /* Numerical2-Watch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		5627A7501BC68F3F0005495F /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A74F1BC68F3F0005495F /* MainInterfaceController.swift */; };
-		5627A7521BC68F3F0005495F /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7511BC68F3F0005495F /* ExtensionDelegate.swift */; };
-		5627A7541BC68F3F0005495F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5627A7531BC68F3F0005495F /* Assets.xcassets */; };
-		5627A7581BC68F3F0005495F /* Numerical2-Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5627A73E1BC68F3F0005495F /* Numerical2-Watch.app */; };
-		5627A7641BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7631BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift */; };
-		5627A7661BC74EA10005495F /* WatchKeyboardCalculatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7651BC74EA10005495F /* WatchKeyboardCalculatorController.swift */; };
-		5627A7681BC750EE0005495F /* WatchCalculatorOneButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5627A7671BC750EE0005495F /* WatchCalculatorOneButtonRow.swift */; };
-		5627A7691BC7D5ED0005495F /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
-		5627A76A1BC7D6020005495F /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; };
-		5627A76B1BC7D60B0005495F /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
-		5638AC091BD06F910028C41E /* WatchEquation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5638AC081BD06F910028C41E /* WatchEquation.swift */; };
-		564CB5D31BCE8616008F8666 /* NaturalLanguageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */; };
 		5685FE8C1BCACA2A0019BC04 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE8B1BCACA2A0019BC04 /* AVFoundation.framework */; };
 		5685FE8E1BCACA300019BC04 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5685FE8D1BCACA300019BC04 /* AudioToolbox.framework */; };
 		5685FE941BCACA490019BC04 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5685FE901BCACA490019BC04 /* AcousticModelEnglish.bundle */; };
@@ -78,9 +56,6 @@
 		5685FE9C1BCACBB40019BC04 /* OpenEarsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FE9B1BCACBB40019BC04 /* OpenEarsWrapper.m */; };
 		5685FEA01BCAE3340019BC04 /* RMStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5685FE9F1BCAE3340019BC04 /* RMStore.m */; };
 		5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */; };
-		56DE8F1C1BD309EE00D79DC7 /* PhoneCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE8F1B1BD309EE00D79DC7 /* PhoneCommunicator.swift */; };
-		56DE8F1D1BD312E800D79DC7 /* WatchEquation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5638AC081BD06F910028C41E /* WatchEquation.swift */; };
-		56DE8F1F1BD316F600D79DC7 /* WatchCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE8F1E1BD316F600D79DC7 /* WatchCommunicator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,41 +73,15 @@
 			remoteGlobalIDString = 5131970B1B6ADD5900E9B802;
 			remoteInfo = Numerical2;
 		};
-		5627A74C1BC68F3F0005495F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 513197041B6ADD5900E9B802 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5627A7491BC68F3F0005495F;
-			remoteInfo = "Numerical2-Watch Extension";
-		};
-		5627A7561BC68F3F0005495F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 513197041B6ADD5900E9B802 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5627A73D1BC68F3F0005495F;
-			remoteInfo = "Numerical2-Watch";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		5627A75E1BC68F3F0005495F /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				5627A74B1BC68F3F0005495F /* Numerical2-Watch Extension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5627A7601BC68F3F0005495F /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				5627A7581BC68F3F0005495F /* Numerical2-Watch.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,18 +112,13 @@
 		5131972B1B6ADD5900E9B802 /* Numerical2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Numerical2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numerical2UITests.swift; sourceTree = "<group>"; };
 		513197311B6ADD5900E9B802 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		519B1AFB1BA03C9700C06E70 /* DeviceHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceHelper.swift; sourceTree = "<group>"; };
-		519B1AFC1BA03C9700C06E70 /* Equation+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Equation+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		519B1AFD1BA03C9700C06E70 /* Equation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equation.swift; sourceTree = "<group>"; };
-		519B1AFE1BA03C9700C06E70 /* EquationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquationStore.swift; sourceTree = "<group>"; };
-		519B1B001BA03C9700C06E70 /* NumericalDataModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "NumericalDataModel 2.xcdatamodel"; sourceTree = "<group>"; };
-		519B1B011BA03C9700C06E70 /* NumericalDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NumericalDataModel.xcdatamodel; sourceTree = "<group>"; };
-		519B1B021BA03C9700C06E70 /* Pad+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Pad+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		519B1B031BA03C9700C06E70 /* Pad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pad.swift; sourceTree = "<group>"; };
-		519B1B041BA03C9700C06E70 /* SinkableCoreDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinkableCoreDataStore.swift; sourceTree = "<group>"; };
-		519B1B0E1BA03CAE00C06E70 /* SinkableUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinkableUserDefaults.swift; sourceTree = "<group>"; };
+		517470CB1D95C7B000E70A74 /* EquationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquationStore.swift; sourceTree = "<group>"; };
+		517470CD1D95D35100E70A74 /* DataKeyStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataKeyStore.swift; sourceTree = "<group>"; };
 		519B1B101BA04F1C00C06E70 /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		519B1B121BA0532A00C06E70 /* HistoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
+		51B2A29A1D95C283002A9AD8 /* SinkableUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinkableUserDefaults.swift; sourceTree = "<group>"; };
+		51B2A29C1D95C2C2002A9AD8 /* Equation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equation.swift; sourceTree = "<group>"; };
+		51B2A29E1D95C304002A9AD8 /* Pad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pad.swift; sourceTree = "<group>"; };
 		51D28B0B1B6C4B7C009A0AEC /* EquationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquationViewController.swift; sourceTree = "<group>"; };
 		51D28B0D1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionCollectionViewController.swift; sourceTree = "<group>"; };
 		51D28B0F1B6D0FE1009A0AEC /* EquationViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EquationViewCell.xib; sourceTree = "<group>"; };
@@ -189,21 +133,6 @@
 		51F2F44C1B6C3FAE00B845CA /* KeyPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyPanelViewController.swift; sourceTree = "<group>"; };
 		51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkPanelViewController.swift; sourceTree = "<group>"; };
 		5623BDF41BD40FDB0046B84D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		5627A73E1BC68F3F0005495F /* Numerical2-Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Numerical2-Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5627A7411BC68F3F0005495F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
-		5627A7431BC68F3F0005495F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		5627A7451BC68F3F0005495F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5627A74A1BC68F3F0005495F /* Numerical2-Watch Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Numerical2-Watch Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5627A74F1BC68F3F0005495F /* MainInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInterfaceController.swift; sourceTree = "<group>"; };
-		5627A7511BC68F3F0005495F /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
-		5627A7531BC68F3F0005495F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		5627A7551BC68F3F0005495F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5627A7611BC722FC0005495F /* Numerical2-Watch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Numerical2-Watch.entitlements"; sourceTree = "<group>"; };
-		5627A7621BC72C630005495F /* Numerical2-Watch Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Numerical2-Watch Extension.entitlements"; sourceTree = "<group>"; };
-		5627A7631BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCalculatorThreeButtonRow.swift; sourceTree = "<group>"; };
-		5627A7651BC74EA10005495F /* WatchKeyboardCalculatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchKeyboardCalculatorController.swift; sourceTree = "<group>"; };
-		5627A7671BC750EE0005495F /* WatchCalculatorOneButtonRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCalculatorOneButtonRow.swift; sourceTree = "<group>"; };
-		5638AC081BD06F910028C41E /* WatchEquation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchEquation.swift; sourceTree = "<group>"; };
 		5685FE8B1BCACA2A0019BC04 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5685FE8D1BCACA300019BC04 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5685FE901BCACA490019BC04 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
@@ -216,8 +145,6 @@
 		5685FE9E1BCAE3340019BC04 /* RMStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStore.h; sourceTree = "<group>"; };
 		5685FE9F1BCAE3340019BC04 /* RMStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMStore.m; sourceTree = "<group>"; };
 		5685FEA11BCAE38B0019BC04 /* StoreKitWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreKitWrapper.swift; sourceTree = "<group>"; };
-		56DE8F1B1BD309EE00D79DC7 /* PhoneCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneCommunicator.swift; sourceTree = "<group>"; };
-		56DE8F1E1BD316F600D79DC7 /* WatchCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCommunicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,13 +174,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5627A7471BC68F3F0005495F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -266,8 +186,6 @@
 				5131970E1B6ADD5900E9B802 /* Numerical2 */,
 				513197231B6ADD5900E9B802 /* Numerical2Tests */,
 				5131972E1B6ADD5900E9B802 /* Numerical2UITests */,
-				5627A73F1BC68F3F0005495F /* Numerical2-Watch */,
-				5627A74E1BC68F3F0005495F /* Numerical2-Watch Extension */,
 				5131970D1B6ADD5900E9B802 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -278,8 +196,6 @@
 				5131970C1B6ADD5900E9B802 /* Numerical2.app */,
 				513197201B6ADD5900E9B802 /* Numerical2Tests.xctest */,
 				5131972B1B6ADD5900E9B802 /* Numerical2UITests.xctest */,
-				5627A73E1BC68F3F0005495F /* Numerical2-Watch.app */,
-				5627A74A1BC68F3F0005495F /* Numerical2-Watch Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -287,6 +203,11 @@
 		5131970E1B6ADD5900E9B802 /* Numerical2 */ = {
 			isa = PBXGroup;
 			children = (
+				51B2A29A1D95C283002A9AD8 /* SinkableUserDefaults.swift */,
+				517470CD1D95D35100E70A74 /* DataKeyStore.swift */,
+				517470CB1D95C7B000E70A74 /* EquationStore.swift */,
+				51B2A29C1D95C2C2002A9AD8 /* Equation.swift */,
+				51B2A29E1D95C304002A9AD8 /* Pad.swift */,
 				5685FE991BCACBB30019BC04 /* Numerical2-Bridging-Header.h */,
 				5685FE9D1BCAE32B0019BC04 /* IAP */,
 				5685FE8F1BCACA490019BC04 /* OpenEars */,
@@ -296,12 +217,9 @@
 				5125B49C1C9EA66C006D7BDC /* background@2x.jpg */,
 				51D7A8371BBA7D320064AA4B /* View Hierarchy */,
 				51D7A8361BBA7D060064AA4B /* Evaluator */,
-				519B1AFA1BA03C9700C06E70 /* Equation Store */,
-				519B1B0D1BA03CAE00C06E70 /* Sinkable User Defaults */,
 				513197161B6ADD5900E9B802 /* Assets.xcassets */,
 				513197181B6ADD5900E9B802 /* LaunchScreen.storyboard */,
 				5131971B1B6ADD5900E9B802 /* Info.plist */,
-				56DE8F1E1BD316F600D79DC7 /* WatchCommunicator.swift */,
 				5623BDF41BD40FDB0046B84D /* Constants.swift */,
 			);
 			path = Numerical2;
@@ -323,29 +241,6 @@
 				513197311B6ADD5900E9B802 /* Info.plist */,
 			);
 			path = Numerical2UITests;
-			sourceTree = "<group>";
-		};
-		519B1AFA1BA03C9700C06E70 /* Equation Store */ = {
-			isa = PBXGroup;
-			children = (
-				519B1AFB1BA03C9700C06E70 /* DeviceHelper.swift */,
-				519B1AFC1BA03C9700C06E70 /* Equation+CoreDataProperties.swift */,
-				519B1AFD1BA03C9700C06E70 /* Equation.swift */,
-				519B1AFE1BA03C9700C06E70 /* EquationStore.swift */,
-				519B1AFF1BA03C9700C06E70 /* NumericalDataModel.xcdatamodeld */,
-				519B1B021BA03C9700C06E70 /* Pad+CoreDataProperties.swift */,
-				519B1B031BA03C9700C06E70 /* Pad.swift */,
-				519B1B041BA03C9700C06E70 /* SinkableCoreDataStore.swift */,
-			);
-			path = "Equation Store";
-			sourceTree = "<group>";
-		};
-		519B1B0D1BA03CAE00C06E70 /* Sinkable User Defaults */ = {
-			isa = PBXGroup;
-			children = (
-				519B1B0E1BA03CAE00C06E70 /* SinkableUserDefaults.swift */,
-			);
-			path = "Sinkable User Defaults";
 			sourceTree = "<group>";
 		};
 		51D7A8361BBA7D060064AA4B /* Evaluator */ = {
@@ -457,34 +352,6 @@
 			name = Evaluator;
 			sourceTree = "<group>";
 		};
-		5627A73F1BC68F3F0005495F /* Numerical2-Watch */ = {
-			isa = PBXGroup;
-			children = (
-				5627A7611BC722FC0005495F /* Numerical2-Watch.entitlements */,
-				5627A7401BC68F3F0005495F /* Interface.storyboard */,
-				5627A7431BC68F3F0005495F /* Assets.xcassets */,
-				5627A7451BC68F3F0005495F /* Info.plist */,
-			);
-			path = "Numerical2-Watch";
-			sourceTree = "<group>";
-		};
-		5627A74E1BC68F3F0005495F /* Numerical2-Watch Extension */ = {
-			isa = PBXGroup;
-			children = (
-				5627A7621BC72C630005495F /* Numerical2-Watch Extension.entitlements */,
-				5627A74F1BC68F3F0005495F /* MainInterfaceController.swift */,
-				5627A7511BC68F3F0005495F /* ExtensionDelegate.swift */,
-				5627A7631BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift */,
-				5627A7651BC74EA10005495F /* WatchKeyboardCalculatorController.swift */,
-				5627A7671BC750EE0005495F /* WatchCalculatorOneButtonRow.swift */,
-				5627A7531BC68F3F0005495F /* Assets.xcassets */,
-				5627A7551BC68F3F0005495F /* Info.plist */,
-				5638AC081BD06F910028C41E /* WatchEquation.swift */,
-				56DE8F1B1BD309EE00D79DC7 /* PhoneCommunicator.swift */,
-			);
-			path = "Numerical2-Watch Extension";
-			sourceTree = "<group>";
-		};
 		5685FE8F1BCACA490019BC04 /* OpenEars */ = {
 			isa = PBXGroup;
 			children = (
@@ -524,7 +391,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				5627A7571BC68F3F0005495F /* PBXTargetDependency */,
 			);
 			name = Numerical2;
 			productName = Numerical2;
@@ -567,40 +433,6 @@
 			productReference = 5131972B1B6ADD5900E9B802 /* Numerical2UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		5627A73D1BC68F3F0005495F /* Numerical2-Watch */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5627A75F1BC68F3F0005495F /* Build configuration list for PBXNativeTarget "Numerical2-Watch" */;
-			buildPhases = (
-				5627A73C1BC68F3F0005495F /* Resources */,
-				5627A75E1BC68F3F0005495F /* Embed App Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				5627A74D1BC68F3F0005495F /* PBXTargetDependency */,
-			);
-			name = "Numerical2-Watch";
-			productName = "Numerical2-Watch";
-			productReference = 5627A73E1BC68F3F0005495F /* Numerical2-Watch.app */;
-			productType = "com.apple.product-type.application.watchapp2";
-		};
-		5627A7491BC68F3F0005495F /* Numerical2-Watch Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5627A75D1BC68F3F0005495F /* Build configuration list for PBXNativeTarget "Numerical2-Watch Extension" */;
-			buildPhases = (
-				5627A7461BC68F3F0005495F /* Sources */,
-				5627A7471BC68F3F0005495F /* Frameworks */,
-				5627A7481BC68F3F0005495F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Numerical2-Watch Extension";
-			productName = "Numerical2-Watch Extension";
-			productReference = 5627A74A1BC68F3F0005495F /* Numerical2-Watch Extension.appex */;
-			productType = "com.apple.product-type.watchkit2-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -614,6 +446,7 @@
 					5131970B1B6ADD5900E9B802 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = C583RN882K;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -631,29 +464,13 @@
 					};
 					5131971F1B6ADD5900E9B802 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0800;
 						TestTargetID = 5131970B1B6ADD5900E9B802;
 					};
 					5131972A1B6ADD5900E9B802 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0800;
 						TestTargetID = 5131970B1B6ADD5900E9B802;
-					};
-					5627A73D1BC68F3F0005495F = {
-						CreatedOnToolsVersion = 7.0.1;
-						DevelopmentTeam = C583RN882K;
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
-							};
-						};
-					};
-					5627A7491BC68F3F0005495F = {
-						CreatedOnToolsVersion = 7.0.1;
-						DevelopmentTeam = C583RN882K;
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
-							};
-						};
 					};
 				};
 			};
@@ -673,8 +490,6 @@
 				5131970B1B6ADD5900E9B802 /* Numerical2 */,
 				5131971F1B6ADD5900E9B802 /* Numerical2Tests */,
 				5131972A1B6ADD5900E9B802 /* Numerical2UITests */,
-				5627A73D1BC68F3F0005495F /* Numerical2-Watch */,
-				5627A7491BC68F3F0005495F /* Numerical2-Watch Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -711,25 +526,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5627A73C1BC68F3F0005495F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				514189A51BD5075900877633 /* Dictionary_English.plist in Resources */,
-				5627A7441BC68F3F0005495F /* Assets.xcassets in Resources */,
-				5627A7421BC68F3F0005495F /* Interface.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5627A7481BC68F3F0005495F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5627A7541BC68F3F0005495F /* Assets.xcassets in Resources */,
-				514189A41BD5075800877633 /* Dictionary_English.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -739,38 +535,32 @@
 			files = (
 				510D3ABE1B6B657F00D1A07F /* Evaluator.swift in Sources */,
 				5623BDF51BD40FDB0046B84D /* Constants.swift in Sources */,
+				517470CE1D95D35100E70A74 /* DataKeyStore.swift in Sources */,
 				51D28B0C1B6C4B7C009A0AEC /* EquationViewController.swift in Sources */,
 				5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */,
 				5685FEA01BCAE3340019BC04 /* RMStore.m in Sources */,
 				510D3AC21B6B659E00D1A07F /* KeypadViewController.swift in Sources */,
-				519B1B0A1BA03C9700C06E70 /* Pad+CoreDataProperties.swift in Sources */,
 				51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */,
-				56DE8F1D1BD312E800D79DC7 /* WatchEquation.swift in Sources */,
 				51D28B501B6D1C0F009A0AEC /* FractionViewCell.swift in Sources */,
 				51F2F44D1B6C3FAE00B845CA /* KeyPanelViewController.swift in Sources */,
-				519B1B081BA03C9700C06E70 /* EquationStore.swift in Sources */,
-				519B1B0C1BA03C9700C06E70 /* SinkableCoreDataStore.swift in Sources */,
 				510D3ABB1B6B657F00D1A07F /* CalculatorBrain.swift in Sources */,
 				510D3ABF1B6B657F00D1A07F /* Glossary.swift in Sources */,
-				519B1B061BA03C9700C06E70 /* Equation+CoreDataProperties.swift in Sources */,
 				51279AE51B739D6D0036DF3D /* KeyStackView.swift in Sources */,
 				5685FE9C1BCACBB40019BC04 /* OpenEarsWrapper.m in Sources */,
 				519B1B131BA0532A00C06E70 /* HistoryCell.swift in Sources */,
 				51D28B121B6D100A009A0AEC /* EquationViewCell.swift in Sources */,
-				519B1B071BA03C9700C06E70 /* Equation.swift in Sources */,
-				519B1B0B1BA03C9700C06E70 /* Pad.swift in Sources */,
-				56DE8F1F1BD316F600D79DC7 /* WatchCommunicator.swift in Sources */,
 				51279AE71B73A8720036DF3D /* KeypadConstructor.swift in Sources */,
 				51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */,
 				519B1B111BA04F1C00C06E70 /* HistoryViewController.swift in Sources */,
 				51F2F44F1B6C421B00B845CA /* WorkPanelViewController.swift in Sources */,
 				51D28B0E1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift in Sources */,
+				51B2A29B1D95C283002A9AD8 /* SinkableUserDefaults.swift in Sources */,
+				517470CC1D95C7B000E70A74 /* EquationStore.swift in Sources */,
+				51B2A29D1D95C2C2002A9AD8 /* Equation.swift in Sources */,
 				51D3AB2F1BC89AD40019B601 /* KeypadPageViewController.swift in Sources */,
-				519B1B051BA03C9700C06E70 /* DeviceHelper.swift in Sources */,
-				519B1B0F1BA03CAE00C06E70 /* SinkableUserDefaults.swift in Sources */,
 				513197121B6ADD5900E9B802 /* ViewController.swift in Sources */,
+				51B2A29F1D95C304002A9AD8 /* Pad.swift in Sources */,
 				513197101B6ADD5900E9B802 /* AppDelegate.swift in Sources */,
-				519B1B091BA03C9700C06E70 /* NumericalDataModel.xcdatamodeld in Sources */,
 				510D3AC01B6B657F00D1A07F /* NaturalLanguageParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -794,25 +584,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5627A7461BC68F3F0005495F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5627A7691BC7D5ED0005495F /* CalculatorBrain.swift in Sources */,
-				5627A76A1BC7D6020005495F /* Evaluator.swift in Sources */,
-				564CB5D31BCE8616008F8666 /* NaturalLanguageParser.swift in Sources */,
-				5627A7681BC750EE0005495F /* WatchCalculatorOneButtonRow.swift in Sources */,
-				5627A7661BC74EA10005495F /* WatchKeyboardCalculatorController.swift in Sources */,
-				5627A7521BC68F3F0005495F /* ExtensionDelegate.swift in Sources */,
-				5638AC091BD06F910028C41E /* WatchEquation.swift in Sources */,
-				5627A76B1BC7D60B0005495F /* Glossary.swift in Sources */,
-				56DE8F1C1BD309EE00D79DC7 /* PhoneCommunicator.swift in Sources */,
-				5627A7641BC74CB30005495F /* WatchCalculatorThreeButtonRow.swift in Sources */,
-				5627A7501BC68F3F0005495F /* MainInterfaceController.swift in Sources */,
-				5623BDF61BD40FDB0046B84D /* Constants.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -825,16 +596,6 @@
 			isa = PBXTargetDependency;
 			target = 5131970B1B6ADD5900E9B802 /* Numerical2 */;
 			targetProxy = 5131972C1B6ADD5900E9B802 /* PBXContainerItemProxy */;
-		};
-		5627A74D1BC68F3F0005495F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5627A7491BC68F3F0005495F /* Numerical2-Watch Extension */;
-			targetProxy = 5627A74C1BC68F3F0005495F /* PBXContainerItemProxy */;
-		};
-		5627A7571BC68F3F0005495F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5627A73D1BC68F3F0005495F /* Numerical2-Watch */;
-			targetProxy = 5627A7561BC68F3F0005495F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -853,14 +614,6 @@
 				513197191B6ADD5900E9B802 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		5627A7401BC68F3F0005495F /* Interface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5627A7411BC68F3F0005495F /* Base */,
-			);
-			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -969,6 +722,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Numerical2/Framework/Numerical2-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -991,6 +745,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Numerical2/Framework/Numerical2-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1002,6 +757,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.Numerical2Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Numerical2.app/Numerical2";
 			};
 			name = Debug;
@@ -1014,6 +770,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.Numerical2Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Numerical2.app/Numerical2";
 			};
 			name = Release;
@@ -1025,6 +782,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.Numerical2UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Numerical2;
 				USES_XCTRUNNER = YES;
 			};
@@ -1037,87 +795,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.Numerical2UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Numerical2;
 				USES_XCTRUNNER = YES;
-			};
-			name = Release;
-		};
-		5627A7591BC68F3F0005495F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Numerical2-Watch/Numerical2-Watch.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Kevin Enax (S7TFF839Z5)";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				IBSC_MODULE = Numerical2_Watch_Extension;
-				INFOPLIST_FILE = "Numerical2-Watch/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.watch;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Debug;
-		};
-		5627A75A1BC68F3F0005495F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Numerical2-Watch/Numerical2-Watch.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				IBSC_MODULE = Numerical2_Watch_Extension;
-				INFOPLIST_FILE = "Numerical2-Watch/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.watch;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Release;
-		};
-		5627A75B1BC68F3F0005495F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Numerical2-Watch Extension/Numerical2-Watch Extension.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "Numerical2-Watch Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.watch.extension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
-			};
-			name = Debug;
-		};
-		5627A75C1BC68F3F0005495F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Numerical2-Watch Extension/Numerical2-Watch Extension.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "Numerical2-Watch Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.watch.extension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
@@ -1160,39 +840,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5627A75D1BC68F3F0005495F /* Build configuration list for PBXNativeTarget "Numerical2-Watch Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5627A75B1BC68F3F0005495F /* Debug */,
-				5627A75C1BC68F3F0005495F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5627A75F1BC68F3F0005495F /* Build configuration list for PBXNativeTarget "Numerical2-Watch" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5627A7591BC68F3F0005495F /* Debug */,
-				5627A75A1BC68F3F0005495F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		519B1AFF1BA03C9700C06E70 /* NumericalDataModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				519B1B001BA03C9700C06E70 /* NumericalDataModel 2.xcdatamodel */,
-				519B1B011BA03C9700C06E70 /* NumericalDataModel.xcdatamodel */,
-			);
-			currentVersion = 519B1B001BA03C9700C06E70 /* NumericalDataModel 2.xcdatamodel */;
-			path = NumericalDataModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 513197041B6ADD5900E9B802 /* Project object */;
 }

@@ -33,9 +33,9 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                         formattedAnswers.append(formattedAnswer)
                     }
                     
-                    let answersString = possibleAnswers.joinWithSeparator(" or ")
+                    let answersString = possibleAnswers.joined(separator: " or ")
                     
-                    let questionComponents = answersString.componentsSeparatedByString(" ")
+                    let questionComponents = answersString.components(separatedBy: " ")
                     
                     self.updateQuestionArrayWithComponents(questionComponents)
                     
@@ -52,13 +52,13 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                 var errorString:String?
                 
                 switch errorType {
-                case ErrorType.DivideByZero:
+                case ErrorType.divideByZero:
                     errorString = "Division by zero"
-                case ErrorType.ImaginaryNumbersRequiredToSolve:
+                case ErrorType.imaginaryNumbersRequiredToSolve:
                     errorString = "Imginary numbers required to solve"
-                case ErrorType.Overflow:
+                case ErrorType.overflow:
                     errorString = "Overflow error"
-                case ErrorType.Underflow:
+                case ErrorType.underflow:
                     errorString = "Underflow error"
                 default:
                     errorString = "Error"
@@ -74,7 +74,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     }
 
     
-    func updateQuestionArrayWithString(questionString: String) {
+    func updateQuestionArrayWithString(_ questionString: String) {
         
         
         let questionComponents = Evaluator.termArrayFromString(questionString, allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
@@ -89,14 +89,14 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             
             if Glossary.isStringFractionNumber(string) && firstCharacter != SymbolCharacter.fraction {
                 
-                var fractionComponents = string.componentsSeparatedByString(String(SymbolCharacter.fraction))
+                var fractionComponents = string.components(separatedBy: String(SymbolCharacter.fraction))
                 
                 if fractionComponents.count > 2 {
                     
                     newQuestionComponents.append("\(fractionComponents[0])\(SymbolCharacter.fraction)\(fractionComponents[1])")
                     
-                    fractionComponents.removeAtIndex(0)
-                    fractionComponents.removeAtIndex(0)
+                    fractionComponents.remove(at: 0)
+                    fractionComponents.remove(at: 0)
                     
                     for component in fractionComponents {
                         newQuestionComponents.append("|")
@@ -119,7 +119,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     }
     
     
-    func updateQuestionArrayWithComponents(newQuestionComponents: Array<String>) {
+    func updateQuestionArrayWithComponents(_ newQuestionComponents: Array<String>) {
         
         // Now we need to see which parts of the this new array need reloading.
         
@@ -206,14 +206,14 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         let lastItem = questionArray.count - 1
         
         if isAnswerView {
-            collecitonView.scrollToItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.Left, animated: false)
+            collecitonView.scrollToItem(at: IndexPath(item: 0, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
         } else if lastItem > 0 {
-            collecitonView.scrollToItemAtIndexPath(NSIndexPath(forItem: lastItem, inSection: 0), atScrollPosition: UICollectionViewScrollPosition.Right, animated: false)
+            collecitonView.scrollToItem(at: IndexPath(item: lastItem, section: 0), at: UICollectionViewScrollPosition.right, animated: false)
         }
     }
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         reloadCollectionView()
     }
@@ -223,9 +223,9 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         
         
         let nib = UINib(nibName: "EquationViewCell", bundle: nil)
-        collecitonView.registerNib(nib, forCellWithReuseIdentifier: "StringCell")
+        collecitonView.register(nib, forCellWithReuseIdentifier: "StringCell")
         
-        collecitonView.backgroundColor = UIColor.clearColor()
+        collecitonView.backgroundColor = UIColor.clear
         
         if isAnswerView {
 //            collecitonView.backgroundColor = UIColor.blueColor()
@@ -234,57 +234,57 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         }
         
         let nib2 = UINib(nibName: "FractionViewCell", bundle: nil)
-        collecitonView.registerNib(nib2, forCellWithReuseIdentifier: "FractionCell")
+        collecitonView.register(nib2, forCellWithReuseIdentifier: "FractionCell")
         
         collecitonView.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         
     }
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return questionArray.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let string = questionArray[indexPath.row]
+        let string = questionArray[(indexPath as NSIndexPath).row]
         
         let firstCharacter = string.characters.first
         // If this fraction starts with a fraction then treat these as seperate things.
         
         if Glossary.isStringFractionNumber(string) && firstCharacter != SymbolCharacter.fraction {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("FractionCell", forIndexPath: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FractionCell", for: indexPath)
             
             if let theCell = cell as? FractionViewCell {
                 
-                let fractionComponents = string.componentsSeparatedByString(String(SymbolCharacter.fraction))
+                let fractionComponents = string.components(separatedBy: String(SymbolCharacter.fraction))
                 
                 if fractionComponents.count == 2 {
                     theCell.numeratorLabel.text = Glossary.formattedStringForQuestion(fractionComponents[0])
                     theCell.denominatorLabel.text = Glossary.formattedStringForQuestion(fractionComponents[1])
                     if isAnswerView {
                         // This is a fraction in the answer view
-                        theCell.setAnswerCell(FractionViewCellType.Answer)
+                        theCell.setAnswerCell(FractionViewCellType.answer)
                     } else {
                         // This is a fraction in the question view
-                        theCell.setAnswerCell(FractionViewCellType.Question)
+                        theCell.setAnswerCell(FractionViewCellType.question)
                     }
                 }
                 
-                theCell.numeratorLabel.textColor = UIColor.whiteColor()
-                theCell.denominatorLabel.textColor = UIColor.whiteColor()
+                theCell.numeratorLabel.textColor = UIColor.white
+                theCell.denominatorLabel.textColor = UIColor.white
             }
             
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("StringCell", forIndexPath: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StringCell", for: indexPath)
             
             if let theCell = cell as? EquationViewCell {
                 
-                let string = Glossary.formattedStringForQuestion(questionArray[indexPath.row])
+                let string = Glossary.formattedStringForQuestion(questionArray[(indexPath as NSIndexPath).row])
                 
                 var cellIsOr = false
                 
@@ -295,17 +295,17 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                     theCell.mainLabel.text = string
                 }
                 
-                theCell.mainLabel.textColor = UIColor.whiteColor()
+                theCell.mainLabel.textColor = UIColor.white
                 
                 if cellIsOr {
-                    theCell.setAnswerCell(EquationViewCellType.Or)
+                    theCell.setAnswerCell(EquationViewCellType.or)
                 } else {
                     if isAnswerView {
                         // This is a fraction in the answer view
-                        theCell.setAnswerCell(EquationViewCellType.Answer)
+                        theCell.setAnswerCell(EquationViewCellType.answer)
                     } else {
                         // This is a fraction in the question view
-                        theCell.setAnswerCell(EquationViewCellType.Question)
+                        theCell.setAnswerCell(EquationViewCellType.question)
                     }
                 }
             }
@@ -313,12 +313,12 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         // Estimate size with label
         
         let viewWidth:CGFloat = 2000.0
         
-        let string = questionArray[indexPath.row]
+        let string = questionArray[(indexPath as NSIndexPath).row]
         
         let firstCharacter = string.characters.first
         
@@ -326,11 +326,11 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         
         if Glossary.isStringFractionNumber(string) && firstCharacter != SymbolCharacter.fraction {
             
-            let fractionComponents = string.componentsSeparatedByString(String(SymbolCharacter.fraction))
+            let fractionComponents = string.components(separatedBy: String(SymbolCharacter.fraction))
             
             if isAnswerView {
                 for string in fractionComponents {
-                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.AnswerFraction, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
+                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.answerFraction, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
                     
                     if size.width > width {
                         width = size.width
@@ -338,7 +338,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                 }
             } else {
                 for string in fractionComponents {
-                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.QuestionFraction, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
+                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.questionFraction, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
                     
                     if size.width > width {
                         width = size.width
@@ -349,17 +349,17 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         } else {
             
             if string == "or" {
-                let size = estimatedSizeOfString("  or  ", context: FontDisplayContext.AnswerOr, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
+                let size = estimatedSizeOfString("  or  ", context: FontDisplayContext.answerOr, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
                 
                 return CGSize(width: size.width + 1, height: collectionView.bounds.height)
             } else {
                 
                 if isAnswerView {
-                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Answer, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
+                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.answer, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
                     
                     width = size.width + 1
                 } else {
-                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.Question, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
+                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.question, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
                     
                     width = size.width + 1
                 }
@@ -374,12 +374,12 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     }
     
     
-    func estimatedSizeOfString(string: String, context: FontDisplayContext, cellHeight: CGFloat, viewWidth: CGFloat) -> CGSize {
+    func estimatedSizeOfString(_ string: String, context: FontDisplayContext, cellHeight: CGFloat, viewWidth: CGFloat) -> CGSize {
         
         let font = StyleFormatter.preferredFontForContext(context)
         let attributedText = NSAttributedString(string: string, attributes: [NSFontAttributeName:font])
         
-        let size = attributedText.boundingRectWithSize(CGSize(width: viewWidth, height: cellHeight), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil);
+        let size = attributedText.boundingRect(with: CGSize(width: viewWidth, height: cellHeight), options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil);
         
         return size.size
     }

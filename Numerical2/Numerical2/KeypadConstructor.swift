@@ -9,95 +9,95 @@
 import Foundation
 
 public enum KeypadType {
-    case Standard
-    case Scientific
+    case standard
+    case scientific
 }
 
 public enum KeyStackType {
-    case Standard1
-    case Standard2
-    case Standard3
-    case Standard4
-    case Scientific1
-    case Scientific1Wide
-    case Scientific2
-    case Scientific3
-    case Scientific4
-    case Scientific4Wide
+    case standard1
+    case standard2
+    case standard3
+    case standard4
+    case scientific1
+    case scientific1Wide
+    case scientific2
+    case scientific3
+    case scientific4
+    case scientific4Wide
 }
 
 
 
-public class KeypadConstructor {
+open class KeypadConstructor {
     
     static let sharedInstance = KeypadConstructor()
-    private init() {} //This prevents others from using the default '()' initializer for this class.
+    fileprivate init() {} //This prevents others from using the default '()' initializer for this class.
     
-    public func keypadArray(layout: KeypadLayout) -> Array<KeyStackType> {
+    open func keypadArray(_ layout: KeypadLayout) -> Array<KeyStackType> {
         
         var keypadArray:Array<KeyStackType> = []
         
-        if layout == KeypadLayout.CompactStandard {
+        if layout == KeypadLayout.compactStandard {
             // Basic
-            keypadArray.append(KeyStackType.Standard1)
-            keypadArray.append(KeyStackType.Standard2)
-            keypadArray.append(KeyStackType.Standard3)
-            keypadArray.append(KeyStackType.Standard4)
-        } else if layout == KeypadLayout.CompactScientific {
-            keypadArray.append(KeyStackType.Scientific1)
-            keypadArray.append(KeyStackType.Scientific2)
-            keypadArray.append(KeyStackType.Scientific3)
-            keypadArray.append(KeyStackType.Scientific4)
-        } else if layout == KeypadLayout.Regular {
+            keypadArray.append(KeyStackType.standard1)
+            keypadArray.append(KeyStackType.standard2)
+            keypadArray.append(KeyStackType.standard3)
+            keypadArray.append(KeyStackType.standard4)
+        } else if layout == KeypadLayout.compactScientific {
+            keypadArray.append(KeyStackType.scientific1)
+            keypadArray.append(KeyStackType.scientific2)
+            keypadArray.append(KeyStackType.scientific3)
+            keypadArray.append(KeyStackType.scientific4)
+        } else if layout == KeypadLayout.regular {
             // Wide
-            keypadArray.append(KeyStackType.Scientific1Wide)
-            keypadArray.append(KeyStackType.Scientific2)
-            keypadArray.append(KeyStackType.Scientific3)
-            keypadArray.append(KeyStackType.Scientific4Wide)
+            keypadArray.append(KeyStackType.scientific1Wide)
+            keypadArray.append(KeyStackType.scientific2)
+            keypadArray.append(KeyStackType.scientific3)
+            keypadArray.append(KeyStackType.scientific4Wide)
             
-            keypadArray.append(KeyStackType.Standard1)
-            keypadArray.append(KeyStackType.Standard2)
-            keypadArray.append(KeyStackType.Standard3)
-            keypadArray.append(KeyStackType.Standard4)
-        } else if layout == KeypadLayout.All {
-            keypadArray.append(KeyStackType.Scientific1)
-            keypadArray.append(KeyStackType.Scientific1Wide)
-            keypadArray.append(KeyStackType.Scientific2)
-            keypadArray.append(KeyStackType.Scientific3)
-            keypadArray.append(KeyStackType.Scientific4)
-            keypadArray.append(KeyStackType.Scientific4Wide)
+            keypadArray.append(KeyStackType.standard1)
+            keypadArray.append(KeyStackType.standard2)
+            keypadArray.append(KeyStackType.standard3)
+            keypadArray.append(KeyStackType.standard4)
+        } else if layout == KeypadLayout.all {
+            keypadArray.append(KeyStackType.scientific1)
+            keypadArray.append(KeyStackType.scientific1Wide)
+            keypadArray.append(KeyStackType.scientific2)
+            keypadArray.append(KeyStackType.scientific3)
+            keypadArray.append(KeyStackType.scientific4)
+            keypadArray.append(KeyStackType.scientific4Wide)
             
-            keypadArray.append(KeyStackType.Standard1)
-            keypadArray.append(KeyStackType.Standard2)
-            keypadArray.append(KeyStackType.Standard3)
-            keypadArray.append(KeyStackType.Standard4)
+            keypadArray.append(KeyStackType.standard1)
+            keypadArray.append(KeyStackType.standard2)
+            keypadArray.append(KeyStackType.standard3)
+            keypadArray.append(KeyStackType.standard4)
         }
         
         return keypadArray
     }
     
-    func keyStack(type: KeyStackType) -> Array<Character> {
+    func keyStack(_ type: KeyStackType) -> Array<Character> {
         
         switch type {
-        case .Standard1:
+        case .standard1:
             return [SymbolCharacter.clear, "7", "4", "1", "0"]
-        case .Standard2:
+        case .standard2:
             return [SymbolCharacter.percentage, "8", "5", "2", "."]
-        case .Standard3:
+        case .standard3:
             return [SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket]
-        case .Standard4:
+        case .standard4:
             return  [SymbolCharacter.delete, "/", "*", "-", "+"]
-        case .Scientific1:
+        case .scientific1:
             return [SymbolCharacter.clear, SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan]
-        case .Scientific1Wide:
+        case .scientific1Wide:
             return [" ", SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan]
-        case .Scientific2:
+        case .scientific2:
             return ["^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh]
-        case .Scientific3:
+        case .scientific3:
             return [SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "("]
-        case .Scientific4:
+        case .scientific4:
             return  [SymbolCharacter.delete, SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")"]
-        case .Scientific4Wide:
+        case .scientific4Wide:
             return [" ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")"]
         }
     }

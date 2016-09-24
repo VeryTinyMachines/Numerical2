@@ -9,7 +9,7 @@
 import UIKit
 
 protocol KeyStackViewDelegate {
-    func pressedKey(key: Character)
+    func pressedKey(_ key: Character)
 }
 
 class KeyStackView: UIStackView {
@@ -31,9 +31,9 @@ class KeyStackView: UIStackView {
                 let theCharacter = keyCharacters[tag]
                 let formattedCharacter = Glossary.stringForCharacter(theCharacter)
                 
-                key.setTitle(formattedCharacter, forState: UIControlState.Normal)
+                key.setTitle(formattedCharacter, for: UIControlState())
                 
-                let headlineFont = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+                let headlineFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
                 let newTitleFont = UIFont(name: headlineFont.fontName, size: headlineFont.pointSize * 1.2)
                 
                 if key.titleLabel?.font != newTitleFont {
@@ -43,7 +43,7 @@ class KeyStackView: UIStackView {
         }
     }
     
-    @IBAction func pressedKey(sender: UIButton) {
+    @IBAction func pressedKey(_ sender: UIButton) {
         if let theDelegate = delegate {
             let tag = sender.tag
             if tag < keyCharacters.count {
@@ -53,12 +53,12 @@ class KeyStackView: UIStackView {
         }
     }
     
-    func setLegalKeys(legalKeys: Set<Character>) {
+    func setLegalKeys(_ legalKeys: Set<Character>) {
 //        print("setLegalKeys: \(legalKeys)", appendNewline: true)
         
         for key in keys {
             
-            let headlineFont = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+            let headlineFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
             let newTitleFont = UIFont(name: headlineFont.fontName, size: headlineFont.pointSize * 1.2)
             
             if key.titleLabel?.font != newTitleFont {
@@ -75,9 +75,9 @@ class KeyStackView: UIStackView {
                 if keyCharacter == SymbolCharacter.smartBracket {
                     
                     if legalKeys.contains(")") {
-                        key.setTitle(Glossary.stringForCharacter(")"), forState: UIControlState.Normal)
+                        key.setTitle(Glossary.stringForCharacter(")"), for: UIControlState())
                     } else if legalKeys.contains("(") {
-                        key.setTitle(Glossary.stringForCharacter("("), forState: UIControlState.Normal)
+                        key.setTitle(Glossary.stringForCharacter("("), for: UIControlState())
                     }
                     
                     
@@ -85,10 +85,10 @@ class KeyStackView: UIStackView {
                 }
                 
                 if legalKeys.contains(keyCharacter) {
-                    key.enabled = true
+                    key.isEnabled = true
                     key.alpha = 1.0
                 } else {
-                    key.enabled = false
+                    key.isEnabled = false
                     key.alpha = 1.0
                 }
                 

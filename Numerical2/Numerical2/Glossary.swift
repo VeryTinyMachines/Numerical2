@@ -9,22 +9,22 @@
 import Foundation
 
 public enum TermType {
-    case Number
-    case Operator
-    case Unknown
+    case number
+    case `operator`
+    case unknown
 }
 
 public enum OperatorType {
-    case PreOperator
-    case MidOperator
-    case PostOperator
-    case PercentageCombine
+    case preOperator
+    case midOperator
+    case postOperator
+    case percentageCombine
 }
 
 public enum InfinityType {
-    case Positive
-    case Negative
-    case NotInfinity
+    case positive
+    case negative
+    case notInfinity
 }
 
 public struct SymbolConstant {
@@ -68,19 +68,20 @@ public struct SymbolCharacter {
 }
 
 
-public class Glossary {
+open class Glossary {
     
-    class func possibleAnswersFromString(var answerString: String) -> Array<String> {
+    class func possibleAnswersFromString(_ answerString: String) -> Array<String> {
+        var answerString = answerString
         var answersArray:Array<String> = []
         
-        if answerString.characters.count > 0 && answerString.substringFromIndex(answerString.endIndex.predecessor()) == String(SymbolCharacter.fraction) {
+        if answerString.characters.count > 0 && answerString.substring(from: answerString.characters.index(before: answerString.endIndex)) == String(SymbolCharacter.fraction) {
             answerString += "1"
         }
         
         if Glossary.isStringFractionNumber(answerString) {
             
             // This is a fraction - only add it if it has no decimal.
-            if answerString.rangeOfString(".") == nil {
+            if answerString.range(of: ".") == nil {
                 answersArray.append(answerString)
             }
             
@@ -88,7 +89,7 @@ public class Glossary {
             if let reducedAnswer = Evaluator.reduceFraction(answerString) {
                 if answerString != reducedAnswer {
                     
-                    if reducedAnswer.rangeOfString(".") == nil {
+                    if reducedAnswer.range(of: ".") == nil {
                         answersArray.append(reducedAnswer)
                     }
                 }
@@ -109,12 +110,12 @@ public class Glossary {
     }
     
     
-    class func isStringFrationWithDenominatorOfOne(string: String) -> Bool {
+    class func isStringFrationWithDenominatorOfOne(_ string: String) -> Bool {
         return false
     }
     
     
-    class func formattedStringForQuestion(string: String) -> String {
+    class func formattedStringForQuestion(_ string: String) -> String {
         
         var formattedString = ""
         
@@ -126,7 +127,7 @@ public class Glossary {
     }
     
     
-    class func stringForCharacter(character: Character) -> String {
+    class func stringForCharacter(_ character: Character) -> String {
         
         if character == SymbolCharacter.e {
             return "e"
@@ -172,7 +173,7 @@ public class Glossary {
         return String(character)
     }
     
-    class func isStringSpecialWord(string: String) -> Bool {
+    class func isStringSpecialWord(_ string: String) -> Bool {
         if string == "and" || string == "by" || string == "with" {
             return true
         } else {
@@ -180,9 +181,9 @@ public class Glossary {
         }
     }
     
-    class func isStringFractionNumber(string: String) -> Bool {
+    class func isStringFractionNumber(_ string: String) -> Bool {
         
-        if string.rangeOfString(String(SymbolCharacter.fraction)) == nil {
+        if string.range(of: String(SymbolCharacter.fraction)) == nil {
             // This is definitely not a fraction
             return false
         } else {
@@ -191,7 +192,7 @@ public class Glossary {
         }
     }
     
-    class func isStringNumber(string: String) -> Bool {
+    class func isStringNumber(_ string: String) -> Bool {
         
         let numbers:Set<Character> = ["0","1","2","3","4","5","6","7","8","9",".",SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, SymbolCharacter.fraction]
         
@@ -215,16 +216,16 @@ public class Glossary {
         
     }
     
-    class func stringContainsDecimal(string: String) -> Bool {
+    class func stringContainsDecimal(_ string: String) -> Bool {
         
-        if let _ = string.rangeOfString(".") {
+        if let _ = string.range(of: ".") {
             return true
         } else {
             return false
         }
     }
     
-    class func isStringOperator(string: String) -> Bool {
+    class func isStringOperator(_ string: String) -> Bool {
         
         let operators:Set<Character> = ["^","/","*","-","+","%", SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage]
         
@@ -241,11 +242,11 @@ public class Glossary {
         return true
     }
     
-    class func isStringInfinity(string: String) -> InfinityType {
+    class func isStringInfinity(_ string: String) -> InfinityType {
         let numbers:Set<Character> = [SymbolCharacter.infinity]
         
         if string == "" || string == "-" {
-            return InfinityType.NotInfinity
+            return InfinityType.notInfinity
         }
         
         var counter = 0
@@ -257,7 +258,7 @@ public class Glossary {
                 // This is a leading - and can be safely ignored
                 negative = true
             } else if numbers.contains(character) == false {
-                return InfinityType.NotInfinity
+                return InfinityType.notInfinity
             }
             
             counter += 1
@@ -265,13 +266,13 @@ public class Glossary {
         
         // It IS infinity - not determine the type.
         if negative {
-            return InfinityType.Negative
+            return InfinityType.negative
         } else {
-            return InfinityType.Positive
+            return InfinityType.positive
         }
     }
     
-    class func isStringInteger(string: String) -> Bool {
+    class func isStringInteger(_ string: String) -> Bool {
         
         if isStringNumber(string) {
             if string.characters.contains(".") {
@@ -285,7 +286,7 @@ public class Glossary {
     }
     
     
-    class func shouldAddClosingBracketToAppendString(string: String, newOperator: Character) -> Bool {
+    class func shouldAddClosingBracketToAppendString(_ string: String, newOperator: Character) -> Bool {
         
         if newOperator == "*" || newOperator == "/" {
             let termArray = Evaluator.termArrayFromString(string, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
@@ -350,7 +351,7 @@ public class Glossary {
     }
     
     
-    class func replaceConstant(number: String?) -> String? {
+    class func replaceConstant(_ number: String?) -> String? {
         
         if let theNumber = number {
             if theNumber == String(SymbolCharacter.e) {
@@ -363,7 +364,8 @@ public class Glossary {
         return number
     }
     
-    class func legalCharactersToAppendString(var string: String) -> Set<Character>? {
+    class func legalCharactersToAppendString(_ string: String) -> Set<Character>? {
+        var string = string
         
         if string == "" {
             string = " "
@@ -475,7 +477,7 @@ public class Glossary {
                         
                         if let lastTerm = termArray.last {
                             
-                            if lastTerm.rangeOfString(".") != nil {
+                            if lastTerm.range(of: ".") != nil {
                                 // There IS a decimal here.
                             } else {
                                 // Insert the decimal

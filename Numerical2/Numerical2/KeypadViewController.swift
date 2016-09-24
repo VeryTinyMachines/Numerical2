@@ -9,14 +9,14 @@
 import UIKit
 
 public enum KeypadLayout {
-    case CompactStandard
-    case CompactScientific
-    case Regular
-    case All
+    case compactStandard
+    case compactScientific
+    case regular
+    case all
 }
 
 protocol KeypadDelegate {
-    func pressedKey(key: Character)
+    func pressedKey(_ key: Character)
 }
 
 
@@ -29,9 +29,9 @@ class KeypadViewController: UIViewController {
     
     var keyCharacters:Array<Character> = []
     
-    var layoutType = KeypadLayout.CompactStandard
+    var layoutType = KeypadLayout.compactStandard
     
-    var originLayoutType = KeypadLayout.All
+    var originLayoutType = KeypadLayout.all
     
     var currentLegalKeys:Set<Character> = []
     
@@ -49,11 +49,11 @@ class KeypadViewController: UIViewController {
         
         let regular = [" ", SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", " ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")", SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket, SymbolCharacter.delete, "/", "*", "-", "+"]
         
-        if layoutType == KeypadLayout.CompactStandard {
+        if layoutType == KeypadLayout.compactStandard {
             keyCharacters = compactStandard
-        } else if layoutType == KeypadLayout.CompactScientific {
+        } else if layoutType == KeypadLayout.compactScientific {
             keyCharacters = compactScientific
-        } else if layoutType == KeypadLayout.Regular {
+        } else if layoutType == KeypadLayout.regular {
             keyCharacters = regular
         }
         
@@ -64,24 +64,24 @@ class KeypadViewController: UIViewController {
                 let character = keyCharacters[tag]
                 
                 button.alpha = 1.0
-                button.enabled = true
+                button.isEnabled = true
                 
                 if character == "c" {
-                    button.setTitle("C", forState: UIControlState.Normal)
+                    button.setTitle("C", for: UIControlState())
                     
                 } else if character == "d" {
-                    button.setTitle("⬅︎", forState: UIControlState.Normal)
+                    button.setTitle("⬅︎", for: UIControlState())
                     button.baseColor = UIColor(red: 0 / 255, green: 122/255, blue: 255/255, alpha: 1.0)
                     button.highlightColor = UIColor(red: 166 / 255, green: 183/255, blue: 255/255, alpha: 1.0)
                     
                 } else if character == " " {
-                    button.setTitle("", forState: UIControlState.Normal)
+                    button.setTitle("", for: UIControlState())
                     button.alpha = 0.0
-                    button.enabled = false
+                    button.isEnabled = false
                 } else {
                     let formattedCharacter = Glossary.stringForCharacter(character)
                     
-                    button.setTitle(formattedCharacter, forState: UIControlState.Normal)
+                    button.setTitle(formattedCharacter, for: UIControlState())
                 }
                 
                 print(button.bounds.size)
@@ -90,14 +90,14 @@ class KeypadViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupKeys()
         updateLegalKeys()
     }
     
     
-    @IBAction func pressedKey(sender: UIButton) {
+    @IBAction func pressedKey(_ sender: UIButton) {
         var character = keyCharacters[sender.tag]
         
         print("pressedKey with tag \(sender.tag) with character \(character)")
@@ -121,7 +121,7 @@ class KeypadViewController: UIViewController {
     }
     
     
-    func setLegalKeys(legalKeys: Set<Character>) {
+    func setLegalKeys(_ legalKeys: Set<Character>) {
         print("setLegalKeys: \(legalKeys)")
         
         currentLegalKeys = legalKeys
@@ -141,16 +141,16 @@ class KeypadViewController: UIViewController {
                     if currentLegalKeys.contains(character) {
                         // This button is legal
                         button.alpha = 1.0
-                        button.enabled = true
+                        button.isEnabled = true
                     } else {
-                        if button.titleLabel == "" {
+                        if button.titleLabel?.text == "" {
                             // This button is not legal
                             button.alpha = 0.0
-                            button.enabled = false
+                            button.isEnabled = false
                         } else {
                             // This button is not legal
                             button.alpha = 0.8
-                            button.enabled = false
+                            button.isEnabled = false
                         }
                     }
                     
@@ -159,11 +159,11 @@ class KeypadViewController: UIViewController {
                         print("")
                         
                         if currentLegalKeys.contains("(") {
-                            button.setTitle("(", forState: UIControlState.Normal)
+                            button.setTitle("(", for: UIControlState())
                         } else if currentLegalKeys.contains(")") {
-                            button.setTitle(")", forState: UIControlState.Normal)
+                            button.setTitle(")", for: UIControlState())
                         } else {
-                            button.setTitle("(", forState: UIControlState.Normal)
+                            button.setTitle("(", for: UIControlState())
                         }
                     }
                     

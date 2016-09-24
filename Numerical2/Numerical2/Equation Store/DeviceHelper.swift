@@ -10,5 +10,5 @@ import Foundation
 import UIKit
 
 public func currentDevice () -> String {
-	return UIDevice.currentDevice().name
+	return UIDevice.current.name
 }

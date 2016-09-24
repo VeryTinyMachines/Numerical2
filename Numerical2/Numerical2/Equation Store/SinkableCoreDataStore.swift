@@ -37,7 +37,7 @@ let SCDSStoreMigrationCompleteNotification = "SCDSStoreMigrationCompleteNotifica
 /**
 SinkableCoreDataStore is a simple to use class for quickly setting up core data store with optional iCloud syncing.
 */
-public class SinkableCoreDataStore: NSObject {
+open class SinkableCoreDataStore: NSObject {
 /**
 Init with the parameters, all but *iCloudContentName* are required. *iCloudContentName* must not be nil to use iCloud Sync
 */
@@ -65,32 +65,32 @@ Init with the parameters, all but *iCloudContentName* are required. *iCloudConte
 /** 
 Use this property to toggle sync status and for displaying sync status in your UI
 */
-	public var iCloudSyncEnabled:Bool {
+	open var iCloudSyncEnabled:Bool {
 		didSet {
 			// We migrate if the stack has been setup, otherwise we only need to set the bool
 			// TODO: Enable the store migrations
 			if self.storeIsOpen {
 				if iCloudSyncEnabled {
-					print("\(__FUNCTION__) -> true")
+					print("\(#function) -> true")
 					iCloudNotificationListeners()
 //					self.migrateStoreWithOptions(self.iCloudToLocalPersistentStoreMigrationOptions)
 				} else {
-					print("\(__FUNCTION__) -> false")
+					print("\(#function) -> false")
 //					self.migrateStoreWithOptions(self.iCloudToLocalPersistentStoreMigrationOptions)
 					stopiCloudNotificationListeners()
 				}
 			} else {
-				print("\(__FUNCTION__) - No Store to migrate yet")
+				print("\(#function) - No Store to migrate yet")
 			}
 		}
 	}
 /**
 A Managed Object Context with Main Thread Concurrency. Use this context for all data to display in a UI.
 */
-	lazy public var mainContext:NSManagedObjectContext = {
+	lazy open var mainContext:NSManagedObjectContext = {
 		// Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
 		let coordinator = self.persistentStoreCoordinator
-		var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+		var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		managedObjectContext.persistentStoreCoordinator = coordinator
 		return managedObjectContext
 	}()
@@ -98,17 +98,17 @@ A Managed Object Context with Main Thread Concurrency. Use this context for all 
 /**
 A Managed Object Context with Background Thread Concurrency. Changes made in this context will be saved to *mainContext* when **Save( )** is called on this context.
 */
-	lazy public var backGroundContext:NSManagedObjectContext = {
+	lazy open var backGroundContext:NSManagedObjectContext = {
 		// Returns a background queue managed object context for the application. This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
-		var managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-		managedObjectContext.parentContext = self.mainContext
+		var managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+		managedObjectContext.parent = self.mainContext
 		return managedObjectContext
 	}()
 /**
 Saves changes in the *mainContext* to disk.
 */
 	func saveContext () -> Bool {
-		print(__FUNCTION__)
+		print(#function)
 		if mainContext.hasChanges {
 			do {
 				try mainContext.save()
@@ -125,7 +125,7 @@ Saves changes in the *mainContext* to disk.
 	}
 	
 	// MARK: - Persistent Store
-	private func persistentStoreOptions() -> Dictionary<String, AnyObject>  {
+	fileprivate func persistentStoreOptions() -> Dictionary<String, AnyObject>  {
 		// these are the normal everyday store options
 		if self.iCloudSyncEnabled {
 //			print("\(__FUNCTION__) -> iCloud Options")
@@ -137,34 +137,34 @@ Saves changes in the *mainContext* to disk.
 		return self.localPersistentStoreOptions
 	}
 	
-	private lazy var localPersistentStoreOptions: Dictionary<String, AnyObject> = [NSMigratePersistentStoresAutomaticallyOption: NSNumber(bool: true),
-			NSInferMappingModelAutomaticallyOption: NSNumber(bool: true)]
+	fileprivate lazy var localPersistentStoreOptions: Dictionary<String, AnyObject> = [NSMigratePersistentStoresAutomaticallyOption: NSNumber(value: true as Bool),
+			NSInferMappingModelAutomaticallyOption: NSNumber(value: true as Bool)]
 	
 	
-	private lazy var iCloudPersistentStoreOptions:Dictionary<String, AnyObject> = {
+	fileprivate lazy var iCloudPersistentStoreOptions:Dictionary<String, AnyObject> = {
 		return [NSPersistentStoreUbiquitousContentNameKey : self.iCloudContentKeyName!,
-			NSMigratePersistentStoresAutomaticallyOption : NSNumber(bool: true),
-			NSInferMappingModelAutomaticallyOption : NSNumber(bool: true)]
-		}()
+			NSMigratePersistentStoresAutomaticallyOption : NSNumber(value: true as Bool),
+			NSInferMappingModelAutomaticallyOption : NSNumber(value: true as Bool)]
+		}() as Dictionary<String, AnyObject>
 	
-	private lazy var iCloudToLocalPersistentStoreMigrationOptions: Dictionary<String, AnyObject> = [NSPersistentStoreRemoveUbiquitousMetadataOption : NSNumber(bool: true),
-			NSMigratePersistentStoresAutomaticallyOption : NSNumber(bool: true),
-			NSInferMappingModelAutomaticallyOption : NSNumber(bool: true)]
+	fileprivate lazy var iCloudToLocalPersistentStoreMigrationOptions: Dictionary<String, AnyObject> = [NSPersistentStoreRemoveUbiquitousMetadataOption : NSNumber(value: true as Bool),
+			NSMigratePersistentStoresAutomaticallyOption : NSNumber(value: true as Bool),
+			NSInferMappingModelAutomaticallyOption : NSNumber(value: true as Bool)]
 	
-	private func migrateStoreWithOptions(options: Dictionary<String, AnyObject>){
+	fileprivate func migrateStoreWithOptions(_ options: Dictionary<String, AnyObject>){
 		// TODO: Post some notifications
-		print(__FUNCTION__)
+		print(#function)
 		self.saveContext()
-		let currentStore = self.persistentStoreCoordinator.persistentStoreForURL(self.currentStoreURL!)
+		let currentStore = self.persistentStoreCoordinator.persistentStore(for: self.currentStoreURL!)
 		let url = self.storeURL()
 		
 		// migrate the store
 		do {
-			try self.persistentStoreCoordinator.migratePersistentStore(currentStore!, toURL: url, options: options, withType: NSSQLiteStoreType)
+			try self.persistentStoreCoordinator.migratePersistentStore(currentStore!, to: url, options: options, withType: NSSQLiteStoreType)
 		} catch {
 			// Report any error we got.
 			var dict = [String: AnyObject]()
-			dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
+			dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as AnyObject?
 			dict[NSUnderlyingErrorKey] = error as NSError
 			let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
 			// Replace this with code to handle the error appropriately.
@@ -198,17 +198,17 @@ Saves changes in the *mainContext* to disk.
 		// TODO: Post some notifications
 	}
 	
-	private func addStoreWithOptions(options: Dictionary<String, AnyObject>, coordinator:NSPersistentStoreCoordinator){
+	fileprivate func addStoreWithOptions(_ options: Dictionary<String, AnyObject>, coordinator:NSPersistentStoreCoordinator){
 		let url = self.storeURL()
 //		print("\(__FUNCTION__) - \(url)")
 		let failureReason = "There was an error creating or loading the application's saved data."
 		do {
-			try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options)
+			try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: options)
 		} catch {
 			// Report any error we got.
 			var dict = [String: AnyObject]()
-			dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-			dict[NSLocalizedFailureReasonErrorKey] = failureReason
+			dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as AnyObject?
+			dict[NSLocalizedFailureReasonErrorKey] = failureReason as AnyObject?
 			
 			dict[NSUnderlyingErrorKey] = error as NSError
 			let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
@@ -220,7 +220,7 @@ Saves changes in the *mainContext* to disk.
 		self.currentStoreURL = url
 	}
 	
-	private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+	fileprivate lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
 //		print(__FUNCTION__)
 		// The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
 		// Create the coordinator and store
@@ -231,25 +231,25 @@ Saves changes in the *mainContext* to disk.
 		}()
 	
 	// MARK: - Notification Handling
-	private func setupNotifications () {
-		let nc = NSNotificationCenter.defaultCenter()
-		nc.addObserver(self, selector: "saveContext", name: "UIApplicationDidEnterBackgroundNotification", object: nil)
+	fileprivate func setupNotifications () {
+		let nc = NotificationCenter.default
+		nc.addObserver(self, selector: #selector(SinkableCoreDataStore.saveContext), name: NSNotification.Name(rawValue: "UIApplicationDidEnterBackgroundNotification"), object: nil)
 		if self.iCloudSyncEnabled {
 			self.iCloudNotificationListeners()
 		}
 	}
 	
-	private func iCloudNotificationListeners () {
+	fileprivate func iCloudNotificationListeners () {
 //		print(__FUNCTION__)
-		let nc = NSNotificationCenter.defaultCenter()
+		let nc = NotificationCenter.default
 		let ps = persistentStoreCoordinator
-		let queue = NSOperationQueue.mainQueue()
+		let queue = OperationQueue.main
 		unowned let weakself = self // retain cycles in closures are bad!
 		
 		// handle stores will change
-		nc.addObserverForName(NSPersistentStoreCoordinatorStoresWillChangeNotification, object: ps, queue: queue, usingBlock: {notification in
+		nc.addObserver(forName: NSNotification.Name.NSPersistentStoreCoordinatorStoresWillChange, object: ps, queue: queue, using: {notification in
 //			print("NSPersistentStoreCoordinatorStoresWillChangeNotification")
-			weakself.mainContext.performBlock({ // in a block in case it's not on the main thread
+			weakself.mainContext.perform({ // in a block in case it's not on the main thread
 				if weakself.saveContext() {
 					weakself.mainContext.reset()
 				}
@@ -258,21 +258,21 @@ Saves changes in the *mainContext* to disk.
 		})
 		
 		// handle stores did change
-		nc.addObserverForName(NSPersistentStoreCoordinatorStoresDidChangeNotification, object: ps, queue: queue, usingBlock: {notification in
+		nc.addObserver(forName: NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange, object: ps, queue: queue, using: {notification in
 //			print("NSPersistentStoreCoordinatorStoresDidChangeNotification")
 			weakself.postNotificationNamed(SCDSPersistentStoreDidChangeNotification)
 		})
 		
 		// handle stores removed
-		nc.addObserverForName(NSPersistentStoreCoordinatorWillRemoveStoreNotification, object: ps, queue: queue, usingBlock: {notification in
+		nc.addObserver(forName: NSNotification.Name.NSPersistentStoreCoordinatorWillRemoveStore, object: ps, queue: queue, using: {notification in
 			// not sure if we need this yet
 		})
 		
 		// handle icloud database changes
-		nc.addObserverForName(NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: ps, queue: queue, usingBlock: {notification in
+		nc.addObserver(forName: NSNotification.Name.NSPersistentStoreDidImportUbiquitousContentChanges, object: ps, queue: queue, using: {notification in
 			print("NSPersistentStoreDidImportUbiquitousContentChangesNotification")
-			weakself.mainContext.performBlock({ // in a block in case it's not on the main thread
-				weakself.mainContext.mergeChangesFromContextDidSaveNotification(notification)
+			weakself.mainContext.perform({ // in a block in case it's not on the main thread
+				weakself.mainContext.mergeChanges(fromContextDidSave: notification)
 				weakself.mainContext.refreshAllObjects()
 				weakself.postNotificationNamed(SCDSDidImportCloudChangesNotification)
 			})
@@ -280,64 +280,64 @@ Saves changes in the *mainContext* to disk.
 		
 	}
 	
-	private func stopiCloudNotificationListeners () {
+	fileprivate func stopiCloudNotificationListeners () {
 //		print(__FUNCTION__)
-		let nc = NSNotificationCenter.defaultCenter()
+		let nc = NotificationCenter.default
 		let ps = self.persistentStoreCoordinator
-		nc.removeObserver(self, name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object:ps)
-		nc.removeObserver(self, name: NSPersistentStoreCoordinatorStoresDidChangeNotification, object:nil)
-		nc.removeObserver(self, name: NSPersistentStoreCoordinatorWillRemoveStoreNotification, object:ps)
-		nc.removeObserver(self, name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object:ps)
+		nc.removeObserver(self, name: NSNotification.Name.NSPersistentStoreCoordinatorStoresWillChange, object:ps)
+		nc.removeObserver(self, name: NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange, object:nil)
+		nc.removeObserver(self, name: NSNotification.Name.NSPersistentStoreCoordinatorWillRemoveStore, object:ps)
+		nc.removeObserver(self, name: NSNotification.Name.NSPersistentStoreDidImportUbiquitousContentChanges, object:ps)
 	}
 	
-	private func postNotificationNamed (name: String) {
+	fileprivate func postNotificationNamed (_ name: String) {
 		// adding a dedicated method for this so if we need to redirect notifications to the main thread we have one centralized location for that
-		print("\(__FUNCTION__) - \(name)")
-		NSNotificationCenter.defaultCenter().postNotificationName(name, object: nil)
+		print("\(#function) - \(name)")
+		NotificationCenter.default.post(name: Notification.Name(rawValue: name), object: nil)
 	}
 	
 	// MARK: - Supporting File Paths
-	private func storeURL () -> NSURL {
+	fileprivate func storeURL () -> URL {
 //		if self.iCloudSyncEnabled {
 //			return self.iCloudStoreURL()
 //		}
 		return self.localStoreURL()
 	}
 	
-	private func iCloudStoreURL () -> NSURL {
-		return self.applicationDocumentsDirectory.URLByAppendingPathComponent(self.iCloudStoreSQL)
+	fileprivate func iCloudStoreURL () -> URL {
+		return self.applicationDocumentsDirectory.appendingPathComponent(self.iCloudStoreSQL)
 	}
 	
-	private func localStoreURL () -> NSURL {
-		return self.applicationDocumentsDirectory.URLByAppendingPathComponent(self.localStoreSQL)
+	fileprivate func localStoreURL () -> URL {
+		return self.applicationDocumentsDirectory.appendingPathComponent(self.localStoreSQL)
 		//TODO: App Group Support
 	}
 	
-	private lazy var localStoreSQL: String = {
+	fileprivate lazy var localStoreSQL: String = {
 		return self.sqlName + ".sqlite"
 		}()
 	
-	private lazy var iCloudStoreSQL: String = {
+	fileprivate lazy var iCloudStoreSQL: String = {
 		return self.sqlName + "-iCloud.sqlite"
 		}()
 	
-	private lazy var applicationDocumentsDirectory: NSURL = {
+	fileprivate lazy var applicationDocumentsDirectory: URL = {
 		// The directory the application uses to store the Core Data store file. This code uses a directory named "com.VicHudsonAppDeveloper.NumericalDBDevProject" in the application's documents Application Support directory.
 		
-		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+		let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 		return urls[urls.count-1]
 		}()
 	
-	private lazy var managedObjectModel: NSManagedObjectModel = {
+	fileprivate lazy var managedObjectModel: NSManagedObjectModel = {
 		// The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-		let modelURL = NSBundle.mainBundle().URLForResource(self.modelName , withExtension: "momd")!
-		return NSManagedObjectModel(contentsOfURL: modelURL)!
+		let modelURL = Bundle.main.url(forResource: self.modelName , withExtension: "momd")!
+		return NSManagedObjectModel(contentsOf: modelURL)!
 		}()
 	
-	private var modelName:String
-	private var sqlName:String
-	private var iCloudContentKeyName:String?
-	private var appGroupName:String?
-	private var storeIsOpen:Bool = false
-	private var currentStoreURL:NSURL?
+	fileprivate var modelName:String
+	fileprivate var sqlName:String
+	fileprivate var iCloudContentKeyName:String?
+	fileprivate var appGroupName:String?
+	fileprivate var storeIsOpen:Bool = false
+	fileprivate var currentStoreURL:URL?
 }

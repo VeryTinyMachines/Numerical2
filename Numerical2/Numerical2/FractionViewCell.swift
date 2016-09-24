@@ -9,9 +9,9 @@
 import UIKit
 
 public enum FractionViewCellType {
-    case Answer
-    case Question
-    case Or
+    case answer
+    case question
+    case or
 }
 
 class FractionViewCell:UICollectionViewCell {
@@ -19,16 +19,16 @@ class FractionViewCell:UICollectionViewCell {
     @IBOutlet weak var numeratorLabel: UILabel!
     @IBOutlet weak var denominatorLabel: UILabel!
     
-    func setAnswerCell(answer: FractionViewCellType) {
+    func setAnswerCell(_ answer: FractionViewCellType) {
         
         var font:UIFont?
         switch answer {
-        case .Answer:
-            font = StyleFormatter.preferredFontForContext(FontDisplayContext.AnswerFraction)
-        case .Question:
-            font = StyleFormatter.preferredFontForContext(FontDisplayContext.QuestionFraction)
-        case .Or:
-            font = StyleFormatter.preferredFontForContext(FontDisplayContext.AnswerOr)
+        case .answer:
+            font = StyleFormatter.preferredFontForContext(FontDisplayContext.answerFraction)
+        case .question:
+            font = StyleFormatter.preferredFontForContext(FontDisplayContext.questionFraction)
+        case .or:
+            font = StyleFormatter.preferredFontForContext(FontDisplayContext.answerOr)
         }
         
         if let theFont = font {

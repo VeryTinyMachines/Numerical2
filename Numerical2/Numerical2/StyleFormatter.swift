@@ -9,33 +9,33 @@
 import UIKit
 
 public enum FontDisplayContext {
-    case Question
-    case QuestionFraction
-    case Answer
-    case AnswerFraction
-    case AnswerOr
+    case question
+    case questionFraction
+    case answer
+    case answerFraction
+    case answerOr
 }
 
 class StyleFormatter {
     
-    class func preferredFontForContext(context: FontDisplayContext) -> UIFont {
+    class func preferredFontForContext(_ context: FontDisplayContext) -> UIFont {
         switch context {
-        case .Question:
-            return UIFont.systemFontOfSize(20.0)
-        case .QuestionFraction:
-            return UIFont.systemFontOfSize(14.0)
-        case .Answer:
-            return UIFont.systemFontOfSize(72.0, weight: -0.75)
-        case .AnswerFraction:
-            return UIFont.systemFontOfSize(28.0)
-        case .AnswerOr:
-            return UIFont.systemFontOfSize(18.0)
+        case .question:
+            return UIFont.systemFont(ofSize: 20.0)
+        case .questionFraction:
+            return UIFont.systemFont(ofSize: 14.0)
+        case .answer:
+            return UIFont.systemFont(ofSize: 72.0, weight: -0.75)
+        case .answerFraction:
+            return UIFont.systemFont(ofSize: 28.0)
+        case .answerOr:
+            return UIFont.systemFont(ofSize: 18.0)
         }
     }
     
-    class func preferredFontForButtonOfSize(size: CGSize) -> UIFont {
+    class func preferredFontForButtonOfSize(_ size: CGSize) -> UIFont {
         
-        return UIFont.systemFontOfSize(20.0)
+        return UIFont.systemFont(ofSize: 20.0)
     }
     
 }

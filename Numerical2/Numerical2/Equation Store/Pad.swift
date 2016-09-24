@@ -11,15 +11,15 @@ import CoreData
 
 // TODO: See if the Xcode 7/Swift 2.0 bug for the below comment is fixed
 //@objc(Pad)
-public class Pad: NSManagedObject {
+open class Pad: NSManagedObject {
 
 // Insert code here to add functionality to your managed object subclass
-	override public func awakeFromInsert() {
+	override open func awakeFromInsert() {
 		super.awakeFromInsert()
-		print(__FUNCTION__)
-		let date = NSDate()
+		print(#function)
+		let date = Date()
 		self.creationDate = date
 		self.lastModifiedDate = date
-		self.identifier = NSUUID().UUIDString
+		self.identifier = UUID().uuidString
 	}
 }

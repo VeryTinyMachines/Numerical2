@@ -9,25 +9,25 @@
 import UIKit
 
 public enum EquationViewCellType {
-    case Answer
-    case Question
-    case Or
+    case answer
+    case question
+    case or
 }
 
 class EquationViewCell:UICollectionViewCell {
     
     @IBOutlet weak var mainLabel: UILabel!
     
-    func setAnswerCell(answer: EquationViewCellType) {
+    func setAnswerCell(_ answer: EquationViewCellType) {
         
         var font:UIFont?
         switch answer {
-        case .Answer:
-            font = StyleFormatter.preferredFontForContext(FontDisplayContext.Answer)
-        case .Question:
-            font = StyleFormatter.preferredFontForContext(FontDisplayContext.Question)
-        case .Or:
-            font = StyleFormatter.preferredFontForContext(FontDisplayContext.AnswerOr)
+        case .answer:
+            font = StyleFormatter.preferredFontForContext(FontDisplayContext.answer)
+        case .question:
+            font = StyleFormatter.preferredFontForContext(FontDisplayContext.question)
+        case .or:
+            font = StyleFormatter.preferredFontForContext(FontDisplayContext.answerOr)
         }
         
         if let theFont = font {

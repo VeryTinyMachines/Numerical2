@@ -16,7 +16,10 @@ let currentAnswerKey = "currentAnswerKey"
 let iCloudSyncUserPrefKey = "iCloudSyncUserPrefKey"
 let iCloudDatabaseLastSyncDateKey = "iCloudDatabaseLastSyncDateKey"
 
-public class EquationStore {
+open class EquationStore {
+	private static var __once: () = {
+			Static.instance = EquationStore()
+		}()
 	//MARK: - Class Access & Setup -
 	init() {
 		// Prepare our Pref Sync Manager
@@ -33,34 +36,34 @@ public class EquationStore {
 		backGroundContext = cdStack.backGroundContext
 		
 		// Handle icloud database changes
-		let nc = NSNotificationCenter.defaultCenter()
-		nc.addObserverForName(SCDSDidImportCloudChangesNotification,
+		let nc = NotificationCenter.default
+		nc.addObserver(forName: NSNotification.Name(rawValue: SCDSDidImportCloudChangesNotification),
 			object: nil,
-			queue: NSOperationQueue.mainQueue(),
-			usingBlock: { notification in
+			queue: OperationQueue.main,
+			using: { notification in
 //				print("SCDSDidImportCloudChangesNotification")
-				self.iCloudDataBaseLastSyncDate = NSDate()
+				self.iCloudDataBaseLastSyncDate = Date()
 		})
 		
 		// TODO: Delete this temporary HACK
-		NSFileManager.defaultManager().URLForUbiquityContainerIdentifier(nil)
+		FileManager.default.url(forUbiquityContainerIdentifier: nil)
 	}
 
 	//MARK: - Properties -
-	private var cdStack: SinkableCoreDataStore
-	public var mainContext: NSManagedObjectContext
-	private var backGroundContext: NSManagedObjectContext
+	fileprivate var cdStack: SinkableCoreDataStore
+	open var mainContext: NSManagedObjectContext
+	fileprivate var backGroundContext: NSManagedObjectContext
 	
-	var iCloudDataBaseLastSyncDate:NSDate {
+	var iCloudDataBaseLastSyncDate:Date {
 		get {
-			return SinkableUserDefaults.standardUserDefaults.localDefaults.objectForKey(iCloudDatabaseLastSyncDateKey) as! NSDate
+			return SinkableUserDefaults.standardUserDefaults.localDefaults.object(forKey: iCloudDatabaseLastSyncDateKey) as! Date
 		}
 		set {
-			SinkableUserDefaults.standardUserDefaults.localDefaults.setObject(newValue, forKey: iCloudDatabaseLastSyncDateKey)
+			SinkableUserDefaults.standardUserDefaults.localDefaults.set(newValue, forKey: iCloudDatabaseLastSyncDateKey)
 		}
 	}
 	
-	public var syncEnabled:Bool {
+	open var syncEnabled:Bool {
 		get {
 			return self.cdStack.iCloudSyncEnabled
 		}
@@ -71,20 +74,20 @@ public class EquationStore {
 		}
 	}
 	
-	public func save() {
+	open func save() {
 		self.cdStack.saveContext()
         print("saved")
 	}
 	
 	//MARK: - Equation Handling -
 	
-	public func equationWithIdentifier(identifier: String) -> Equation? {
+	open func equationWithIdentifier(_ identifier: String) -> Equation? {
 		let fetchRequest = NSFetchRequest()
-		fetchRequest.entity = NSEntityDescription.entityForName("Equation", inManagedObjectContext:mainContext)
+		fetchRequest.entity = NSEntityDescription.entity(forEntityName: "Equation", in:mainContext)
 		fetchRequest.predicate = NSPredicate(format: "identifier == %@", identifier)
 		var equations: Array<Equation>?
 		do {
-			try equations =  mainContext.executeFetchRequest(fetchRequest) as? Array<Equation>
+			try equations =  mainContext.fetch(fetchRequest) as? Array<Equation>
 		} catch {
 			// Replace this implementation with code to handle the error appropriately.
 			// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -95,8 +98,8 @@ public class EquationStore {
 	}
 	
 	// TODO: Move this to the Pad Itself
-	public func equationArrayForPad(pad: Pad?) -> Array<Equation>? {
-		var fetchRequest:NSFetchRequest
+	open func equationArrayForPad(_ pad: Pad?) -> Array<Equation>? {
+		var fetchRequest:NSFetchRequest<AnyObject>
 		if let thePad = pad {
 			fetchRequest = self.equationsFetchRequest(NSPredicate(format: "pad == %@", thePad))
 		} else {
@@ -107,7 +110,7 @@ public class EquationStore {
 		
 		var equations: Array<Equation>?
 		do {
-			try equations =  mainContext.executeFetchRequest(fetchRequest) as? Array<Equation>
+			try equations =  mainContext.fetch(fetchRequest) as? Array<Equation>
 		} catch {
 			// Replace this implementation with code to handle the error appropriately.
 			// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -117,7 +120,7 @@ public class EquationStore {
 		return equations!
 	}
 	
-	public func firstEquationForPadCurrentPad() -> Equation {
+	open func firstEquationForPadCurrentPad() -> Equation {
         if let equations:Array<Equation> = self.equationArrayForPad(currentPad!)! {
             return equations.first!
         } else {
@@ -125,17 +128,17 @@ public class EquationStore {
         }
 	}
 	
-	public func currentEquation () -> Equation? {
+	open func currentEquation () -> Equation? {
 		if let eqID:String = SinkableUserDefaults.standardUserDefaults.objectForKey(currentEquationKey) as? String {
 			return self.equationWithIdentifier(eqID)
 		}
 		return nil
 	}
 	
-	private func equationsFetchRequest(predicate:NSPredicate?) -> NSFetchRequest {
+	fileprivate func equationsFetchRequest(_ predicate:NSPredicate?) -> NSFetchRequest<AnyObject> {
 		let fetchRequest = NSFetchRequest()
 		// Edit the entity name as appropriate.
-		fetchRequest.entity = NSEntityDescription.entityForName("Equation", inManagedObjectContext:mainContext)
+		fetchRequest.entity = NSEntityDescription.entity(forEntityName: "Equation", in:mainContext)
 //		if let pred = predicate {
 //			fetchRequest.predicate = pred
 //		}
@@ -150,8 +153,8 @@ public class EquationStore {
 	}
 	
 	// iOS only This will Need Moved out if the class is shared with a mac app
-	public func equationsFetchedResultsController() -> NSFetchedResultsController {
-		var fetchRequest:NSFetchRequest
+	open func equationsFetchedResultsController() -> NSFetchedResultsController<AnyObject> {
+		var fetchRequest:NSFetchRequest<AnyObject>
 		if let thePad = self.currentPad {
 			// We have a user defined Pad
 			fetchRequest = self.equationsFetchRequest(NSPredicate(format: "pad == %@", thePad))
@@ -164,9 +167,9 @@ public class EquationStore {
 		return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: mainContext, sectionNameKeyPath: nil, cacheName: nil)
 	}
 	
-	public func newEquation() -> Equation? {
-		print(__FUNCTION__)
-		let newEquation = NSEntityDescription.insertNewObjectForEntityForName("Equation", inManagedObjectContext: mainContext) as! Equation
+	open func newEquation() -> Equation? {
+		print(#function)
+		let newEquation = NSEntityDescription.insertNewObject(forEntityName: "Equation", into: mainContext) as! Equation
 		newEquation.pad = self.currentPad
         
         let fetchRequest = NSFetchRequest(entityName: "Equation")
@@ -175,9 +178,9 @@ public class EquationStore {
         fetchRequest.fetchLimit = 1
         
         do {
-            if let equation = try self.mainContext.executeFetchRequest(fetchRequest).first as? Equation {
+            if let equation = try self.mainContext.fetch(fetchRequest).first as? Equation {
                 if let equationSortOrder = equation.sortOrder?.doubleValue {
-                    newEquation.sortOrder = NSNumber(double: equationSortOrder + 1)
+                    newEquation.sortOrder = NSNumber(value: equationSortOrder + 1 as Double)
                 }
             }
         } catch {
@@ -185,7 +188,7 @@ public class EquationStore {
         }
         
         if newEquation.sortOrder == nil {
-            newEquation.sortOrder = NSNumber(double: 0)
+            newEquation.sortOrder = NSNumber(value: 0 as Double)
         }
         
 		self.cdStack.saveContext()
@@ -193,25 +196,25 @@ public class EquationStore {
 	}
     
 	
-	public func deleteEquation(equation:Equation) {
+	open func deleteEquation(_ equation:Equation) {
 		// Check to see if we are deleting the current equation
 		if equation == self.currentEquation() {
 			// If so set the current equation key to an empty string
 			SinkableUserDefaults.standardUserDefaults.setObject("" , forKey: currentEquationKey)
 		}
-		mainContext.deleteObject(equation)
+		mainContext.delete(equation)
 		cdStack.saveContext()
 	}
 	
 	//MARK: - Pad Handling -
 	
-	public func padWithIdentifier(identifier:String) -> Pad? {
+	open func padWithIdentifier(_ identifier:String) -> Pad? {
 		let fetchRequest = NSFetchRequest()
-		fetchRequest.entity = NSEntityDescription.entityForName("Pad", inManagedObjectContext:mainContext)
+		fetchRequest.entity = NSEntityDescription.entity(forEntityName: "Pad", in:mainContext)
 		fetchRequest.predicate = NSPredicate(format: "identifier == %@", identifier)
 		var pads: Array<Pad>?
 		do {
-			try pads =  mainContext.executeFetchRequest(fetchRequest) as? Array<Pad>
+			try pads =  mainContext.fetch(fetchRequest) as? Array<Pad>
 		} catch {
 			// Replace this implementation with code to handle the error appropriately.
 			// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -221,9 +224,9 @@ public class EquationStore {
 		return pads!.first
 	}
 	
-	public func deletePad(pad:Pad) {
+	open func deletePad(_ pad:Pad) {
 		// Will be used when we add multiple pads. Equations will delete automatically with pads
-		mainContext.deleteObject(pad)
+		mainContext.delete(pad)
 		cdStack.saveContext()
 	}
 	
@@ -232,10 +235,10 @@ public class EquationStore {
 		return nil
 	}()
 	
-	public var currentPad: Pad? {
+	open var currentPad: Pad? {
 		get {
 			// Lets see if we have a pad ID save and a pad to match it
-			if let padID:String = SinkableUserDefaults.standardUserDefaults.objectForKey(currentPadIDKey) as? String, pad = self.padWithIdentifier(padID) {
+			if let padID:String = SinkableUserDefaults.standardUserDefaults.objectForKey(currentPadIDKey) as? String, let pad = self.padWithIdentifier(padID) {
 				return pad
 			}
 			// We don't have a current pad ID stored or that pad hasn't synced in from another device yet
@@ -276,8 +279,8 @@ public class EquationStore {
 //	}
 	
 	
-	func newPadWithName(name:String) -> Pad {
-		let newPad = NSEntityDescription.insertNewObjectForEntityForName("Pad", inManagedObjectContext: mainContext) as! Pad
+	func newPadWithName(_ name:String) -> Pad {
+		let newPad = NSEntityDescription.insertNewObject(forEntityName: "Pad", into: mainContext) as! Pad
 		newPad.name = name
 		return newPad
 	}
@@ -285,12 +288,10 @@ public class EquationStore {
 	
 	class var sharedStore: EquationStore {
 		struct Static {
-			static var onceToken: dispatch_once_t = 0
+			static var onceToken: Int = 0
 			static var instance: EquationStore? = nil
 		}
-		dispatch_once(&Static.onceToken) {
-			Static.instance = EquationStore()
-		}
+		_ = EquationStore.__once
 		return Static.instance!
 	}
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol WorkPanelDelegate {
-    func updateEquation(equation: Equation?)
+    func updateEquation(_ equation: Equation?)
 }
 
 class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewDelegate, EquationTextFieldDelegate {
@@ -30,11 +30,11 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
     
     @IBOutlet weak var pageControl: UIPageControl!
     
-    func questionChanged(newQuestion: String, overwrite: Bool) {
+    func questionChanged(_ newQuestion: String, overwrite: Bool) {
         
     }
     
-    func updatePageControl(currentPage: NSInteger, numberOfPages: NSInteger) {
+    func updatePageControl(_ currentPage: NSInteger, numberOfPages: NSInteger) {
         pageControl.numberOfPages = numberOfPages
         pageControl.currentPage = currentPage        
     }
@@ -50,7 +50,7 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                 
                 CalculatorBrain.sharedBrain.solveStringAsyncQueue(question, completion: { (answer: AnswerBundle) -> Void in
                     self.currentEquation?.answer = answer.answer
-                    EquationStore.sharedStore.save()
+//                    EquationStore.sharedStore.save()
                     
                     if let equation = self.currentEquation {
                         equation.answer = answer.answer
@@ -69,7 +69,7 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                     }
                     
                     print("latestEquationDict (to send): \(latestEquationDict)")
-                    WatchCommunicator.latestEquationDict = latestEquationDict
+//                    WatchCommunicator.latestEquationDict = latestEquationDict
                 })
                 
             } else {
@@ -80,13 +80,13 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
     }
     
     
-    func pressedKey(key: Character) {
+    func pressedKey(_ key: Character) {
         print("pressedKey in WPVC")
         if key == SymbolCharacter.clear {
             if let equation = currentEquation {
                 // Clear - Need to load a new equation from the EquationStore
                 
-                equation.lastModifiedDate = NSDate()
+                equation.lastModifiedDate = Date()
                 currentEquation = nil
                 
                 if let theWorkPanelDelegate = workPanelDelegate {
@@ -97,6 +97,8 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
         } else {
             
             if currentEquation == nil {
+                currentEquation = Equation()
+                
                 currentEquation = EquationStore.sharedStore.newEquation()
                 
                 if let theWorkPanelDelegate = workPanelDelegate {
@@ -112,11 +114,14 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                 
                 if let question = equation.question {
                     if question.characters.count > 0 {
-                        equation.question = question.substringToIndex(question.endIndex.predecessor())
+                        equation.question = question.substring(to: question.characters.index(before: question.endIndex))
                         
                         // If this equation is now empty then we need to delete the equation from the store.
                         if "" == equation.question {
-                            EquationStore.sharedStore.deleteEquation(equation)
+                            
+                            
+//                            EquationStore.sharedStore.deleteEquation(equation)
+                            
                             currentEquation = nil
                             
                             if let theWorkPanelDelegate = workPanelDelegate {
@@ -148,7 +153,7 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                         question.append(Character(")"))
                     }
                     
-                    question.append(key)
+                    question.append(key) // ZZZ
                     
                     equation.question = question
                     
@@ -158,7 +163,7 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
             }
         }
         
-        EquationStore.sharedStore.save()
+//        EquationStore.sharedStore.save()
         
         updateViews()
         updateLegalKeys()
@@ -172,7 +177,7 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
         return false
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 //        view.backgroundColor = UIColor(red: 38 / 255, green: 47/255, blue: 58/255, alpha: 1.0)
         
@@ -183,7 +188,7 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
         super.viewDidLoad()
         
         // Setup notifiction for UIContentSizeCategoryDidChangeNotification
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "dynamicTypeChanged", name: UIContentSizeCategoryDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.dynamicTypeChanged), name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
         
         updateViews()
         
@@ -203,11 +208,11 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
     func updateLegalKeys() {
         // Determine Legal Keys
         if let question = currentEquation?.question {
-            if let legalKeys = Glossary.legalCharactersToAppendString(question), theKeyPanel = keyPanelView {
+            if let legalKeys = Glossary.legalCharactersToAppendString(question), let theKeyPanel = keyPanelView {
                 theKeyPanel.setLegalKeys(legalKeys)
             }
         } else {
-            if let legalKeys = Glossary.legalCharactersToAppendString(""), theKeyPanel = keyPanelView {
+            if let legalKeys = Glossary.legalCharactersToAppendString(""), let theKeyPanel = keyPanelView {
                 theKeyPanel.setLegalKeys(legalKeys)
             }
         }
@@ -236,12 +241,12 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
         
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let keyPad = segue.destinationViewController as? KeypadPageViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let keyPad = segue.destination as? KeypadPageViewController {
             keyPad.delegate = self
             keyPad.pageViewDelegate = self
             keyPanelView = keyPad
-        } else if let theView = segue.destinationViewController as? EquationViewController {
+        } else if let theView = segue.destination as? EquationViewController {
             
             theView.delegate = self
             equationView = theView

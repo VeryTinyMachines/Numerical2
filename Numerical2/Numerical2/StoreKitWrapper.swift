@@ -16,31 +16,31 @@ let ProductPurchaseRestorationFailureNotificationName = "ProductPurchaseRestorat
 class StoreKitWrapper {
     
     init() {
-        RMStore.defaultStore().transactionPersistor = SinkableUserDefaults.standardUserDefaults
+        RMStore.default().transactionPersistor = SinkableUserDefaults.standardUserDefaults
     }
     
-    func purchaseProductWithID(id:String) {
-        RMStore.defaultStore().addPayment(id, success: { (transaction) -> Void in
-            RMStore.defaultStore().transactionPersistor?.persistTransaction(transaction)
-            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: ProductPurchaseSuccessNotificationName, object: id))
-            }) { (transaction, error) -> Void in NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: ProductPurchaseFailureNotificationName, object: error)) }
+    func purchaseProductWithID(_ id:String) {
+        RMStore.default().addPayment(id, success: { (transaction) -> Void in
+            RMStore.default().transactionPersistor?.persistTransaction(transaction)
+            NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: ProductPurchaseSuccessNotificationName), object: id))
+            }) { (transaction, error) -> Void in NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: ProductPurchaseFailureNotificationName), object: error)) }
     }
     
-    func isPurchased(id:String) -> Bool {
-        if let transactionPersistor = RMStore.defaultStore().transactionPersistor as! SinkableUserDefaults? {
+    func isPurchased(_ id:String) -> Bool {
+        if let transactionPersistor = RMStore.default().transactionPersistor as! SinkableUserDefaults? {
             return transactionPersistor.isProducPurchasedWithID(id)
         }
         return false
     }
     
     func restorePurchases() {
-        RMStore.defaultStore().restoreTransactionsOnSuccess({ (transactions) -> Void in
+        RMStore.default().restoreTransactions(onSuccess: { (transactions) -> Void in
             for transaction:SKPaymentTransaction in transactions as! [SKPaymentTransaction] {
-                RMStore.defaultStore().transactionPersistor?.persistTransaction(transaction)
-              NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: ProductPurchaseRestorationSuccessNotificationName, object: transaction.transactionIdentifier))
+                RMStore.default().transactionPersistor?.persistTransaction(transaction)
+              NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: ProductPurchaseRestorationSuccessNotificationName), object: transaction.transactionIdentifier))
             }
             }) { (error) -> Void in
-                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: ProductPurchaseRestorationFailureNotificationName, object: error))
+                NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: ProductPurchaseRestorationFailureNotificationName), object: error))
         }
     }
 

@@ -9,9 +9,9 @@
 import UIKit
 
 public enum KeypadSize {
-    case Maximum
-    case Medium
-    case Minimum
+    case maximum
+    case medium
+    case minimum
 }
 
 class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate {
@@ -21,7 +21,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     var historyView: HistoryViewController?
     var workPanelView: WorkPanelViewController?
     var currentEquation: Equation?
-    var currentSize = KeypadSize.Maximum
+    var currentSize = KeypadSize.maximum
     var workPanelShowEquation = true
     
     var workPanelSlideOrigin:CGPoint?
@@ -37,10 +37,11 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.greenColor()
+        self.view.backgroundColor = UIColor.green
         
         presentKeypad()
         
+        /*
         if let equations = EquationStore.sharedStore.equationArrayForPad(nil) {
             
             for equation in equations {
@@ -61,10 +62,11 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
                 }
             }
         }
+         */
     }
     
     
-    func selectedEquation(equation: Equation) {
+    func selectedEquation(_ equation: Equation) {
 //        print("equation: \(equation)", appendNewline: true)
         
         currentEquation = equation
@@ -88,9 +90,9 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     }
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if let keyPad = segue.destinationViewController as? HistoryViewController {
+        if let keyPad = segue.destination as? HistoryViewController {
             historyView = keyPad
             keyPad.delegate = self
 //            keyPad.reloadData()
@@ -99,7 +101,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
                 keyPad.updateSelectedEquation(theCurrentEquation)
             }
             
-        } else if let keyPad = segue.destinationViewController as? WorkPanelViewController {
+        } else if let keyPad = segue.destination as? WorkPanelViewController {
             workPanelView = keyPad
             keyPad.delegate = self
             keyPad.workPanelDelegate = self
@@ -108,26 +110,26 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             
             // Add a gesture recogniser to the keypad
             
-            let slideGesture = UIPanGestureRecognizer(target: self, action: "workPanelPanned:")
+            let slideGesture = UIPanGestureRecognizer(target: self, action: #selector(ViewController.workPanelPanned(_:)))
             keyPad.view.addGestureRecognizer(slideGesture)
         }
     }
     
-    func workPanelPanned(sender: UIPanGestureRecognizer) {
+    func workPanelPanned(_ sender: UIPanGestureRecognizer) {
         print("workPanelPanned")
         
-        let location = sender.locationInView(view)
+        let location = sender.location(in: view)
         print(location)
         
         switch sender.state {
-        case .Began:
+        case .began:
             print("began")
             workPanelSlideOrigin = location
             workPanelLastLocation = location
             view.layer.removeAllAnimations()
-        case .Cancelled:
+        case .cancelled:
             print("cancelled")
-        case .Changed:
+        case .changed:
             print("changed")
 
             // origin is where the touch started.
@@ -162,7 +164,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             
             workPanelLastLocation = location
             
-        case .Ended:
+        case .ended:
             print("ended")
             
             if let origin = workPanelSlideOrigin {
@@ -190,7 +192,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             
             updateWorkPanelForHeight(workPanelPercentage)
             
-            UIView.animateWithDuration(0.25, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+            UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
                     self.updateKeypad()
                 }, completion: { (complete) -> Void in
                     self.updateKeypad()
@@ -199,17 +201,14 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             
             workPanelVerticalSpeed = 0
             
-        case .Failed:
+        case .failed:
             print("failed")
-        case .Possible:
+        case .possible:
             print("possible")
-            
         }
-        
-        
     }
     
-    func snapPercentageHeight(verticalSpeed: CGFloat, viewSize: CGSize) {
+    func snapPercentageHeight(_ verticalSpeed: CGFloat, viewSize: CGSize) {
         
         print("snapPercentageHeight: \(verticalSpeed)")
         
@@ -237,7 +236,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
     }
     
-    func pressedKey(key: Character) {
+    func pressedKey(_ key: Character) {
         // A key was pressed. we need to reload the history view
         
     }
@@ -248,7 +247,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     }
     
     
-    func updateEquation(equation: Equation?) {
+    func updateEquation(_ equation: Equation?) {
         
         currentEquation = equation
         
@@ -258,7 +257,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     }
     
     
-    func delectedEquation(equation: Equation) {
+    func delectedEquation(_ equation: Equation) {
         
         if currentEquation == equation {
             
@@ -272,7 +271,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     }
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateHistoryContentInsets()
         
@@ -290,7 +289,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         }
     }
     
-    func updateWorkPanelForHeight(heightPercentage: Float) {
+    func updateWorkPanelForHeight(_ heightPercentage: Float) {
         
         // Between 1.0 and 0.5 the height shrinks. Below this the height remains the same but the position is offset.
         
@@ -300,13 +299,13 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
         // If there is a status bar
         
-        if UIApplication.sharedApplication().statusBarHidden {
+        if UIApplication.shared.isStatusBarHidden {
             // Status bar is NOT visible, hide the status bar blur view.
-            statusBarBlur.hidden = true
+            statusBarBlur.isHidden = true
             
         } else {
             // Status bar is visible
-            statusBarBlur.hidden = false
+            statusBarBlur.isHidden = false
 //            newHeight = newHeight * ((view.bounds.height - 20) / (view.bounds.height - 0))
         }
         
@@ -338,11 +337,11 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     }
     
     
-    func changeHeightMultipler(height: CGFloat) {
-        if let theWorkPanel = workPanelView?.view, view = self.view {
+    func changeHeightMultipler(_ height: CGFloat) {
+        if let theWorkPanel = workPanelView?.view, let view = self.view {
             view.removeConstraint(workPanelHeight)
             
-            let newConstraint = NSLayoutConstraint(item: theWorkPanel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Height, multiplier: height, constant: 1.0)
+            let newConstraint = NSLayoutConstraint(item: theWorkPanel, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.height, multiplier: height, constant: 1.0)
             
             workPanelHeight = newConstraint
             view.addConstraint(newConstraint)
@@ -350,13 +349,13 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     }
     
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        super.viewWillTransition(to: size, with: coordinator)
         
         snapPercentageHeight(0.0, viewSize: size)
         
-        coordinator.animateAlongsideTransition({ (context) -> Void in
+        coordinator.animate(alongsideTransition: { (context) -> Void in
             self.updateKeypad()
             self.view.layoutIfNeeded()
             }) { (context) -> Void in
@@ -380,10 +379,10 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     
     
     func hideKeypad() {
-        if currentSize == KeypadSize.Maximum {
-            currentSize = KeypadSize.Medium
+        if currentSize == KeypadSize.maximum {
+            currentSize = KeypadSize.medium
         } else {
-            currentSize = KeypadSize.Minimum
+            currentSize = KeypadSize.minimum
         }
         
         updateKeypad()
@@ -391,34 +390,33 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     
     
     func presentKeypad() {
-        if currentSize == KeypadSize.Minimum {
-            currentSize = KeypadSize.Medium
+        if currentSize == KeypadSize.minimum {
+            currentSize = KeypadSize.medium
         } else {
-            currentSize = KeypadSize.Maximum
+            currentSize = KeypadSize.maximum
         }
-        
         
         updateKeypad()
     }
     
     
-    @IBAction func swipeDown(sender: UISwipeGestureRecognizer) {
+    @IBAction func swipeDown(_ sender: UISwipeGestureRecognizer) {
         hideKeypad()
     }
     
     
-    @IBAction func swipeUp(sender: UISwipeGestureRecognizer) {
+    @IBAction func swipeUp(_ sender: UISwipeGestureRecognizer) {
         presentKeypad()
     }
 
-    @IBAction func toggleEditing(sender: AnyObject) {
+    @IBAction func toggleEditing(_ sender: AnyObject) {
         if let view = historyView {
             view.toggleEditing()
         }
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
 }
 

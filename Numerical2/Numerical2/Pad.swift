@@ -10,16 +10,15 @@
 //
 
 import Foundation
-import CoreData
 
-extension Pad {
+class Pad {
 
-    @NSManaged var creationDate: Date?
-    @NSManaged var identifier: String?
-    @NSManaged var lastModifiedDate: Date?
-    @NSManaged var name: String?
-    @NSManaged var removable: NSNumber?
-    @NSManaged var deviceIdentifier: String?
-    @NSManaged var equations: NSSet?
+    var creationDate: Date?
+    var identifier: String?
+    var lastModifiedDate: Date?
+    var name: String?
+    var removable: NSNumber?
+    var deviceIdentifier: String?
+//    var equationIDs: Set<String>? // IDs of equations belonging to this pad.
 
 }

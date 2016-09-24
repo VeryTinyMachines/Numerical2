@@ -8,14 +8,14 @@
 
 import Foundation
 
-public class NaturalLanguageParser {
+open class NaturalLanguageParser {
     
     var singleTermDictionary = [String: String]()
     
     var legalCharacters = Set<Character>()
     
     static let sharedInstance = NaturalLanguageParser()
-    private init() {
+    fileprivate init() {
     
 //        print("", appendNewline: true)
         
@@ -26,7 +26,7 @@ public class NaturalLanguageParser {
         // Load the dictionary
         singleTermDictionary = [String: String]()
         
-        if let filePath = NSBundle.mainBundle().pathForResource("Dictionary_English", ofType: "plist") {
+        if let filePath = Bundle.main.path(forResource: "Dictionary_English", ofType: "plist") {
             if let myDict = NSDictionary(contentsOfFile: filePath) as? [String:Array<String>] {
                 for (outputTerm,inputTermArray) in myDict {
                     
@@ -62,12 +62,13 @@ public class NaturalLanguageParser {
     }
     
     
-    public func translateString(var string: String) -> String? {
+    public func translateString(_ string: String) -> String? {
+        var string = string
         
         // Remove any instances of double spaces
         
-        while string.rangeOfString("  ") != nil {
-            string = string.stringByReplacingOccurrencesOfString("  ", withString: " ")
+        while string.range(of: "  ") != nil {
+            string = string.replacingOccurrences(of: "  ", with: " ")
         }
         
         
@@ -89,7 +90,7 @@ public class NaturalLanguageParser {
         
         string = newString
         
-        var wordArray = Evaluator.termArrayFromString(string.lowercaseString, allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
+        var wordArray = Evaluator.termArrayFromString(string.lowercased(), allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
         
 //        print("wordArray: \(wordArray)", appendNewline: false)
         
@@ -111,8 +112,8 @@ public class NaturalLanguageParser {
                     let phrase = "\(word) \(nextWord) \(finalWord) \(lastWord) \(fifthWord)"
                     
                     if let result = singleTermDictionary[phrase] {
-                        let newRange = Range(start: index, end: index + 5)
-                        wordArray.replaceRange(newRange, with: [result])
+                        let newRange = (index ..< index + 5)
+                        wordArray.replaceSubrange(newRange, with: [result])
                         index -= 1
                     }
                 }
@@ -136,8 +137,8 @@ public class NaturalLanguageParser {
                     let phrase = "\(word) \(nextWord) \(finalWord) \(lastWord)"
                     
                     if let result = singleTermDictionary[phrase] {
-                        let newRange = Range(start: index, end: index + 4)
-                        wordArray.replaceRange(newRange, with: [result])
+                        let newRange = (index ..< index + 4)
+                        wordArray.replaceSubrange(newRange, with: [result])
                         index -= 1
                     }
                 }
@@ -161,8 +162,8 @@ public class NaturalLanguageParser {
                     let phrase = "\(word) \(nextWord) \(finalWord)"
                     
                     if let result = singleTermDictionary[phrase] {
-                        let newRange = Range(start: index, end: index + 3)
-                        wordArray.replaceRange(newRange, with: [result])
+                        let newRange = (index ..< index + 3)
+                        wordArray.replaceSubrange(newRange, with: [result])
                         index -= 1
                     }
                 }
@@ -183,8 +184,8 @@ public class NaturalLanguageParser {
                     let phrase = "\(word) \(nextWord)"
                     
                     if let result = singleTermDictionary[phrase] {
-                        let newRange = Range(start: index, end: index + 2)
-                        wordArray.replaceRange(newRange, with: [result])
+                        let newRange = (index ..< index + 2)
+                        wordArray.replaceSubrange(newRange, with: [result])
                         index -= 1
                     }
                 }
@@ -215,39 +216,39 @@ public class NaturalLanguageParser {
                 
                 // If number followed by "." combine into single number.
                 if nextWord == "." && Glossary.isStringNumber(word) {
-                    let newRange = Range(start: index, end: index + 2)
+                    let newRange = (index ..< index + 2)
                     let newNumber = "\(word)\(nextWord)"
-                    newTermArray.replaceRange(newRange, with: [newNumber])
+                    newTermArray.replaceSubrange(newRange, with: [newNumber])
                     //                index -= 1
                     continue
                 }
                 
                 // If number followed by number combine into single number.
                 if Glossary.stringContainsDecimal(word) && Glossary.isStringNumber(nextWord) {
-                    let newRange = Range(start: index, end: index + 2)
+                    let newRange = (index ..< index + 2)
                     let newNumber = "\(word)\(nextWord)"
-                    newTermArray.replaceRange(newRange, with: [newNumber])
+                    newTermArray.replaceSubrange(newRange, with: [newNumber])
                     //                index -= 1
                     continue
                 }
                 
                 // If single number followed by word teen make into a teenage number.
                 if word.characters.count == 1 && Glossary.isStringNumber(word) && nextWord == "teen" {
-                    let newRange = Range(start: index, end: index + 2)
+                    let newRange = (index ..< index + 2)
                     let newNumber = "1\(word)"
-                    newTermArray.replaceRange(newRange, with: [newNumber])
+                    newTermArray.replaceSubrange(newRange, with: [newNumber])
                     //                index -= 1
                     continue
                 }
                 
                 // Convert number into hundred
                 if Glossary.isStringNumber(word) && nextWord == "hundred" {
-                    let newRange = Range(start: index, end: index + 2)
+                    let newRange = (index ..< index + 2)
                     
-                    let answerBundle = Evaluator.solveUnknownNumber(word, theOperator: "*", numberB: "100", operatorType: OperatorType.MidOperator, endPercentage: false)
+                    let answerBundle = Evaluator.solveUnknownNumber(word, theOperator: "*", numberB: "100", operatorType: OperatorType.midOperator, endPercentage: false)
                     
                     if let newNumber = answerBundle.answer {
-                        newTermArray.replaceRange(newRange, with: [newNumber])
+                        newTermArray.replaceSubrange(newRange, with: [newNumber])
 //                        print("newTermArray after replacement: \(newTermArray)", appendNewline: false)
                         //                            index -= 1
                         continue
@@ -256,27 +257,27 @@ public class NaturalLanguageParser {
                 
                 // Convert number into thousand
                 if Glossary.isStringNumber(word) && nextWord == "thousand" {
-                    let newRange = Range(start: index, end: index + 2)
+                    let newRange = (index ..< index + 2)
                     let newNumber = "\(word)000"
-                    newTermArray.replaceRange(newRange, with: [newNumber])
+                    newTermArray.replaceSubrange(newRange, with: [newNumber])
                     //                index -= 1
                     continue
                 }
                 
                 // Convert number into million
                 if Glossary.isStringNumber(word) && nextWord == "million" {
-                    let newRange = Range(start: index, end: index + 2)
+                    let newRange = (index ..< index + 2)
                     let newNumber = "\(word)000000"
-                    newTermArray.replaceRange(newRange, with: [newNumber])
+                    newTermArray.replaceSubrange(newRange, with: [newNumber])
                     //                index -= 1
                     continue
                 }
                 
                 // Convert number into billion
                 if Glossary.isStringNumber(word) && nextWord == "billion" {
-                    let newRange = Range(start: index, end: index + 2)
+                    let newRange = (index ..< index + 2)
                     let newNumber = "\(word)000000000"
-                    newTermArray.replaceRange(newRange, with: [newNumber])
+                    newTermArray.replaceSubrange(newRange, with: [newNumber])
                     //                index -= 1
                     continue
                 }
@@ -296,13 +297,13 @@ public class NaturalLanguageParser {
                         
                         
                         
-                        if word.substringFromIndex(word.startIndex.advancedBy(word.characters.count - nextWord.characters.count)) == zeroStringKey {
-                            let newRange = Range(start: index, end: index + 2)
+                        if word.substring(from: word.characters.index(word.startIndex, offsetBy: word.characters.count - nextWord.characters.count)) == zeroStringKey {
+                            let newRange = (index ..< index + 2)
                             
-                            let answerBundle = Evaluator.solveUnknownNumber(word, theOperator: "+", numberB: nextWord, operatorType: OperatorType.MidOperator, endPercentage: false)
+                            let answerBundle = Evaluator.solveUnknownNumber(word, theOperator: "+", numberB: nextWord, operatorType: OperatorType.midOperator, endPercentage: false)
                             
                             if let newNumber = answerBundle.answer {
-                                newTermArray.replaceRange(newRange, with: [newNumber])
+                                newTermArray.replaceSubrange(newRange, with: [newNumber])
 //                                print("newTermArray after replacement: \(newTermArray)")
                                 //                            index -= 1
                                 continue
@@ -333,11 +334,11 @@ public class NaturalLanguageParser {
                 
                 if Glossary.isStringSpecialWord(term) && Glossary.isStringOperator(nextTerm) {
                     // Remove the term
-                    newTermArray.removeAtIndex(index)
+                    newTermArray.remove(at: index)
                     index -= 1
                 } else if Glossary.isStringOperator(term) && Glossary.isStringSpecialWord(nextTerm) {
                     // Remove the second term
-                    newTermArray.removeAtIndex(index + 1)
+                    newTermArray.remove(at: index + 1)
                     index -= 1
                 }
                 index += 1
@@ -440,7 +441,7 @@ public class NaturalLanguageParser {
                                 // We have reached an 'and' and the number is complete - let's do the swap!
                                 
                                 newTermArray[index] = newTermArray[subSet.index]
-                                newTermArray.removeAtIndex(subSet.index)
+                                newTermArray.remove(at: subSet.index)
                                 levelSet[currentLevel] = nil
                                 
                             } else {
@@ -509,7 +510,7 @@ public class NaturalLanguageParser {
                 if Glossary.isStringOperator(term) {
                     if Glossary.shouldAddClosingBracketToAppendString(stringBuffer, newOperator: Character(term)) {
                         // Need to add a bracket
-                        newTermArray.insert(")", atIndex: index)
+                        newTermArray.insert(")", at: index)
                         stringBuffer += ")"
                         index += 1
 //                        print("Need to add a bracket", appendNewline: false)
@@ -521,7 +522,7 @@ public class NaturalLanguageParser {
             }
         }
         
-        let finalString = newTermArray.joinWithSeparator("")
+        let finalString = newTermArray.joined(separator: "")
         
         return finalString
     }

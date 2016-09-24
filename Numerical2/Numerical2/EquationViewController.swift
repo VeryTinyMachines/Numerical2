@@ -9,7 +9,7 @@
 import UIKit
 
 protocol EquationTextFieldDelegate {
-    func questionChanged(newQuestion: String, overwrite: Bool)
+    func questionChanged(_ newQuestion: String, overwrite: Bool)
 }
 
 class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFieldDelegate, KeypadDelegate {
@@ -27,18 +27,18 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     
     @IBOutlet weak var textField: UITextField!
     
-    func pressedKey(key: Character) {
+    func pressedKey(_ key: Character) {
         
     }
     
-    func setQuestion(string: String) {
+    func setQuestion(_ string: String) {
         
         currentQuestion = string
         
         updateView()
     }
     
-    func setAnswer(answer: AnswerBundle) {
+    func setAnswer(_ answer: AnswerBundle) {
         
         currentAnswer = answer
         
@@ -85,7 +85,7 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         
         if let theQuestionView = questionView, var theQuestion = currentQuestion {
             
-            if theQuestion.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "abcdefghijklmnopqrstuvwxyz"), options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil) != nil {
+            if theQuestion.rangeOfCharacter(from: CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz"), options: NSString.CompareOptions.caseInsensitive, range: nil) != nil {
                 
                 if let translatedString = NaturalLanguageParser.sharedInstance.translateString(theQuestion) {
                     theQuestion = translatedString
@@ -97,14 +97,14 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
             theQuestionView.questionBundle = AnswerBundle(number: bracketBalancedString)
         }
         
-        if let theAnswerView = answerView, answer = currentAnswer {
+        if let theAnswerView = answerView, let answer = currentAnswer {
             theAnswerView.questionBundle = answer
         }
         
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
 //        textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
@@ -113,26 +113,26 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     
     
     
-    func textFieldDidChange(textField: UITextField) {
+    func textFieldDidChange(_ textField: UITextField) {
         print("textFieldDidChange:")
-        if let theDelegate = delegate, theText = textField.text {
+        if let theDelegate = delegate, let theText = textField.text {
             theDelegate.questionChanged(theText, overwrite: false)
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         
         if segue.identifier == "QuestionView" {
             
             
-            if let theQuestionView = segue.destinationViewController as? QuestionCollectionViewController {
+            if let theQuestionView = segue.destination as? QuestionCollectionViewController {
                 theQuestionView.isAnswerView = false
                 questionView = theQuestionView
                 
             }
         } else if segue.identifier == "AnswerView" {
-            if let theAnswerView = segue.destinationViewController as? QuestionCollectionViewController {
+            if let theAnswerView = segue.destination as? QuestionCollectionViewController {
                 theAnswerView.isAnswerView = true
                 answerView = theAnswerView
                 
@@ -145,14 +145,14 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     }
     
     
-    @IBAction func pressChangeInput(sender: AnyObject) {
+    @IBAction func pressChangeInput(_ sender: AnyObject) {
         
-        if textField.hidden == true {
+        if textField.isHidden == true {
             if let theQuestionView = questionView {
-                theQuestionView.view.hidden = true
+                theQuestionView.view.isHidden = true
             }
             
-            textField.hidden = false
+            textField.isHidden = false
             
             if let theCurrentQuestion = currentQuestion {
                 textField.text = Glossary.formattedStringForQuestion(theCurrentQuestion)
@@ -162,14 +162,14 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
 
         } else {
             if let theQuestionView = questionView {
-                theQuestionView.view.hidden = false
+                theQuestionView.view.isHidden = false
             }
             
-            textField.hidden = true
+            textField.isHidden = true
 
             textField.resignFirstResponder()
             
-            if let theDelegate = delegate, theText = textField.text {
+            if let theDelegate = delegate, let theText = textField.text {
                 theDelegate.questionChanged(theText, overwrite: true)
             }
             
@@ -177,15 +177,15 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if let theQuestionView = questionView {
-            theQuestionView.view.hidden = false
+            theQuestionView.view.isHidden = false
         }
         
-        textField.hidden = true
+        textField.isHidden = true
         
-        if let theDelegate = delegate, theText = textField.text {
+        if let theDelegate = delegate, let theText = textField.text {
             theDelegate.questionChanged(theText, overwrite: true)
         }
         

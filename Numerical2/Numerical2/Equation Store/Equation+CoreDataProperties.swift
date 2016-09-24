@@ -15,10 +15,10 @@ import CoreData
 extension Equation {
 
     @NSManaged var answer: String?
-    @NSManaged var creationDate: NSDate?
+    @NSManaged var creationDate: Date?
     @NSManaged var deviceIdentifier: String?
     @NSManaged var identifier: String?
-    @NSManaged var lastModifiedDate: NSDate?
+    @NSManaged var lastModifiedDate: Date?
 //    @NSManaged var question: String?
     @NSManaged var sortOrder: NSNumber?
     @NSManaged var pad: Pad?

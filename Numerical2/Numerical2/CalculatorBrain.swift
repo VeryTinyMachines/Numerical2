@@ -12,29 +12,23 @@ public protocol CalculatorBrainDelete {
     
 }
 
-public class CalculatorBrain {
+open class CalculatorBrain {
     
-    public var currentQuestion: String?
-    public var currentAnswer: String?
-    public var delegate:CalculatorBrainDelete?
+    open var currentQuestion: String?
+    open var currentAnswer: String?
+    open var delegate:CalculatorBrainDelete?
     
-    class var sharedBrain: CalculatorBrain {
-        struct Static {
-            static var onceToken: dispatch_once_t = 0
-            static var instance: CalculatorBrain? = nil
-        }
-        dispatch_once(&Static.onceToken) {
-            Static.instance = CalculatorBrain()
-        }
-        return Static.instance!
-    }
+    static let sharedBrain: CalculatorBrain = {
+        let instance = CalculatorBrain()
+        return instance
+    }()
     
     func currentTimeMillis() -> Int64{
-        let nowDouble = NSDate().timeIntervalSince1970
+        let nowDouble = Date().timeIntervalSince1970
         return Int64(nowDouble*1000)
     }
     
-    public func solveString(string: String) -> String {
+    open func solveString(_ string: String) -> String {
         let answer = Evaluator.solveString(string)
         
         if let answerString = answer.answer {
@@ -44,25 +38,25 @@ public class CalculatorBrain {
         }
     }
     
-    public func solveStringSyncQueue(string: String, completion: ((answer: AnswerBundle) -> Void)? ) {
+    open func solveStringSyncQueue(_ string: String, completion: ((_ answer: AnswerBundle) -> Void)? ) {
         
         let result = Evaluator.solveString(string)
         
         if let completionBlock = completion {
-            completionBlock(answer: result)
+            completionBlock(result)
         }
     }
     
-    public func solveStringAsyncQueue(string: String, completion: ((answer: AnswerBundle) -> Void)? ) {
+    open func solveStringAsyncQueue(_ string: String, completion: ((_ answer: AnswerBundle) -> Void)? ) {
         
         currentQuestion = string
         
-        let qualityOfServiceClass = QOS_CLASS_BACKGROUND
-        let backgroundQueue = dispatch_get_global_queue(qualityOfServiceClass, 0)
+        let qualityOfServiceClass = DispatchQoS.QoSClass.background
+        let backgroundQueue = DispatchQueue.global(qos: qualityOfServiceClass)
         
         let startTime = self.currentTimeMillis()
         
-        dispatch_async(backgroundQueue, {
+        backgroundQueue.async(execute: {
             
             print("start time: \(startTime)", terminator: "\n")
             
@@ -79,13 +73,13 @@ public class CalculatorBrain {
                 
                 if let completionBlock = completion {
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         let endTime = self.currentTimeMillis()
                         let endTimeDelta = endTime - startTime
                         
                         print("endTimeDelta: \(endTimeDelta)")
                         
-                        completionBlock(answer: result)
+                        completionBlock(result)
                     })
                 }
             }
