@@ -30,6 +30,29 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
     
     @IBOutlet weak var pageControl: UIPageControl!
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        //        view.backgroundColor = UIColor(red: 38 / 255, green: 47/255, blue: 58/255, alpha: 1.0)
+        
+        updateLegalKeys()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Setup notifiction for UIContentSizeCategoryDidChangeNotification
+        NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.dynamicTypeChanged), name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
+        
+        currentEquation = EquationStore.sharedStore.currentEquation()
+        workPanelDelegate?.updateEquation(currentEquation)
+        
+        
+        updateViews()
+        
+    }
+    
+    
     func questionChanged(_ newQuestion: String, overwrite: Bool) {
         
     }
@@ -94,11 +117,15 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                     theWorkPanelDelegate.updateEquation(currentEquation)
                 }
             }
+            
+            EquationStore.sharedStore.setCurrentEquationID(string: nil)
         } else {
             
             if currentEquation == nil {
                 
                 let theNewEquation = EquationStore.sharedStore.newEquation()
+                
+                EquationStore.sharedStore.setCurrentEquationID(string: theNewEquation.identifier)
                 
                 currentEquation = theNewEquation
                 
@@ -169,7 +196,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
             }
         }
         
-        
         updateViews()
         updateLegalKeys()
         
@@ -180,23 +206,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
     
     func viewIsWide() -> Bool {
         return false
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        view.backgroundColor = UIColor(red: 38 / 255, green: 47/255, blue: 58/255, alpha: 1.0)
-        
-        updateLegalKeys()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Setup notifiction for UIContentSizeCategoryDidChangeNotification
-        NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.dynamicTypeChanged), name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
-        
-        updateViews()
-        
     }
     
     func dynamicTypeChanged() {

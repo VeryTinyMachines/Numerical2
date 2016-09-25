@@ -23,5 +23,6 @@ extension Equation {
     @NSManaged public var lastModifiedDate: NSDate?
     @NSManaged public var sortOrder: NSNumber?
     @NSManaged public var posted: NSNumber?
+    @NSManaged public var userDeleted: NSNumber?
     
 }

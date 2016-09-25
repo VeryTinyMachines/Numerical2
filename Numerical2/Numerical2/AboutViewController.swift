@@ -19,6 +19,7 @@ public enum AboutViewItem {
     case rate
     case website
     case seperator
+    case cloudSync
 }
 
 class AboutViewController: NumericalViewController, UITableViewDelegate, UITableViewDataSource {
@@ -50,7 +51,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         
         AboutViewItem.seperator,
         
-        AboutViewItem.autoBracket,
+//        AboutViewItem.autoBracket,
+        AboutViewItem.cloudSync,
         
         AboutViewItem.seperator,
         
@@ -98,6 +100,12 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             cell.textLabel?.text = "Numerical is the calculator without equal. We hope you like it!"
         case .autoBracket:
             cell.textLabel?.text = "Auto brackets are Enabled."
+        case .cloudSync:
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
+                cell.textLabel?.text = "iCloud Sync is Enabled"
+            } else {
+                cell.textLabel?.text = "iCloud Sync is Disabled"
+            }
         case .contact:
             cell.textLabel?.text = "Contact Us"
         case .follow:
@@ -142,8 +150,23 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             presentThemeSelector()
         case .website:
             self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical")
+        case .cloudSync:
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.iCloudHistorySync)
+            reloadData()
+            
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
+                // This is enabled.
+                EquationStore.sharedStore.initialiseiCloud()
+            }
+            
         case .seperator:
             break
+        }
+    }
+    
+    func reloadData() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     

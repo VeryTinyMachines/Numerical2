@@ -87,7 +87,34 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         
         print("before: \(tableView.contentInset)")
         
-        tableView.contentInset = insets
+        var indexPath:IndexPath?
+        
+        if let objects = self.fetchedResultsController.fetchedObjects {
+            if let currentEquation = currentEquation {
+                
+                if let position = objects.index(of: currentEquation) {
+                    
+                    indexPath = IndexPath(item: position, section: 0)
+                }
+                
+            } else {
+                if objects.count > 0 {
+                    indexPath = IndexPath(item: objects.count - 1, section: 0)
+                }
+            }
+        }
+        
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.tableView.contentInset = insets
+            
+            if let indexPath = indexPath {
+                self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: true)
+            }
+            
+        }) { (complete) in
+            
+        }
         
         print("after: \(tableView.contentInset)")
     }
@@ -267,11 +294,11 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
                     let formattedAnswer = Glossary.formattedStringForQuestion(answer)
                     
                     cell.textLabel?.text = "\(formattedQuestion) = \(formattedAnswer)"
-                    
+                    cell.detailTextLabel?.text = ""
                     
                     if let posted = equation.posted?.boolValue {
-                        if posted == false {
-                            cell.textLabel?.text = "\(formattedQuestion) = \(formattedAnswer) ..."
+                        if posted == false && NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
+                            cell.detailTextLabel?.text = "..."
                         }
                     }
                     
@@ -290,6 +317,10 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
                     cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0)
                     cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 0.8)
                 }
+                
+                cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 15.0)
+                cell.detailTextLabel?.textColor = UIColor(white: 1.0, alpha: 0.8)
+                
             }
             
     }
@@ -337,6 +368,7 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
             break
         }
     }
+    
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()

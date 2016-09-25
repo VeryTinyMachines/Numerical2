@@ -39,6 +39,17 @@ class KeypadViewController: UIViewController {
         super.viewDidLoad()
 //        view.backgroundColor = UIColor.clearColor()
         setupKeys()
+        
+        // Connect all the buttons
+        
+        for button in buttons {
+            button.addTarget(self, action: #selector(KeypadViewController.pressedPressedDown(_:) ), for: UIControlEvents.touchDown)
+            
+        }
+    }
+    
+    @IBAction func pressedPressedDown(_ sender: UIButton) {
+        initateButtonPress(sender: sender)
     }
     
     func setupKeys() {
@@ -98,6 +109,10 @@ class KeypadViewController: UIViewController {
     
     
     @IBAction func pressedKey(_ sender: UIButton) {
+        
+    }
+    
+    func initateButtonPress(sender: UIButton) {
         var character = keyCharacters[sender.tag]
         
         print("pressedKey with tag \(sender.tag) with character \(character)")

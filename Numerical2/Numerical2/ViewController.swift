@@ -50,28 +50,6 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         DispatchQueue.main.async {
             NotificationCenter.default.addObserver(self, selector: #selector(ViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
         }
-        /*
-        if let equations = EquationStore.sharedStore.equationArrayForPad(nil) {
-            
-            for equation in equations {
-                print("\(equation.question) = \(equation.answer)")
-                
-            }
-            
-            if let lastEquation = equations.last {
-                print("retrieved equation from store")
-                currentEquation = lastEquation
-                
-                if let theHistoryView = historyView {
-                    theHistoryView.updateSelectedEquation(lastEquation)
-                }
-                if let theWorkPanel = workPanelView {
-                    theWorkPanel.currentEquation = lastEquation
-                    theWorkPanel.updateViews()
-                }
-            }
-        }
-         */
     }
     
     
@@ -80,8 +58,8 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
     }
     
+    
     func selectedEquation(_ equation: Equation) {
-//        print("equation: \(equation)", appendNewline: true)
         
         currentEquation = equation
         
@@ -91,6 +69,8 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             theWorkView.updateLegalKeys()
             presentKeypad()
         }
+        
+        EquationStore.sharedStore.setCurrentEquationID(string: equation.identifier)
         
         if let theHistoryView = historyView {
             theHistoryView.updateSelectedEquation(equation)
@@ -109,7 +89,6 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         if let keyPad = segue.destination as? HistoryViewController {
             historyView = keyPad
             keyPad.delegate = self
-//            keyPad.reloadData()
             
             if let theCurrentEquation = currentEquation {
                 keyPad.updateSelectedEquation(theCurrentEquation)
@@ -129,12 +108,13 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         }
     }
     
+    
     func workPanelPanned(_ sender: UIPanGestureRecognizer) {
         print("workPanelPanned")
         
         let location = sender.location(in: view)
         print(location)
-        // ZZZ
+        
         switch sender.state {
         case .began:
             print("began")
@@ -246,18 +226,17 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         }
     }
     
+    
     func snapPercentageHeight(_ verticalSpeed: CGFloat, viewSize: CGSize) {
         
         print("snapPercentageHeight: \(verticalSpeed)")
         
         // Look at the vertical speed to decide what height to snap it to.
         
-        
         // Determine the height of equation as a percentage
         let equationHeightPercentage = 140 / viewSize.height
         
         workPanelPercentage += Float(verticalSpeed) / Float(viewSize.height) * 5
-        
         
         if verticalSpeed > 5 || verticalSpeed < -5 {
             print("Speed is significant")
@@ -310,14 +289,14 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
                     workPanelPercentage = Float(equationHeightPercentage)
                 }
             }
-            
         }
         
-        
-        
-        
+        // Update history view content insets.
+        // ZZZ
+        updateHistoryContentInsets(viewSize: viewSize)
         
     }
+    
     
     func pressedKey(_ key: Character) {
         // A key was pressed. we need to reload the history view
@@ -356,20 +335,40 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        updateHistoryContentInsets()
+        
+        updateHistoryContentInsets(viewSize: self.view.frame.size)
         
         // Focus the history view on the current equation
         historyView?.focusOnCurrentEquation()
+        
+        // ZZZ
     }
     
 
-    func updateHistoryContentInsets() {
-        if let theHistoryView = historyView {
-            
-            let bottomInset = view.bounds.height - 88
-            
-            theHistoryView.updateContentInsets(UIEdgeInsetsMake(40, 0, bottomInset, 0))
+    func updateHistoryContentInsets(viewSize: CGSize) {
+        
+        let equationHeightPercentage = 140 / viewSize.height
+        
+//        workPanelPercentage += Float(verticalSpeed) / Float(viewSize.height) * 5
+        
+        var bottomInset:CGFloat = viewSize.height * CGFloat(workPanelPercentage)
+        
+        if viewSize.width > viewSize.height {
+            bottomInset = viewSize.height * CGFloat(equationHeightPercentage)
+        } else {
+            if workPanelPercentage > 0.5 {
+                bottomInset = viewSize.height * 0.5
+            }
         }
+        
+        self.historyView?.updateContentInsets(UIEdgeInsets(top: 44, left: 0, bottom: bottomInset, right: 0))
+        
+//        if let theHistoryView = historyView {
+//            
+//            let bottomInset = view.bounds.height - 88
+//            
+//            theHistoryView.updateContentInsets(UIEdgeInsetsMake(40, 0, bottomInset, 0))
+//        }
     }
     
     func updateWorkPanelForHeight(_ heightPercentage: Float) {
@@ -407,11 +406,6 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             
             workPanelBottomConstraint.constant = offset * view.bounds.height
         }
-        
-        
-        
-        
-        
     }
     
     
@@ -431,28 +425,24 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
         super.viewWillTransition(to: size, with: coordinator)
         
-        snapPercentageHeight(0.0, viewSize: size)
-        
         coordinator.animate(alongsideTransition: { (context) -> Void in
+            self.snapPercentageHeight(0.0, viewSize: size)
             self.updateKeypad()
             self.view.layoutIfNeeded()
             }) { (context) -> Void in
         }
-        
     }
     
     
     func updateKeypad() {
         
         updateWorkPanelForHeight(workPanelPercentage)
-        updateHistoryContentInsets()
+        
         view.layoutIfNeeded()
         
         if let workView = self.workPanelView {
             workView.updateLayout()
         }
-        
-        
     }
     
     

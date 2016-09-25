@@ -203,12 +203,17 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     func reloadCollectionView() {
         collecitonView.reloadData()
         
-        let lastItem = questionArray.count - 1
-        
-        if isAnswerView {
-            collecitonView.scrollToItem(at: IndexPath(item: 0, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
-        } else if lastItem > 0 {
-            collecitonView.scrollToItem(at: IndexPath(item: lastItem, section: 0), at: UICollectionViewScrollPosition.right, animated: false)
+        if questionArray.count > 0 {
+            let lastItem = questionArray.count - 1
+            
+            
+            DispatchQueue.main.async {
+                if self.isAnswerView {
+                    self.collecitonView.scrollToItem(at: IndexPath(item: 0, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
+                } else if lastItem > 0 {
+                    self.collecitonView.scrollToItem(at: IndexPath(item: lastItem, section: 0), at: UICollectionViewScrollPosition.right, animated: false)
+                }
+            }
         }
     }
     

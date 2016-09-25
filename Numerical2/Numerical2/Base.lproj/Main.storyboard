@@ -123,7 +123,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6CL-N5-5ys">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="UN1-ku-fPN" style="IBUITableViewCellStyleDefault" id="qYX-SV-TdK" customClass="HistoryCell" customModule="Numerical2" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="UN1-ku-fPN" detailTextLabel="Mqv-fj-mTl" style="IBUITableViewCellStyleValue1" id="qYX-SV-TdK" customClass="HistoryCell" customModule="Numerical2" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qYX-SV-TdK" id="aDX-Et-5D5">
@@ -131,10 +131,17 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UN1-ku-fPN">
-                                                    <frame key="frameInset" minX="15" width="345" height="43.5"/>
+                                                    <frame key="frameInset" minX="15" minY="12" width="33.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mqv-fj-mTl">
+                                                    <frame key="frameInset" minX="316" minY="12" width="44" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -157,7 +164,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="duR-vt-oof" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53.600000000000001" y="1746.4767616191905"/>
+            <point key="canvasLocation" x="54" y="1681"/>
         </scene>
         <!--Work Panel View Controller-->
         <scene sceneID="0eF-rh-V1D">
@@ -178,8 +185,9 @@
                                 </view>
                                 <blurEffect style="light"/>
                             </visualEffectView>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4vi-WH-Qda" userLabel="Seperator">
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4vi-WH-Qda" userLabel="Seperator">
+                                <frame key="frameInset" minY="100" width="375" height="1"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="lru-nN-yJe"/>
                                 </constraints>
@@ -210,8 +218,8 @@
                             <constraint firstAttribute="trailing" secondItem="nxg-e1-I5X" secondAttribute="trailing" id="H2L-5l-q7L"/>
                             <constraint firstItem="SSG-vX-v2o" firstAttribute="top" secondItem="RED-lI-n0f" secondAttribute="bottom" id="Ngc-H9-Twg"/>
                             <constraint firstItem="05p-8C-l3N" firstAttribute="top" secondItem="nxg-e1-I5X" secondAttribute="bottom" id="OVu-2P-OWE"/>
+                            <constraint firstItem="RED-lI-n0f" firstAttribute="top" secondItem="4vi-WH-Qda" secondAttribute="bottom" constant="-1" id="VKr-Ld-Obc"/>
                             <constraint firstAttribute="bottom" secondItem="nxg-e1-I5X" secondAttribute="bottom" id="XiQ-7e-5xM"/>
-                            <constraint firstItem="4vi-WH-Qda" firstAttribute="top" secondItem="gVa-bx-dqh" secondAttribute="bottom" id="ZOz-6E-iWW"/>
                             <constraint firstItem="nxg-e1-I5X" firstAttribute="top" secondItem="kwd-MU-jrz" secondAttribute="bottom" id="b6X-qY-nYw"/>
                             <constraint firstItem="RED-lI-n0f" firstAttribute="leading" secondItem="Skn-B8-EyZ" secondAttribute="leading" id="dcE-WJ-ONS"/>
                             <constraint firstItem="nxg-e1-I5X" firstAttribute="top" secondItem="Skn-B8-EyZ" secondAttribute="top" id="f1O-Hm-iiu"/>
@@ -223,10 +231,10 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="OVu-2P-OWE"/>
                                 <exclude reference="4SU-1K-FSc"/>
                                 <exclude reference="Ga6-sF-w11"/>
                                 <exclude reference="b6X-qY-nYw"/>
+                                <exclude reference="OVu-2P-OWE"/>
                             </mask>
                         </variation>
                     </view>
@@ -248,7 +256,7 @@
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nqQ-s1-rhy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1111" y="1071"/>
+            <point key="canvasLocation" x="1110" y="1045"/>
         </scene>
         <!--Keypad View Controller-->
         <scene sceneID="u3M-Le-5b4">
@@ -266,33 +274,18 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xqX-Xk-UlL" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="N1f-SF-5Pq"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uq1-aU-79r" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="gIP-LN-Bql"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xhw-gL-4HQ" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="1X3-3g-tAS"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qWC-rY-jCj" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="Ylv-pA-ht9"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LaA-jF-QFR" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="sk8-87-Xmh"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -300,33 +293,18 @@
                                 <subviews>
                                     <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aTJ-5S-hEr" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="hCR-EQ-zyg"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AFV-1G-5Ne" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="alF-pH-Z6g"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aTY-7q-WPM" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="NNa-cc-7Jj"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hnY-me-KOj" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="2lk-9G-3ZB"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VOR-8V-Vep" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="0Bz-fH-Srf"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -334,33 +312,18 @@
                                 <subviews>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxf-5h-xvx" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="7Pn-hT-khr"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TsF-93-MsK" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="gud-cC-rB5"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DpA-Ar-uYZ" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="vkj-Zw-ZD3"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MSD-G0-cXZ" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="5mh-BH-6Nn"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c3Y-Wl-sBz" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="VDM-ii-x9l"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -368,33 +331,18 @@
                                 <subviews>
                                     <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOd-IQ-eDt" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="N3o-eG-r72"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hhQ-bY-Vzo" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="2sP-Cb-b6z"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="17" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v6R-Ae-BtP" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="NaA-vi-fLQ"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="18" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5LQ-sl-oZG" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="S4q-dY-GJE"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="19" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdz-it-wnR" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressedKey:" destination="oBf-BC-4ri" eventType="touchUpInside" id="Zsz-8G-yGc"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -462,14 +410,14 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="TWk-Pq-ip0" style="IBUITableViewCellStyleDefault" id="gS1-BS-Koj">
-                                        <rect key="frame" x="0.0" y="28" width="1000" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gS1-BS-Koj" id="Qrg-ba-qJ7">
-                                            <frame key="frameInset" width="1000" height="43.5"/>
+                                            <frame key="frameInset" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TWk-Pq-ip0">
-                                                    <frame key="frameInset" minX="164" width="672" height="43.5"/>
+                                                    <frame key="frameInset" minX="15" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -507,7 +455,7 @@
                         <viewControllerLayoutGuide type="bottom" id="gxH-Mf-QZD"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="IXb-fI-W5R">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="52"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="z9V-HG-Fcz">

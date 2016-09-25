@@ -21,6 +21,8 @@ public struct EquationCodingKey {
     public static let identifier = "identifier"
     public static let lastModifiedDate = "lastModifiedDate"
     public static let question = "question"
+    
+    public static let currentEquation = "currentEquation"
 }
 
 
@@ -52,6 +54,10 @@ class EquationStore {
     static let sharedStore = EquationStore()
     
     fileprivate init() {
+
+    }
+    
+    func initialiseiCloud() {
         cloudFetchLatestEquations()
         updateCloudKit()
     }
@@ -62,7 +68,10 @@ class EquationStore {
     }
     
     func queueSave() {
-            fireSaveTimer()
+            fireSaveTimer() // Delaying saving causing some issues where cells in the history view do not update properly and fetching equations causes some issues.
+        self.queueCloudKitNeedsUpdate()
+        
+        
 //        saveTimer?.invalidate()
 //        saveTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(EquationStore.fireSaveTimer), userInfo: nil, repeats: false)
     }
@@ -109,7 +118,9 @@ class EquationStore {
     
     func deleteEquation(equation: Equation) {
         
-        self.persistentContainer.viewContext.delete(equation)
+        equation.userDeleted = NSNumber(value: true)
+        
+        equationUpdated(equation: equation)
         
         saveContext()
     }
@@ -201,29 +212,31 @@ class EquationStore {
     
     func updateCloudKit() {
         
-        // Fetch items from the data base that are posted == nil or posted == 1
-        // posted == nil items have never been uploaded
-        // posted == 0 items have been posted previously but now need updating.
-        // posted == 1 items have been posted and, to the best of our knowledge, are up to date.
-        
-        // When creating new cloudkit equations we define the record ID as "equation.\(identifier)", this gives us an easy way to reconcile and update items.
-        
-        
-        // 1. Get all unposted items
-        let fetch = equationsFetchRequest(NSPredicate(format: "posted == nil || posted == NO"))
-        
-        do {
-            let equations = try self.persistentContainer.viewContext.fetch(fetch)
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
+            // Fetch items from the data base that are posted == nil or posted == 1
+            // posted == nil items have never been uploaded
+            // posted == 0 items have been posted previously but now need updating.
+            // posted == 1 items have been posted and, to the best of our knowledge, are up to date.
             
-            print(equations)
-            print("")
+            // When creating new cloudkit equations we define the record ID as "equation.\(identifier)", this gives us an easy way to reconcile and update items.
             
-            if equations.count > 0 {
-                convertEquationsToCKEquations(equations: equations)
+            
+            // 1. Get all unposted items
+            let fetch = equationsFetchRequest(NSPredicate(format: "posted == nil || posted == NO"))
+            
+            do {
+                let equations = try self.persistentContainer.viewContext.fetch(fetch)
+                
+                print(equations)
+                print("")
+                
+                if equations.count > 0 {
+                    convertEquationsToCKEquations(equations: equations)
+                }
+                
+            } catch {
+                print("Error: Could not fetch equations")
             }
-            
-        } catch {
-            print("Error: Could not fetch equations")
         }
     }
     
@@ -236,6 +249,9 @@ class EquationStore {
             print(equation)
             
             if let identifier = equation.identifier {
+                
+                print("original.equation: \(equation)")
+                
                 let newEquation = CKRecord(recordType: "Equation", recordID: CKRecordID(recordName: "Equation.\(identifier)"))
                 
                 newEquation.setValue(equation.answer, forKey: "answer")
@@ -245,6 +261,13 @@ class EquationStore {
                 newEquation.setValue(equation.lastModifiedDate, forKey: "equationLastModifiedDate")
                 newEquation.setValue(equation.question, forKey: "question")
                 newEquation.setValue(equation.sortOrder, forKey: "sortOrder")
+                
+                newEquation.setValue(equation.userDeleted, forKey: "equationDeleted")
+                
+                
+//                newEquation.setValue(NSNumber(integerLiteral: 1), forKey: "equationDeleted")
+                
+                print("newEquation: \(newEquation)")
                 
                 ckEquations.append(newEquation)
                 
@@ -265,6 +288,7 @@ class EquationStore {
         
         let operation = CKModifyRecordsOperation(recordsToSave: equations, recordIDsToDelete: nil)
         operation.isAtomic = true
+        operation.savePolicy = CKRecordSavePolicy.allKeys
         
         operation.perRecordCompletionBlock = {record, error in
             print("perRecordCompletionBlock")
@@ -300,6 +324,7 @@ class EquationStore {
             print("modifyRecordsCompletionBlock")
             if let modified = modified {
                 print("modified: \(modified)")
+                print("")
             }
         }
         
@@ -315,7 +340,7 @@ class EquationStore {
     func equationsFetchedResultsController() -> NSFetchedResultsController<Equation> {
         var fetchRequest:NSFetchRequest<Equation>
         
-        fetchRequest = self.equationsFetchRequest(NSPredicate(value: true))
+        fetchRequest = self.equationsFetchRequest(NSPredicate(format: "userDeleted == nil || userDeleted == 0"))
         
         // Edit the section name key path and cache name if appropriate.
         // nil for section name key path means "no sections".
@@ -342,27 +367,29 @@ class EquationStore {
     
     func cloudFetchLatestEquations() {
         
-        var fetchDate = NSDate()
-        
-        var query = CKQuery(recordType: "Equation", predicate: NSPredicate(value: true))
-        
-        if let lastFetchDate = lastFetchDate {
-            query = CKQuery(recordType: "Equation", predicate: NSPredicate(format: "equationLastModifiedDate > %@", lastFetchDate))
-        }
-        
-        query.sortDescriptors = [NSSortDescriptor(key: "equationLastModifiedDate", ascending: false)]
-        
-        privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
-            print(records)
-            print(error)
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
+            var fetchDate = NSDate()
             
-            if let records = records {
-                self.compareRecords(records: records)
+            var query = CKQuery(recordType: "Equation", predicate: NSPredicate(value: true))
+            
+            if let lastFetchDate = lastFetchDate {
+                query = CKQuery(recordType: "Equation", predicate: NSPredicate(format: "equationLastModifiedDate > %@", lastFetchDate))
             }
             
-            if error == nil {
-                DispatchQueue.main.async {
-                    self.setLastFetchDate(date: fetchDate)
+            query.sortDescriptors = [NSSortDescriptor(key: "equationLastModifiedDate", ascending: false)]
+            
+            privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
+                print(records)
+                print(error)
+                
+                if let records = records {
+                    self.compareRecords(records: records)
+                }
+                
+                if error == nil {
+                    DispatchQueue.main.async {
+                        self.setLastFetchDate(date: fetchDate)
+                    }
                 }
             }
         }
@@ -429,10 +456,12 @@ class EquationStore {
         self.queueSave()
         
         self.printAllEquations()
-        
     }
     
     func newEquationFromCKRecord(record: CKRecord) -> Equation {
+        
+        print(record)
+        
         let entity = NSEntityDescription.entity(forEntityName: "Equation", in: self.persistentContainer.viewContext)
         let equation = NSManagedObject(entity: entity!, insertInto: self.persistentContainer.viewContext) as! Equation
         
@@ -443,6 +472,7 @@ class EquationStore {
         equation.lastModifiedDate = record.object(forKey: "equationLastModifiedDate") as? NSDate
         equation.question = record.object(forKey: "question") as? String
         equation.sortOrder = record.object(forKey: "sortOrder") as? NSNumber
+        equation.userDeleted = record.object(forKey: "equationDeleted") as? NSNumber
         equation.posted = NSNumber(value: true) // This local equation is now update to date with Cloudkit, to the best of our knowledge.
         
         print(equation)
@@ -474,13 +504,12 @@ class EquationStore {
         return nil
     }
     
+    
     func printAllEquations() {
         let fetchRequest = equationsFetchRequest(NSPredicate(value: true))
         
         do {
             let results = try self.persistentContainer.viewContext.fetch(fetchRequest)
-            
-            
             
             print("\n\n\n\n")
             
@@ -493,7 +522,29 @@ class EquationStore {
         } catch {
             
         }
+    }
+    
+    
+    func currentEquation() -> Equation? {
+        if let string = UserDefaults.standard.object(forKey: EquationCodingKey.currentEquation) as? String {
+            if let equation = fetchEquationWithIdentifier(string: string) {
+                return equation
+            } else {
+                setCurrentEquationID(string: nil)
+            }
+        }
         
+        return nil
+    }
+    
+    
+    func setCurrentEquationID(string: String?) {
+        if let string = string {
+            UserDefaults.standard.set(string, forKey: EquationCodingKey.currentEquation)
+        } else {
+            UserDefaults.standard.removeObject(forKey: EquationCodingKey.currentEquation)
+        }
+        UserDefaults.standard.synchronize()
     }
     
     
