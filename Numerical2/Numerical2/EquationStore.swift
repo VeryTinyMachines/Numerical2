@@ -63,8 +63,10 @@ class EquationStore {
     }
     
     func queueCloudKitNeedsUpdate() {
-        updateCloudKitTimer?.invalidate()
-        updateCloudKitTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(EquationStore.fireUpdateCloudKitTimer), userInfo: nil, repeats: false)
+        DispatchQueue.main.async {
+            self.updateCloudKitTimer?.invalidate()
+            self.updateCloudKitTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(EquationStore.fireUpdateCloudKitTimer), userInfo: nil, repeats: false)
+        }
     }
     
     func queueSave() {
@@ -109,10 +111,12 @@ class EquationStore {
     func equationUpdated(equation: Equation) {
         print("equationUpdated: \(equationUpdated)")
         
-        equation.posted = NSNumber(value: false)
-        equation.lastModifiedDate = NSDate()
-        
-        self.queueCloudKitNeedsUpdate()
+        persistentContainer.performBackgroundTask { (context) in
+            equation.posted = NSNumber(value: false)
+            equation.lastModifiedDate = NSDate()
+            
+            self.queueCloudKitNeedsUpdate()
+        }
     }
     
     
@@ -291,33 +295,36 @@ class EquationStore {
         operation.savePolicy = CKRecordSavePolicy.allKeys
         
         operation.perRecordCompletionBlock = {record, error in
-            print("perRecordCompletionBlock")
-            if let record = record {
-                print("record: \(record)")
-                if let identifier = record.object(forKey: "identifier") as? String {
-                    print("identifier: \(identifier)")
-                    
-                    // Compare the record with the current state of the equation.
-                    // If all aspects are the same then we have successfully posted this equation.
-                    
-                    // Fetch this equation from the supplied equations.
-                    
-                    if let equation = self.queuedEquationsToSave[identifier] {
-                        // Found the queued equation.
+            
+            self.persistentContainer.performBackgroundTask({ (context) in
+                print("perRecordCompletionBlock")
+                if let record = record {
+                    print("record: \(record)")
+                    if let identifier = record.object(forKey: "identifier") as? String {
+                        print("identifier: \(identifier)")
                         
-                        if equation.isEqualToCKEquation(record: record) {
-                            print("This equation is now up to date")
-                            equation.posted = NSNumber(value: true)
-                            self.queuedEquationsToSave[identifier] = nil
+                        // Compare the record with the current state of the equation.
+                        // If all aspects are the same then we have successfully posted this equation.
+                        
+                        // Fetch this equation from the supplied equations.
+                        
+                        if let equation = self.queuedEquationsToSave[identifier] {
+                            // Found the queued equation.
                             
-                        } else {
-                            print("Uh oh this equation has changed")
+                            if equation.isEqualToCKEquation(record: record) {
+                                print("This equation is now up to date")
+                                equation.posted = NSNumber(value: true)
+                                self.queuedEquationsToSave[identifier] = nil
+                                
+                            } else {
+                                print("Uh oh this equation has changed")
+                            }
+                            
+                            
                         }
-                        
-                        
                     }
                 }
-            }
+            })
         }
         
         operation.modifyRecordsCompletionBlock = { modified, deleted, error in
@@ -398,64 +405,66 @@ class EquationStore {
     func compareRecords(records: [CKRecord]) {
         var needsToSave = false
         
-        for record in records {
-            
-            let name = record.recordID.recordName
-            
-            if name.contains(".") {
-                let nameItems = name.components(separatedBy: ".")
-                if nameItems.count == 2 {
-                    if nameItems[0] == "Equation" {
-                        let identifier = nameItems[1]
-                        
-                        print(identifier)
-                        
-                        if let fetchedEquation = fetchEquationWithIdentifier(string: identifier) {
-                            // Found a matching equation, check if it needs updating.
+        self.persistentContainer.performBackgroundTask { (context) in
+            for record in records {
+                
+                let name = record.recordID.recordName
+                
+                if name.contains(".") {
+                    let nameItems = name.components(separatedBy: ".")
+                    if nameItems.count == 2 {
+                        if nameItems[0] == "Equation" {
+                            let identifier = nameItems[1]
                             
-                            // Who is newer
+                            print(identifier)
                             
-                            print("fetchedEquation: \(fetchedEquation)")
-                            
-                            var preferRemoteCopy = false
-                            
-                            if let localModDate = fetchedEquation.lastModifiedDate, let remoteModDate = record.object(forKey: "equationLastModifiedDate") as? NSDate {
-                                // Ok, they both have mod dates. Which is newer.
+                            if let fetchedEquation = self.fetchEquationWithIdentifier(string: identifier) {
+                                // Found a matching equation, check if it needs updating.
                                 
-                                print(remoteModDate)
-                                print(localModDate)
+                                // Who is newer
                                 
-                                if (remoteModDate as Date).compare(localModDate as Date) == ComparisonResult.orderedDescending {
-                                    // The remoteModDate is newer thatn the local one, therefore we prefer the local version.
+                                print("fetchedEquation: \(fetchedEquation)")
+                                
+                                var preferRemoteCopy = false
+                                
+                                if let localModDate = fetchedEquation.lastModifiedDate, let remoteModDate = record.object(forKey: "equationLastModifiedDate") as? NSDate {
+                                    // Ok, they both have mod dates. Which is newer.
                                     
-                                    preferRemoteCopy = true
-                                } else {
-                                    print("")
+                                    print(remoteModDate)
+                                    print(localModDate)
+                                    
+                                    if (remoteModDate as Date).compare(localModDate as Date) == ComparisonResult.orderedDescending {
+                                        // The remoteModDate is newer thatn the local one, therefore we prefer the local version.
+                                        
+                                        preferRemoteCopy = true
+                                    } else {
+                                        print("")
+                                    }
+                                    
+                                    if preferRemoteCopy {
+                                        fetchedEquation.updateTo(record: record)
+                                        needsToSave = true
+                                    }
+                                    
                                 }
                                 
-                                if preferRemoteCopy {
-                                    fetchedEquation.updateTo(record: record)
-                                    needsToSave = true
-                                }
                                 
+                            } else {
+                                // Holy moley this is a new equation! Save it!
+                                let newEquation = self.newEquationFromCKRecord(record: record)
+                                needsToSave = true
+                                print("newEquation: \(newEquation)")
                             }
                             
-                            
-                        } else {
-                            // Holy moley this is a new equation! Save it!
-                            let newEquation = newEquationFromCKRecord(record: record)
-                            needsToSave = true
-                            print("newEquation: \(newEquation)")
                         }
-                        
                     }
                 }
             }
+            
+            self.queueSave()
+            
+            self.printAllEquations()
         }
-        
-        self.queueSave()
-        
-        self.printAllEquations()
     }
     
     func newEquationFromCKRecord(record: CKRecord) -> Equation {

@@ -24,6 +24,9 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     var answerView:QuestionCollectionViewController?
     
     var delegate:EquationTextFieldDelegate?
+    var questionTextDelegate:QuestionCollectionViewDelegate?
+    
+    var cursorPosition:Int?
     
     @IBOutlet weak var textField: UITextField!
     
@@ -31,57 +34,21 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         
     }
     
-    func setQuestion(_ string: String) {
-        
+    
+    func setQuestion(_ string: String, cursorPosition: Int?) {
         currentQuestion = string
-        
+        self.cursorPosition = cursorPosition
         updateView()
     }
     
+    
     func setAnswer(_ answer: AnswerBundle) {
-        
         currentAnswer = answer
-        
         updateView()
     }
     
     
     func updateView() {
-        
-
-        /*
-        if var theQuestion = currentQuestion {
-            
-            if theQuestion.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "abcdefghijklmnopqrstuvwxyz"), options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil) != nil {
-                
-                if let translatedString = NaturalLanguageParser.sharedInstance.translateString(theQuestion) {
-                    theQuestion = translatedString
-                }
-            }
-            
-            let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(theQuestion)
-            
-            if let theQuestionView = questionView {
-                theQuestionView.questionBundle = AnswerBundle(number: bracketBalancedString)
-            }
-            
-            CalculatorBrain.sharedBrain.delegate = self
-            
-            if let view = self.answerView {
-                
-                CalculatorBrain.sharedBrain.solveStringInQueue(theQuestion, completion: { (answer) -> Void in
-                    self.currentAnswer = answer
-                    
-                    view.isAnswerView = true
-                    view.questionBundle = self.currentAnswer
-                    
-                })
-            }
-            
-            
-        }
-*/
-        
         
         if let theQuestionView = questionView, var theQuestion = currentQuestion {
             
@@ -92,25 +59,24 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
                 }
             }
             
-            let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(theQuestion)
+//            let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(theQuestion)
             
-            theQuestionView.questionBundle = AnswerBundle(number: bracketBalancedString)
+            let questionBundle = AnswerBundle(number: theQuestion)
+            questionBundle.cursorPosition = self.cursorPosition
+            
+            theQuestionView.questionBundle = questionBundle
         }
         
         if let theAnswerView = answerView, let answer = currentAnswer {
             theAnswerView.questionBundle = answer
         }
-        
-        
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-//        textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
-        
     }
-    
     
     
     func textFieldDidChange(_ textField: UITextField) {
@@ -120,16 +86,14 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         }
     }
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        
         if segue.identifier == "QuestionView" {
-            
-            
             if let theQuestionView = segue.destination as? QuestionCollectionViewController {
                 theQuestionView.isAnswerView = false
                 questionView = theQuestionView
-                
+                questionView?.delegate = self.questionTextDelegate
             }
         } else if segue.identifier == "AnswerView" {
             if let theAnswerView = segue.destination as? QuestionCollectionViewController {
@@ -138,10 +102,6 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
                 
             }
         }
-        
-        
-        
-        // QuestionView
     }
     
     
@@ -177,6 +137,7 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         }
     }
     
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if let theQuestionView = questionView {
@@ -193,5 +154,4 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         
         return true
     }
-    
 }

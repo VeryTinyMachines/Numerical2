@@ -404,9 +404,9 @@
 		51D7A8391BBA7D4A0064AA4B /* Work Panel View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */,
 				51D7A83B1BBA7D740064AA4B /* Equation View Controller */,
 				51D7A83A1BBA7D670064AA4B /* Key Panel View Controller */,
-				51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */,
 			);
 			name = "Work Panel View Controller";
 			sourceTree = "<group>";

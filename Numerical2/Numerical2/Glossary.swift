@@ -70,6 +70,61 @@ public struct SymbolCharacter {
 
 open class Glossary {
     
+    static let formattedLookup = [
+        SymbolCharacter.e:"e",
+        SymbolCharacter.sin:"sin",
+        SymbolCharacter.cos:"cos",
+        SymbolCharacter.tan:"tan",
+        SymbolCharacter.ee:"EE",
+        SymbolCharacter.log:"ln",
+        SymbolCharacter.log2:"log2",
+        SymbolCharacter.log10:"log10",
+        SymbolCharacter.clear:"CE",
+        SymbolCharacter.delete:"Del",
+        SymbolCharacter.fraction:"/",
+        SymbolCharacter.random:"rand",
+        SymbolCharacter.sinh:"sinh",
+        SymbolCharacter.cosh:"cosh",
+        SymbolCharacter.tanh:"tanh",
+        SymbolCharacter.factorial:"!",
+        SymbolCharacter.infinity:"∞",
+        SymbolCharacter.pi:"π",
+        Character("/"):"÷",
+        Character("*"):"×",
+        Character("^"):"^",
+        Character("+"):"+",
+        Character("-"):"-"
+    ]
+    
+    static let reverseFormattedLookup = [
+        "e":SymbolCharacter.e,
+        "sin":SymbolCharacter.sin,
+        "cos":SymbolCharacter.cos,
+        "tan":SymbolCharacter.tan,
+        "EE":SymbolCharacter.ee,
+        "ln":SymbolCharacter.log,
+        "log2":SymbolCharacter.log2,
+        "log10":SymbolCharacter.log10,
+        "CE":SymbolCharacter.clear,
+        "Del":SymbolCharacter.delete,
+        "/":SymbolCharacter.fraction,
+        "rand":SymbolCharacter.random,
+        "sinh":SymbolCharacter.sinh,
+        "cosh":SymbolCharacter.cosh,
+        "tanh":SymbolCharacter.tanh,
+        "!":SymbolCharacter.factorial,
+        "∞":SymbolCharacter.infinity,
+        "π":SymbolCharacter.pi,
+        "÷":Character("/"),
+        "×":Character("*"),
+        "^":Character("^"),
+        "+":Character("+"),
+        "-":Character("-")
+    ]
+    
+    
+    
+    
     class func possibleAnswersFromString(_ answerString: String) -> Array<String> {
         var answerString = answerString
         var answersArray:Array<String> = []
@@ -120,57 +175,54 @@ open class Glossary {
         var formattedString = ""
         
         for character in string.characters {
-            formattedString += stringForCharacter(character)
+            formattedString += formattedStringForCharacter(character)
         }
         
         return formattedString
     }
     
-    
-    class func stringForCharacter(_ character: Character) -> String {
+    class func unformattedStringForQuestion(_ string: String) -> String {
         
-        if character == SymbolCharacter.e {
-            return "e"
-        } else if character == SymbolCharacter.sin {
-            return "sin"
-        } else if character == SymbolCharacter.cos {
-            return "cos"
-        } else if character == SymbolCharacter.tan {
-            return "tan"
-        } else if character == SymbolCharacter.ee {
-            return "EE"
-        } else if character == SymbolCharacter.log {
-            return "ln"
-        } else if character == SymbolCharacter.log2 {
-            return "log2"
-        } else if character == SymbolCharacter.log10 {
-            return "log10"
-        } else if character == SymbolCharacter.clear {
-            return "CE"
-        } else if character == SymbolCharacter.delete {
-            return "Del"
-        } else if character == SymbolCharacter.fraction {
-            return "/"
-        } else if character == "/" {
-            return "÷"
-        } else if character == "*" {
-            return "×"
-        } else if character == "^" {
-            return "^"
-        } else if character == "|" {
-            return "/"
-        } else if character == SymbolCharacter.random {
-            return "rand"
-        } else if character == SymbolCharacter.sinh {
-            return "sinh"
-        } else if character == SymbolCharacter.cosh {
-            return "cosh"
-        } else if character == SymbolCharacter.tanh {
-            return "tanh"
+        // 1. Search and replace all characters
+        // 2. Iterate through and check all remaining ones
+        
+        let keys = Array(reverseFormattedLookup)
+        
+        
+        
+        return "zzzzz"
+//        
+//        var formattedString = ""
+//        
+//        for character in string.characters {
+//            formattedString += stringForCharacter(character)
+//        }
+//        
+//        return formattedString
+    }
+    
+    class func formattedStringForCharacter(_ character: Character) -> String {
+        if let formattedChar = self.formattedLookup[character] {
+            return String(formattedChar)
         }
         
-        
         return String(character)
+    }
+    
+    class func unformattedCharacterForString(_ string: String) -> Character? {
+        if let formattedChar = self.reverseFormattedLookup[string] {
+            return formattedChar
+        }
+        
+        if string.characters.count == 1 {
+            if let first = string.characters.first {
+                return first
+            }
+        }
+        
+        // This provided string doesn't match anything so it can't be returned.
+        
+        return nil
     }
     
     class func isStringSpecialWord(_ string: String) -> Bool {
@@ -387,7 +439,7 @@ open class Glossary {
         
         var legalCombinations:[Character: String] =
            ["n":"n\(mid))cd\(pre)\(post)",
-            "(":"n-)cd\(pre)",
+            "(":"n-cd\(pre)",
             ")":"n)(cd\(pre)\(mid)\(post)",
             "+":"n-+(cd\(pre)",
             "-":"n-+(cd\(pre)",

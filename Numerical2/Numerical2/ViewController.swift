@@ -65,7 +65,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
         if let theWorkView = workPanelView {
             theWorkView.currentEquation = currentEquation
-            theWorkView.updateViews()
+            theWorkView.updateViews(currentCursor: nil)
             theWorkView.updateLegalKeys()
             presentKeypad()
         }
@@ -99,7 +99,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             keyPad.delegate = self
             keyPad.workPanelDelegate = self
             keyPad.currentEquation = currentEquation
-            keyPad.updateViews()
+            keyPad.updateViews(currentCursor: nil)
             
             // Add a gesture recogniser to the keypad
             
@@ -292,7 +292,6 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         }
         
         // Update history view content insets.
-        // ZZZ
         updateHistoryContentInsets(viewSize: viewSize)
         
     }
@@ -327,7 +326,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             if let theWorkPanel = workPanelView {
                 theWorkPanel.currentEquation = currentEquation
                 theWorkPanel.updateLegalKeys()
-                theWorkPanel.updateViews()
+                theWorkPanel.updateViews(currentCursor: nil)
             }
         }
     }

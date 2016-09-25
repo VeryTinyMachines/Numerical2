@@ -128,6 +128,7 @@ open class AnswerBundle {
     var answer: String?
     var error: Bool = false
     var errorType: ErrorType?
+    var cursorPosition: Int?
     
     init(number: String) {
         self.answer = number

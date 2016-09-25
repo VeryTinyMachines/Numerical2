@@ -90,7 +90,7 @@ class KeypadViewController: UIViewController {
                     button.alpha = 0.0
                     button.isEnabled = false
                 } else {
-                    let formattedCharacter = Glossary.stringForCharacter(character)
+                    let formattedCharacter = Glossary.formattedStringForCharacter(character)
                     
                     button.setTitle(formattedCharacter, for: UIControlState())
                 }
@@ -180,6 +180,17 @@ class KeypadViewController: UIViewController {
                         } else {
                             button.setTitle("(", for: UIControlState())
                         }
+                    }
+                    
+                    // If the character is for either of the brackets then FORCE these to be available.
+                    if character == "(" {
+                        button.setTitle("(", for: UIControlState())
+                        button.alpha = 1.0
+                        button.isEnabled = true
+                    } else if character == ")" {
+                        button.setTitle(")", for: UIControlState())
+                        button.alpha = 1.0
+                        button.isEnabled = true
                     }
                     
                     button.titleLabel?.font = StyleFormatter.preferredFontForButtonOfSize(button.frame.size)

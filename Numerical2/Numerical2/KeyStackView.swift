@@ -29,7 +29,7 @@ class KeyStackView: UIStackView {
             let tag = key.tag
             if tag < keyCharacters.count {
                 let theCharacter = keyCharacters[tag]
-                let formattedCharacter = Glossary.stringForCharacter(theCharacter)
+                let formattedCharacter = Glossary.formattedStringForCharacter(theCharacter)
                 
                 key.setTitle(formattedCharacter, for: UIControlState())
                 
@@ -73,15 +73,11 @@ class KeyStackView: UIStackView {
                 let keyCharacter = keyCharacters[keyTag]
                 
                 if keyCharacter == SymbolCharacter.smartBracket {
-                    
                     if legalKeys.contains(")") {
-                        key.setTitle(Glossary.stringForCharacter(")"), for: UIControlState())
+                        key.setTitle(Glossary.formattedStringForCharacter(")"), for: UIControlState())
                     } else if legalKeys.contains("(") {
-                        key.setTitle(Glossary.stringForCharacter("("), for: UIControlState())
+                        key.setTitle(Glossary.formattedStringForCharacter("("), for: UIControlState())
                     }
-                    
-                    
-                    
                 }
                 
                 if legalKeys.contains(keyCharacter) {

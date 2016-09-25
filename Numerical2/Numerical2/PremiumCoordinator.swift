@@ -70,7 +70,7 @@ class PremiumCoordinator {
         }
         
         // No current theme picked, return the default.
-        return "orange001"
+        return "pink001"
     }
     
     

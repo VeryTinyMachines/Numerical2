@@ -8,7 +8,14 @@
 
 import UIKit
 
-class QuestionCollectionViewController:UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+
+protocol QuestionCollectionViewDelegate {
+    func textFieldChanged(string: String, view: QuestionCollectionViewController)
+}
+
+class QuestionCollectionViewController:UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
+    
+    var delegate:QuestionCollectionViewDelegate?
     
     var isAnswerView = false
     
@@ -43,9 +50,6 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                     self.updateQuestionArrayWithString(theAnswer)
                 }
                 
-                
-                
-                
             } else if let errorType = self.questionBundle?.errorType {
                 // There is an error
                 
@@ -70,14 +74,26 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                 
                 self.reloadCollectionView()
             }
+            
+            // If there was a cursor position in this and we are currently editing then set the cursor position
+            if let arbitraryValue = questionBundle?.cursorPosition {
+                if isEditing {
+                    if let newPosition = self.textField.position(from: textField.beginningOfDocument, in: UITextLayoutDirection.right, offset: arbitraryValue) {
+                        self.textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
+                    }
+                }
+            }
         }
     }
 
     
     func updateQuestionArrayWithString(_ questionString: String) {
         
+        textField.text = questionString
         
-        let questionComponents = Evaluator.termArrayFromString(questionString, allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
+        // Add balanced brackets to this string, then divide into components.
+        
+        let questionComponents = Evaluator.termArrayFromString(Evaluator.balanceBracketsForQuestionDisplay(questionString), allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
         
         // If a component has more than one fraction in it then split it up
         
@@ -115,7 +131,6 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         }
         
         updateQuestionArrayWithComponents(newQuestionComponents)
-        
     }
     
     
@@ -200,12 +215,15 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     
     @IBOutlet weak var collecitonView: UICollectionView!
     
+    @IBOutlet weak var textField: UITextField!
+    
+    @IBOutlet weak var doneButton: UIButton!
+    
     func reloadCollectionView() {
         collecitonView.reloadData()
         
         if questionArray.count > 0 {
             let lastItem = questionArray.count - 1
-            
             
             DispatchQueue.main.async {
                 if self.isAnswerView {
@@ -217,6 +235,23 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         }
     }
     
+    func setEditingMode(editing: Bool, animated: Bool) {
+        isEditing = editing
+        
+        if isEditing {
+            collecitonView.isHidden = true
+            textField.isHidden = false
+            textField.inputView = UIView()
+            textField.becomeFirstResponder()
+            doneButton.isHidden = false
+        } else {
+            collecitonView.isHidden = false
+            textField.isHidden = true
+            textField.resignFirstResponder()
+            doneButton.isHidden = true
+        }
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -225,7 +260,6 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         let nib = UINib(nibName: "EquationViewCell", bundle: nil)
         collecitonView.register(nib, forCellWithReuseIdentifier: "StringCell")
@@ -242,6 +276,11 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         collecitonView.register(nib2, forCellWithReuseIdentifier: "FractionCell")
         
         collecitonView.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        
+        setEditingMode(editing: false, animated: false)
+        
+        textField.delegate = self
+        textField.tintColor = UIColor.white
         
     }
     
@@ -390,7 +429,32 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     }
     
     
+    @IBAction func userPressedTapGesureRecogniser(_ sender: UITapGestureRecognizer) {
+        
+        if self.isAnswerView == false && self.isEditing == false {
+            self.setEditingMode(editing: !isEditing, animated: true)
+        }
+    }
     
+    
+    @IBAction func pressDoneButton(_ sender: UIButton) {
+        setEditingMode(editing: false, animated: true)
+        
+        informDelegateOfTextChange()
+    }
+    
+    func informDelegateOfTextChange() {
+        if let text = textField.text {
+            delegate?.textFieldChanged(string: text, view: self)
+        } else {
+            delegate?.textFieldChanged(string: "", view: self)
+        }
+    }
+    
+    @IBAction func textFieldChanged(_ sender: UITextField) {
+        print("textFieldChanged")
+        informDelegateOfTextChange()
+    }
     
     
     

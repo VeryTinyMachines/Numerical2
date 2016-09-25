@@ -458,6 +458,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tID-n1-0sB" userLabel="Text Field">
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="textFieldChanged:" destination="lDj-q8-bEy" eventType="editingChanged" id="HHa-iu-KsD"/>
+                                </connections>
+                            </textField>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="z9V-HG-Fcz">
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="1" id="ZK7-ci-am2">
                                     <size key="itemSize" width="50" height="50"/>
@@ -471,23 +479,52 @@
                                     <outlet property="delegate" destination="lDj-q8-bEy" id="5xA-eE-dYR"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FLF-lg-nWD">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="y3D-nD-Wju"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                <state key="normal" title="DONE">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pressDoneButton:" destination="lDj-q8-bEy" eventType="touchUpInside" id="SxD-vR-18S"/>
+                                </connections>
+                            </button>
                         </subviews>
+                        <gestureRecognizers/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="FLF-lg-nWD" secondAttribute="trailing" id="4h7-fe-Azt"/>
+                            <constraint firstAttribute="trailing" secondItem="tID-n1-0sB" secondAttribute="trailing" constant="60" id="7sl-SK-1o8"/>
                             <constraint firstItem="z9V-HG-Fcz" firstAttribute="leading" secondItem="IXb-fI-W5R" secondAttribute="leading" id="Pdn-fo-Ow5"/>
                             <constraint firstAttribute="trailing" secondItem="z9V-HG-Fcz" secondAttribute="trailing" id="Pi2-4P-jzh"/>
                             <constraint firstAttribute="bottom" secondItem="z9V-HG-Fcz" secondAttribute="bottom" id="dQF-KF-J1o"/>
                             <constraint firstItem="z9V-HG-Fcz" firstAttribute="top" secondItem="IXb-fI-W5R" secondAttribute="top" id="eSc-Y7-A8Y"/>
+                            <constraint firstItem="tID-n1-0sB" firstAttribute="leading" secondItem="IXb-fI-W5R" secondAttribute="leading" constant="6" id="fFH-CB-lXI"/>
+                            <constraint firstItem="FLF-lg-nWD" firstAttribute="height" secondItem="tID-n1-0sB" secondAttribute="height" id="hxR-or-gdk"/>
+                            <constraint firstItem="FLF-lg-nWD" firstAttribute="centerY" secondItem="tID-n1-0sB" secondAttribute="centerY" id="isE-Zp-KUO"/>
+                            <constraint firstItem="tID-n1-0sB" firstAttribute="centerY" secondItem="IXb-fI-W5R" secondAttribute="centerY" id="r7X-qg-r2s"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="nPQ-Nb-8Z9" appends="YES" id="ide-mg-ey2"/>
+                        </connections>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="collecitonView" destination="z9V-HG-Fcz" id="Cua-oz-21g"/>
+                        <outlet property="doneButton" destination="FLF-lg-nWD" id="VfB-6d-SII"/>
+                        <outlet property="textField" destination="tID-n1-0sB" id="5T2-mj-jy6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mcK-Re-PQ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="nPQ-Nb-8Z9">
+                    <connections>
+                        <action selector="userPressedTapGesureRecogniser:" destination="lDj-q8-bEy" id="LDY-9V-Qnl"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2618" y="507"/>
+            <point key="canvasLocation" x="2561" y="742"/>
         </scene>
         <!--Equation View Controller-->
         <scene sceneID="1mc-hw-xTD">
