@@ -78,7 +78,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                     
                     theView.setAnswer(answer)
                     
-                    
                     var latestEquationDict = [String:String]()
                     latestEquationDict[EquationStringKey] = question
                     
@@ -420,8 +419,24 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
     func updateLegalKeys() {
         // Determine Legal Keys
         if let question = currentEquation?.question {
-            if let legalKeys = Glossary.legalCharactersToAppendString(question), let theKeyPanel = keyPanelView {
-                theKeyPanel.setLegalKeys(legalKeys)
+            
+            var currentlyEditing = false
+            
+            if let equationView = equationView {
+                print("The equation view")
+                if equationView.isQuestionEditting() == true {
+                    currentlyEditing = true
+                }
+            }
+            
+            if currentlyEditing {
+                if let legalKeys = Glossary.legalCharactersToAppendString("?"), let theKeyPanel = keyPanelView {
+                    theKeyPanel.setLegalKeys(legalKeys)
+                }
+            } else {
+                if let legalKeys = Glossary.legalCharactersToAppendString(question), let theKeyPanel = keyPanelView {
+                    theKeyPanel.setLegalKeys(legalKeys)
+                }
             }
         } else {
             if let legalKeys = Glossary.legalCharactersToAppendString(""), let theKeyPanel = keyPanelView {
@@ -441,16 +456,9 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
     
     
     func updateLayout() {
-        
-//        if let keyPanel = keyPanelView {
-//            keyPanel.updateKeyLayout()
-//        }
-        
         if let theEquationView = equationView {
             theEquationView.updateView()
         }
-        
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -473,12 +481,18 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
     }
     
     func textFieldChanged(string: String, view: QuestionCollectionViewController) {
-        if view.isAnswerView == false {
-            if let currentEquation = currentEquation {
-                currentEquation.question = string
-                updateViews(currentCursor: nil)
-            }
+        if let currentEquation = currentEquation {
+            currentEquation.question = string
+            updateViews(currentCursor: nil)
         }
+        
+        updateLegalKeys()
     }
     
+    func isQuestionEditing() -> Bool {
+        if let equationView = equationView {
+            return equationView.isQuestionEditting()
+        }
+        return false
+    }
 }

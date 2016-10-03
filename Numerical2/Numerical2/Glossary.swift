@@ -34,28 +34,28 @@ public struct SymbolConstant {
 
 public struct SymbolCharacter {
     public static let pi:Character = "π"
-    public static let e:Character = "ℇ"
+    public static let e:Character = "e"
     public static let infinity:Character = "∞"
     
-    public static let sin:Character = "⟁"
-    public static let cos:Character = "⟃"
-    public static let tan:Character = "⟄"
+    public static let sin:Character = "s"
+    public static let cos:Character = "c"
+    public static let tan:Character = "t"
     
-    public static let sinh:Character = "⟢"
-    public static let cosh:Character = "⟣"
-    public static let tanh:Character = "⟤"
+    public static let sinh:Character = "S"
+    public static let cosh:Character = "C"
+    public static let tanh:Character = "T"
     
-    public static let ee:Character = "⟅"
+    public static let ee:Character = "E"
     public static let sqrt:Character = "√"
     
-    public static let log:Character = "⟉" // "log(x) in c is what most calculators call "ln"
-    public static let log2:Character = "⟇" // log2(x) in c is what most calculators call "log"
-    public static let log10:Character = "⟈"
+    public static let log:Character = "l" // "log(x) in c is what most calculators call "ln"
+    public static let log2:Character = "L" // log2(x) in c is what most calculators call "log"
+    public static let log10:Character = "N" // TODO - Need a better symbol for this
     
     public static let factorial:Character = "!"
-    public static let fraction:Character = "⟆"
+    public static let fraction:Character = "\\"
     public static let percentage:Character = "%"
-    public static let random:Character = "⟡"
+    public static let random:Character = "r"
     
     public static let preOperator:Character = "⟜"
     public static let postOperator:Character = "⟞"
@@ -65,6 +65,29 @@ public struct SymbolCharacter {
     public static let clear:Character = "⟭"
     
     public static let smartBracket:Character = "⟠"
+    
+    public static let divide:Character = "/"
+    
+    public static let add:Character = "+"
+    
+    public static let subtract:Character = "-"
+    
+    public static let multiply:Character = "*"
+    public static let exponent:Character = "^"
+    
+    public static let numbers:Set<Character> = ["0","1","2","3","4","5","6","7","8","9",".",SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, SymbolCharacter.fraction]
+    
+    public static let operators:Set<Character> = [SymbolCharacter.add, SymbolCharacter.subtract, SymbolCharacter.multiply, SymbolCharacter.divide, SymbolCharacter.exponent, SymbolCharacter.percentage, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage]
+    
+    public static let preOperatorCharacters:Set<Character> = [SymbolCharacter.cos,SymbolCharacter.log, SymbolCharacter.log10, SymbolCharacter.log2, SymbolCharacter.sin, SymbolCharacter.sqrt, SymbolCharacter.tan, SymbolCharacter.sinh,SymbolCharacter.cosh,SymbolCharacter.tanh]
+    
+    public static let midOperatorCharacters:Set<Character> = [SymbolCharacter.add, SymbolCharacter.subtract, SymbolCharacter.multiply, SymbolCharacter.divide, SymbolCharacter.exponent, SymbolCharacter.fraction, SymbolCharacter.ee]
+    
+    public static let postOperatorCharacters:Set<Character> = [SymbolCharacter.factorial, SymbolCharacter.percentage]
+    
+    public static let preOperatorStringArray:[String] = [String(SymbolCharacter.sqrt), String(SymbolCharacter.sin), String(SymbolCharacter.cos), String(SymbolCharacter.tan), String(SymbolCharacter.log), String(SymbolCharacter.log2), String(SymbolCharacter.log10), String(SymbolCharacter.sinh), String(SymbolCharacter.cosh), String(SymbolCharacter.tanh)]
+    
+    public static let midOperatorStringArray:[String] = [String(SymbolCharacter.add), String(SymbolCharacter.subtract), String(SymbolCharacter.multiply), String(SymbolCharacter.divide), String(SymbolCharacter.exponent), String(SymbolCharacter.fraction), String(SymbolCharacter.ee)]
 }
 
 
@@ -89,11 +112,14 @@ open class Glossary {
         SymbolCharacter.factorial:"!",
         SymbolCharacter.infinity:"∞",
         SymbolCharacter.pi:"π",
-        Character("/"):"÷",
-        Character("*"):"×",
-        Character("^"):"^",
-        Character("+"):"+",
-        Character("-"):"-"
+        SymbolCharacter.add:"+",
+        SymbolCharacter.subtract:"-",
+        SymbolCharacter.multiply:"×",
+        SymbolCharacter.divide:"÷",
+        SymbolCharacter.exponent:"^",
+        SymbolCharacter.sqrt:"√"
+    
+    
     ]
     
     static let reverseFormattedLookup = [
@@ -115,15 +141,12 @@ open class Glossary {
         "!":SymbolCharacter.factorial,
         "∞":SymbolCharacter.infinity,
         "π":SymbolCharacter.pi,
-        "÷":Character("/"),
-        "×":Character("*"),
-        "^":Character("^"),
-        "+":Character("+"),
-        "-":Character("-")
+        "÷":SymbolCharacter.divide,
+        "×":SymbolCharacter.multiply,
+        "^":SymbolCharacter.exponent,
+        "+":SymbolCharacter.add,
+        "-":SymbolCharacter.subtract
     ]
-    
-    
-    
     
     class func possibleAnswersFromString(_ answerString: String) -> Array<String> {
         var answerString = answerString
@@ -180,7 +203,8 @@ open class Glossary {
         
         return formattedString
     }
-    
+
+    /*
     class func unformattedStringForQuestion(_ string: String) -> String {
         
         // 1. Search and replace all characters
@@ -200,6 +224,7 @@ open class Glossary {
 //        
 //        return formattedString
     }
+    */
     
     class func formattedStringForCharacter(_ character: Character) -> String {
         if let formattedChar = self.formattedLookup[character] {
@@ -208,7 +233,8 @@ open class Glossary {
         
         return String(character)
     }
-    
+
+    /*
     class func unformattedCharacterForString(_ string: String) -> Character? {
         if let formattedChar = self.reverseFormattedLookup[string] {
             return formattedChar
@@ -224,6 +250,7 @@ open class Glossary {
         
         return nil
     }
+    */
     
     class func isStringSpecialWord(_ string: String) -> Bool {
         if string == "and" || string == "by" || string == "with" {
@@ -246,18 +273,16 @@ open class Glossary {
     
     class func isStringNumber(_ string: String) -> Bool {
         
-        let numbers:Set<Character> = ["0","1","2","3","4","5","6","7","8","9",".",SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, SymbolCharacter.fraction]
-        
-        if string == "" || string == "-" {
+        if string == "" || string == String(SymbolCharacter.subtract) {
             return false
         }
         
         var counter = 0
         for character in string.characters {
             
-            if counter == 0 && character == "-" {
+            if counter == 0 && character == SymbolCharacter.subtract {
                 // This is a leading - and can be safely ignored
-            } else if numbers.contains(character) == false {
+            } else if SymbolCharacter.numbers.contains(character) == false {
                 return false
             }
             
@@ -279,14 +304,12 @@ open class Glossary {
     
     class func isStringOperator(_ string: String) -> Bool {
         
-        let operators:Set<Character> = ["^","/","*","-","+","%", SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage]
-        
         if string.characters.count > 1 {
             return false
         }
         
         for character in string.characters {
-            if operators.contains(character) == false {
+            if SymbolCharacter.operators.contains(character) == false {
                 return false
             }
         }
@@ -297,7 +320,7 @@ open class Glossary {
     class func isStringInfinity(_ string: String) -> InfinityType {
         let numbers:Set<Character> = [SymbolCharacter.infinity]
         
-        if string == "" || string == "-" {
+        if string == "" || string == String(SymbolCharacter.subtract) {
             return InfinityType.notInfinity
         }
         
@@ -306,7 +329,7 @@ open class Glossary {
         
         for character in string.characters {
             
-            if counter == 0 && character == "-" {
+            if counter == 0 && character == SymbolCharacter.subtract {
                 // This is a leading - and can be safely ignored
                 negative = true
             } else if numbers.contains(character) == false {
@@ -340,7 +363,7 @@ open class Glossary {
     
     class func shouldAddClosingBracketToAppendString(_ string: String, newOperator: Character) -> Bool {
         
-        if newOperator == "*" || newOperator == "/" {
+        if newOperator == SymbolCharacter.multiply || newOperator == SymbolCharacter.divide {
             let termArray = Evaluator.termArrayFromString(string, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
             
             if termArray.count > 1 {
@@ -374,7 +397,7 @@ open class Glossary {
                                 
                                 let characterOperator = theOperator.characterValue()
                                 
-                                if characterOperator == "+" || characterOperator == "-" {
+                                if characterOperator == SymbolCharacter.add || characterOperator == SymbolCharacter.subtract {
                                     if currentBracketLevel == 0 {
                                         return true
                                     } else {
@@ -395,7 +418,6 @@ open class Glossary {
                         }
                     }
                 }
-                
             }
         }
         
@@ -417,58 +439,56 @@ open class Glossary {
     }
     
     class func legalCharactersToAppendString(_ string: String) -> Set<Character>? {
+        
+        print("legalCharactersToAppendString: \(string)")
+        
         var string = string
         
         if string == "" {
             string = " "
         }
         
-        let numberCharacters:Set<Character> = ["0","1","2","3","4","5","6","7","8","9","0",".",SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity]
-        let preOperatorCharacters:Set<Character> = [SymbolCharacter.cos,SymbolCharacter.log, SymbolCharacter.log10, SymbolCharacter.log2, SymbolCharacter.sin, SymbolCharacter.sqrt, SymbolCharacter.tan, SymbolCharacter.sinh,SymbolCharacter.cosh,SymbolCharacter.tanh]
-        let midOperatorCharacters:Set<Character> = ["+","-","*","/","^",SymbolCharacter.fraction, SymbolCharacter.ee]
-        let postOperatorCharacters:Set<Character> = [SymbolCharacter.factorial, SymbolCharacter.percentage]
-        
-        // TODO - What happens if you try and add numbers to a symbol? "1pi3" is a weird yet valid number
-        
         let pre = SymbolCharacter.preOperator
         let post = SymbolCharacter.postOperator
         let mid = SymbolCharacter.midOperator
+        let clear = Character("Z")
+        let delete = Character("X")
         
         // Replace lastCharacter with pre/post/mid if appropriate
         
-        
         var legalCombinations:[Character: String] =
-           ["n":"n\(mid))cd\(pre)\(post)",
-            "(":"n-cd\(pre)",
-            ")":"n)(cd\(pre)\(mid)\(post)",
-            "+":"n-+(cd\(pre)",
-            "-":"n-+(cd\(pre)",
-            mid: "n-(cd\(pre)",
-            pre: "n-(cd",
-            post:"n-+()cd\(pre)\(mid)\(post)",
-            " ":"n-(\(pre)"]
+           ["n":"n\(mid))\(clear)\(delete)\(pre)\(post)",
+            "(":"n-\(clear)\(delete)\(pre)",
+            ")":"n)(\(clear)\(delete)\(pre)\(mid)\(post)",
+            "+":"n-+(\(clear)\(delete)\(pre)",
+            "-":"n-+(\(clear)\(delete)\(pre)",
+            mid: "n-(\(clear)\(delete)\(pre)",
+            pre: "n-(\(clear)\(delete)",
+            post:"n-+()\(clear)\(delete)\(pre)\(mid)\(post)",
+            " ":"n-(\(pre)",
+            "?":"n)(\(clear)\(delete)\(pre)\(mid)\(post)"]
 
         
         if var theLastCharacter = string.characters.last {
-//            print("theLastCharacter: \(theLastCharacter)", appendNewline: true)
+            print("theLastCharacter: \(theLastCharacter)")
             
-            if preOperatorCharacters.contains(theLastCharacter) {
+            if SymbolCharacter.preOperatorCharacters.contains(theLastCharacter) {
                 theLastCharacter = pre
-            } else if midOperatorCharacters.contains(theLastCharacter) && theLastCharacter != "+" && theLastCharacter != "-" {
+            } else if SymbolCharacter.midOperatorCharacters.contains(theLastCharacter) && theLastCharacter != SymbolCharacter.add && theLastCharacter != SymbolCharacter.subtract {
                 theLastCharacter = mid
-            } else if postOperatorCharacters.contains(theLastCharacter) {
+            } else if SymbolCharacter.postOperatorCharacters.contains(theLastCharacter) {
                 theLastCharacter = post
             }
             
             var lastCharacterGeneric = theLastCharacter
             
-            if numberCharacters.contains(theLastCharacter) {
+            if SymbolCharacter.numbers.contains(theLastCharacter) {
                 lastCharacterGeneric = "n"
             }
             
-            let combinationReturn = legalCombinations[lastCharacterGeneric]
-            
-            if let combination = combinationReturn {
+            if let combination = legalCombinations[lastCharacterGeneric] {
+                
+                print("combination: \(combination)")
                 
                 // Convert combination into a set of characters
                 
@@ -476,51 +496,72 @@ open class Glossary {
                 
 //                print("legalCharacterSet: \(legalCharacterSet)", appendNewLine: true)
                 
+                print("1 legalCharacterSet: \(legalCharacterSet)")
+                
                 for character in combination.characters {
                     legalCharacterSet.insert(character)
                 }
                 
+                print("2 legalCharacterSet: \(legalCharacterSet)")
+                
                 // Add the pre operators
                 if legalCharacterSet.contains(SymbolCharacter.preOperator) {
-                    for preOperator in preOperatorCharacters {
+                    for preOperator in SymbolCharacter.preOperatorCharacters {
                         legalCharacterSet.insert(preOperator)
                     }
                 }
                 
+                print("3 legalCharacterSet: \(legalCharacterSet)")
+                
                 // Add the post operators
                 if legalCharacterSet.contains(SymbolCharacter.postOperator) {
-                    for postOperator in postOperatorCharacters {
+                    for postOperator in SymbolCharacter.postOperatorCharacters {
                         legalCharacterSet.insert(postOperator)
                     }
                 }
                 
+                print("4 legalCharacterSet: \(legalCharacterSet)")
+                
                 // Add the mid operators
                 if legalCharacterSet.contains(SymbolCharacter.midOperator) {
-                    for midOperator in midOperatorCharacters {
+                    for midOperator in SymbolCharacter.midOperatorCharacters {
                         legalCharacterSet.insert(midOperator)
                     }
                 }
                 
+                print("5 legalCharacterSet: \(legalCharacterSet)")
+                
                 // Add clear
-                if legalCharacterSet.contains("c") {
+                if legalCharacterSet.contains(clear) {
                     legalCharacterSet.insert(SymbolCharacter.clear)
                 }
                 
+                print("6 legalCharacterSet: \(legalCharacterSet)")
+                
                 // Add delete
-                if legalCharacterSet.contains("d") {
+                if legalCharacterSet.contains(delete) {
                     legalCharacterSet.insert(SymbolCharacter.delete)
                 }
+                
+                print("7 legalCharacterSet: \(legalCharacterSet)")
                 
                 // Add smart bracket
                 if legalCharacterSet.contains("(") || legalCharacterSet.contains(")") {
                     legalCharacterSet.insert(SymbolCharacter.smartBracket)
                 }
                 
+                print("8 legalCharacterSet: \(legalCharacterSet)")
+                
                 if legalCharacterSet.contains("n") {
                     
                     // Add all the number characters to the set
-                    for numberCharacter in numberCharacters {
+                    for numberCharacter in SymbolCharacter.numbers {
                         legalCharacterSet.insert(numberCharacter)
+                    }
+                    
+                    // If this is an initial string then get rid of the fraction. That's too dumb.
+                    if string == " " {
+                        legalCharacterSet.remove(SymbolCharacter.fraction)
                     }
                     
                     // If the lastCharacter is a "n" we need to determine if the end of the string is a number and if that number contains a decimal - if not
@@ -535,24 +576,20 @@ open class Glossary {
                                 // Insert the decimal
                                 legalCharacterSet.insert(".")
                             }
-                            
                         } else {
                             // Insert the decimal
                             legalCharacterSet.insert(".")
                         }
-                        
                     } else {
                         // Insert the decimal
                         legalCharacterSet.insert(".")
                     }
                 }
                 
+                print("9 legalCharacterSet: \(legalCharacterSet)")
                 
-                print(legalCharacterSet)
                 return legalCharacterSet
-                
             } else {
-                
                 return nil
             }
 

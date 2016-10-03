@@ -328,10 +328,6 @@ open class Evaluator {
     
     class func cleanString(_ string:String) -> String {
         
-        let preOperatorArray = [String(SymbolCharacter.sqrt), String(SymbolCharacter.sin), String(SymbolCharacter.cos), String(SymbolCharacter.tan), String(SymbolCharacter.log), String(SymbolCharacter.log2), String(SymbolCharacter.log10), String(SymbolCharacter.sinh), String(SymbolCharacter.cosh), String(SymbolCharacter.tanh)]
-        
-        let midOperatorArray = ["+","-","*","/","^",String(SymbolCharacter.fraction), String(SymbolCharacter.ee)]
-        
         // Insert "*" between brackets and numbers
         
         var termArray = termArrayFromString(string, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
@@ -357,7 +353,7 @@ open class Evaluator {
             // If the final term is a pre-operator remove it.
             while termArray.count > 0 {
                 if let lastTerm = termArray.last {
-                    if preOperatorArray.contains(lastTerm) || lastTerm == "(" || midOperatorArray.contains(lastTerm) {
+                    if SymbolCharacter.preOperatorStringArray.contains(lastTerm) || lastTerm == "(" || SymbolCharacter.midOperatorStringArray.contains(lastTerm) {
                         termArray.removeLast()
                     } else {
                         break
@@ -990,7 +986,7 @@ open class Evaluator {
         
         var lastTermType = TermType.unknown
         
-        var operatorSet: Set<Character> = Set(["+","-","*","/","^","%","(",")",SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh])
+        var operatorSet: Set<Character> = Set([SymbolCharacter.add, SymbolCharacter.subtract, SymbolCharacter.multiply, SymbolCharacter.divide, SymbolCharacter.exponent, SymbolCharacter.percentage, "(",")",SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh])
         
         var numberSet = Set([Character("1"),Character("2"),Character("3"),Character("4"),Character("5"),Character("6"),Character("7"),Character("8"),Character("9"),Character("0"),Character("."),SymbolCharacter.fraction])
         
@@ -1158,11 +1154,11 @@ open class Evaluator {
                 }
                 
                 if fractionA == 1 {
-                    fractionA == fractionB
+                    fractionA = fractionB
                 }
                 
                 if fractionB == 1 {
-                    fractionB == fractionA
+                    fractionB = fractionA
                 }
                 
 //                print("fractionA: \(fractionA)  fractionB: \(fractionB)", appendNewline: false)
@@ -1200,7 +1196,7 @@ open class Evaluator {
 //            print("fractionA: \(fractionA)", appendNewline: false)
 //            print("fractionB: \(fractionB)", appendNewline: false)
             
-            if fractionOperator == "+" || fractionOperator == "-" {
+            if fractionOperator == SymbolCharacter.add || fractionOperator == SymbolCharacter.subtract {
                 
                 // Add: a/b + c/d = (a * c + b * d) / (b * d)
                 // Subtract: a/b - c/d = (a * c - b * d) / (b * d)
@@ -1217,7 +1213,7 @@ open class Evaluator {
                     return AnswerBundle(error: ErrorType.unknown)
                 }
                 
-            } else if fractionOperator == "*" {
+            } else if fractionOperator == SymbolCharacter.multiply {
                 // Multiply: a/b * c/d = (a * c) / (b * d)
                 
                 let topNumber = solveString("\(fractionA.numerator)*\(fractionB.numerator)")
@@ -1231,7 +1227,7 @@ open class Evaluator {
                     return AnswerBundle(error: ErrorType.unknown)
                 }
                 
-            } else if fractionOperator == "/" {
+            } else if fractionOperator == SymbolCharacter.divide {
                 // Multiply: a/b / c/d = a*d/b*c
                 
                 let topNumber = solveString("\(fractionA.numerator)*\(fractionB.denominator)")
@@ -1251,19 +1247,19 @@ open class Evaluator {
                 
                 // Solve Percentage Combine
                 
-            if theOperator == "+" {
+            if theOperator == SymbolCharacter.add {
                 let answerBundle = solveString("\(theNumberA)+(\(theNumberA)*\(theNumberB)/100)")
                 return answerBundle
                 
-            } else if theOperator == "-" {
+            } else if theOperator == SymbolCharacter.subtract {
                 let answerBundle = solveString("\(theNumberA)-(\(theNumberA)*\(theNumberB)/100)")
                 return answerBundle
                 
-            } else if theOperator == "*" {
+            } else if theOperator == SymbolCharacter.multiply {
                 let answerBundle = solveString("\(theNumberA)*(\(theNumberB)/100)")
                 return answerBundle
                 
-            } else if theOperator == "/" {
+            } else if theOperator == SymbolCharacter.divide {
                 let answerBundle = solveString("\(theNumberA)/(\(theNumberB)/100)")
                 return answerBundle
                 
@@ -1293,7 +1289,7 @@ open class Evaluator {
         
         let theComponents = fractionComponents(number)
         
-        let decimalForm = solveUnknownNumber(theComponents.numerator, theOperator: "/", numberB: theComponents.denominator, operatorType: OperatorType.midOperator, endPercentage: false)
+        let decimalForm = solveUnknownNumber(theComponents.numerator, theOperator: SymbolCharacter.divide, numberB: theComponents.denominator, operatorType: OperatorType.midOperator, endPercentage: false)
         return decimalForm.answer
     }
     
@@ -1376,15 +1372,15 @@ open class Evaluator {
             rightDouble = NSDecimalNumber(string: theNumberB).doubleValue
         }
         
-        if theOperator == "+" {
+        if theOperator == SymbolCharacter.add {
             answer = leftDouble + rightDouble
-        } else if theOperator == "-" {
+        } else if theOperator == SymbolCharacter.subtract {
             answer = leftDouble - rightDouble
-        } else if theOperator == "*" {
+        } else if theOperator == SymbolCharacter.multiply {
             answer = leftDouble * rightDouble
-        } else if theOperator == "/" {
+        } else if theOperator == SymbolCharacter.divide {
             answer = leftDouble / rightDouble
-        } else if theOperator == "^" {
+        } else if theOperator == SymbolCharacter.exponent {
             answer = pow(leftDouble, rightDouble)
         } else if theOperator == SymbolCharacter.factorial {
             // Post Operator == Factorial
@@ -1461,25 +1457,25 @@ open class Evaluator {
             let leftDecimalNumber = NSDecimalNumber(string: theNumberA)
             let rightDecimalNumber = NSDecimalNumber(string: theNumberB)
             
-            if theOperator == "+" {
+            if theOperator == SymbolCharacter.add {
                 
                 let result = leftDecimalNumber.adding(rightDecimalNumber, withBehavior: errorHandler)
                 
                 return AnswerBundle(number: result.stringValue)
                 
-            } else if theOperator == "-" {
+            } else if theOperator == SymbolCharacter.subtract {
                 
                 let result = leftDecimalNumber.subtracting(rightDecimalNumber, withBehavior: errorHandler)
                 
                 return AnswerBundle(number: result.stringValue)
                 
-            } else if theOperator == "*" {
+            } else if theOperator == SymbolCharacter.multiply {
                 
                 let result = leftDecimalNumber.multiplying(by: rightDecimalNumber, withBehavior: errorHandler)
                 
                 return AnswerBundle(number: result.stringValue)
                 
-            } else if theOperator == "/" {
+            } else if theOperator == SymbolCharacter.divide {
                 
                 if rightDecimalNumber == NSDecimalNumber.zero {
                     
@@ -1490,15 +1486,12 @@ open class Evaluator {
                     
                     return AnswerBundle(number: result.stringValue)
                 }
-            } else if theOperator == "^" {
+            } else if theOperator == SymbolCharacter.exponent {
                 
                 if rightDecimalNumber.doubleValue.truncatingRemainder(dividingBy: 1) == 0 && rightDecimalNumber.doubleValue > 0 {
                     // Whole number
                     
                     let result = leftDecimalNumber.raising(toPower: rightDecimalNumber.intValue, withBehavior: errorHandler)
-                    
-                    
-//                    print("result: \(result)")
                     
 //                    if result == Double.NaN {
 //                        print("number too large")
@@ -1652,13 +1645,13 @@ open class Evaluator {
             
             // Solve Smart Percentage Operations
             
-            if theOperator == "+" {
+            if theOperator == SymbolCharacter.add {
                 return solveString("\(theNumberA)+(\(theNumberA)*\(theNumberB)/100)")
-            } else if theOperator == "-" {
+            } else if theOperator == SymbolCharacter.subtract {
                 return solveString("\(theNumberA)-(\(theNumberA)*\(theNumberB)/100)")
-            } else if theOperator == "*" {
+            } else if theOperator == SymbolCharacter.multiply {
                 return solveString("\(theNumberA)*(\(theNumberB)/100)")
-            } else if theOperator == "/" {
+            } else if theOperator == SymbolCharacter.divide {
                 return solveString("\(theNumberA)/(\(theNumberB)/100)")
             }
         }

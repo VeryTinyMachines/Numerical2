@@ -19,6 +19,7 @@ open class NaturalLanguageParser {
     
 //        print("", appendNewline: true)
         
+        /*
         for character in " abcdefghijklmnopqrstuvwxyz".characters {
             legalCharacters.insert(character)
         }
@@ -52,7 +53,7 @@ open class NaturalLanguageParser {
 //                print("Error: Dictionary could not be loaded", appendNewline: false)
             }
         }
-        
+        */
         
         // Setup a legal character array
         

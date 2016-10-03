@@ -281,7 +281,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         
         textField.delegate = self
         textField.tintColor = UIColor.white
-        
+        textField.font = StyleFormatter.preferredFontForContext(FontDisplayContext.question)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -328,7 +328,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             
             if let theCell = cell as? EquationViewCell {
                 
-                let string = Glossary.formattedStringForQuestion(questionArray[(indexPath as NSIndexPath).row])
+                let string = questionArray[(indexPath as NSIndexPath).row]
                 
                 var cellIsOr = false
                 
@@ -336,7 +336,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                     cellIsOr = true
                     theCell.mainLabel.text = "  or  "
                 } else {
-                    theCell.mainLabel.text = string
+                    theCell.mainLabel.text = Glossary.formattedStringForQuestion(string)
                 }
                 
                 theCell.mainLabel.textColor = UIColor.white
@@ -430,12 +430,106 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     
     
     @IBAction func userPressedTapGesureRecogniser(_ sender: UITapGestureRecognizer) {
+        let menu = UIMenuController.shared
         
-        if self.isAnswerView == false && self.isEditing == false {
-            self.setEditingMode(editing: !isEditing, animated: true)
+        if menu.menuItems == nil {
+            menu.setTargetRect(self.view.frame, in: self.view)
+            
+            var menuItems = [UIMenuItem]()
+            
+            if canEdit() {
+                let menuItem = UIMenuItem(title: "Edit", action: #selector(QuestionCollectionViewController.pressedMenuItemEdit))
+                menuItems.append(menuItem)
+            }
+            
+            if canCopy() {
+                let menuItem = UIMenuItem(title: "Copy", action: #selector(QuestionCollectionViewController.pressedMenuItemCopy))
+                menuItems.append(menuItem)
+            }
+            
+            if canPaste() {
+                let menuItem = UIMenuItem(title: "Paste", action: #selector(QuestionCollectionViewController.pressedMenuItemPaste))
+                menuItems.append(menuItem)
+            }
+            
+            // TODO - When pasting
+            
+            self.becomeFirstResponder()
+            
+            menu.menuItems = menuItems
+            
+            menu.setMenuVisible(true, animated: true)
+        } else {
+            menu.menuItems = nil
+            menu.setMenuVisible(false, animated: true)
         }
     }
     
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
+    func pressedMenuItemEdit() {
+        if self.isAnswerView == false && self.isEditing == false {
+            self.setEditingMode(editing: !isEditing, animated: true)
+        }
+        
+        informDelegateOfTextChange()
+        
+        hideMenu()
+    }
+    
+    func canCopy() -> Bool {
+        if let bundle = questionBundle {
+            if let answer = bundle.answer {
+                if answer != "" {
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+    
+    func canEdit() -> Bool {
+        if isAnswerView == false {
+            return true
+        }
+        
+        return false
+    }
+    
+    func canPaste() -> Bool {
+        return canEdit()
+    }
+    
+    func pressedMenuItemCopy() {
+        if let bundle = questionBundle {
+            if let answer = bundle.answer {
+                let formattedAnswer = Glossary.formattedStringForQuestion(answer)
+                
+                let board = UIPasteboard.general
+                board.string = formattedAnswer
+            }
+        }
+        
+        hideMenu()
+    }
+    
+    func pressedMenuItemPaste() {
+        let board = UIPasteboard.general
+        if let string = board.string {
+            delegate?.textFieldChanged(string: string, view: self)
+        }
+        
+        hideMenu()
+    }
+    
+    func hideMenu() {
+        let menu = UIMenuController.shared
+        menu.menuItems = nil
+        menu.setMenuVisible(false, animated: true)
+    }
     
     @IBAction func pressDoneButton(_ sender: UIButton) {
         setEditingMode(editing: false, animated: true)
@@ -456,6 +550,11 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         informDelegateOfTextChange()
     }
     
+    
+    
+    func isQuestionEditting() -> Bool {
+        return !textField.isHidden
+    }
     
     
 }

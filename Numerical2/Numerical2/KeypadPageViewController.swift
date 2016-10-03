@@ -15,6 +15,7 @@ protocol KeypadPageViewDelegate {
 class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, KeypadDelegate {
     
     var delegate: KeypadDelegate?
+    
     var pageViewDelegate: KeypadPageViewDelegate?
     
     var pageViewController : UIPageViewController?
@@ -300,4 +301,5 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
             theDelegate.updatePageControl(currentPage, numberOfPages: numberOfPages)
         }
     }
+    
 }

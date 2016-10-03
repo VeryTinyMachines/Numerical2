@@ -124,21 +124,21 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="UN1-ku-fPN" detailTextLabel="Mqv-fj-mTl" style="IBUITableViewCellStyleValue1" id="qYX-SV-TdK" customClass="HistoryCell" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="1000" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qYX-SV-TdK" id="aDX-Et-5D5">
-                                            <frame key="frameInset" width="375" height="43.5"/>
+                                            <frame key="frameInset" width="1000" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UN1-ku-fPN">
-                                                    <frame key="frameInset" minX="15" minY="12" width="33.5" height="20.5"/>
+                                                    <frame key="frameInset" minX="164" minY="12" width="33.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mqv-fj-mTl">
-                                                    <frame key="frameInset" minX="316" minY="12" width="44" height="20.5"/>
+                                                    <frame key="frameInset" minX="792" minY="12" width="44" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -231,10 +231,10 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="OVu-2P-OWE"/>
                                 <exclude reference="4SU-1K-FSc"/>
                                 <exclude reference="Ga6-sF-w11"/>
                                 <exclude reference="b6X-qY-nYw"/>
-                                <exclude reference="OVu-2P-OWE"/>
                             </mask>
                         </variation>
                     </view>
@@ -460,7 +460,7 @@
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tID-n1-0sB" userLabel="Text Field">
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <action selector="textFieldChanged:" destination="lDj-q8-bEy" eventType="editingChanged" id="HHa-iu-KsD"/>
@@ -500,7 +500,7 @@
                             <constraint firstAttribute="trailing" secondItem="z9V-HG-Fcz" secondAttribute="trailing" id="Pi2-4P-jzh"/>
                             <constraint firstAttribute="bottom" secondItem="z9V-HG-Fcz" secondAttribute="bottom" id="dQF-KF-J1o"/>
                             <constraint firstItem="z9V-HG-Fcz" firstAttribute="top" secondItem="IXb-fI-W5R" secondAttribute="top" id="eSc-Y7-A8Y"/>
-                            <constraint firstItem="tID-n1-0sB" firstAttribute="leading" secondItem="IXb-fI-W5R" secondAttribute="leading" constant="6" id="fFH-CB-lXI"/>
+                            <constraint firstItem="tID-n1-0sB" firstAttribute="leading" secondItem="IXb-fI-W5R" secondAttribute="leading" constant="11" id="fFH-CB-lXI"/>
                             <constraint firstItem="FLF-lg-nWD" firstAttribute="height" secondItem="tID-n1-0sB" secondAttribute="height" id="hxR-or-gdk"/>
                             <constraint firstItem="FLF-lg-nWD" firstAttribute="centerY" secondItem="tID-n1-0sB" secondAttribute="centerY" id="isE-Zp-KUO"/>
                             <constraint firstItem="tID-n1-0sB" firstAttribute="centerY" secondItem="IXb-fI-W5R" secondAttribute="centerY" id="r7X-qg-r2s"/>

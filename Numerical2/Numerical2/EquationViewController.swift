@@ -28,8 +28,6 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     
     var cursorPosition:Int?
     
-    @IBOutlet weak var textField: UITextField!
-    
     func pressedKey(_ key: Character) {
         
     }
@@ -52,12 +50,12 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         
         if let theQuestionView = questionView, var theQuestion = currentQuestion {
             
-            if theQuestion.rangeOfCharacter(from: CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz"), options: NSString.CompareOptions.caseInsensitive, range: nil) != nil {
-                
-                if let translatedString = NaturalLanguageParser.sharedInstance.translateString(theQuestion) {
-                    theQuestion = translatedString
-                }
-            }
+//            if theQuestion.rangeOfCharacter(from: CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz"), options: NSString.CompareOptions.caseInsensitive, range: nil) != nil {
+//                
+//                if let translatedString = NaturalLanguageParser.sharedInstance.translateString(theQuestion) {
+//                    theQuestion = translatedString
+//                }
+//            }
             
 //            let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(theQuestion)
             
@@ -79,14 +77,6 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     }
     
     
-    func textFieldDidChange(_ textField: UITextField) {
-        print("textFieldDidChange:")
-        if let theDelegate = delegate, let theText = textField.text {
-            theDelegate.questionChanged(theText, overwrite: false)
-        }
-    }
-    
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "QuestionView" {
@@ -105,53 +95,11 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     }
     
     
-    @IBAction func pressChangeInput(_ sender: AnyObject) {
-        
-        if textField.isHidden == true {
-            if let theQuestionView = questionView {
-                theQuestionView.view.isHidden = true
-            }
-            
-            textField.isHidden = false
-            
-            if let theCurrentQuestion = currentQuestion {
-                textField.text = Glossary.formattedStringForQuestion(theCurrentQuestion)
-            }
-            
-            textField.becomeFirstResponder()
-
-        } else {
-            if let theQuestionView = questionView {
-                theQuestionView.view.isHidden = false
-            }
-            
-            textField.isHidden = true
-
-            textField.resignFirstResponder()
-            
-            if let theDelegate = delegate, let theText = textField.text {
-                theDelegate.questionChanged(theText, overwrite: true)
-            }
-            
-            updateView()
-        }
-    }
-    
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        if let theQuestionView = questionView {
-            theQuestionView.view.isHidden = false
+    func isQuestionEditting() -> Bool {
+        if let questionView = questionView {
+            return questionView.isQuestionEditting()
         }
         
-        textField.isHidden = true
-        
-        if let theDelegate = delegate, let theText = textField.text {
-            theDelegate.questionChanged(theText, overwrite: true)
-        }
-        
-        textField.resignFirstResponder()
-        
-        return true
+        return false
     }
 }

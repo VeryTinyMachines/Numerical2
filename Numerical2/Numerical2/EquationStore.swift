@@ -210,8 +210,6 @@ class EquationStore {
         } else {
             print("No saves necessary")
         }
-        
-        printAllEquations()
     }
     
     func updateCloudKit() {
@@ -375,15 +373,15 @@ class EquationStore {
     func cloudFetchLatestEquations() {
         
         if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
-            var fetchDate = NSDate()
+            let fetchDate = NSDate()
             
             var query = CKQuery(recordType: "Equation", predicate: NSPredicate(value: true))
             
             if let lastFetchDate = lastFetchDate {
-                query = CKQuery(recordType: "Equation", predicate: NSPredicate(format: "equationLastModifiedDate > %@", lastFetchDate))
+                query = CKQuery(recordType: "Equation", predicate: NSPredicate(format: "modificationDate > %@", lastFetchDate))
             }
             
-            query.sortDescriptors = [NSSortDescriptor(key: "equationLastModifiedDate", ascending: false)]
+            query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
             
             privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
                 print(records)
@@ -403,9 +401,7 @@ class EquationStore {
     }
     
     func compareRecords(records: [CKRecord]) {
-        var needsToSave = false
-        
-        self.persistentContainer.performBackgroundTask { (context) in
+        DispatchQueue.main.async {
             for record in records {
                 
                 let name = record.recordID.recordName
@@ -443,7 +439,6 @@ class EquationStore {
                                     
                                     if preferRemoteCopy {
                                         fetchedEquation.updateTo(record: record)
-                                        needsToSave = true
                                     }
                                     
                                 }
@@ -452,7 +447,6 @@ class EquationStore {
                             } else {
                                 // Holy moley this is a new equation! Save it!
                                 let newEquation = self.newEquationFromCKRecord(record: record)
-                                needsToSave = true
                                 print("newEquation: \(newEquation)")
                             }
                             
@@ -462,8 +456,7 @@ class EquationStore {
             }
             
             self.queueSave()
-            
-            self.printAllEquations()
+
         }
     }
     
