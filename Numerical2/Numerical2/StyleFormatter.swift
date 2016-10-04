@@ -33,9 +33,11 @@ class StyleFormatter {
         }
     }
     
-    class func preferredFontForButtonOfSize(_ size: CGSize) -> UIFont {
+    class func preferredFontForButtonOfSize(_ size: CGSize, keyStyle: KeyStyle) -> UIFont {
         
-        return UIFont.systemFont(ofSize: 20.0)
+        let font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
+        
+        return UIFont.systemFont(ofSize: font.pointSize * 1.1)
     }
     
 }

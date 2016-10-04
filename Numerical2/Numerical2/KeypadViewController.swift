@@ -54,18 +54,13 @@ class KeypadViewController: UIViewController {
     
     func setupKeys() {
         
-        let compactStandard = [SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket, SymbolCharacter.delete, SymbolCharacter.divide, SymbolCharacter.multiply, SymbolCharacter.subtract, SymbolCharacter.add]
-        
-        let compactScientific = [SymbolCharacter.clear, SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", SymbolCharacter.delete, SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")"]
-        
-        let regular = [" ", SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", " ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")", SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket, SymbolCharacter.delete, SymbolCharacter.divide, SymbolCharacter.multiply, SymbolCharacter.subtract, SymbolCharacter.add]
         
         if layoutType == KeypadLayout.compactStandard {
-            keyCharacters = compactStandard
+            keyCharacters = SymbolCharacter.compactStandard
         } else if layoutType == KeypadLayout.compactScientific {
-            keyCharacters = compactScientific
+            keyCharacters = SymbolCharacter.compactScientific
         } else if layoutType == KeypadLayout.regular {
-            keyCharacters = regular
+            keyCharacters = SymbolCharacter.regular
         }
         
         for button in buttons {
@@ -94,9 +89,6 @@ class KeypadViewController: UIViewController {
                     
                     button.setTitle(formattedCharacter, for: UIControlState())
                 }
-                
-                print(button.bounds.size)
-                button.titleLabel?.font = StyleFormatter.preferredFontForButtonOfSize(button.bounds.size)
             }
         }
     }
@@ -158,26 +150,18 @@ class KeypadViewController: UIViewController {
                     
                     print("tag: \(tag)  character: \(character)  contains: \(currentLegalKeys.contains(character))")
                     
-                    if currentLegalKeys.contains(character) {
-                        // This button is legal
-                        button.alpha = 1.0
-                        button.isEnabled = true
-                    } else {
-                        if button.titleLabel?.text == "" {
-                            // This button is not legal
-                            button.alpha = 0.0
-                            button.isEnabled = false
-                        } else {
-                            // This button is not legal
-                            button.alpha = 0.8
-                            button.isEnabled = false
-                        }
+                    
+                    // Change button design depending on the user state
+                    if let style = PremiumCoordinator.shared.keyStyleFor(character: character) {
+                        button.keyStyle = style
+                        button.isEnabled = currentLegalKeys.contains(character)
                     }
+                    
+                    button.updateEnabledState()
+                    
                     
                     // Set the smart bracket button
                     if character == SymbolCharacter.smartBracket {
-                        print("")
-                        
                         if currentLegalKeys.contains("(") {
                             button.setTitle("(", for: UIControlState())
                         } else if currentLegalKeys.contains(")") {
@@ -197,8 +181,6 @@ class KeypadViewController: UIViewController {
                         button.alpha = 1.0
                         button.isEnabled = true
                     }
-                    
-                    button.titleLabel?.font = StyleFormatter.preferredFontForButtonOfSize(button.frame.size)
                 }
             }
         }

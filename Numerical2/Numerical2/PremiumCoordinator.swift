@@ -17,9 +17,20 @@ class Theme {
     var title = ""
 }
 
+public enum KeyStyle {
+    case Available // A normal button
+    case AvailablePremium // A usually premium button that is now available (trial mode)
+    case PremiumRequired // A premium button, locked from the user.
+}
+
 class PremiumCoordinator {
     
     static let shared = PremiumCoordinator()
+    
+    lazy var legacyThemeUser: Bool = {
+        return UserDefaults.standard.bool(forKey: "ThemePack001")
+    }()
+    
     private init() {} //This prevents others from using the default '()' initializer for this class.
     
     lazy var themes:[Theme] = {
@@ -85,10 +96,7 @@ class PremiumCoordinator {
     
     
     func imageForCurrentTheme() -> UIImage? {
-        
         return imageForTheme(string: currentTheme())
-        
-        return nil
     }
     
     func setTheme(string: String?) {
@@ -102,6 +110,54 @@ class PremiumCoordinator {
         
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
+        }
+    }
+    
+    func canAccessThemes() -> Bool {
+        if isUserPremium() || isUserInTrial() || self.legacyThemeUser {
+            return true
+        }
+        return false
+    }
+    
+    
+    func isUserPremium() -> Bool {
+        return false
+    }
+    
+    
+    func isUserInTrial() -> Bool {
+        return false
+    }
+    
+    
+    func canAccessKey(character: Character) -> Bool {
+        // temp - pretend all operators are premium
+        if SymbolCharacter.operators.contains(character) {
+            return false
+        }
+        
+        return true
+    }
+    
+    
+    func keyStyleFor(character: Character) -> KeyStyle? {
+        if canAccessKey(character: character) {
+            // This is a normal key
+            return KeyStyle.Available
+        } else {
+            // This key is usually premium, determine what kind of style is required.
+            
+            if isUserPremium() {
+                // This user is premium and can access everything.
+                return KeyStyle.Available
+            } else if isUserInTrial() {
+                // This user isn't premium but they are in a trial.
+                return KeyStyle.AvailablePremium
+            } else {
+                // This is a non premium, non trial user, they cannot access this key.
+                return KeyStyle.PremiumRequired
+            }
         }
     }
 }

@@ -147,7 +147,12 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         case .share:
             self.share(string: "http://itunes.apple.com/app/id804548449&mt=8")
         case .themeSelector:
-            presentThemeSelector()
+            if PremiumCoordinator.shared.canAccessThemes() {
+                presentThemeSelector()
+            } else {
+                presentSalesScreen(type: SalesScreenType.scientificKey)
+            }
+            
         case .website:
             self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical")
         case .cloudSync:

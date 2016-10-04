@@ -9,6 +9,13 @@
 import UIKit
 import MessageUI
 
+
+public enum SalesScreenType {
+    case theme
+    case themeCreator
+    case scientificKey
+}
+
 class NumericalViewController: UIViewController, MFMailComposeViewControllerDelegate {
     
     func notifyUser(title: String?, message: String?) {
@@ -80,4 +87,9 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
             
         }
     }
+    
+    func presentSalesScreen(type: SalesScreenType?) {
+        self.notifyUser(title: "Sales Screen", message: "\(type)")
+    }
+    
 }

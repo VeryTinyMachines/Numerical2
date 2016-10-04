@@ -33,11 +33,10 @@ class KeyStackView: UIStackView {
                 
                 key.setTitle(formattedCharacter, for: UIControlState())
                 
-                let headlineFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
-                let newTitleFont = UIFont(name: headlineFont.fontName, size: headlineFont.pointSize * 1.2)
-                
-                if key.titleLabel?.font != newTitleFont {
-                    key.titleLabel?.font = newTitleFont
+                if PremiumCoordinator.shared.canAccessKey(character: theCharacter) {
+                    key.titleLabel?.font = UIFont.italicSystemFont(ofSize: 12.0)
+                } else {
+                    key.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
                 }
             }
         }

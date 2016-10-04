@@ -64,6 +64,12 @@
 		5131971A1B6ADD5900E9B802 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 513197181B6ADD5900E9B802 /* LaunchScreen.storyboard */; };
 		513197251B6ADD5900E9B802 /* Numerical2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513197241B6ADD5900E9B802 /* Numerical2Tests.swift */; };
 		513197301B6ADD5900E9B802 /* Numerical2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */; };
+		5142AE3C1DA420EE0076D117 /* 5_Star-(alt).png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE361DA420EE0076D117 /* 5_Star-(alt).png */; };
+		5142AE3D1DA420EE0076D117 /* 5_Star.png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE371DA420EE0076D117 /* 5_Star.png */; };
+		5142AE3E1DA420EE0076D117 /* 54_Lock-(alt).png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE381DA420EE0076D117 /* 54_Lock-(alt).png */; };
+		5142AE3F1DA420EE0076D117 /* 54_Lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE391DA420EE0076D117 /* 54_Lock.png */; };
+		5142AE401DA420EE0076D117 /* 55_Lock-Open-(alt).png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE3A1DA420EE0076D117 /* 55_Lock-Open-(alt).png */; };
+		5142AE411DA420EE0076D117 /* 55_Lock-Open.png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE3B1DA420EE0076D117 /* 55_Lock-Open.png */; };
 		517470CC1D95C7B000E70A74 /* EquationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517470CB1D95C7B000E70A74 /* EquationStore.swift */; };
 		517470CE1D95D35100E70A74 /* DataKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517470CD1D95D35100E70A74 /* DataKeyStore.swift */; };
 		518A8BA61D96FAC0001D8B12 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A8BA51D96FAC0001D8B12 /* HistoryViewController.swift */; };
@@ -185,6 +191,12 @@
 		5131972B1B6ADD5900E9B802 /* Numerical2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Numerical2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numerical2UITests.swift; sourceTree = "<group>"; };
 		513197311B6ADD5900E9B802 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5142AE361DA420EE0076D117 /* 5_Star-(alt).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5_Star-(alt).png"; sourceTree = "<group>"; };
+		5142AE371DA420EE0076D117 /* 5_Star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5_Star.png; sourceTree = "<group>"; };
+		5142AE381DA420EE0076D117 /* 54_Lock-(alt).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "54_Lock-(alt).png"; sourceTree = "<group>"; };
+		5142AE391DA420EE0076D117 /* 54_Lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 54_Lock.png; sourceTree = "<group>"; };
+		5142AE3A1DA420EE0076D117 /* 55_Lock-Open-(alt).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "55_Lock-Open-(alt).png"; sourceTree = "<group>"; };
+		5142AE3B1DA420EE0076D117 /* 55_Lock-Open.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "55_Lock-Open.png"; sourceTree = "<group>"; };
 		517470CB1D95C7B000E70A74 /* EquationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquationStore.swift; sourceTree = "<group>"; };
 		517470CD1D95D35100E70A74 /* DataKeyStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataKeyStore.swift; sourceTree = "<group>"; };
 		518A8BA51D96FAC0001D8B12 /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
@@ -315,8 +327,9 @@
 			isa = PBXGroup;
 			children = (
 				5131970F1B6ADD5900E9B802 /* AppDelegate.swift */,
+				512137BE1D969F280042EFC1 /* NumericalViewController.swift */,
 				512137C21D96AAF70042EFC1 /* ThemesList.plist */,
-				512137C01D96A76F0042EFC1 /* PremiumCoordinator.swift */,
+				5142AE351DA420D70076D117 /* Premium */,
 				512138251D96F7590042EFC1 /* Equation+CoreDataClass.swift */,
 				512138261D96F7590042EFC1 /* Equation+CoreDataProperties.swift */,
 				512137BC1D969C760042EFC1 /* NumericalHelper.swift */,
@@ -326,7 +339,6 @@
 				512138231D96F6770042EFC1 /* CoreData.xcdatamodel */,
 				51B2A29E1D95C304002A9AD8 /* Pad.swift */,
 				5685FE991BCACBB30019BC04 /* Numerical2-Bridging-Header.h */,
-				512137BE1D969F280042EFC1 /* NumericalViewController.swift */,
 				5685FE9D1BCAE32B0019BC04 /* IAP */,
 				5685FE8F1BCACA490019BC04 /* OpenEars */,
 				51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */,
@@ -359,6 +371,20 @@
 				513197311B6ADD5900E9B802 /* Info.plist */,
 			);
 			path = Numerical2UITests;
+			sourceTree = "<group>";
+		};
+		5142AE351DA420D70076D117 /* Premium */ = {
+			isa = PBXGroup;
+			children = (
+				512137C01D96A76F0042EFC1 /* PremiumCoordinator.swift */,
+				5142AE361DA420EE0076D117 /* 5_Star-(alt).png */,
+				5142AE371DA420EE0076D117 /* 5_Star.png */,
+				5142AE381DA420EE0076D117 /* 54_Lock-(alt).png */,
+				5142AE391DA420EE0076D117 /* 54_Lock.png */,
+				5142AE3A1DA420EE0076D117 /* 55_Lock-Open-(alt).png */,
+				5142AE3B1DA420EE0076D117 /* 55_Lock-Open.png */,
+			);
+			name = Premium;
 			sourceTree = "<group>";
 		};
 		518A8BA71D9703E0001D8B12 /* Frameworks */ = {
@@ -628,9 +654,11 @@
 				512137F21D96ADEB0042EFC1 /* leaves001@2x.jpg in Resources */,
 				512137F51D96ADEB0042EFC1 /* orange001@2x.jpg in Resources */,
 				51279AE31B739D260036DF3D /* KeyStackView.xib in Resources */,
+				5142AE3C1DA420EE0076D117 /* 5_Star-(alt).png in Resources */,
 				5685FE951BCACA490019BC04 /* AcousticModelSpanish.bundle in Resources */,
 				512137F01D96ADEB0042EFC1 /* leaves001thumbnail@1x.jpg in Resources */,
 				512137F91D96ADEB0042EFC1 /* sand001-thumbnail@1x.jpg in Resources */,
+				5142AE3E1DA420EE0076D117 /* 54_Lock-(alt).png in Resources */,
 				512137EC1D96ADEB0042EFC1 /* cloud001@2x.jpg in Resources */,
 				512137F61D96ADEB0042EFC1 /* purple001-thumbnail@1x.jpg in Resources */,
 				512137F71D96ADEB0042EFC1 /* purple001-thumbnail@2x.jpg in Resources */,
@@ -646,13 +674,16 @@
 				512137FA1D96ADEB0042EFC1 /* sand001-thumbnail@2x.jpg in Resources */,
 				512137E51D96ADEB0042EFC1 /* pink001-thumbnail@2x.jpg in Resources */,
 				51D28B101B6D0FE1009A0AEC /* EquationViewCell.xib in Resources */,
+				5142AE411DA420EE0076D117 /* 55_Lock-Open.png in Resources */,
 				512137E71D96ADEB0042EFC1 /* blue001-thumbnail@1x.jpg in Resources */,
 				512138001D96ADEB0042EFC1 /* water001-thumbnail@2x.jpg in Resources */,
 				513197171B6ADD5900E9B802 /* Assets.xcassets in Resources */,
+				5142AE401DA420EE0076D117 /* 55_Lock-Open-(alt).png in Resources */,
 				512137F41D96ADEB0042EFC1 /* orange001-thumbnail@2x.jpg in Resources */,
 				512137C31D96AAF70042EFC1 /* ThemesList.plist in Resources */,
 				512138011D96ADEB0042EFC1 /* water001@2x.jpg in Resources */,
 				512137E91D96ADEB0042EFC1 /* blue001@2x.jpg in Resources */,
+				5142AE3D1DA420EE0076D117 /* 5_Star.png in Resources */,
 				512137E41D96ADEB0042EFC1 /* pink001-thumbnail@1x.jpg in Resources */,
 				512137E61D96ADEB0042EFC1 /* pink001@2x.jpg in Resources */,
 				512137EE1D96ADEB0042EFC1 /* dark001-thumbnail@2x.jpg in Resources */,
@@ -661,6 +692,7 @@
 				51D28B4E1B6D1BA9009A0AEC /* FractionViewCell.xib in Resources */,
 				5125B49D1C9EA66C006D7BDC /* background@2x.jpg in Resources */,
 				512137FC1D96ADEB0042EFC1 /* space001-thumbnail@1x.jpg in Resources */,
+				5142AE3F1DA420EE0076D117 /* 54_Lock.png in Resources */,
 				512137FB1D96ADEB0042EFC1 /* sand001@2x.jpg in Resources */,
 				512137EB1D96ADEB0042EFC1 /* cloud001-thumbnail@2x.jpg in Resources */,
 				513197151B6ADD5900E9B802 /* Main.storyboard in Resources */,

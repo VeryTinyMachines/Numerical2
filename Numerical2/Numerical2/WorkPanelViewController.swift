@@ -12,7 +12,7 @@ protocol WorkPanelDelegate {
     func updateEquation(_ equation: Equation?)
 }
 
-class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewDelegate, EquationTextFieldDelegate, QuestionCollectionViewDelegate {
+class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPageViewDelegate, EquationTextFieldDelegate, QuestionCollectionViewDelegate {
     
     @IBOutlet weak var equationViewHeightConstraint: NSLayoutConstraint!
     
@@ -67,7 +67,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                 theView.setQuestion(question, cursorPosition: currentCursor)
                 
                 // Solve this question
-                
                 
                 let originalRequestEquation = currentEquation
                 
@@ -169,6 +168,13 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
     
     func pressedKey(_ key: Character) {
         print("pressedKey in WPVC")
+        
+        // Check if this key is premium and what the expected behaviour is.
+        
+        if PremiumCoordinator.shared.canAccessKey(character: key) == false {
+            self.presentSalesScreen(type: SalesScreenType.scientificKey)
+            return
+        }
         
         // A key has been pressed, determine if we should be inserting this character at the end of the string or somewhere in the middle
         var newCursorPosition:Int?
@@ -487,7 +493,6 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
             
             theView.delegate = self
             theView.questionTextDelegate = self
-            
             
             equationView = theView
             

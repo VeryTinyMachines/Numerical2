@@ -118,7 +118,7 @@ class NumberTerm {
 public enum ErrorType:String {
     case unknown = "ErrorType.unknown"
     case divideByZero = "ErrorType.divideByZero"
-    case imaginaryNumbersRequiredToSolve = "ErrorType.imaginaryNumbersRequiredToSolve"
+    case imaginaryNumbersRequired = "ErrorType.imaginaryNumbersRequired"
     case overflow = "ErrorType.overflow"
     case underflow = "ErrorType.underflow"
 }
@@ -1518,7 +1518,7 @@ open class Evaluator {
                     
                     if leftDecimalNumber.doubleValue < 0 {
                         
-                        return AnswerBundle(error: ErrorType.imaginaryNumbersRequiredToSolve)
+                        return AnswerBundle(error: ErrorType.imaginaryNumbersRequired)
                         
                     } else {
                         

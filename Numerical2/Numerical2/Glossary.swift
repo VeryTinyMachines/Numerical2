@@ -88,6 +88,12 @@ public struct SymbolCharacter {
     public static let preOperatorStringArray:[String] = [String(SymbolCharacter.sqrt), String(SymbolCharacter.sin), String(SymbolCharacter.cos), String(SymbolCharacter.tan), String(SymbolCharacter.log), String(SymbolCharacter.log2), String(SymbolCharacter.log10), String(SymbolCharacter.sinh), String(SymbolCharacter.cosh), String(SymbolCharacter.tanh)]
     
     public static let midOperatorStringArray:[String] = [String(SymbolCharacter.add), String(SymbolCharacter.subtract), String(SymbolCharacter.multiply), String(SymbolCharacter.divide), String(SymbolCharacter.exponent), String(SymbolCharacter.fraction), String(SymbolCharacter.ee)]
+    
+    public static let compactStandard:[Character] = [SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket, SymbolCharacter.delete, SymbolCharacter.divide, SymbolCharacter.multiply, SymbolCharacter.subtract, SymbolCharacter.add]
+    
+    public static let compactScientific:[Character] = [SymbolCharacter.clear, SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", SymbolCharacter.delete, SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")"]
+    
+    public static let regular:[Character] = [" ", SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", " ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")", SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket, SymbolCharacter.delete, SymbolCharacter.divide, SymbolCharacter.multiply, SymbolCharacter.subtract, SymbolCharacter.add]
 }
 
 
@@ -199,7 +205,7 @@ open class Glossary {
         
         if string == ErrorType.divideByZero.rawValue {
             formattedString = "Division By Zero"
-        } else if string == ErrorType.imaginaryNumbersRequiredToSolve.rawValue {
+        } else if string == ErrorType.imaginaryNumbersRequired.rawValue {
             formattedString = "Imaginary Number Required To Solve"
         } else if string == ErrorType.overflow.rawValue {
             formattedString = "Overflow Error"
