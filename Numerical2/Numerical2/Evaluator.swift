@@ -115,12 +115,12 @@ class NumberTerm {
     }
 }
 
-public enum ErrorType {
-    case unknown
-    case divideByZero
-    case imaginaryNumbersRequiredToSolve
-    case overflow
-    case underflow
+public enum ErrorType:String {
+    case unknown = "ErrorType.unknown"
+    case divideByZero = "ErrorType.divideByZero"
+    case imaginaryNumbersRequiredToSolve = "ErrorType.imaginaryNumbersRequiredToSolve"
+    case overflow = "ErrorType.overflow"
+    case underflow = "ErrorType.underflow"
 }
 
 open class AnswerBundle {

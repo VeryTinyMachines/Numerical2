@@ -68,27 +68,44 @@ class WorkPanelViewController: UIViewController, KeypadDelegate, KeypadPageViewD
                 
                 // Solve this question
                 
+                
+                let originalRequestEquation = currentEquation
+                
                 CalculatorBrain.sharedBrain.solveStringAsyncQueue(question, completion: { (answer: AnswerBundle) -> Void in
-                    self.currentEquation?.answer = answer.answer
-//                    EquationStore.sharedStore.save()
                     
-                    if let equation = self.currentEquation {
-                        equation.answer = answer.answer
+                    if self.currentEquation == originalRequestEquation {
+                        
+                        if let error = answer.errorType {
+                            self.currentEquation?.answer = error.rawValue
+                        } else {
+                            self.currentEquation?.answer = answer.answer
+                        }
+                        
+                        theView.setAnswer(answer)
+                        
+                        EquationStore.sharedStore.queueSave()
+                        
+                        /*
+                        if let equation = self.currentEquation {
+                            equation.answer = answer.answer
+                            
+                            print("answer.answer: \(answer.answer)")
+                         
+                            var latestEquationDict = [String:String]()
+                            latestEquationDict[EquationStringKey] = question
+                            
+                            if let theAnswer = answer.answer {
+                                latestEquationDict[AnswerStringKey] = theAnswer
+                            } else {
+                                latestEquationDict[AnswerStringKey] = "Error"
+                            }
+                            
+                            print("latestEquationDict (to send): \(latestEquationDict)")
+                            //                    WatchCommunicator.latestEquationDict = latestEquationDict
+ 
+                        }
+ */
                     }
-                    
-                    theView.setAnswer(answer)
-                    
-                    var latestEquationDict = [String:String]()
-                    latestEquationDict[EquationStringKey] = question
-                    
-                    if let theAnswer = answer.answer {
-                        latestEquationDict[AnswerStringKey] = theAnswer
-                    } else {
-                        latestEquationDict[AnswerStringKey] = "Error"
-                    }
-                    
-                    print("latestEquationDict (to send): \(latestEquationDict)")
-//                    WatchCommunicator.latestEquationDict = latestEquationDict
                 })
                 
             } else {

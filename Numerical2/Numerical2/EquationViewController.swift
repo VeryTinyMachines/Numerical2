@@ -48,7 +48,7 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     
     func updateView() {
         
-        if let theQuestionView = questionView, var theQuestion = currentQuestion {
+        if let theQuestionView = questionView, let theQuestion = currentQuestion {
             
 //            if theQuestion.rangeOfCharacter(from: CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz"), options: NSString.CompareOptions.caseInsensitive, range: nil) != nil {
 //                

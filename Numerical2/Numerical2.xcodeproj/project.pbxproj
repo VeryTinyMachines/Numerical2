@@ -385,7 +385,7 @@
 			children = (
 				512137C51D96ADEB0042EFC1 /* Themes */,
 				513197111B6ADD5900E9B802 /* ViewController.swift */,
-				51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */,
+				51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */,
 				51D7A8391BBA7D4A0064AA4B /* Work Panel View Controller */,
 				51D7A8381BBA7D3D0064AA4B /* History View Controller */,
 			);
@@ -404,7 +404,7 @@
 		51D7A8391BBA7D4A0064AA4B /* Work Panel View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */,
+				51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */,
 				51D7A83B1BBA7D740064AA4B /* Equation View Controller */,
 				51D7A83A1BBA7D670064AA4B /* Key Panel View Controller */,
 			);
@@ -870,6 +870,7 @@
 				CODE_SIGN_ENTITLEMENTS = Numerical2/Numerical2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = C583RN882K;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -895,6 +896,7 @@
 				CODE_SIGN_ENTITLEMENTS = Numerical2/Numerical2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = C583RN882K;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

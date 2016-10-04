@@ -29,7 +29,7 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         if let url = URL(string: urlString) {
             
             if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.openURL(url)
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {
                 notifyUser(title: "Error", message: "Could not open URL")
             }
@@ -66,7 +66,18 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
     }
     
     func share(string: String) {
+        let activityViewController = UIActivityViewController(activityItems: ["I'm using Numerical 2, the calculator without equal! http://www.verytinymachines.com/numerical" as NSString], applicationActivities: nil)
+        
+        present(activityViewController, animated: true) { 
+            
+        }
         
     }
     
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        // User has finished with this email dialogue, just dismiss it.
+        controller.dismiss(animated: true) { 
+            
+        }
+    }
 }

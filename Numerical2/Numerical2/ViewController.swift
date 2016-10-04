@@ -138,7 +138,7 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
                 let verticalDeltaPercentage = verticalDelta / view.bounds.height
                 
                 if panning == false {
-                    if verticalDelta > 50 || verticalDelta < -50 {
+                    if verticalDelta > 30 || verticalDelta < -30 {
                         
                         panning = true
                         
@@ -148,16 +148,18 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
                         
                         updateWorkPanelForHeight(Float(newHeight))
                         
-                        if workPanelVerticalSpeed > -10 && workPanelVerticalSpeed < 10 {
-                            // Panel is moving slowly
-                            UIView.animate(withDuration: 0.25, animations: {
-                                self.view.layoutIfNeeded()
-                                }, completion: { (complet) in
-                                    
-                            })
-                        } else {
-                            self.view.layoutIfNeeded()
-                        }
+//                        if workPanelVerticalSpeed > -5 && workPanelVerticalSpeed < 5 {
+//                            // Panel is moving slowly
+//                            UIView.animate(withDuration: 0.15, animations: {
+//                                self.view.layoutIfNeeded()
+//                                }, completion: { (complet) in
+//                                    
+//                            })
+//                        } else {
+//                            self.view.layoutIfNeeded()
+//                        }
+                        
+                        self.view.layoutIfNeeded()
                         
                     }
                 } else {

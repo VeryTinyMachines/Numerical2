@@ -53,24 +53,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             } else if let errorType = self.questionBundle?.errorType {
                 // There is an error
                 
-                var errorString:String?
-                
-                switch errorType {
-                case ErrorType.divideByZero:
-                    errorString = "Division by zero"
-                case ErrorType.imaginaryNumbersRequiredToSolve:
-                    errorString = "Imginary numbers required to solve"
-                case ErrorType.overflow:
-                    errorString = "Overflow error"
-                case ErrorType.underflow:
-                    errorString = "Underflow error"
-                default:
-                    errorString = "Error"
-                }
-                
-                if let theErrorString = errorString {
-                    self.questionArray = [theErrorString]
-                }
+                self.questionArray = [errorType.rawValue]
                 
                 self.reloadCollectionView()
             }
@@ -223,9 +206,9 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         collecitonView.reloadData()
         
         if questionArray.count > 0 {
-            let lastItem = questionArray.count - 1
-            
             DispatchQueue.main.async {
+                let lastItem = self.questionArray.count - 1
+                
                 if self.isAnswerView {
                     self.collecitonView.scrollToItem(at: IndexPath(item: 0, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
                 } else if lastItem > 0 {
@@ -452,6 +435,13 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                 menuItems.append(menuItem)
             }
             
+            if canPasteAppend() {
+                let menuItem = UIMenuItem(title: "Paste At End", action: #selector(QuestionCollectionViewController.pressedMenuItemPasteAppend))
+                menuItems.append(menuItem)
+            }
+            
+            
+            
             // TODO - When pasting
             
             self.becomeFirstResponder()
@@ -500,7 +490,29 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
     }
     
     func canPaste() -> Bool {
-        return canEdit()
+        if canEdit() {
+            let board = UIPasteboard.general
+            if let _ = board.string {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    func canPasteAppend() -> Bool {
+        // If there is already something in this question then we append it
+        if canPaste() {
+            if let bundle = questionBundle {
+                if let answer = bundle.answer {
+                    if answer.characters.count > 0 {
+                        return true
+                    }
+                }
+            }
+        }
+        
+        return false
     }
     
     func pressedMenuItemCopy() {
@@ -520,6 +532,24 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         let board = UIPasteboard.general
         if let string = board.string {
             delegate?.textFieldChanged(string: string, view: self)
+        }
+        
+        hideMenu()
+    }
+    
+    func pressedMenuItemPasteAppend() {
+        let board = UIPasteboard.general
+        if let string = board.string {
+            
+            var newString:String = string
+            
+            if let bundle = questionBundle {
+                if let answer = bundle.answer {
+                    newString = string + answer
+                }
+            }
+            
+            delegate?.textFieldChanged(string: newString, view: self)
         }
         
         hideMenu()

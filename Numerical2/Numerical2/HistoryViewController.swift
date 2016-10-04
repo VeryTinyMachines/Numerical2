@@ -287,42 +287,44 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
     ask `NSFetchedResultsController` for the model */
     func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
             
-            if let equation = fetchedResultsController.object(at: indexPath) as? Equation {
-                if let answer = equation.answer, let question = equation.question, let sortOrder = equation.sortOrder {
-                    
-                    let formattedQuestion = Glossary.formattedStringForQuestion(question)
-                    let formattedAnswer = Glossary.formattedStringForQuestion(answer)
-                    
-                    cell.textLabel?.text = "\(formattedQuestion) = \(formattedAnswer)"
-                    cell.detailTextLabel?.text = ""
-                    
-                    if let posted = equation.posted?.boolValue {
-                        if posted == false && NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
-                            cell.detailTextLabel?.text = "..."
-                        }
-                    }
-                    
-                } else {
-                    cell.textLabel?.text = ""
-                }
-                
-//                cell.backgroundColor = UIColor(red: 0.0/255.0, green: 11.0/255.0, blue: 24.0/255.0, alpha: 1.0)
-                cell.backgroundColor = UIColor.clear
-                cell.textLabel?.textColor = UIColor(white: 0.6, alpha: 1.0)
-                
-                if equation == currentEquation {
-                    cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15.0)
-                    cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 1.0)
-                } else {
-                    cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0)
-                    cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 0.8)
-                }
-                
-                cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 15.0)
-                cell.detailTextLabel?.textColor = UIColor(white: 1.0, alpha: 0.8)
-                
+        let equation = fetchedResultsController.object(at: indexPath)
+        
+        var answer = "No answer"
+        var question = "No question"
+        
+        if let theAnswer = equation.answer {
+            answer = Glossary.formattedStringForQuestion(theAnswer)
+        }
+        
+        if let theQuestion = equation.question {
+            question = Glossary.formattedStringForQuestion(theQuestion)
+        }
+        
+        // TODO - need a better way of describing if an answer or question need formatting or not.
+        
+        cell.textLabel?.text = "\(question) = \(answer)"
+        cell.detailTextLabel?.text = ""
+        
+        if let posted = equation.posted?.boolValue {
+            if posted == false && NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
+                cell.detailTextLabel?.text = "..."
             }
-            
+        }
+        
+        //                cell.backgroundColor = UIColor(red: 0.0/255.0, green: 11.0/255.0, blue: 24.0/255.0, alpha: 1.0)
+        cell.backgroundColor = UIColor.clear
+        cell.textLabel?.textColor = UIColor(white: 0.6, alpha: 1.0)
+        
+        if equation == currentEquation {
+            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 15.0)
+            cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 1.0)
+        } else {
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15.0)
+            cell.textLabel?.textColor = UIColor(white: 1.0, alpha: 0.8)
+        }
+        
+        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 15.0)
+        cell.detailTextLabel?.textColor = UIColor(white: 1.0, alpha: 0.8)
     }
     
     // fetched results controller delegate

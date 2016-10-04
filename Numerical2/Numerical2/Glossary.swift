@@ -197,8 +197,20 @@ open class Glossary {
         
         var formattedString = ""
         
-        for character in string.characters {
-            formattedString += formattedStringForCharacter(character)
+        if string == ErrorType.divideByZero.rawValue {
+            formattedString = "Division By Zero"
+        } else if string == ErrorType.imaginaryNumbersRequiredToSolve.rawValue {
+            formattedString = "Imaginary Number Required To Solve"
+        } else if string == ErrorType.overflow.rawValue {
+            formattedString = "Overflow Error"
+        } else if string == ErrorType.underflow.rawValue {
+            formattedString = "Underflow Error"
+        } else if string == ErrorType.unknown.rawValue {
+            formattedString = "Error"
+        } else {
+            for character in string.characters {
+                formattedString += formattedStringForCharacter(character)
+            }
         }
         
         return formattedString
