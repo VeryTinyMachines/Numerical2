@@ -55,6 +55,12 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     }
     
     func updatePageControl(_ currentPage: NSInteger, numberOfPages: NSInteger) {
+        if numberOfPages > 1 {
+            pageControl.isHidden = false
+        } else {
+            pageControl.isHidden = true
+        }
+        
         pageControl.numberOfPages = numberOfPages
         pageControl.currentPage = currentPage        
     }
@@ -166,12 +172,22 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         return false
     }
     
-    func pressedKey(_ key: Character) {
-        print("pressedKey in WPVC")
+    func pressedKey(_ key: Character, sourceView: UIView?) {
+        
+        // Check if the edit menu needed dismissing
+        if needsEditMenuDismissal() {
+            return
+        }
+        
+        // Check if this key is the settings button
+        if key == SymbolCharacter.settings {
+            // show settings view
+            self.presentSettings(sourceView: sourceView)
+            return
+        }
         
         // Check if this key is premium and what the expected behaviour is.
-        
-        if PremiumCoordinator.shared.canAccessKey(character: key) == false {
+        if PremiumCoordinator.shared.canUserAccessKey(character: key) == false {
             self.presentSalesScreen(type: SalesScreenType.scientificKey)
             return
         }
@@ -194,7 +210,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             
             EquationStore.sharedStore.setCurrentEquationID(string: nil)
         } else {
-            
             if currentEquation == nil {
                 
                 let theNewEquation = EquationStore.sharedStore.newEquation()
@@ -215,7 +230,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             
             if key == SymbolCharacter.delete {
                 // Delete
-                
                 newCursorPosition = updateCurrentQuestionByDeletingCurrentRange()
                 
             } else if key == SymbolCharacter.smartBracket {
@@ -234,7 +248,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 
             } else {
                 
-                if var question = equation.question {
+                if let question = equation.question {
                     
                     if Glossary.shouldAddClosingBracketToAppendString(question, newOperator: key) {
                         newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")"), key])
@@ -254,7 +268,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         updateLegalKeys()
         
         if let theDelegate = delegate {
-            theDelegate.pressedKey(key)
+            theDelegate.pressedKey(key, sourceView: sourceView)
         }
     }
     

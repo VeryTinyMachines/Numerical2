@@ -75,6 +75,8 @@ public struct SymbolCharacter {
     public static let multiply:Character = "*"
     public static let exponent:Character = "^"
     
+    public static let settings:Character = "ℹ︎"
+    
     public static let numbers:Set<Character> = ["0","1","2","3","4","5","6","7","8","9",".",SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, SymbolCharacter.fraction]
     
     public static let operators:Set<Character> = [SymbolCharacter.add, SymbolCharacter.subtract, SymbolCharacter.multiply, SymbolCharacter.divide, SymbolCharacter.exponent, SymbolCharacter.percentage, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage]
@@ -93,7 +95,12 @@ public struct SymbolCharacter {
     
     public static let compactScientific:[Character] = [SymbolCharacter.clear, SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", SymbolCharacter.delete, SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")"]
     
-    public static let regular:[Character] = [" ", SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", " ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")", SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket, SymbolCharacter.delete, SymbolCharacter.divide, SymbolCharacter.multiply, SymbolCharacter.subtract, SymbolCharacter.add]
+    public static let regularPhone:[Character] = [" ", SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", " ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")", SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket, SymbolCharacter.delete, SymbolCharacter.divide, SymbolCharacter.multiply, SymbolCharacter.subtract, SymbolCharacter.add]
+    
+    public static let regularPad:[Character] = [SymbolCharacter.settings, SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", " ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")", SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket, SymbolCharacter.delete, SymbolCharacter.divide, SymbolCharacter.multiply, SymbolCharacter.subtract, SymbolCharacter.add]
+    
+    public static let premiumOperators:Set<Character> = [SymbolCharacter.add, SymbolCharacter.subtract, SymbolCharacter.multiply, SymbolCharacter.divide, SymbolCharacter.exponent, SymbolCharacter.percentage, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage, SymbolCharacter.pi, SymbolCharacter.random, SymbolCharacter.e, SymbolCharacter.infinity]
+
 }
 
 
@@ -123,9 +130,8 @@ open class Glossary {
         SymbolCharacter.multiply:"×",
         SymbolCharacter.divide:"÷",
         SymbolCharacter.exponent:"^",
-        SymbolCharacter.sqrt:"√"
-    
-    
+        SymbolCharacter.sqrt:"√",
+        SymbolCharacter.settings:"≣"
     ]
     
     static let reverseFormattedLookup = [
@@ -381,58 +387,60 @@ open class Glossary {
     
     class func shouldAddClosingBracketToAppendString(_ string: String, newOperator: Character) -> Bool {
         
-        if newOperator == SymbolCharacter.multiply || newOperator == SymbolCharacter.divide {
-            let termArray = Evaluator.termArrayFromString(string, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
-            
-            if termArray.count > 1 {
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.autoBrackets) {
+            if newOperator == SymbolCharacter.multiply || newOperator == SymbolCharacter.divide {
+                let termArray = Evaluator.termArrayFromString(string, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
                 
-                // Iterate backwards through the term array.
-                
-                var currentBracketLevel = 0
-                let theOperator = OperandTerm()
-                let theNumber = NumberTerm()
-                
-                for index in 1...termArray.count {
+                if termArray.count > 1 {
                     
-                    let currentIndex = termArray.count - index
-                    let currentTerm = termArray[currentIndex]
+                    // Iterate backwards through the term array.
                     
-                    if currentTerm == ")" {
-                        currentBracketLevel += 1
-                    } else if currentTerm == "(" {
-                        currentBracketLevel -= 1
-                        if currentBracketLevel < 0 {
-                            break
-                        }
-                    } else {
+                    var currentBracketLevel = 0
+                    let theOperator = OperandTerm()
+                    let theNumber = NumberTerm()
+                    
+                    for index in 1...termArray.count {
                         
-                        // Need to find the first operator that is preceeded by a number.
+                        let currentIndex = termArray.count - index
+                        let currentTerm = termArray[currentIndex]
                         
-                        if theOperator.complete() {
-                            // Now process this next thing, which could be a number or an operator
-                            if theNumber.processTerm(currentTerm) {
-                                // We have theOperator AND theNumber - now we can check what the operator is
-                                
-                                let characterOperator = theOperator.characterValue()
-                                
-                                if characterOperator == SymbolCharacter.add || characterOperator == SymbolCharacter.subtract {
-                                    if currentBracketLevel == 0 {
-                                        return true
+                        if currentTerm == ")" {
+                            currentBracketLevel += 1
+                        } else if currentTerm == "(" {
+                            currentBracketLevel -= 1
+                            if currentBracketLevel < 0 {
+                                break
+                            }
+                        } else {
+                            
+                            // Need to find the first operator that is preceeded by a number.
+                            
+                            if theOperator.complete() {
+                                // Now process this next thing, which could be a number or an operator
+                                if theNumber.processTerm(currentTerm) {
+                                    // We have theOperator AND theNumber - now we can check what the operator is
+                                    
+                                    let characterOperator = theOperator.characterValue()
+                                    
+                                    if characterOperator == SymbolCharacter.add || characterOperator == SymbolCharacter.subtract {
+                                        if currentBracketLevel == 0 {
+                                            return true
+                                        } else {
+                                            theOperator.reset()
+                                            theNumber.reset()
+                                        }
                                     } else {
-                                        theOperator.reset()
-                                        theNumber.reset()
+                                        return false
                                     }
+                                    
+                                    
                                 } else {
-                                    return false
+                                    theOperator.processTerm(currentTerm)
                                 }
-                                
                                 
                             } else {
                                 theOperator.processTerm(currentTerm)
                             }
-                            
-                        } else {
-                            theOperator.processTerm(currentTerm)
                         }
                     }
                 }
@@ -471,21 +479,21 @@ open class Glossary {
         let mid = SymbolCharacter.midOperator
         let clear = Character("Z")
         let delete = Character("X")
+        let settings = SymbolCharacter.settings
         
         // Replace lastCharacter with pre/post/mid if appropriate
         
         var legalCombinations:[Character: String] =
-           ["n":"n\(mid))\(clear)\(delete)\(pre)\(post)",
-            "(":"n-\(clear)\(delete)\(pre)",
-            ")":"n)(\(clear)\(delete)\(pre)\(mid)\(post)",
-            "+":"n-+(\(clear)\(delete)\(pre)",
-            "-":"n-+(\(clear)\(delete)\(pre)",
-            mid: "n-(\(clear)\(delete)\(pre)",
-            pre: "n-(\(clear)\(delete)",
-            post:"n-+()\(clear)\(delete)\(pre)\(mid)\(post)",
-            " ":"n-(\(pre)",
-            "?":"n)(\(clear)\(delete)\(pre)\(mid)\(post)"]
-
+           ["n":"n\(mid))\(clear)\(delete)\(pre)\(post)\(settings)",
+            "(":"n-\(clear)\(delete)\(pre)\(settings)",
+            ")":"n)(\(clear)\(delete)\(pre)\(mid)\(post)\(settings)",
+            "+":"n-+(\(clear)\(delete)\(pre)\(settings)",
+            "-":"n-+(\(clear)\(delete)\(pre)\(settings)",
+            mid: "n-(\(clear)\(delete)\(pre)\(settings)",
+            pre: "n-(\(clear)\(delete)\(settings)",
+            post:"n-+()\(clear)\(delete)\(pre)\(mid)\(post)\(settings)",
+            " ":"n-(\(pre)\(settings)",
+            "?":"n)(\(clear)\(delete)\(pre)\(mid)\(post)\(settings)"]
         
         if var theLastCharacter = string.characters.last {
             print("theLastCharacter: \(theLastCharacter)")
@@ -559,6 +567,11 @@ open class Glossary {
                 // Add delete
                 if legalCharacterSet.contains(delete) {
                     legalCharacterSet.insert(SymbolCharacter.delete)
+                }
+                
+                // Add settings
+                if legalCharacterSet.contains(settings) {
+                    legalCharacterSet.insert(SymbolCharacter.settings)
                 }
                 
                 print("7 legalCharacterSet: \(legalCharacterSet)")

@@ -265,6 +265,11 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         textField.delegate = self
         textField.tintColor = UIColor.white
         textField.font = StyleFormatter.preferredFontForContext(FontDisplayContext.question)
+        textField.backgroundColor = UIColor.clear
+        textField.borderStyle = UITextBorderStyle.none
+        textField.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 5
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -440,10 +445,6 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
                 menuItems.append(menuItem)
             }
             
-            
-            
-            // TODO - When pasting
-            
             self.becomeFirstResponder()
             
             menu.menuItems = menuItems
@@ -545,7 +546,7 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
             
             if let bundle = questionBundle {
                 if let answer = bundle.answer {
-                    newString = string + answer
+                    newString = answer + string
                 }
             }
             

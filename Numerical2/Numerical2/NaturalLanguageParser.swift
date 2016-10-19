@@ -499,27 +499,29 @@ open class NaturalLanguageParser {
         
         // Automatically add brackets where appropriate.
         
-        if (newTermArray.count > 0) {
-            var stringBuffer = ""
-            
-            var index = 0
-            
-            while index < newTermArray.count - 1 {
-                let term = newTermArray[index]
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.autoBrackets) {
+            if (newTermArray.count > 0) {
+                var stringBuffer = ""
                 
-//                print("term: \(term)", appendNewline: false)
-                if Glossary.isStringOperator(term) {
-                    if Glossary.shouldAddClosingBracketToAppendString(stringBuffer, newOperator: Character(term)) {
-                        // Need to add a bracket
-                        newTermArray.insert(")", at: index)
-                        stringBuffer += ")"
-                        index += 1
-//                        print("Need to add a bracket", appendNewline: false)
+                var index = 0
+                
+                while index < newTermArray.count - 1 {
+                    let term = newTermArray[index]
+                    
+                    //                print("term: \(term)", appendNewline: false)
+                    if Glossary.isStringOperator(term) {
+                        if Glossary.shouldAddClosingBracketToAppendString(stringBuffer, newOperator: Character(term)) {
+                            // Need to add a bracket
+                            newTermArray.insert(")", at: index)
+                            stringBuffer += ")"
+                            index += 1
+                            //                        print("Need to add a bracket", appendNewline: false)
+                        }
                     }
+                    
+                    stringBuffer += term
+                    index += 1
                 }
-                
-                stringBuffer += term
-                index += 1
             }
         }
         

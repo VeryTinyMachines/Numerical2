@@ -14,7 +14,7 @@ public enum KeypadSize {
     case minimum
 }
 
-class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate {
+class ViewController: NumericalViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate {
     
     @IBOutlet weak var statusBarBlur: UIVisualEffectView!
     
@@ -44,7 +44,6 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         self.view.backgroundColor = UIColor.green
         
         presentKeypad()
-        
         themeChanged()
         
         DispatchQueue.main.async {
@@ -52,10 +51,8 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         }
     }
     
-    
     func themeChanged() {
         self.backgroundImageView.image = PremiumCoordinator.shared.imageForCurrentTheme()
-        
     }
     
     
@@ -114,6 +111,12 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
         let location = sender.location(in: view)
         print(location)
+        
+        if needsEditMenuDismissal() {
+            sender.isEnabled = false
+            sender.isEnabled = true
+            return
+        }
         
         switch sender.state {
         case .began:
@@ -240,17 +243,16 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
         
         workPanelPercentage += Float(verticalSpeed) / Float(viewSize.height) * 5
         
+        var allowMiddlePosition = true
+        
+        if NumericalHelper.isDevicePad() == false && viewSize.width > viewSize.height {
+            // Device is landscape iPhone - don't allow the middle position
+            allowMiddlePosition = false
+        }
+        
         if verticalSpeed > 5 || verticalSpeed < -5 {
-            print("Speed is significant")
             
-            if viewSize.width > viewSize.height {
-                // Landscape
-                if verticalSpeed > 0 {
-                    workPanelPercentage = 1.0
-                } else {
-                    workPanelPercentage = Float(equationHeightPercentage)
-                }
-            } else {
+            if allowMiddlePosition {
                 // Portrait
                 if workPanelPercentage > 0.66 {
                     if verticalSpeed > 0 {
@@ -270,23 +272,29 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
                 } else {
                     workPanelPercentage = Float(equationHeightPercentage)
                 }
-            }
-            
-        } else {
-            
-            if viewSize.width > viewSize.height {
+            } else {
                 // Landscape
-                if workPanelPercentage > 0.5 {
+                if verticalSpeed > 0 {
                     workPanelPercentage = 1.0
                 } else {
                     workPanelPercentage = Float(equationHeightPercentage)
                 }
-            } else {
+            }
+            
+        } else {
+            if allowMiddlePosition {
                 // Portrait
                 if workPanelPercentage > 0.66 {
                     workPanelPercentage = 1.0
                 } else if workPanelPercentage > 0.33 {
                     workPanelPercentage = 0.5
+                } else {
+                    workPanelPercentage = Float(equationHeightPercentage)
+                }
+            } else {
+                // Landscape
+                if workPanelPercentage > 0.5 {
+                    workPanelPercentage = 1.0
                 } else {
                     workPanelPercentage = Float(equationHeightPercentage)
                 }
@@ -299,8 +307,8 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     }
     
     
-    func pressedKey(_ key: Character) {
-        // A key was pressed. we need to reload the history view
+    func pressedKey(_ key: Character, sourceView: UIView?) {
+        // A key was pressed. No action required as history view is using a fetched results controller.
         
     }
     
@@ -424,6 +432,8 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
+        needsEditMenuDismissal()
+        
         super.viewWillTransition(to: size, with: coordinator)
         
         coordinator.animate(alongsideTransition: { (context) -> Void in
@@ -433,7 +443,6 @@ class ViewController: UIViewController, KeypadDelegate, HistoryViewControllerDel
             }) { (context) -> Void in
         }
     }
-    
     
     func updateKeypad() {
         

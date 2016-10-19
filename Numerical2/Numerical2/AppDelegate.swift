@@ -17,10 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 //        WatchCommunicator.sharedCommunicator.setup()
         
-        
         print(PremiumCoordinator.shared.themes)
         
         EquationStore.sharedStore.saveContext()
+        
+        PremiumCoordinator.shared.setupManager()
+//        PremiumCoordinator.shared.updateProductsIfNeeded()
+//        PremiumCoordinator.shared.validateReceipt()
+//        PremiumCoordinator.shared.updatePremiumStatusFromValidatedJSON()
+        
         
         return true
     }
@@ -44,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      
         EquationStore.sharedStore.cloudFetchLatestEquations()
         EquationStore.sharedStore.queueCloudKitNeedsUpdate()
+        EquationStore.sharedStore.refreshiCloudStatusCheck()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

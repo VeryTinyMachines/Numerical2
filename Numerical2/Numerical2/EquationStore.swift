@@ -21,13 +21,13 @@ public struct EquationCodingKey {
     public static let identifier = "identifier"
     public static let lastModifiedDate = "lastModifiedDate"
     public static let question = "question"
-    
     public static let currentEquation = "currentEquation"
 }
 
 
 public struct EquationStoreNotification {
     public static let equationDeleted = "EquationStoreNotification.equationDeleted"
+    public static let accountStatusChanged = "EquationStoreNotification.accountStatusChanged"
 }
 
 
@@ -35,8 +35,8 @@ class EquationStore {
     
     var saveTimer:Timer?
     var updateCloudKitTimer:Timer?
-    
     var queuedEquationsToSave = [String: Equation]()
+    var accountStatus: CKAccountStatus = CKAccountStatus.couldNotDetermine
     
     lazy var lastFetchDate:NSDate? = {
         if let date = UserDefaults.standard.object(forKey: "lastFetchDate") as? NSDate {
@@ -548,6 +548,21 @@ class EquationStore {
         }
         UserDefaults.standard.synchronize()
     }
+    
+    func refreshiCloudStatusCheck() {
+        CKContainer.default().accountStatus { (status, error) in
+            
+            if (self.accountStatus != status) {
+                self.accountStatus = status
+                
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: EquationStoreNotification.accountStatusChanged), object: nil)
+                }
+            }
+        }
+    }
+    
+    
     
     
     

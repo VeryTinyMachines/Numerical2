@@ -16,7 +16,7 @@ public enum KeypadLayout {
 }
 
 protocol KeypadDelegate {
-    func pressedKey(_ key: Character)
+    func pressedKey(_ key: Character, sourceView: UIView?)
 }
 
 
@@ -44,8 +44,9 @@ class KeypadViewController: UIViewController {
         
         for button in buttons {
             button.addTarget(self, action: #selector(KeypadViewController.pressedPressedDown(_:) ), for: UIControlEvents.touchDown)
-            
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(KeypadViewController.updateLegalKeys), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
     }
     
     @IBAction func pressedPressedDown(_ sender: UIButton) {
@@ -54,13 +55,16 @@ class KeypadViewController: UIViewController {
     
     func setupKeys() {
         
-        
         if layoutType == KeypadLayout.compactStandard {
             keyCharacters = SymbolCharacter.compactStandard
         } else if layoutType == KeypadLayout.compactScientific {
             keyCharacters = SymbolCharacter.compactScientific
         } else if layoutType == KeypadLayout.regular {
-            keyCharacters = SymbolCharacter.regular
+            if NumericalHelper.isDevicePad() {
+                keyCharacters = SymbolCharacter.regularPad
+            } else {
+                keyCharacters = SymbolCharacter.regularPhone
+            }
         }
         
         for button in buttons {
@@ -72,15 +76,7 @@ class KeypadViewController: UIViewController {
                 button.alpha = 1.0
                 button.isEnabled = true
                 
-                if character == SymbolCharacter.clear {
-                    button.setTitle("C", for: UIControlState())
-                    
-                } else if character == "d" {
-                    button.setTitle("⬅︎", for: UIControlState())
-                    button.baseColor = UIColor(red: 0 / 255, green: 122/255, blue: 255/255, alpha: 1.0)
-                    button.highlightColor = UIColor(red: 166 / 255, green: 183/255, blue: 255/255, alpha: 1.0)
-                    
-                } else if character == " " {
+                if character == " " {
                     button.setTitle("", for: UIControlState())
                     button.alpha = 0.0
                     button.isEnabled = false
@@ -91,6 +87,8 @@ class KeypadViewController: UIViewController {
                 }
             }
         }
+        
+//        updateLegalKeys()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,6 +103,7 @@ class KeypadViewController: UIViewController {
     }
     
     func initateButtonPress(sender: UIButton) {
+        
         var character = keyCharacters[sender.tag]
         
         print("pressedKey with tag \(sender.tag) with character \(character)")
@@ -121,9 +120,8 @@ class KeypadViewController: UIViewController {
             }
         }
         
-        
         if let keyDelegate = delegate {
-            keyDelegate.pressedKey(character)
+            keyDelegate.pressedKey(character, sourceView: sender)
         }
     }
     
@@ -158,7 +156,6 @@ class KeypadViewController: UIViewController {
                     }
                     
                     button.updateEnabledState()
-                    
                     
                     // Set the smart bracket button
                     if character == SymbolCharacter.smartBracket {

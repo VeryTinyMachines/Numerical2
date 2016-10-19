@@ -232,7 +232,6 @@ open class Evaluator {
                 pairHeight += 1
             } else if character == ")" {
                 if(pairHeight == 0) {
-                    
                     openBrackets += 1
                 } else {
                     pairHeight -= 1
@@ -254,60 +253,8 @@ open class Evaluator {
         
         newString += string
         
-//        if (closeBrackets > 0) {
-//            for _ in 1...closeBrackets {
-//                newString += ")"
-//            }
-//        }
-        
         return newString
     }
-    
-    
-    /*
-    class func balanceBracketsInString(string: String) -> String {
-
-        var pairHeight = 0
-        var openBrackets = 0
-        var closeBrackets = 0
-        
-        for character in string.characters {
-            
-            if character == "(" {
-                pairHeight += 1
-            } else if character == ")" {
-                if(pairHeight == 0) {
-                    
-                    openBrackets += 1
-                } else {
-                    pairHeight -= 1
-                }
-            }
-        }
-        
-        if pairHeight > 0 {
-            closeBrackets = pairHeight
-        }
-        
-        var newString = ""
-        
-        if(openBrackets > 0) {
-            for _ in 1...openBrackets {
-                newString += "("
-            }
-        }
-        
-        newString += string
-        
-        if (closeBrackets > 0) {
-            for _ in 1...closeBrackets {
-                newString += ")"
-            }
-        }
-        
-        return newString
-    }
-    */
     
     class func solveString(_ string: String) -> AnswerBundle {
         // First solve the brackets, then solve the string

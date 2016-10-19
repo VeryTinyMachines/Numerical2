@@ -28,10 +28,9 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     
     var cursorPosition:Int?
     
-    func pressedKey(_ key: Character) {
+    func pressedKey(_ key: Character, sourceView: UIView?) {
         
     }
-    
     
     func setQuestion(_ string: String, cursorPosition: Int?) {
         currentQuestion = string

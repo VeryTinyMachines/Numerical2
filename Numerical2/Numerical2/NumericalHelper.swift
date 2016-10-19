@@ -22,11 +22,11 @@ class NumericalHelper {
     
     class func isSettingEnabled(string: String) -> Bool {
         
-        if let obj = UserDefaults.standard.object(forKey: NumericalHelperSetting.iCloudHistorySync) as? NSNumber {
+        if let obj = UserDefaults.standard.object(forKey: string) as? NSNumber {
             return obj.boolValue
         }
         
-        return defaultTrueForSetting(string: NumericalHelperSetting.iCloudHistorySync)
+        return defaultTrueForSetting(string: string)
     }
     
     class func defaultTrueForSetting(string: String) -> Bool {
@@ -44,6 +44,27 @@ class NumericalHelper {
     
     class func flipSetting(string: String) {
         setSetting(string: string, enabled: !isSettingEnabled(string: string))
+    }
+    
+    class func isDevicePad() -> Bool {
+        return UIScreen.main.traitCollection.userInterfaceIdiom == .pad
+    }
+    
+    class func shouldSettingsScreenBeModal() -> Bool {
+        return isDevicePad()
+    }
+    
+    class func currentDeviceInfo(includeBuildNumber: Bool) -> String {
+        if let info = Bundle.main.infoDictionary {
+            if let version = info["CFBundleShortVersionString"] as? String, let buildNumber = info["CFBundleVersion"] as? String {
+                if includeBuildNumber {
+                    return "v\(version) (\(buildNumber))"
+                } else {
+                    return "v\(version)"
+                }
+            }
+        }
+        return ""
     }
     
 }

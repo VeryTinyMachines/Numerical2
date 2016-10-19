@@ -34,14 +34,13 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = UITableViewCellSeparatorStyle.none
-        tableView.backgroundColor = UIColor.clear
         
-        view.backgroundColor = UIColor.clear
+        updateBackgroundColorForPresentationType()
         
         items = [
-        AboutViewItem.about,
+//        AboutViewItem.about,
         
-        AboutViewItem.seperator,
+//        AboutViewItem.seperator,
         
         AboutViewItem.premiumInfo,
         
@@ -51,7 +50,10 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         
         AboutViewItem.seperator,
         
-//        AboutViewItem.autoBracket,
+        AboutViewItem.autoBracket,
+        
+        AboutViewItem.seperator,
+        
         AboutViewItem.cloudSync,
         
         AboutViewItem.seperator,
@@ -62,6 +64,38 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         AboutViewItem.rate,
         AboutViewItem.website
         ]
+        
+        if let navCon = self.navigationController {
+            print(navCon)
+        }
+        
+        // Setup navigation item (used for iPad and other modal views)
+        navigationItem.title = "About Numerical - " + NumericalHelper.currentDeviceInfo(includeBuildNumber: false)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: UIBarButtonItemStyle.plain, target: self, action: #selector(AboutViewController.userPressedCloseButton))
+        
+        navigationController?.view.tintColor = UIColor.black
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(AboutViewController.reloadData), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(AboutViewController.reloadData), name: Notification.Name(rawValue: EquationStoreNotification.accountStatusChanged), object: nil)
+    }
+    
+    func userPressedCloseButton() {
+        self.dismiss(animated: true) { 
+            
+        }
+    }
+    
+    func updateBackgroundColorForPresentationType() {
+        if let _ = self.navigationController {
+            // We are in a navigation controller context and need to define our own background
+            tableView.backgroundColor = UIColor.darkGray
+            view.backgroundColor = UIColor.darkGray
+        } else {
+            // We are not in a nav controller and should therefore simply have a clear background
+            tableView.backgroundColor = UIColor.clear
+            view.backgroundColor = UIColor.clear
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -99,19 +133,55 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         case .about:
             cell.textLabel?.text = "Numerical is the calculator without equal. We hope you like it!"
         case .autoBracket:
-            cell.textLabel?.text = "Auto brackets are Enabled."
-        case .cloudSync:
-            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
-                cell.textLabel?.text = "iCloud Sync is Enabled"
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.autoBrackets) {
+                cell.textLabel?.text = "Auto brackets are Enabled"
             } else {
-                cell.textLabel?.text = "iCloud Sync is Disabled"
+                cell.textLabel?.text = "Auto brackets are Disabled\n(Remember your order of operation)"
             }
+            
+        case .cloudSync:
+            
+            var string = ""
+            
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && EquationStore.sharedStore.accountStatus == .available {
+                string = "iCloud Sync is Enabled"
+            } else {
+                string = "iCloud Sync is Disabled"
+            }
+            
+            switch EquationStore.sharedStore.accountStatus {
+            case .available:
+                string += ""
+            case .couldNotDetermine:
+                string += "\n(Could not determine iCloud Status)"
+            case .noAccount:
+                string += "\n(No iCloud account)"
+            case .restricted:
+                string += "\n(iCloud access restricted)"
+            }
+            
+            cell.textLabel?.text = string
+            
         case .contact:
             cell.textLabel?.text = "Contact Us"
         case .follow:
             cell.textLabel?.text = "Follow"
         case .premiumInfo:
-            cell.textLabel?.text = "You are not a premium member."
+            
+            var string = ""
+            
+            if PremiumCoordinator.shared.isUserPremium() {
+                string += "Numerical Pro - You are a member!"
+            } else {
+                string += "Numerical Pro - Upgrade Today!"
+            }
+            
+            if PremiumCoordinator.shared.legacyThemeUser {
+                string += "\nYou have purchased the legacy theme pack."
+            }
+            
+            cell.textLabel?.text = string
+            
         case .rate:
             cell.textLabel?.text = "Rate"
         case .website:
@@ -125,6 +195,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             cell.backgroundColor = UIColor.white.withAlphaComponent(0.25)
         }
         
+        cell.textLabel?.numberOfLines = 3
+        
         return cell
     }
     
@@ -135,33 +207,31 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         case .about:
             break
         case .autoBracket:
-            break
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.autoBrackets)
+            reloadData()
         case .contact:
             self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical")
         case .follow:
             self.attemptToOpenURL(urlString: "http://www.twitter.com/VTMachines")
         case .premiumInfo:
-            break
+            self.presentSalesScreen(type: SalesScreenType.generic)
         case .rate:
             self.attemptToOpenURL(urlString: "https://itunes.apple.com/app/id804548449&mt=8")
         case .share:
             self.share(string: "http://itunes.apple.com/app/id804548449&mt=8")
         case .themeSelector:
-            if PremiumCoordinator.shared.canAccessThemes() {
-                presentThemeSelector()
-            } else {
-                presentSalesScreen(type: SalesScreenType.scientificKey)
-            }
-            
+            presentThemeSelector()
         case .website:
             self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical")
         case .cloudSync:
             NumericalHelper.flipSetting(string: NumericalHelperSetting.iCloudHistorySync)
             reloadData()
             
-            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
-                // This is enabled.
-                EquationStore.sharedStore.initialiseiCloud()
+            if EquationStore.sharedStore.accountStatus == .available {
+                if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
+                    // This is enabled.
+                    EquationStore.sharedStore.initialiseiCloud()
+                }
             }
             
         case .seperator:
@@ -180,9 +250,27 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         let alert = UIAlertController(title: "Choose Your Theme", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         
         for theme in PremiumCoordinator.shared.themes {
-            alert.addAction(UIAlertAction(title: theme.title, style: UIAlertActionStyle.default, handler: { (action) in
-                PremiumCoordinator.shared.setTheme(string: theme.themeID)
-            }))
+            
+            
+            var title = "           " + theme.title
+            
+            if PremiumCoordinator.shared.canAccessThemes() == false && theme.themeID != "pink001" {
+                title += " (Pro)"
+            }
+            
+            let action = UIAlertAction(title: title, style: UIAlertActionStyle.default, handler: { (action) in
+                if PremiumCoordinator.shared.canAccessThemes() || theme.themeID == "pink001" {
+                    PremiumCoordinator.shared.setTheme(string: theme.themeID)
+                } else {
+                    self.presentSalesScreen(type: SalesScreenType.theme)
+                }
+            })
+            
+            let image = PremiumCoordinator.shared.thumbnailImageForTheme(string: theme.themeID)?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+            
+            action.setValue(image, forKey: "image")
+            
+            alert.addAction(action)
         }
         
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in

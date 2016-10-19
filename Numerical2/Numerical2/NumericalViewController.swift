@@ -14,9 +14,12 @@ public enum SalesScreenType {
     case theme
     case themeCreator
     case scientificKey
+    case generic
 }
 
-class NumericalViewController: UIViewController, MFMailComposeViewControllerDelegate {
+class NumericalViewController: UIViewController, MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate {
+    
+    var loadingScreen:UIView?
     
     func notifyUser(title: String?, message: String?) {
         DispatchQueue.main.async {
@@ -55,7 +58,7 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
             let toReceipts = [emailAddress]
             picker.setToRecipients(toReceipts)
             
-            picker.setSubject(subject)
+            picker.setSubject(subject + NumericalHelper.currentDeviceInfo(includeBuildNumber: true))
             
             if let info = Bundle.main.infoDictionary {
                 if let version = info["CFBundleShortVersionString"] as? String, let buildNumber = info["CFBundleVersion"] as? String {
@@ -89,7 +92,108 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
     }
     
     func presentSalesScreen(type: SalesScreenType?) {
-        self.notifyUser(title: "Sales Screen", message: "\(type)")
+        
+        if let view = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SalesViewController") as? SalesViewController {
+            present(view, animated: true, completion: { 
+                
+            })
+        }
+    }
+    
+    func presentSettings(sourceView: UIView?) {
+        if let view = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AboutViewController") as? AboutViewController {
+            
+            let navCon = UINavigationController(rootViewController: view)
+            
+            navCon.modalPresentationStyle = UIModalPresentationStyle.popover
+            navCon.preferredContentSize = CGSize(width: 400, height: 400)
+            
+            let popVC = navCon.popoverPresentationController!
+            
+            popVC.sourceView = self.view
+            
+            if let sourceView = sourceView {
+                popVC.sourceRect = self.view.convert(sourceView.frame, from: sourceView)
+            }
+            
+            
+            popVC.delegate = self
+            
+            present(navCon, animated: true, completion: {
+                
+            })
+        }
+    }
+    
+    func presentiTunesManage() {
+        self.attemptToOpenURL(urlString: "itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions")
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
+    func needsEditMenuDismissal() -> Bool {
+        let menu = UIMenuController.shared
+        
+        if menu.menuItems != nil {
+            menu.menuItems = nil
+            menu.setMenuVisible(false, animated: true)
+            return true
+        }
+        
+        return false
+    }
+    
+    func beginLoadingScreen() {
+        removeLoadingScreenIfNeeded()
+        
+        let screenSize = self.view.bounds
+        
+        let newView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height))
+        
+        newView.backgroundColor = UIColor(white: 0.0, alpha: 0.75)
+        
+        newView.alpha = 0
+        newView.isUserInteractionEnabled = true
+        
+        // Add a loading indicator to this view
+        
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        activityIndicator.frame = newView.frame
+        
+        newView.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        
+        self.view.addSubview(newView)
+        
+        loadingScreen = newView
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            newView.alpha = 1.0
+            }, completion: { (complete) in
+                
+        })
+    }
+    
+    func endLoadingScreen() {
+        
+        if let loadingScreen = loadingScreen {
+            UIView.animate(withDuration: 0.2, animations: {
+                loadingScreen.alpha = 0
+                }, completion: { (complete) in
+                    self.removeLoadingScreenIfNeeded()
+            })
+        }
+    }
+    
+    func removeLoadingScreenIfNeeded() {
+        
+        if let loadingScreen = loadingScreen {
+            loadingScreen.removeFromSuperview()
+        }
+        
+        loadingScreen = nil
     }
     
 }
