@@ -13,7 +13,12 @@ protocol KeypadPageViewDelegate {
 }
 
 
-class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, KeypadDelegate {
+class KeypadPageViewController: NumericalViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, KeypadDelegate {
+    
+    func unpressedKey(_ key: Character, sourceView: UIView?) {
+        
+    }
+
     
     var delegate: KeypadDelegate?
     
@@ -32,6 +37,8 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        hideMenu()
         
         let duration = coordinator.transitionDuration
         
@@ -110,13 +117,13 @@ class KeypadPageViewController: UIViewController, UIPageViewControllerDataSource
     
     func viewIsWide() -> Bool {
         
-        // Determine if the keyboard should be wide style or regular.
         if NumericalHelper.isDevicePad() {
             // It's an iPad!
             return true
         } else {
             // It's an iPhone
-            if self.view.bounds.width > self.view.bounds.height {
+            
+            if self.view.bounds.width > self.view.bounds.height && self.view.bounds.width > 450 {
                 // This view is wider than it is tall, so we should
                 return true
             } else {

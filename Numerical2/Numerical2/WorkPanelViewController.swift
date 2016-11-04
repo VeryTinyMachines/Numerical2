@@ -14,6 +14,10 @@ protocol WorkPanelDelegate {
 
 class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPageViewDelegate, EquationTextFieldDelegate, QuestionCollectionViewDelegate {
     
+    func unpressedKey(_ key: Character, sourceView: UIView?) {
+        
+    }
+    
     @IBOutlet weak var equationViewHeightConstraint: NSLayoutConstraint!
     
     var currentEquation: Equation?
@@ -32,8 +36,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //        view.backgroundColor = UIColor(red: 38 / 255, green: 47/255, blue: 58/255, alpha: 1.0)
-        
         updateLegalKeys()
     }
     
@@ -48,7 +50,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         updateViews(currentCursor: nil)
     }
-    
     
     func questionChanged(_ newQuestion: String, overwrite: Bool) {
         
@@ -89,27 +90,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                         theView.setAnswer(answer)
                         
                         EquationStore.sharedStore.queueSave()
-                        
-                        /*
-                        if let equation = self.currentEquation {
-                            equation.answer = answer.answer
-                            
-                            print("answer.answer: \(answer.answer)")
-                         
-                            var latestEquationDict = [String:String]()
-                            latestEquationDict[EquationStringKey] = question
-                            
-                            if let theAnswer = answer.answer {
-                                latestEquationDict[AnswerStringKey] = theAnswer
-                            } else {
-                                latestEquationDict[AnswerStringKey] = "Error"
-                            }
-                            
-                            print("latestEquationDict (to send): \(latestEquationDict)")
-                            //                    WatchCommunicator.latestEquationDict = latestEquationDict
- 
-                        }
- */
                     }
                 })
                 
@@ -124,8 +104,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         if questionTextFieldIsEditting() {
             if let textField = equationView?.questionView?.textField {
-                //            let startPosition: UITextPosition = textField.beginningOfDocument
-                //            let endPosition: UITextPosition = textField.endOfDocument
                 
                 if let selectedRange = textField.selectedTextRange {
                     
@@ -149,9 +127,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         if questionTextFieldIsEditting() {
             if let textField = equationView?.questionView?.textField {
-                //            let startPosition: UITextPosition = textField.beginningOfDocument
-                //            let endPosition: UITextPosition = textField.endOfDocument
-                
                 let selectedRange: UITextRange? = textField.selectedTextRange
                 
                 if let selectedRange = selectedRange {
@@ -173,6 +148,12 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     }
     
     func pressedKey(_ key: Character, sourceView: UIView?) {
+        
+        if key == SymbolCharacter.clear {
+            SoundManager.playSound(sound: .clear)
+        } else {
+            SoundManager.playSound(sound: .click)
+        }
         
         // Check if the edit menu needed dismissing
         if needsEditMenuDismissal() {
@@ -197,6 +178,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         if key == SymbolCharacter.clear {
             if let equation = currentEquation {
+                
                 // Clear - Need to load a new equation from the EquationStore
                 
                 equation.lastModifiedDate = NSDate()
@@ -229,6 +211,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         if let equation = currentEquation {
             
             if key == SymbolCharacter.delete {
+                
                 // Delete
                 newCursorPosition = updateCurrentQuestionByDeletingCurrentRange()
                 
@@ -401,11 +384,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                             }
                             
                             currentEquation?.question = newQuestion
-                            
-                            print(currentEquation?.question)
-                            print("")
-                            
-                            print("")
                             
                             newCursorPosition = index - 1
                         }

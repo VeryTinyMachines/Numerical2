@@ -99,7 +99,7 @@ public struct SymbolCharacter {
     
     public static let regularPad:[Character] = [SymbolCharacter.settings, SymbolCharacter.ee, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, "^", SymbolCharacter.sqrt, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.factorial, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, "(", " ", SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, ")", SymbolCharacter.clear,"7","4","1","0",SymbolCharacter.percentage, "8", "5", "2", ".", SymbolCharacter.fraction, "9", "6", "3", SymbolCharacter.smartBracket, SymbolCharacter.delete, SymbolCharacter.divide, SymbolCharacter.multiply, SymbolCharacter.subtract, SymbolCharacter.add]
     
-    public static let premiumOperators:Set<Character> = [SymbolCharacter.add, SymbolCharacter.subtract, SymbolCharacter.multiply, SymbolCharacter.divide, SymbolCharacter.exponent, SymbolCharacter.percentage, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage, SymbolCharacter.pi, SymbolCharacter.random, SymbolCharacter.e, SymbolCharacter.infinity]
+    public static let premiumOperators:Set<Character> = [SymbolCharacter.exponent, SymbolCharacter.percentage, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage, SymbolCharacter.pi, SymbolCharacter.random, SymbolCharacter.e, SymbolCharacter.infinity]
 
 }
 
@@ -466,8 +466,6 @@ open class Glossary {
     
     class func legalCharactersToAppendString(_ string: String) -> Set<Character>? {
         
-        print("legalCharactersToAppendString: \(string)")
-        
         var string = string
         
         if string == "" {
@@ -496,7 +494,6 @@ open class Glossary {
             "?":"n)(\(clear)\(delete)\(pre)\(mid)\(post)\(settings)"]
         
         if var theLastCharacter = string.characters.last {
-            print("theLastCharacter: \(theLastCharacter)")
             
             if SymbolCharacter.preOperatorCharacters.contains(theLastCharacter) {
                 theLastCharacter = pre
@@ -514,21 +511,13 @@ open class Glossary {
             
             if let combination = legalCombinations[lastCharacterGeneric] {
                 
-                print("combination: \(combination)")
-                
                 // Convert combination into a set of characters
                 
                 var legalCharacterSet = Set<Character>()
                 
-//                print("legalCharacterSet: \(legalCharacterSet)", appendNewLine: true)
-                
-                print("1 legalCharacterSet: \(legalCharacterSet)")
-                
                 for character in combination.characters {
                     legalCharacterSet.insert(character)
                 }
-                
-                print("2 legalCharacterSet: \(legalCharacterSet)")
                 
                 // Add the pre operators
                 if legalCharacterSet.contains(SymbolCharacter.preOperator) {
@@ -537,16 +526,12 @@ open class Glossary {
                     }
                 }
                 
-                print("3 legalCharacterSet: \(legalCharacterSet)")
-                
                 // Add the post operators
                 if legalCharacterSet.contains(SymbolCharacter.postOperator) {
                     for postOperator in SymbolCharacter.postOperatorCharacters {
                         legalCharacterSet.insert(postOperator)
                     }
                 }
-                
-                print("4 legalCharacterSet: \(legalCharacterSet)")
                 
                 // Add the mid operators
                 if legalCharacterSet.contains(SymbolCharacter.midOperator) {
@@ -555,14 +540,10 @@ open class Glossary {
                     }
                 }
                 
-                print("5 legalCharacterSet: \(legalCharacterSet)")
-                
                 // Add clear
                 if legalCharacterSet.contains(clear) {
                     legalCharacterSet.insert(SymbolCharacter.clear)
                 }
-                
-                print("6 legalCharacterSet: \(legalCharacterSet)")
                 
                 // Add delete
                 if legalCharacterSet.contains(delete) {
@@ -574,14 +555,10 @@ open class Glossary {
                     legalCharacterSet.insert(SymbolCharacter.settings)
                 }
                 
-                print("7 legalCharacterSet: \(legalCharacterSet)")
-                
                 // Add smart bracket
                 if legalCharacterSet.contains("(") || legalCharacterSet.contains(")") {
                     legalCharacterSet.insert(SymbolCharacter.smartBracket)
                 }
-                
-                print("8 legalCharacterSet: \(legalCharacterSet)")
                 
                 if legalCharacterSet.contains("n") {
                     
@@ -616,8 +593,6 @@ open class Glossary {
                         legalCharacterSet.insert(".")
                     }
                 }
-                
-                print("9 legalCharacterSet: \(legalCharacterSet)")
                 
                 return legalCharacterSet
             } else {

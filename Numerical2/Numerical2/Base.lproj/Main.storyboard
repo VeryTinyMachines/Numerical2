@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,11 +19,14 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="68R-zT-cl3" userLabel="Background Image"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="68R-zT-cl3" userLabel="Background Image">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </imageView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRv-bj-Wrb" userLabel="Seperator">
+                                <rect key="frame" x="0.0" y="20" width="414" height="1"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="Mnr-C3-Grf"/>
@@ -29,11 +34,13 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTE-ia-Cj5" userLabel="History Container">
+                                <rect key="frame" x="0.0" y="-20" width="414" height="756"/>
                                 <connections>
                                     <segue destination="VuE-mr-NBt" kind="embed" id="8aY-tF-fya"/>
                                 </connections>
                             </containerView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T4S-PI-YnM">
+                                <rect key="frame" x="364" y="20" width="50" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="UbB-o8-ePB"/>
                                     <constraint firstAttribute="width" constant="50" id="yeB-un-chw"/>
@@ -46,8 +53,9 @@
                                 </connections>
                             </button>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1nY-TK-eHY" userLabel="Status Bar Blur">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="20"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="YCx-29-CDv">
-                                    <frame key="frameInset"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="20"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
                                 <constraints>
@@ -56,23 +64,34 @@
                                 <blurEffect style="light"/>
                             </visualEffectView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bjw-FC-ipK" userLabel="Workpanel Container">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="37h-B1-32V" appends="YES" id="7Ag-UL-XTj"/>
                                     <outletCollection property="gestureRecognizers" destination="dgY-aK-xmJ" appends="YES" id="t71-5G-VYi"/>
                                     <segue destination="5tH-pi-VH2" kind="embed" identifier="WorkPanelView" id="cE5-z7-iJa"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ce3-JB-ZTc" customClass="GADBannerView">
+                                <rect key="frame" x="0.0" y="21" width="414" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="tMv-lV-JhW"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="Ce3-JB-ZTc" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="0Ty-zt-6DG"/>
                             <constraint firstAttribute="trailing" secondItem="pRv-bj-Wrb" secondAttribute="trailing" id="0V1-m8-Cu8"/>
                             <constraint firstItem="68R-zT-cl3" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="8sZ-ld-lZO"/>
                             <constraint firstItem="1nY-TK-eHY" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="BuB-sg-Pws"/>
                             <constraint firstAttribute="trailing" secondItem="T4S-PI-YnM" secondAttribute="trailing" id="EUk-nU-udN"/>
                             <constraint firstItem="T4S-PI-YnM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="GjY-cm-GzN"/>
+                            <constraint firstItem="Ce3-JB-ZTc" firstAttribute="top" secondItem="pRv-bj-Wrb" secondAttribute="bottom" id="LWo-Jd-07T"/>
                             <constraint firstAttribute="bottom" secondItem="68R-zT-cl3" secondAttribute="bottom" id="M5h-wi-b7d"/>
                             <constraint firstItem="sTE-ia-Cj5" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="-20" id="OCK-dc-ly7"/>
+                            <constraint firstAttribute="trailing" secondItem="Ce3-JB-ZTc" secondAttribute="trailing" id="OEZ-8q-tGf"/>
                             <constraint firstItem="68R-zT-cl3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="RUx-ej-rLo"/>
                             <constraint firstItem="pRv-bj-Wrb" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="VQC-Gd-T8x"/>
                             <constraint firstItem="pRv-bj-Wrb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Z9c-ah-flX"/>
@@ -90,6 +109,7 @@
                     </view>
                     <connections>
                         <outlet property="backgroundImageView" destination="68R-zT-cl3" id="VWT-T1-MEd"/>
+                        <outlet property="bannerView" destination="Ce3-JB-ZTc" id="RKT-tE-ZXf"/>
                         <outlet property="statusBarBlur" destination="1nY-TK-eHY" id="zW2-Eb-bus"/>
                         <outlet property="workPanelBottomConstraint" destination="o4k-HN-3PU" id="5Rp-Xs-wDo"/>
                         <outlet property="workPanelHeight" destination="nZa-rw-tsk" id="ewQ-va-UCc"/>
@@ -118,28 +138,29 @@
                         <viewControllerLayoutGuide type="bottom" id="Gr9-Lv-s1P"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jph-ld-qfw">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="687"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="756"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6CL-N5-5ys">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="756"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="UN1-ku-fPN" detailTextLabel="Mqv-fj-mTl" style="IBUITableViewCellStyleValue1" id="qYX-SV-TdK" customClass="HistoryCell" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="1000" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qYX-SV-TdK" id="aDX-Et-5D5">
-                                            <frame key="frameInset" width="1000" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UN1-ku-fPN">
-                                                    <frame key="frameInset" minX="164" minY="12" width="33.5" height="20.5"/>
+                                                    <rect key="frame" x="15" y="11.999999999999998" width="33.333333333333336" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mqv-fj-mTl">
-                                                    <frame key="frameInset" minX="792" minY="12" width="44" height="20.5"/>
+                                                    <rect key="frame" x="355" y="11.999999999999998" width="44" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -176,11 +197,14 @@
                         <viewControllerLayoutGuide type="bottom" id="4UW-CZ-aVp"/>
                     </layoutGuides>
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="KZ9-wY-kwR">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pink001.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="ry5-aw-OGj"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pink001.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="ry5-aw-OGj">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lVP-q5-PHT">
+                                <rect key="frame" x="0.0" y="20" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ZUS-N0-4om"/>
                                     <constraint firstAttribute="width" constant="44" id="fif-dS-GAv"/>
@@ -194,6 +218,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Td-wC-rAN">
+                                <rect key="frame" x="107" y="638" width="200" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                 <state key="normal" title="Start Free Trial">
@@ -209,6 +234,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U3g-uk-h11">
+                                <rect key="frame" x="107" y="682" width="200" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="1as-Vr-ezm"/>
                                     <constraint firstAttribute="height" constant="44" id="t72-EN-EL2"/>
@@ -221,58 +247,143 @@
                                     <action selector="userPressedRestoreButton:" destination="3ZM-i9-XRH" eventType="touchUpInside" id="lvo-FR-NMI"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qVZ-bC-tIY">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aaa-qq-v0R" userLabel="Horizontal">
+                                <rect key="frame" x="0.0" y="64" width="414" height="574"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIcon120x120.png" translatesAutoresizingMaskIntoConstraints="NO" id="bzY-hn-3HR">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Numerical Pro" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pFE-ik-j1W">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="140" id="5oB-na-hG8"/>
-                                            <constraint firstAttribute="height" constant="140" id="e6Q-rZ-9GY"/>
+                                            <constraint firstAttribute="height" constant="40" id="eam-jA-ZZu"/>
                                         </constraints>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Numerical Pro" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NP6-T6-XYC">
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="36"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Sa1-05-b8r">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pZz-vp-IXE">
+                                        <rect key="frame" x="227" y="40" width="147" height="534"/>
                                         <string key="text">Become a pro subscriber for $0.99 p/month to remove ads, use all the fancy scientific keys, create your own themes, and support the ongoing development of Numerical.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CX9-mr-RZE">
+                                        <rect key="frame" x="40" y="40" width="147" height="534"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIcon120x120.png" translatesAutoresizingMaskIntoConstraints="NO" id="dD6-Fp-cLP">
+                                                <rect key="frame" x="4" y="197" width="140" height="140"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="140" id="GKr-WP-zXv"/>
+                                                    <constraint firstAttribute="height" constant="140" id="PPo-Ui-TXO"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="dD6-Fp-cLP" firstAttribute="centerY" secondItem="CX9-mr-RZE" secondAttribute="centerY" id="7T2-i7-7p1"/>
+                                            <constraint firstItem="dD6-Fp-cLP" firstAttribute="centerX" secondItem="CX9-mr-RZE" secondAttribute="centerX" id="C7f-gE-g3w"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="bzY-hn-3HR" firstAttribute="top" secondItem="NP6-T6-XYC" secondAttribute="bottom" id="3bz-k3-wcw"/>
-                                    <constraint firstItem="NP6-T6-XYC" firstAttribute="leading" secondItem="qVZ-bC-tIY" secondAttribute="leading" id="3co-vF-VPo"/>
-                                    <constraint firstAttribute="trailing" secondItem="Sa1-05-b8r" secondAttribute="trailing" constant="22" id="3u8-Lw-FgO"/>
-                                    <constraint firstItem="NP6-T6-XYC" firstAttribute="height" secondItem="Sa1-05-b8r" secondAttribute="height" multiplier="0.8" id="BjB-s7-4P6"/>
-                                    <constraint firstItem="Sa1-05-b8r" firstAttribute="top" secondItem="bzY-hn-3HR" secondAttribute="bottom" id="Nbk-ZJ-xQX"/>
-                                    <constraint firstAttribute="trailing" secondItem="NP6-T6-XYC" secondAttribute="trailing" id="WRA-LX-4aF"/>
-                                    <constraint firstItem="NP6-T6-XYC" firstAttribute="top" secondItem="qVZ-bC-tIY" secondAttribute="top" id="Ws0-Fa-sdO"/>
-                                    <constraint firstAttribute="bottom" secondItem="Sa1-05-b8r" secondAttribute="bottom" id="ZEa-s8-AeH"/>
-                                    <constraint firstItem="Sa1-05-b8r" firstAttribute="leading" secondItem="qVZ-bC-tIY" secondAttribute="leading" constant="22" id="jib-UK-IyZ"/>
-                                    <constraint firstItem="bzY-hn-3HR" firstAttribute="centerX" secondItem="qVZ-bC-tIY" secondAttribute="centerX" id="rK7-7t-04J"/>
+                                    <constraint firstItem="pZz-vp-IXE" firstAttribute="leading" secondItem="CX9-mr-RZE" secondAttribute="trailing" constant="40" id="AHf-Tl-RgH"/>
+                                    <constraint firstAttribute="bottom" secondItem="pZz-vp-IXE" secondAttribute="bottom" id="BOA-GU-nBn"/>
+                                    <constraint firstAttribute="trailing" secondItem="pZz-vp-IXE" secondAttribute="trailing" constant="40" id="H20-e4-SMF"/>
+                                    <constraint firstAttribute="trailing" secondItem="pFE-ik-j1W" secondAttribute="trailing" id="J0J-kn-dWI"/>
+                                    <constraint firstAttribute="bottom" secondItem="pZz-vp-IXE" secondAttribute="bottom" id="JEd-Rc-y5r"/>
+                                    <constraint firstItem="pZz-vp-IXE" firstAttribute="top" secondItem="pFE-ik-j1W" secondAttribute="bottom" id="OgA-gA-34G"/>
+                                    <constraint firstAttribute="bottom" secondItem="CX9-mr-RZE" secondAttribute="bottom" id="Qfq-Rt-0u0"/>
+                                    <constraint firstItem="CX9-mr-RZE" firstAttribute="leading" secondItem="aaa-qq-v0R" secondAttribute="leading" constant="40" id="atM-ny-Rwy"/>
+                                    <constraint firstItem="pFE-ik-j1W" firstAttribute="top" secondItem="aaa-qq-v0R" secondAttribute="top" id="avv-0q-UVQ"/>
+                                    <constraint firstItem="pFE-ik-j1W" firstAttribute="leading" secondItem="aaa-qq-v0R" secondAttribute="leading" id="cTF-gU-U83"/>
+                                    <constraint firstItem="CX9-mr-RZE" firstAttribute="top" secondItem="pFE-ik-j1W" secondAttribute="bottom" id="dIz-If-lip"/>
+                                    <constraint firstItem="CX9-mr-RZE" firstAttribute="width" secondItem="pZz-vp-IXE" secondAttribute="width" id="iz4-ol-Y79"/>
+                                    <constraint firstAttribute="bottom" secondItem="pZz-vp-IXE" secondAttribute="bottom" id="x0a-dC-lCE"/>
                                 </constraints>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <exclude reference="BOA-GU-nBn"/>
+                                        <exclude reference="JEd-Rc-y5r"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gaa-GP-ScS" userLabel="Portrait">
+                                <rect key="frame" x="0.0" y="64" width="414" height="574"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Numerical Pro" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oua-kh-Cke">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="191"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="36"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lVa-Fo-CSv">
+                                        <rect key="frame" x="40" y="383" width="334" height="191"/>
+                                        <string key="text">Become a pro subscriber for $0.99 p/month to remove ads, use all the fancy scientific keys, create your own themes, and support the ongoing development of Numerical.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GV8-jC-ifH">
+                                        <rect key="frame" x="0.0" y="191" width="414" height="192"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIcon120x120.png" translatesAutoresizingMaskIntoConstraints="NO" id="Tdu-Xj-gi1">
+                                                <rect key="frame" x="137" y="27" width="140" height="140"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="140" id="xqC-GX-5jW"/>
+                                                    <constraint firstAttribute="height" constant="140" id="ytd-UE-mQD"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="Tdu-Xj-gi1" firstAttribute="centerY" secondItem="GV8-jC-ifH" secondAttribute="centerY" id="J8I-03-CZf"/>
+                                            <constraint firstItem="Tdu-Xj-gi1" firstAttribute="centerX" secondItem="GV8-jC-ifH" secondAttribute="centerX" id="elq-kF-RDW"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="oua-kh-Cke" firstAttribute="height" secondItem="GV8-jC-ifH" secondAttribute="height" id="0zE-Z9-PT8"/>
+                                    <constraint firstAttribute="bottom" secondItem="lVa-Fo-CSv" secondAttribute="bottom" id="62Z-JA-qqL"/>
+                                    <constraint firstAttribute="trailing" secondItem="GV8-jC-ifH" secondAttribute="trailing" id="6de-rB-o7N"/>
+                                    <constraint firstAttribute="bottom" secondItem="lVa-Fo-CSv" secondAttribute="bottom" id="805-zs-3Qu"/>
+                                    <constraint firstAttribute="trailing" secondItem="oua-kh-Cke" secondAttribute="trailing" id="B9O-P1-jEN"/>
+                                    <constraint firstItem="lVa-Fo-CSv" firstAttribute="top" secondItem="GV8-jC-ifH" secondAttribute="bottom" id="Bci-Yg-uMt"/>
+                                    <constraint firstAttribute="trailing" secondItem="lVa-Fo-CSv" secondAttribute="trailing" constant="40" id="Gy5-gG-84i"/>
+                                    <constraint firstItem="lVa-Fo-CSv" firstAttribute="leading" secondItem="Gaa-GP-ScS" secondAttribute="leading" constant="40" id="NKW-xM-R47"/>
+                                    <constraint firstItem="oua-kh-Cke" firstAttribute="top" secondItem="Gaa-GP-ScS" secondAttribute="top" id="OR8-RR-Yem"/>
+                                    <constraint firstItem="GV8-jC-ifH" firstAttribute="top" secondItem="oua-kh-Cke" secondAttribute="bottom" id="P5g-mt-fV8"/>
+                                    <constraint firstItem="oua-kh-Cke" firstAttribute="leading" secondItem="Gaa-GP-ScS" secondAttribute="leading" id="b5q-iu-vFB"/>
+                                    <constraint firstItem="GV8-jC-ifH" firstAttribute="leading" secondItem="Gaa-GP-ScS" secondAttribute="leading" id="dk3-ds-Vdv"/>
+                                    <constraint firstItem="lVa-Fo-CSv" firstAttribute="height" secondItem="GV8-jC-ifH" secondAttribute="height" id="gQZ-Xn-eIY"/>
+                                    <constraint firstAttribute="bottom" secondItem="lVa-Fo-CSv" secondAttribute="bottom" id="lUX-mR-Ca1"/>
+                                </constraints>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <exclude reference="805-zs-3Qu"/>
+                                        <exclude reference="lUX-mR-Ca1"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Gaa-GP-ScS" firstAttribute="leading" secondItem="KZ9-wY-kwR" secondAttribute="leading" id="3KY-ed-tz2"/>
                             <constraint firstItem="lVP-q5-PHT" firstAttribute="leading" secondItem="KZ9-wY-kwR" secondAttribute="leading" id="4hl-Wj-OCZ"/>
                             <constraint firstItem="ry5-aw-OGj" firstAttribute="top" secondItem="KZ9-wY-kwR" secondAttribute="top" id="8TD-Dc-qHF"/>
                             <constraint firstItem="5Td-wC-rAN" firstAttribute="centerX" secondItem="U3g-uk-h11" secondAttribute="centerX" id="95a-B2-vKa"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="qVZ-bC-tIY" secondAttribute="trailing" id="9P2-XI-XHd"/>
-                            <constraint firstItem="qVZ-bC-tIY" firstAttribute="leading" secondItem="KZ9-wY-kwR" secondAttribute="leadingMargin" id="HkU-YL-Zh1"/>
+                            <constraint firstItem="aaa-qq-v0R" firstAttribute="leading" secondItem="KZ9-wY-kwR" secondAttribute="leading" id="FJ9-SQ-YNr"/>
+                            <constraint firstItem="5Td-wC-rAN" firstAttribute="top" secondItem="aaa-qq-v0R" secondAttribute="bottom" id="INU-BU-5hD"/>
+                            <constraint firstItem="Gaa-GP-ScS" firstAttribute="top" secondItem="lVP-q5-PHT" secondAttribute="bottom" id="JMj-Hf-QWn"/>
+                            <constraint firstItem="5Td-wC-rAN" firstAttribute="top" secondItem="Gaa-GP-ScS" secondAttribute="bottom" id="L4G-hK-2ht"/>
                             <constraint firstItem="ry5-aw-OGj" firstAttribute="leading" secondItem="KZ9-wY-kwR" secondAttribute="leading" id="Mmv-Sz-q9f"/>
                             <constraint firstItem="lVP-q5-PHT" firstAttribute="top" secondItem="sG8-FZ-RgK" secondAttribute="bottom" id="VPA-5U-yxp"/>
                             <constraint firstItem="4UW-CZ-aVp" firstAttribute="top" secondItem="ry5-aw-OGj" secondAttribute="bottom" id="VcE-5y-JeR"/>
-                            <constraint firstItem="qVZ-bC-tIY" firstAttribute="top" secondItem="lVP-q5-PHT" secondAttribute="bottom" id="aMT-gt-la5"/>
+                            <constraint firstAttribute="trailing" secondItem="Gaa-GP-ScS" secondAttribute="trailing" id="YGI-33-i7N"/>
                             <constraint firstItem="5Td-wC-rAN" firstAttribute="width" secondItem="U3g-uk-h11" secondAttribute="width" id="bET-Tf-8Uc"/>
                             <constraint firstItem="5Td-wC-rAN" firstAttribute="height" secondItem="U3g-uk-h11" secondAttribute="height" id="esy-BR-NmJ"/>
+                            <constraint firstItem="aaa-qq-v0R" firstAttribute="top" secondItem="lVP-q5-PHT" secondAttribute="bottom" id="jg4-PL-pMv"/>
                             <constraint firstItem="4UW-CZ-aVp" firstAttribute="top" secondItem="U3g-uk-h11" secondAttribute="bottom" constant="10" id="p9L-pr-0aB"/>
                             <constraint firstAttribute="trailing" secondItem="ry5-aw-OGj" secondAttribute="trailing" id="v4i-gG-eJM"/>
-                            <constraint firstItem="5Td-wC-rAN" firstAttribute="top" secondItem="qVZ-bC-tIY" secondAttribute="bottom" id="voz-9d-BHh"/>
                             <constraint firstItem="U3g-uk-h11" firstAttribute="centerX" secondItem="KZ9-wY-kwR" secondAttribute="centerX" id="wbo-ys-qgj"/>
                             <constraint firstItem="U3g-uk-h11" firstAttribute="top" secondItem="5Td-wC-rAN" secondAttribute="bottom" id="wdt-Rw-yEQ"/>
+                            <constraint firstAttribute="trailing" secondItem="aaa-qq-v0R" secondAttribute="trailing" id="yGG-KQ-L3B"/>
                         </constraints>
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
@@ -280,32 +391,15 @@
                     <connections>
                         <outlet property="beginPurchaseButton" destination="5Td-wC-rAN" id="9gk-J6-SOk"/>
                         <outlet property="beginRestoreButton" destination="U3g-uk-h11" id="d6r-5a-T5J"/>
-                        <outlet property="mainLabel" destination="Sa1-05-b8r" id="nLz-te-QtD"/>
+                        <outlet property="horizontalLabel" destination="pZz-vp-IXE" id="lZ6-xV-ya7"/>
+                        <outlet property="horizontalSalesView" destination="aaa-qq-v0R" id="VLA-Nr-fP4"/>
+                        <outlet property="portraitLabel" destination="lVa-Fo-CSv" id="wgg-TA-vo6"/>
+                        <outlet property="portraitSalesView" destination="Gaa-GP-ScS" id="uzU-GF-s3c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IMn-jQ-Zcm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2640.8000000000002" y="1269.7151424287856"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="2EA-kh-BE8">
-            <objects>
-                <viewController id="H3C-4W-QN9" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="K2o-JF-rRk"/>
-                        <viewControllerLayoutGuide type="bottom" id="V8j-Tj-sv2"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="XRA-sI-fVg">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="667" height="667"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QON-6w-erY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-214" y="253"/>
+            <point key="canvasLocation" x="2639.130434782609" y="1268.4782608695652"/>
         </scene>
         <!--Work Panel View Controller-->
         <scene sceneID="0eF-rh-V1D">
@@ -316,24 +410,26 @@
                         <viewControllerLayoutGuide type="bottom" id="SSG-vX-v2o"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Skn-B8-EyZ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nxg-e1-I5X">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="5uR-7j-ejE">
-                                    <frame key="frameInset"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
                                 <blurEffect style="light"/>
                             </visualEffectView>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4vi-WH-Qda" userLabel="Seperator">
-                                <frame key="frameInset" minY="100" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="100" width="375" height="1"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="lru-nN-yJe"/>
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kwd-MU-jrz">
+                                <rect key="frame" x="0.0" y="20" width="414" height="130"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="130" id="QTm-5Q-vk6"/>
                                 </constraints>
@@ -342,11 +438,14 @@
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RED-lI-n0f">
+                                <rect key="frame" x="0.0" y="150" width="414" height="586"/>
                                 <connections>
                                     <segue destination="5b9-KR-h8Y" kind="embed" id="69f-yT-Cdm"/>
                                 </connections>
                             </containerView>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="05p-8C-l3N"/>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="05p-8C-l3N">
+                                <rect key="frame" x="188" y="707" width="39" height="37"/>
+                            </pageControl>
                         </subviews>
                         <constraints>
                             <constraint firstItem="RED-lI-n0f" firstAttribute="top" secondItem="kwd-MU-jrz" secondAttribute="bottom" id="1Uc-FH-FbP"/>
@@ -372,10 +471,10 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="OVu-2P-OWE"/>
                                 <exclude reference="4SU-1K-FSc"/>
                                 <exclude reference="Ga6-sF-w11"/>
                                 <exclude reference="b6X-qY-nYw"/>
+                                <exclude reference="OVu-2P-OWE"/>
                             </mask>
                         </variation>
                     </view>
@@ -408,81 +507,105 @@
                         <viewControllerLayoutGuide type="bottom" id="3DS-PU-zNi"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uRc-ji-stR">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Z2r-Ty-CwD">
+                                <rect key="frame" x="1" y="1" width="103" height="734"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xqX-Xk-UlL" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="103" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uq1-aU-79r" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="103" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xhw-gL-4HQ" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="103" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qWC-rY-jCj" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="103" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LaA-jF-QFR" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="103" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="FTS-VL-JsU">
+                                <rect key="frame" x="105" y="1" width="102" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aTJ-5S-hEr" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AFV-1G-5Ne" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aTY-7q-WPM" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hnY-me-KOj" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VOR-8V-Vep" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Pjc-DM-ZYG">
+                                <rect key="frame" x="208" y="1" width="102" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxf-5h-xvx" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TsF-93-MsK" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DpA-Ar-uYZ" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MSD-G0-cXZ" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c3Y-Wl-sBz" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="oAz-Nh-w0c">
+                                <rect key="frame" x="311" y="1" width="102" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOd-IQ-eDt" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hhQ-bY-Vzo" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="17" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v6R-Ae-BtP" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="18" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5LQ-sl-oZG" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="19" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdz-it-wnR" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                 </subviews>
@@ -544,22 +667,22 @@
                         <viewControllerLayoutGuide type="bottom" id="rYH-it-v8g"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="FNe-kT-5MD">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KxM-bZ-tDz">
-                                <frame key="frameInset" minY="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="TWk-Pq-ip0" style="IBUITableViewCellStyleDefault" id="gS1-BS-Koj">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gS1-BS-Koj" id="Qrg-ba-qJ7">
-                                            <frame key="frameInset" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TWk-Pq-ip0">
-                                                    <frame key="frameInset" minX="15" width="345" height="43.5"/>
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -597,10 +720,11 @@
                         <viewControllerLayoutGuide type="bottom" id="gxH-Mf-QZD"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="IXb-fI-W5R">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="52"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="52"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tID-n1-0sB" userLabel="Text Field" customClass="TextField" customModule="Numerical2" customModuleProvider="target">
+                                <rect key="frame" x="5" y="11" width="340" height="30"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -617,6 +741,7 @@
                                 </connections>
                             </textField>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="z9V-HG-Fcz">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="52"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="1" id="ZK7-ci-am2">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -630,6 +755,7 @@
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FLF-lg-nWD">
+                                <rect key="frame" x="350" y="8" width="60" height="36"/>
                                 <color key="backgroundColor" white="1" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="y3D-nD-Wju"/>
@@ -691,15 +817,17 @@
                         <viewControllerLayoutGuide type="bottom" id="HS5-bT-8pH"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="w93-Hd-DUJ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="130"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="130"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2gu-b4-oXy">
+                                <rect key="frame" x="0.0" y="78" width="414" height="52"/>
                                 <connections>
                                     <segue destination="lDj-q8-bEy" kind="embed" identifier="QuestionView" id="EzE-BM-aex"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1h1-qO-sFC">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="78"/>
                                 <connections>
                                     <segue destination="lDj-q8-bEy" kind="embed" identifier="AnswerView" id="QEU-6J-Q7r"/>
                                 </connections>
@@ -741,36 +869,42 @@
                         <viewControllerLayoutGuide type="bottom" id="bP5-jg-Faz"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="The-Yq-agp">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="owD-tJ-bvA">
+                                <rect key="frame" x="1" y="1" width="50" height="734"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="31M-mh-s9c" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="JNN-2p-Z3I"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tz6-sp-wSC" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="zVz-KH-A5m"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="huY-rY-aOk" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="SWF-7D-1TD"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eL3-iv-GBa" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="28Q-zA-fcM"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v3h-EE-NpI" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="GnK-1B-gCX"/>
@@ -779,32 +913,38 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="gcn-bu-OSS">
+                                <rect key="frame" x="52" y="1" width="50" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rcT-hr-fJN" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="enu-Lc-m5v"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eE-vu-47u" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="EXi-Dy-hRN"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oLb-WC-llm" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="3HP-Pz-eq4"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NfQ-qi-85k" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="cZk-wJ-35E"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ov-tg-sQw" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="E0S-0E-dte"/>
@@ -813,32 +953,38 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="T6g-Ak-kLb">
+                                <rect key="frame" x="103" y="1" width="50" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6kT-b7-RAc" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="PCC-Jp-26r"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J3o-9V-o2A" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="iSl-Fs-yDb"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0I2-k3-Hae" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="XOS-A4-Im6"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rz5-vx-dRl" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="Jjy-mq-KOl"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MMf-gW-rhd" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="mGu-gZ-a1m"/>
@@ -847,32 +993,38 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="tbU-Vi-d51">
+                                <rect key="frame" x="154" y="1" width="51" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWn-Vb-Peb" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="jCt-t2-iUH"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1pI-Pr-Zap" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="fDw-Xi-Tz9"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="17" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJX-9Z-uYi" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="6IX-hh-Nj2"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="18" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wWw-TX-5nn" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="UbP-hC-Zfj"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="19" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xQE-5H-1m8" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="aKB-5H-JC5"/>
@@ -881,32 +1033,38 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="UY3-iv-bVD">
+                                <rect key="frame" x="206" y="1" width="50" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zbg-r4-Jq5" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="GI5-bi-BKa"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="21" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qsu-eN-0y7" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="UOd-Nl-Q8X"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="22" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hyf-rt-Gqx" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="Em7-xT-MhW"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="23" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LNJ-1a-mBC" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="8Tq-uV-pcs"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="24" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b1F-yd-Bfj" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="PBd-Lt-PnM"/>
@@ -915,32 +1073,38 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="xhX-YK-EK1">
+                                <rect key="frame" x="257" y="1" width="52" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="25" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="79d-Hh-Oc4" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="52" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="9tQ-e5-p40"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="26" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qTp-u2-9bO" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="52" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="jU5-wg-cpv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="27" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ksn-2S-46g" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="52" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="gTw-rK-sev"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="28" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3T5-ld-Vc1" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="52" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="P5I-1e-dHO"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="29" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="llK-Om-8JC" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="52" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="T7Z-fg-tu1"/>
@@ -949,32 +1113,38 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Sq4-ZI-blt">
+                                <rect key="frame" x="310" y="1" width="51" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x93-DD-ues" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="Nag-lj-eo4"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="31" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wYh-Cb-TNi" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="4gE-Sb-PBk"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="32" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tfn-fC-bJo" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="4nD-b8-iJi"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="33" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eWT-iC-hbW" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="Cuu-ZP-3kv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="34" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="60e-UD-ZjU" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="x1F-jc-UgQ"/>
@@ -983,32 +1153,38 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="CGz-5b-onC">
+                                <rect key="frame" x="362" y="1" width="51" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="35" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lY-bQ-Uiw" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="FIi-68-yA4"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="36" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4da-PO-PFB" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="147" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="ghJ-YG-2mC"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="37" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="77k-ey-gIM" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="294" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="kt1-cA-bG5"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="38" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7bt-D3-p1W" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="441" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="gfa-9E-HcD"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="39" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ELx-00-a4B" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="588" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="okY-Fo-0NR"/>

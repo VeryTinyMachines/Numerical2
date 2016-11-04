@@ -17,9 +17,10 @@ public enum SalesScreenType {
     case generic
 }
 
-class NumericalViewController: UIViewController, MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate {
+class NumericalViewController: UIViewController, MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate, UIViewControllerTransitioningDelegate {
     
     var loadingScreen:UIView?
+    
     
     func notifyUser(title: String?, message: String?) {
         DispatchQueue.main.async {
@@ -94,7 +95,13 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
     func presentSalesScreen(type: SalesScreenType?) {
         
         if let view = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SalesViewController") as? SalesViewController {
-            present(view, animated: true, completion: { 
+            
+            view.transitioningDelegate = self
+            
+            view.modalPresentationStyle = .overFullScreen
+            view.modalPresentationCapturesStatusBarAppearance = true
+            
+            present(view, animated: true, completion: {
                 
             })
         }
@@ -115,7 +122,6 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
             if let sourceView = sourceView {
                 popVC.sourceRect = self.view.convert(sourceView.frame, from: sourceView)
             }
-            
             
             popVC.delegate = self
             
@@ -194,6 +200,24 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         }
         
         loadingScreen = nil
+    }
+    
+    func hideMenu() {
+        let menu = UIMenuController.shared
+        menu.menuItems = nil
+        menu.setMenuVisible(false, animated: true)
+    }
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        let controller = CustomAnimationController()
+        controller.isPresenting = true
+        return controller
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        let controller = CustomAnimationController()
+        controller.isPresenting = false
+        return controller
     }
     
 }

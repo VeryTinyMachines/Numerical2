@@ -17,6 +17,7 @@ public enum KeypadLayout {
 
 protocol KeypadDelegate {
     func pressedKey(_ key: Character, sourceView: UIView?)
+    func unpressedKey(_ key: Character, sourceView: UIView?)
 }
 
 
@@ -35,23 +36,68 @@ class KeypadViewController: UIViewController {
     
     var currentLegalKeys:Set<Character> = []
     
+    var holdTimer:Timer?
+    var holdTimerInterval = 1.0
+    
+    var currentButton:UIButton?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.backgroundColor = UIColor.clearColor()
+        
         setupKeys()
         
         // Connect all the buttons
-        
         for button in buttons {
             button.addTarget(self, action: #selector(KeypadViewController.pressedPressedDown(_:) ), for: UIControlEvents.touchDown)
+            
+            button.addTarget(self, action: #selector(KeypadViewController.pressedPressedUp(_:) ), for: UIControlEvents.touchCancel)
+            button.addTarget(self, action: #selector(KeypadViewController.pressedPressedUp(_:) ), for: UIControlEvents.touchUpInside)
+            button.addTarget(self, action: #selector(KeypadViewController.pressedPressedUp(_:) ), for: UIControlEvents.touchDragExit)
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(KeypadViewController.updateLegalKeys), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
     }
     
     @IBAction func pressedPressedDown(_ sender: UIButton) {
+        
+        currentButton = sender
+        
+        holdTimer?.invalidate()
+        
+        holdTimerInterval = 0.4
+        
+        holdTimer = Timer.scheduledTimer(withTimeInterval: holdTimerInterval, repeats: false, block: { (timer) in
+            self.holdFireTimer()
+        })
+        
         initateButtonPress(sender: sender)
     }
+    
+    @IBAction func pressedPressedUp(_ sender: UIButton) {
+        holdTimer?.invalidate()
+        
+        currentButton = nil
+        
+        uninitateButtonPress(sender: sender)
+    }
+    
+    
+    func holdFireTimer() {
+        if let currentButton = currentButton {
+            initateButtonPress(sender: currentButton)
+            
+            holdTimer?.invalidate()
+            
+            if holdTimerInterval > 0.2 {
+                holdTimerInterval -= 0.1
+            }
+            
+            holdTimer = Timer.scheduledTimer(withTimeInterval: holdTimerInterval, repeats: false, block: { (timer) in
+                self.holdFireTimer()
+            })
+        }
+    }
+    
     
     func setupKeys() {
         
@@ -88,13 +134,18 @@ class KeypadViewController: UIViewController {
             }
         }
         
-//        updateLegalKeys()
+        updateLegalKeys()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupKeys()
         updateLegalKeys()
+        
+        DispatchQueue.main.async {
+            self.setupKeys()
+            self.updateLegalKeys()
+        }
     }
     
     
@@ -103,10 +154,22 @@ class KeypadViewController: UIViewController {
     }
     
     func initateButtonPress(sender: UIButton) {
+        if let character = characterForSenderTag(tag: sender.tag) {
+            delegate?.pressedKey(character, sourceView: sender)
+        }
+    }
+    
+    
+    func uninitateButtonPress(sender: UIButton) {
+        if let character = characterForSenderTag(tag: sender.tag) {
+            delegate?.unpressedKey(character, sourceView: sender)
+        }
+    }
+    
+    func characterForSenderTag(tag: Int) -> Character? {
+        var character = keyCharacters[tag]
         
-        var character = keyCharacters[sender.tag]
-        
-        print("pressedKey with tag \(sender.tag) with character \(character)")
+        print("pressedKey with tag \(tag) with character \(character)")
         
         // If this is a smart bracket button then figure out what kind of bracket it is
         
@@ -120,15 +183,11 @@ class KeypadViewController: UIViewController {
             }
         }
         
-        if let keyDelegate = delegate {
-            keyDelegate.pressedKey(character, sourceView: sender)
-        }
+        return character
     }
     
     
     func setLegalKeys(_ legalKeys: Set<Character>) {
-        print("setLegalKeys: \(legalKeys)")
-        
         currentLegalKeys = legalKeys
         updateLegalKeys()
     }
@@ -137,8 +196,6 @@ class KeypadViewController: UIViewController {
     func updateLegalKeys() {
         if let theButtons = buttons {
             
-            print("currentLegalKeys: \(currentLegalKeys)")
-            
             for button in theButtons {
                 
                 let tag = button.tag
@@ -146,13 +203,16 @@ class KeypadViewController: UIViewController {
                 if tag < keyCharacters.count {
                     let character = keyCharacters[tag]
                     
-                    print("tag: \(tag)  character: \(character)  contains: \(currentLegalKeys.contains(character))")
-                    
-                    
                     // Change button design depending on the user state
                     if let style = PremiumCoordinator.shared.keyStyleFor(character: character) {
                         button.keyStyle = style
                         button.isEnabled = currentLegalKeys.contains(character)
+                        
+                        if button == currentButton && button.isEnabled == false {
+                            // Need to invalidate the timer
+                            holdTimer?.invalidate()
+                            currentButton = nil
+                        }
                     }
                     
                     button.updateEnabledState()

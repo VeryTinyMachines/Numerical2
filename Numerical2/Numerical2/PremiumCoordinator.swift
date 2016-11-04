@@ -589,6 +589,14 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
         return false
     }
     
+    func shouldUserSeeAd() -> Bool {
+        if isUserPremium() {
+            return false
+        }
+        
+        return true
+    }
+    
     func expiryDate() -> Date? {
         
         if let expiryDate = UserDefaults.standard.object(forKey: "ProModeExpirationDate") as? Date {

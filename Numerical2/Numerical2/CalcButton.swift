@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 class CalcButton: UIButton {
     
@@ -28,6 +29,11 @@ class CalcButton: UIButton {
         }
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.updateLockViewPosition()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -39,12 +45,13 @@ class CalcButton: UIButton {
         self.addTarget(self, action: #selector(CalcButton.touchUp), for: UIControlEvents.touchDragExit)
         
         // Add lock button
-        
         let imageView = UIImageView()
         self.addSubview(imageView)
         self.lockView = imageView
         
         self.updateEnabledState()
+        
+        self.updateLockViewPosition()
     }
     
     func updateEnabledState() {
@@ -72,38 +79,24 @@ class CalcButton: UIButton {
             lockView?.image = UIImage(named: "55_Lock-Open-(alt).png")
         case .PremiumRequired:
             // Premium is required
-            // stroke
             lockView?.image = UIImage(named: "54_Lock-(alt).png")
         }
-        
-        let border:CGFloat = 2
-        let width:CGFloat = ((self.bounds.width + self.bounds.height) / 2) / 8
-        
-        lockView?.frame = CGRect(x: self.bounds.width - border - width, y: self.bounds.height - border - width, width: width, height: width)
         
         if self.isEnabled {
             lockView?.alpha = 1.0
         } else {
             lockView?.alpha = 0.33
         }
+        
+        updateLockViewPosition()
     }
     
-    /*
-    internal func drawRingFittingInsideView(rect: CGRect)->()
-    {
-        let desiredLineWidth:CGFloat = 1    // your desired value
+    func updateLockViewPosition() {
+        let border:CGFloat = 2
+        let width:CGFloat = ((self.frame.width + self.frame.height) / 2) / 8
         
-        let circlePath = UIBezierPath(ovalIn: rect)
-        
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = circlePath.cgPath
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = UIColor.red.cgColor
-        shapeLayer.lineWidth = desiredLineWidth
-        layer.addSublayer(shapeLayer)
-        self.lockView = shapeLayer
+        lockView?.frame = CGRect(x: self.bounds.width - border - width, y: self.bounds.height - border - width, width: width, height: width)
     }
-    */
     
     func touchDown() {
         
@@ -113,9 +106,7 @@ class CalcButton: UIButton {
             self.backgroundColor = self.highlightColor
             
             }) { (complete) -> Void in
-                
         }
-        
     }
     
     func touchUp() {

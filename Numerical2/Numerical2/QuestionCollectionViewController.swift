@@ -13,7 +13,7 @@ protocol QuestionCollectionViewDelegate {
     func textFieldChanged(string: String, view: QuestionCollectionViewController)
 }
 
-class QuestionCollectionViewController:UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
+class QuestionCollectionViewController:NumericalViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     
     var delegate:QuestionCollectionViewDelegate?
     
@@ -554,12 +554,6 @@ class QuestionCollectionViewController:UIViewController, UICollectionViewDataSou
         }
         
         hideMenu()
-    }
-    
-    func hideMenu() {
-        let menu = UIMenuController.shared
-        menu.menuItems = nil
-        menu.setMenuVisible(false, animated: true)
     }
     
     @IBAction func pressDoneButton(_ sender: UIButton) {

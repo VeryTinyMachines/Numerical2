@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 public enum KeypadSize {
     case maximum
@@ -14,7 +15,7 @@ public enum KeypadSize {
     case minimum
 }
 
-class ViewController: NumericalViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate {
+class ViewController: NumericalViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate, GADBannerViewDelegate {
     
     @IBOutlet weak var statusBarBlur: UIVisualEffectView!
     
@@ -32,6 +33,10 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     var panning = false
     
+    var adReadyToDisplay = false
+    
+    @IBOutlet weak var bannerView: GADBannerView!
+    
     @IBOutlet weak var backgroundImageView: UIImageView!
     
     @IBOutlet weak var workPanelHeight: NSLayoutConstraint!
@@ -46,13 +51,88 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         presentKeypad()
         themeChanged()
         
-        DispatchQueue.main.async {
-            NotificationCenter.default.addObserver(self, selector: #selector(ViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.premiumStatusChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
+        
+        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        bannerView.rootViewController = self
+        bannerView.delegate = self
+        bannerView.isHidden = true
+        
+        let request = GADRequest()
+//        request.testDevices = [kGADSimulatorID]
+        bannerView.load(request)
     }
+    
+    /// Tells the delegate an ad request loaded an ad.
+    func adViewDidReceiveAd(_ bannerView: GADBannerView!) {
+        print("adViewDidReceiveAd")
+        adReadyToDisplay = true
+        premiumStatusChanged()
+    }
+    
+    /// Tells the delegate an ad request failed.
+    func adView(_ bannerView: GADBannerView!,
+                didFailToReceiveAdWithError error: GADRequestError!) {
+        print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+        
+        adReadyToDisplay = false
+        premiumStatusChanged()
+    }
+    
+    /// Tells the delegate that a full screen view will be presented in response
+    /// to the user clicking on an ad.
+    func adViewWillPresentScreen(_ bannerView: GADBannerView!) {
+        print("adViewWillPresentScreen")
+    }
+    
+    /// Tells the delegate that the full screen view will be dismissed.
+    func adViewWillDismissScreen(_ bannerView: GADBannerView!) {
+        print("adViewWillDismissScreen")
+    }
+    
+    /// Tells the delegate that the full screen view has been dismissed.
+    func adViewDidDismissScreen(_ bannerView: GADBannerView!) {
+        print("adViewDidDismissScreen")
+    }
+    
+    /// Tells the delegate that a user click will open another app (such as
+    /// the App Store), backgrounding the current app.
+    func adViewWillLeaveApplication(_ bannerView: GADBannerView!) {
+        print("adViewWillLeaveApplication")
+    }
+    
     
     func themeChanged() {
         self.backgroundImageView.image = PremiumCoordinator.shared.imageForCurrentTheme()
+    }
+    
+    func premiumStatusChanged() {
+        
+        if bannerView.isHidden {
+            if showAd() {
+                // Banner is hidden, but user should be seeing an ad.
+                bannerView.isHidden = false
+                
+                snapPercentageHeight()
+                
+                UIView.animate(withDuration: 0.15) {
+                    self.view.layoutIfNeeded()
+                }
+            }
+        } else {
+            // Banner is visible, check if it should be shown
+            if showAd() == false {
+                bannerView.isHidden = true
+                
+                snapPercentageHeight()
+                
+                UIView.animate(withDuration: 0.15) {
+                    self.view.layoutIfNeeded()
+                }
+            }
+        }
     }
     
     
@@ -151,19 +231,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                         
                         updateWorkPanelForHeight(Float(newHeight))
                         
-//                        if workPanelVerticalSpeed > -5 && workPanelVerticalSpeed < 5 {
-//                            // Panel is moving slowly
-//                            UIView.animate(withDuration: 0.15, animations: {
-//                                self.view.layoutIfNeeded()
-//                                }, completion: { (complet) in
-//                                    
-//                            })
-//                        } else {
-//                            self.view.layoutIfNeeded()
-//                        }
-                        
                         self.view.layoutIfNeeded()
-                        
                     }
                 } else {
                     let newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
@@ -232,6 +300,12 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     }
     
     
+    func snapPercentageHeight() {
+        snapPercentageHeight(0, viewSize: view.frame.size)
+        self.updateWorkPanelForHeight(self.workPanelPercentage)
+    }
+    
+    
     func snapPercentageHeight(_ verticalSpeed: CGFloat, viewSize: CGSize) {
         
         print("snapPercentageHeight: \(verticalSpeed)")
@@ -239,9 +313,12 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         // Look at the vertical speed to decide what height to snap it to.
         
         // Determine the height of equation as a percentage
-        let equationHeightPercentage = 140 / viewSize.height
         
-        workPanelPercentage += Float(verticalSpeed) / Float(viewSize.height) * 5
+        let viewHeight = viewHeightWithAd()
+        
+        let equationHeightPercentage = 140 / viewHeight
+        
+        workPanelPercentage += Float(verticalSpeed) / Float(viewHeight) * 5
         
         var allowMiddlePosition = true
         
@@ -251,10 +328,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         }
         
         if verticalSpeed > 5 || verticalSpeed < -5 {
-            
+
             if allowMiddlePosition {
                 // Portrait
                 if workPanelPercentage > 0.66 {
+                    
                     if verticalSpeed > 0 {
                         workPanelPercentage = 1.0
                     } else {
@@ -301,14 +379,20 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             }
         }
         
+        // If the bannerview is present then reduce this percentage by the corrcet amount
+        workPanelPercentage *= Float(viewHeightWithAd() / self.view.frame.height)
+        
         // Update history view content insets.
         updateHistoryContentInsets(viewSize: viewSize)
-        
     }
     
     
     func pressedKey(_ key: Character, sourceView: UIView?) {
         // A key was pressed. No action required as history view is using a fetched results controller.
+    }
+    
+    
+    func unpressedKey(_ key: Character, sourceView: UIView?) {
         
     }
     
@@ -342,6 +426,12 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        premiumStatusChanged()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -350,34 +440,45 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         // Focus the history view on the current equation
         historyView?.focusOnCurrentEquation()
         
-        // ZZZ
+        snapPercentageHeight()
+        
+        premiumStatusChanged()
     }
     
-
+    func viewHeightWithAd() -> CGFloat {
+        return self.view.frame.height - effectiveBannerHeight()
+    }
+    
+    func effectiveBannerHeight() -> CGFloat {
+        if showAd() {
+            return bannerView.frame.height + bannerView.frame.origin.y
+        }
+        return 0
+    }
+    
     func updateHistoryContentInsets(viewSize: CGSize) {
         
         let equationHeightPercentage = 140 / viewSize.height
         
-//        workPanelPercentage += Float(verticalSpeed) / Float(viewSize.height) * 5
+        let viewHeight = viewSize.height - effectiveBannerHeight()
         
-        var bottomInset:CGFloat = viewSize.height * CGFloat(workPanelPercentage)
+        var bottomInset:CGFloat = viewHeight * CGFloat(workPanelPercentage)
         
         if viewSize.width > viewSize.height {
-            bottomInset = viewSize.height * CGFloat(equationHeightPercentage)
+            bottomInset = viewHeight * CGFloat(equationHeightPercentage)
         } else {
             if workPanelPercentage > 0.5 {
-                bottomInset = viewSize.height * 0.5
+                bottomInset = viewHeight * 0.5
             }
         }
         
-        self.historyView?.updateContentInsets(UIEdgeInsets(top: 44, left: 0, bottom: bottomInset, right: 0))
+        var topHeight:CGFloat = 44.0
         
-//        if let theHistoryView = historyView {
-//            
-//            let bottomInset = view.bounds.height - 88
-//            
-//            theHistoryView.updateContentInsets(UIEdgeInsetsMake(40, 0, bottomInset, 0))
-//        }
+        if showAd() {
+            topHeight += bannerView.frame.height
+        }
+        
+        self.historyView?.updateContentInsets(UIEdgeInsets(top: topHeight, left: 0, bottom: bottomInset + (effectiveBannerHeight() / 2), right: 0))
     }
     
     func updateWorkPanelForHeight(_ heightPercentage: Float) {
@@ -393,27 +494,30 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         if UIApplication.shared.isStatusBarHidden {
             // Status bar is NOT visible, hide the status bar blur view.
             statusBarBlur.isHidden = true
-            
         } else {
             // Status bar is visible
             statusBarBlur.isHidden = false
-//            newHeight = newHeight * ((view.bounds.height - 20) / (view.bounds.height - 0))
         }
         
         if newHeight < 0 {
             newHeight = 0
         }
         
-        if newHeight > 0.5 {
-            
-            changeHeightMultipler(CGFloat(newHeight))
-            workPanelBottomConstraint.constant = 0
+        // determine the middle float point given this height
+        
+        let middlePoint = (self.viewHeightWithAd() / self.view.frame.height) / 2
+        
+        if newHeight > middlePoint {
+            self.changeHeightMultipler(CGFloat(newHeight))
+            self.workPanelBottomConstraint.constant = 0
         } else {
-            changeHeightMultipler(CGFloat(0.5))
+            self.changeHeightMultipler(CGFloat(middlePoint))
             
-            let offset:CGFloat = (CGFloat(newHeight) - 0.5)
+            let offset:CGFloat = (CGFloat(newHeight) - middlePoint)
             
-            workPanelBottomConstraint.constant = offset * view.bounds.height
+            let viewHeight = self.viewHeightWithAd()
+            
+            self.workPanelBottomConstraint.constant = offset * viewHeight
         }
     }
     
@@ -496,5 +600,17 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
+    
+    func showAd() -> Bool {
+        if adReadyToDisplay == false {
+            return false // We are still loading the first ad.
+        }
+        
+        return PremiumCoordinator.shared.shouldUserSeeAd()
+    }
+    
+    
+    
+    
 }
 

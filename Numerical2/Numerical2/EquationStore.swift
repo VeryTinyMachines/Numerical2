@@ -54,7 +54,7 @@ class EquationStore {
     static let sharedStore = EquationStore()
     
     fileprivate init() {
-
+        refreshiCloudStatusCheck()
     }
     
     func initialiseiCloud() {
@@ -70,12 +70,8 @@ class EquationStore {
     }
     
     func queueSave() {
-            fireSaveTimer() // Delaying saving causing some issues where cells in the history view do not update properly and fetching equations causes some issues.
+        self.saveContext()
         self.queueCloudKitNeedsUpdate()
-        
-        
-//        saveTimer?.invalidate()
-//        saveTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(EquationStore.fireSaveTimer), userInfo: nil, repeats: false)
     }
     
     @objc func fireSaveTimer() {
@@ -109,7 +105,6 @@ class EquationStore {
     
     
     func equationUpdated(equation: Equation) {
-        print("equationUpdated: \(equationUpdated)")
         
         persistentContainer.performBackgroundTask { (context) in
             equation.posted = NSNumber(value: false)
@@ -214,7 +209,7 @@ class EquationStore {
     
     func updateCloudKit() {
         
-        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && accountStatus == CKAccountStatus.available {
             // Fetch items from the data base that are posted == nil or posted == 1
             // posted == nil items have never been uploaded
             // posted == 0 items have been posted previously but now need updating.
@@ -372,7 +367,7 @@ class EquationStore {
     
     func cloudFetchLatestEquations() {
         
-        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && accountStatus == CKAccountStatus.available {
             let fetchDate = NSDate()
             
             var query = CKQuery(recordType: "Equation", predicate: NSPredicate(value: true))
@@ -557,6 +552,7 @@ class EquationStore {
                 
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: Notification.Name(rawValue: EquationStoreNotification.accountStatusChanged), object: nil)
+                    
                 }
             }
         }

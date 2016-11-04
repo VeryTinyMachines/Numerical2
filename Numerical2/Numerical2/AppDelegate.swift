@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAnalytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,6 +28,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        PremiumCoordinator.shared.validateReceipt()
 //        PremiumCoordinator.shared.updatePremiumStatusFromValidatedJSON()
         
+        FIRApp.configure()
+        GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544~1458002511")
+        
+        DispatchQueue.main.async {
+            SoundManager.primeSounds()
+        }
+        
+//        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { (timer) in
+//            PremiumCoordinator.shared.premiumIAPUser = !PremiumCoordinator.shared.premiumIAPUser
+//            NotificationCenter.default.post(name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
+//        }
         
         return true
     }
