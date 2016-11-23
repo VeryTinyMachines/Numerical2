@@ -76,26 +76,28 @@ class CalcButton: UIButton {
             // Hide the entire lockView.
             lockView?.image = nil
         case .AvailablePremium:
-            lockView?.image = UIImage(named: "55_Lock-Open-(alt).png")
+            lockView?.image = UIImage(named: "PremiumBug_3")
         case .PremiumRequired:
             // Premium is required
-            lockView?.image = UIImage(named: "54_Lock-(alt).png")
+            lockView?.image = UIImage(named: "PremiumBug_3")
         }
         
         if self.isEnabled {
-            lockView?.alpha = 1.0
+            lockView?.alpha = 0.50
         } else {
-            lockView?.alpha = 0.33
+            lockView?.alpha = 0.20
         }
         
         updateLockViewPosition()
     }
     
     func updateLockViewPosition() {
-        let border:CGFloat = 2
-        let width:CGFloat = ((self.frame.width + self.frame.height) / 2) / 8
+        let border:CGFloat = 0
+        let width:CGFloat = ((self.frame.width + self.frame.height) / 2) / 7
         
-        lockView?.frame = CGRect(x: self.bounds.width - border - width, y: self.bounds.height - border - width, width: width, height: width)
+//        lockView?.frame = CGRect(x: self.bounds.width - border - width, y: self.bounds.height - border - width, width: width, height: width)
+        
+        lockView?.frame = CGRect(x: border, y: border, width: width, height: width)
     }
     
     func touchDown() {

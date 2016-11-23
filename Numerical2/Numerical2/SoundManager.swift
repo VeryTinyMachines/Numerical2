@@ -25,6 +25,10 @@ class SoundManager {
     
     func playSound(sound: SoundType) {
         
+        if !NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.sounds) {
+            return
+        }
+        
         switch sound {
         case .click:
             if clickSoundID == 0 {

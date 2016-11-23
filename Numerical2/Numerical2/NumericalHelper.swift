@@ -12,6 +12,7 @@ import UIKit
 public struct NumericalHelperSetting {
     public static let iCloudHistorySync = "iCloudHistorySync"
     public static let autoBrackets = "autoBrackets"
+    public static let sounds = "sounds"
 }
 
 class NumericalHelper {

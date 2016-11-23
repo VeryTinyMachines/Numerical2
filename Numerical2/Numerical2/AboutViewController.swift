@@ -13,6 +13,7 @@ public enum AboutViewItem {
     case premiumInfo
     case themeSelector
     case autoBracket
+    case sounds
     case contact
     case follow
     case share
@@ -47,6 +48,10 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         AboutViewItem.seperator,
         
         AboutViewItem.themeSelector,
+        
+        AboutViewItem.seperator,
+        
+        AboutViewItem.sounds,
         
         AboutViewItem.seperator,
         
@@ -193,6 +198,12 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         case .seperator:
             cell.textLabel?.text = ""
             cell.backgroundColor = UIColor.white.withAlphaComponent(0.25)
+        case .sounds:
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.sounds) {
+                cell.textLabel?.text = "Sounds are Enabled"
+            } else {
+                cell.textLabel?.text = "Sounds are Daisabled"
+            }
         }
         
         cell.textLabel?.numberOfLines = 3
@@ -233,7 +244,9 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                     EquationStore.sharedStore.initialiseiCloud()
                 }
             }
-            
+        case .sounds:
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.sounds)
+            reloadData()
         case .seperator:
             break
         }

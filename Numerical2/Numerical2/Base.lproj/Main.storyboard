@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -149,18 +149,18 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qYX-SV-TdK" id="aDX-Et-5D5">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UN1-ku-fPN">
-                                                    <rect key="frame" x="15" y="11.999999999999998" width="33.333333333333336" height="20.333333333333332"/>
+                                                    <rect key="frame" x="15" y="11" width="34" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mqv-fj-mTl">
-                                                    <rect key="frame" x="355" y="11.999999999999998" width="44" height="20.333333333333332"/>
+                                                    <rect key="frame" x="355" y="11" width="44" height="21"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -240,7 +240,7 @@
                                     <constraint firstAttribute="height" constant="44" id="t72-EN-EL2"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                <state key="normal" title="Restore">
+                                <state key="normal" title="Restore Purchase">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -259,7 +259,7 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pZz-vp-IXE">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pZz-vp-IXE">
                                         <rect key="frame" x="227" y="40" width="147" height="534"/>
                                         <string key="text">Become a pro subscriber for $0.99 p/month to remove ads, use all the fancy scientific keys, create your own themes, and support the ongoing development of Numerical.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -314,7 +314,7 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lVa-Fo-CSv">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lVa-Fo-CSv">
                                         <rect key="frame" x="40" y="383" width="334" height="191"/>
                                         <string key="text">Become a pro subscriber for $0.99 p/month to remove ads, use all the fancy scientific keys, create your own themes, and support the ongoing development of Numerical.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -325,7 +325,7 @@
                                         <rect key="frame" x="0.0" y="191" width="414" height="192"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIcon120x120.png" translatesAutoresizingMaskIntoConstraints="NO" id="Tdu-Xj-gi1">
-                                                <rect key="frame" x="137" y="27" width="140" height="140"/>
+                                                <rect key="frame" x="137" y="26" width="140" height="140"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="140" id="xqC-GX-5jW"/>
                                                     <constraint firstAttribute="height" constant="140" id="ytd-UE-mQD"/>
@@ -511,51 +511,51 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Z2r-Ty-CwD">
-                                <rect key="frame" x="1" y="1" width="103" height="734"/>
+                                <rect key="frame" x="1" y="1" width="102" height="734"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xqX-Xk-UlL" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="103" height="146"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uq1-aU-79r" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="147" width="103" height="146"/>
+                                        <rect key="frame" x="0.0" y="147" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xhw-gL-4HQ" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="294" width="103" height="146"/>
+                                        <rect key="frame" x="0.0" y="294" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qWC-rY-jCj" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="441" width="103" height="146"/>
+                                        <rect key="frame" x="0.0" y="441" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LaA-jF-QFR" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="588" width="103" height="146"/>
+                                        <rect key="frame" x="0.0" y="588" width="102" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="FTS-VL-JsU">
-                                <rect key="frame" x="105" y="1" width="102" height="734"/>
+                                <rect key="frame" x="104" y="1" width="103" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aTJ-5S-hEr" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="102" height="146"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="103" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AFV-1G-5Ne" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="147" width="102" height="146"/>
+                                        <rect key="frame" x="0.0" y="147" width="103" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aTY-7q-WPM" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="294" width="102" height="146"/>
+                                        <rect key="frame" x="0.0" y="294" width="103" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hnY-me-KOj" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="441" width="102" height="146"/>
+                                        <rect key="frame" x="0.0" y="441" width="103" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VOR-8V-Vep" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="588" width="102" height="146"/>
+                                        <rect key="frame" x="0.0" y="588" width="103" height="146"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                 </subviews>
@@ -678,11 +678,11 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gS1-BS-Koj" id="Qrg-ba-qJ7">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TWk-Pq-ip0">
-                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.666666666666664"/>
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -873,38 +873,38 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="owD-tJ-bvA">
-                                <rect key="frame" x="1" y="1" width="50" height="734"/>
+                                <rect key="frame" x="1" y="1" width="51" height="734"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="31M-mh-s9c" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="146"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="JNN-2p-Z3I"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tz6-sp-wSC" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="147" width="50" height="146"/>
+                                        <rect key="frame" x="0.0" y="147" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="zVz-KH-A5m"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="huY-rY-aOk" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="294" width="50" height="146"/>
+                                        <rect key="frame" x="0.0" y="294" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="SWF-7D-1TD"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eL3-iv-GBa" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="441" width="50" height="146"/>
+                                        <rect key="frame" x="0.0" y="441" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="28Q-zA-fcM"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v3h-EE-NpI" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="588" width="50" height="146"/>
+                                        <rect key="frame" x="0.0" y="588" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="GnK-1B-gCX"/>
@@ -913,7 +913,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="gcn-bu-OSS">
-                                <rect key="frame" x="52" y="1" width="50" height="734"/>
+                                <rect key="frame" x="53" y="1" width="50" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rcT-hr-fJN" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="146"/>
@@ -953,38 +953,38 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="T6g-Ak-kLb">
-                                <rect key="frame" x="103" y="1" width="50" height="734"/>
+                                <rect key="frame" x="104" y="1" width="51" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6kT-b7-RAc" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="146"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="PCC-Jp-26r"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J3o-9V-o2A" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="147" width="50" height="146"/>
+                                        <rect key="frame" x="0.0" y="147" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="iSl-Fs-yDb"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0I2-k3-Hae" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="294" width="50" height="146"/>
+                                        <rect key="frame" x="0.0" y="294" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="XOS-A4-Im6"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rz5-vx-dRl" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="441" width="50" height="146"/>
+                                        <rect key="frame" x="0.0" y="441" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="Jjy-mq-KOl"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MMf-gW-rhd" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="588" width="50" height="146"/>
+                                        <rect key="frame" x="0.0" y="588" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="mGu-gZ-a1m"/>
@@ -993,7 +993,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="tbU-Vi-d51">
-                                <rect key="frame" x="154" y="1" width="51" height="734"/>
+                                <rect key="frame" x="156" y="1" width="51" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWn-Vb-Peb" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="51" height="146"/>
@@ -1033,7 +1033,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="UY3-iv-bVD">
-                                <rect key="frame" x="206" y="1" width="50" height="734"/>
+                                <rect key="frame" x="208" y="1" width="50" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zbg-r4-Jq5" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="146"/>
@@ -1073,38 +1073,38 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="xhX-YK-EK1">
-                                <rect key="frame" x="257" y="1" width="52" height="734"/>
+                                <rect key="frame" x="259" y="1" width="51" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="25" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="79d-Hh-Oc4" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="52" height="146"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="9tQ-e5-p40"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="26" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qTp-u2-9bO" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="147" width="52" height="146"/>
+                                        <rect key="frame" x="0.0" y="147" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="jU5-wg-cpv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="27" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ksn-2S-46g" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="294" width="52" height="146"/>
+                                        <rect key="frame" x="0.0" y="294" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="gTw-rK-sev"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="28" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3T5-ld-Vc1" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="441" width="52" height="146"/>
+                                        <rect key="frame" x="0.0" y="441" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="P5I-1e-dHO"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="29" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="llK-Om-8JC" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="588" width="52" height="146"/>
+                                        <rect key="frame" x="0.0" y="588" width="51" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="T7Z-fg-tu1"/>
@@ -1113,38 +1113,38 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Sq4-ZI-blt">
-                                <rect key="frame" x="310" y="1" width="51" height="734"/>
+                                <rect key="frame" x="311" y="1" width="50" height="734"/>
                                 <subviews>
                                     <button opaque="NO" tag="30" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x93-DD-ues" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="51" height="146"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="Nag-lj-eo4"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="31" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wYh-Cb-TNi" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="147" width="51" height="146"/>
+                                        <rect key="frame" x="0.0" y="147" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="4gE-Sb-PBk"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="32" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tfn-fC-bJo" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="294" width="51" height="146"/>
+                                        <rect key="frame" x="0.0" y="294" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="4nD-b8-iJi"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="33" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eWT-iC-hbW" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="441" width="51" height="146"/>
+                                        <rect key="frame" x="0.0" y="441" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="Cuu-ZP-3kv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="34" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="60e-UD-ZjU" customClass="CalcButton" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="588" width="51" height="146"/>
+                                        <rect key="frame" x="0.0" y="588" width="50" height="146"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="pressedKey:" destination="x0q-KV-iZC" eventType="touchUpInside" id="x1F-jc-UgQ"/>

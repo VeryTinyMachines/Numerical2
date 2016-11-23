@@ -77,6 +77,9 @@
 		518A8BA61D96FAC0001D8B12 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A8BA51D96FAC0001D8B12 /* HistoryViewController.swift */; };
 		518A8BA91D9703E0001D8B12 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 518A8BA81D9703E0001D8B12 /* CloudKit.framework */; };
 		519B1B131BA0532A00C06E70 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519B1B121BA0532A00C06E70 /* HistoryCell.swift */; };
+		519BA0951DD1192400786519 /* PremiumBug_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 519BA0941DD1192400786519 /* PremiumBug_1.png */; };
+		519BA0971DD11A0200786519 /* PremiumBug_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 519BA0961DD11A0200786519 /* PremiumBug_2.png */; };
+		519BA0991DD11AC900786519 /* PremiumBug_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 519BA0981DD11AC900786519 /* PremiumBug_3.png */; };
 		51B2A29B1D95C283002A9AD8 /* SinkableUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B2A29A1D95C283002A9AD8 /* SinkableUserDefaults.swift */; };
 		51B2A29F1D95C304002A9AD8 /* Pad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B2A29E1D95C304002A9AD8 /* Pad.swift */; };
 		51C40E841DCC135C00930BFD /* professional-reverse.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 51C40E7F1DCC135C00930BFD /* professional-reverse.aiff */; };
@@ -218,6 +221,9 @@
 		518A8BA51D96FAC0001D8B12 /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		518A8BA81D9703E0001D8B12 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		519B1B121BA0532A00C06E70 /* HistoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
+		519BA0941DD1192400786519 /* PremiumBug_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PremiumBug_1.png; sourceTree = "<group>"; };
+		519BA0961DD11A0200786519 /* PremiumBug_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PremiumBug_2.png; sourceTree = "<group>"; };
+		519BA0981DD11AC900786519 /* PremiumBug_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PremiumBug_3.png; sourceTree = "<group>"; };
 		51B2A29A1D95C283002A9AD8 /* SinkableUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinkableUserDefaults.swift; sourceTree = "<group>"; };
 		51B2A29E1D95C304002A9AD8 /* Pad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pad.swift; sourceTree = "<group>"; };
 		51C40E7F1DCC135C00930BFD /* professional-reverse.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = "professional-reverse.aiff"; path = "Sounds/professional-reverse.aiff"; sourceTree = "<group>"; };
@@ -421,6 +427,9 @@
 				512137C01D96A76F0042EFC1 /* PremiumCoordinator.swift */,
 				5142AE361DA420EE0076D117 /* 5_Star-(alt).png */,
 				5142AE371DA420EE0076D117 /* 5_Star.png */,
+				519BA0941DD1192400786519 /* PremiumBug_1.png */,
+				519BA0961DD11A0200786519 /* PremiumBug_2.png */,
+				519BA0981DD11AC900786519 /* PremiumBug_3.png */,
 				5142AE381DA420EE0076D117 /* 54_Lock-(alt).png */,
 				5142AE391DA420EE0076D117 /* 54_Lock.png */,
 				5142AE3A1DA420EE0076D117 /* 55_Lock-Open-(alt).png */,
@@ -775,9 +784,11 @@
 				512138011D96ADEB0042EFC1 /* water001@2x.jpg in Resources */,
 				512137E91D96ADEB0042EFC1 /* blue001@2x.jpg in Resources */,
 				5142AE3D1DA420EE0076D117 /* 5_Star.png in Resources */,
+				519BA0971DD11A0200786519 /* PremiumBug_2.png in Resources */,
 				512137E41D96ADEB0042EFC1 /* pink001-thumbnail@1x.jpg in Resources */,
 				512137E61D96ADEB0042EFC1 /* pink001@2x.jpg in Resources */,
 				512137EE1D96ADEB0042EFC1 /* dark001-thumbnail@2x.jpg in Resources */,
+				519BA0991DD11AC900786519 /* PremiumBug_3.png in Resources */,
 				512137EA1D96ADEB0042EFC1 /* cloud001-thumbnail@1x.jpg in Resources */,
 				512137EF1D96ADEB0042EFC1 /* dark001@2x.jpg in Resources */,
 				51C40E871DCC135C00930BFD /* simple.aiff in Resources */,
@@ -789,6 +800,7 @@
 				512137FB1D96ADEB0042EFC1 /* sand001@2x.jpg in Resources */,
 				512137EB1D96ADEB0042EFC1 /* cloud001-thumbnail@2x.jpg in Resources */,
 				513197151B6ADD5900E9B802 /* Main.storyboard in Resources */,
+				519BA0951DD1192400786519 /* PremiumBug_1.png in Resources */,
 				512137F31D96ADEB0042EFC1 /* orange001-thumbnail@1x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

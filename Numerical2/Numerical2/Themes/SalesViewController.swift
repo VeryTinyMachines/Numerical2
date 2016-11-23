@@ -36,6 +36,8 @@ class SalesViewController: NumericalViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(SalesViewController.updateView), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(SalesViewController.updateView), name: Notification.Name(rawValue: PremiumCoordinatorNotification.productsChanged), object: nil)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,8 +99,7 @@ class SalesViewController: NumericalViewController {
             beginRestoreButton.setTitle("Manage Subscription", for: UIControlState.normal)
         } else {
             
-            
-            let string = "Become a pro subscriber for \(price) p/month to remove ads, use all the fancy scientific keys, create your own themes, and support the ongoing development of Numerical."
+            let string = "Become a Numerical Pro subscriber for \(price) per month to remove ads, use all the fancy scientific keys, and support the ongoing development of Numerical."
             
             horizontalLabel.text = string
             portraitLabel.text = string
@@ -113,10 +114,7 @@ class SalesViewController: NumericalViewController {
             } else {
                 beginPurchaseButton.setTitle("Start Free Trial", for: UIControlState.normal)
             }
-            
         }
-        
-        // Setup the buttons
     }
     
     @IBAction func userPressedPurchaseButton(_ sender: UIButton) {
