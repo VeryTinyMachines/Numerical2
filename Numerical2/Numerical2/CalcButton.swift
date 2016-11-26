@@ -93,9 +93,7 @@ class CalcButton: UIButton {
     
     func updateLockViewPosition() {
         let border:CGFloat = 0
-        let width:CGFloat = ((self.frame.width + self.frame.height) / 2) / 7
-        
-//        lockView?.frame = CGRect(x: self.bounds.width - border - width, y: self.bounds.height - border - width, width: width, height: width)
+        let width:CGFloat = ((self.frame.width + self.frame.height) / 2) / 12
         
         lockView?.frame = CGRect(x: border, y: border, width: width, height: width)
     }

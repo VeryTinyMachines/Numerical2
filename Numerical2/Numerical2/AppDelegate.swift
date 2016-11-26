@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 import FirebaseAnalytics
+import CloudKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print(PremiumCoordinator.shared.themes)
         
-        EquationStore.sharedStore.saveContext()
+        EquationStore.sharedStore.initialiseSetup()
         
         PremiumCoordinator.shared.setupManager()
 //        PremiumCoordinator.shared.updateProductsIfNeeded()
@@ -35,10 +37,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             SoundManager.primeSounds()
         }
         
-//        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { (timer) in
-//            PremiumCoordinator.shared.premiumIAPUser = !PremiumCoordinator.shared.premiumIAPUser
-//            NotificationCenter.default.post(name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
+//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { (timer) in
+//            EquationStore.sharedStore.subscribeToCKIfNeeded()
 //        }
+        
+//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
+//            print("EquationStore.sharedStore.subscriptionStates: \(EquationStore.sharedStore.subscriptionStates)")
+//        }
+        
+//        UNUserNotificationCenter.current().requestAuthorization(options:
+//            [[.alert, .sound, .badge]],
+//                                                                completionHandler: { (granted, error) in
+//                                                                    // Handle Error
+//        })
+        
+        application.registerForRemoteNotifications()
         
         return true
     }
@@ -59,15 +72,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-     
-        EquationStore.sharedStore.cloudFetchLatestEquations()
-        EquationStore.sharedStore.queueCloudKitNeedsUpdate()
+        
         EquationStore.sharedStore.refreshiCloudStatusCheck()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("")
+        
+        
+        let notification: CKNotification =
+            CKNotification(fromRemoteNotificationDictionary:
+                userInfo as! [String : NSObject])
+        
+        if (notification.notificationType ==
+            CKNotificationType.query) {
+            
+            let queryNotification =
+                notification as! CKQueryNotification
+            
+            if let recordID = queryNotification.recordID {
+                print("recordID: \(recordID)")
+                
+                EquationStore.sharedStore.fetchAndSaveEquation(recordID: recordID)
+            }
+            
+            
+            
+            
+        }
+        
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        print("")
+    }
+    
+    
+    
+    
+    
     
     
 

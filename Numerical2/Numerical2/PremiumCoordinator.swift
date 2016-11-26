@@ -37,7 +37,7 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     
     lazy var legacyThemeUser: Bool = {
         return UserDefaults.standard.bool(forKey: "ThemePack001")
-    }()
+    } ()
     
     var premiumIAPUser:Bool = false
     
@@ -576,7 +576,7 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     
     
     func isUserPremium() ->Bool {
-//        return true // TEMP
+//        return true // TEMP for testing
         
         if premiumIAPUser {
             // User is paying via an IAP, user is premium

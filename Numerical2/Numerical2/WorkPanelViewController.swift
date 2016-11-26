@@ -360,16 +360,12 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                         
                         newCursorPosition = range.lower
                         
-                        print(currentEquation?.question)
-                        print("")
-                        
                     } else if let index = currentCursorPosition() {
                         
                         print(index)
                         
                         if index > 0 {
                             // Remove the character before this index
-                            
                             
                             var newQuestion = ""
                             
@@ -392,7 +388,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                         // Just delete from the end
                         equation.question = question.substring(to: question.characters.index(before: question.endIndex))
                     }
-                    
                     
                     // If this equation is now empty then we need to delete the equation from the store.
                     if "" == equation.question {

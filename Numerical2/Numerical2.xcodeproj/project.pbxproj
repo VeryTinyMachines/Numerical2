@@ -423,8 +423,8 @@
 		5142AE351DA420D70076D117 /* Premium */ = {
 			isa = PBXGroup;
 			children = (
-				512137C21D96AAF70042EFC1 /* ThemesList.plist */,
 				512137C01D96A76F0042EFC1 /* PremiumCoordinator.swift */,
+				512137C21D96AAF70042EFC1 /* ThemesList.plist */,
 				5142AE361DA420EE0076D117 /* 5_Star-(alt).png */,
 				5142AE371DA420EE0076D117 /* 5_Star.png */,
 				519BA0941DD1192400786519 /* PremiumBug_1.png */,

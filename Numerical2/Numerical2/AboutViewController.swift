@@ -242,6 +242,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                 if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
                     // This is enabled.
                     EquationStore.sharedStore.initialiseiCloud()
+                    EquationStore.sharedStore.subscribeToCKIfNeeded()
                 }
             }
         case .sounds:

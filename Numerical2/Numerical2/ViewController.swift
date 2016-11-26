@@ -449,6 +449,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         return self.view.frame.height - effectiveBannerHeight()
     }
     
+    func viewHeightWithoutAd() -> CGFloat {
+        return self.view.frame.height
+    }
+    
+    
     func effectiveBannerHeight() -> CGFloat {
         if showAd() {
             return bannerView.frame.height + bannerView.frame.origin.y
@@ -515,7 +520,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
             let offset:CGFloat = (CGFloat(newHeight) - middlePoint)
             
-            let viewHeight = self.viewHeightWithAd()
+            let viewHeight = self.viewHeightWithoutAd()
             
             self.workPanelBottomConstraint.constant = offset * viewHeight
         }

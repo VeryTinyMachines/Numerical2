@@ -10,6 +10,11 @@ import Foundation
 import CoreData
 import CloudKit
 
+public enum SubscriptionType {
+    case modify
+    case create
+}
+
 public struct EquationNotification {
     public static let updated = "EquationNotification.updated"
 }
@@ -38,6 +43,8 @@ class EquationStore {
     var queuedEquationsToSave = [String: Equation]()
     var accountStatus: CKAccountStatus = CKAccountStatus.couldNotDetermine
     
+    var subscriptionSetup = false
+    
     lazy var lastFetchDate:NSDate? = {
         if let date = UserDefaults.standard.object(forKey: "lastFetchDate") as? NSDate {
             return date
@@ -54,7 +61,11 @@ class EquationStore {
     static let sharedStore = EquationStore()
     
     fileprivate init() {
-        refreshiCloudStatusCheck()
+        
+    }
+    
+    func initialiseSetup() {
+        initialiseiCloud()
     }
     
     func initialiseiCloud() {
@@ -215,17 +226,13 @@ class EquationStore {
             // posted == 0 items have been posted previously but now need updating.
             // posted == 1 items have been posted and, to the best of our knowledge, are up to date.
             
-            // When creating new cloudkit equations we define the record ID as "equation.\(identifier)", this gives us an easy way to reconcile and update items.
+            // When creating new cloudkit equations we define the record ID as "equation.\(identifier)", this gives us an easy way to reconcile and update items in future from only the recordID.
             
-            
-            // 1. Get all unposted items
+            // Get all unposted items
             let fetch = equationsFetchRequest(NSPredicate(format: "posted == nil || posted == NO"))
             
             do {
                 let equations = try self.persistentContainer.viewContext.fetch(fetch)
-                
-                print(equations)
-                print("")
                 
                 if equations.count > 0 {
                     convertEquationsToCKEquations(equations: equations)
@@ -247,8 +254,6 @@ class EquationStore {
             
             if let identifier = equation.identifier {
                 
-                print("original.equation: \(equation)")
-                
                 let newEquation = CKRecord(recordType: "Equation", recordID: CKRecordID(recordName: "Equation.\(identifier)"))
                 
                 newEquation.setValue(equation.answer, forKey: "answer")
@@ -260,11 +265,6 @@ class EquationStore {
                 newEquation.setValue(equation.sortOrder, forKey: "sortOrder")
                 
                 newEquation.setValue(equation.userDeleted, forKey: "equationDeleted")
-                
-                
-//                newEquation.setValue(NSNumber(integerLiteral: 1), forKey: "equationDeleted")
-                
-                print("newEquation: \(newEquation)")
                 
                 ckEquations.append(newEquation)
                 
@@ -367,7 +367,7 @@ class EquationStore {
     
     func cloudFetchLatestEquations() {
         
-        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && accountStatus == CKAccountStatus.available {
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && self.accountStatus == CKAccountStatus.available {
             let fetchDate = NSDate()
             
             var query = CKQuery(recordType: "Equation", predicate: NSPredicate(value: true))
@@ -379,17 +379,15 @@ class EquationStore {
             query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
             
             privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
-                print(records)
-                print(error)
+//                print(records)
+//                print(error)
                 
                 if let records = records {
-                    self.compareRecords(records: records)
-                }
-                
-                if error == nil {
                     DispatchQueue.main.async {
+                        self.compareRecords(records: records)
                         self.setLastFetchDate(date: fetchDate)
                     }
+                    
                 }
             }
         }
@@ -411,7 +409,6 @@ class EquationStore {
                             
                             if let fetchedEquation = self.fetchEquationWithIdentifier(string: identifier) {
                                 // Found a matching equation, check if it needs updating.
-                                
                                 // Who is newer
                                 
                                 print("fetchedEquation: \(fetchedEquation)")
@@ -428,23 +425,18 @@ class EquationStore {
                                         // The remoteModDate is newer thatn the local one, therefore we prefer the local version.
                                         
                                         preferRemoteCopy = true
-                                    } else {
-                                        print("")
                                     }
                                     
                                     if preferRemoteCopy {
                                         fetchedEquation.updateTo(record: record)
                                     }
-                                    
                                 }
-                                
                                 
                             } else {
                                 // Holy moley this is a new equation! Save it!
                                 let newEquation = self.newEquationFromCKRecord(record: record)
                                 print("newEquation: \(newEquation)")
                             }
-                            
                         }
                     }
                 }
@@ -555,11 +547,81 @@ class EquationStore {
                     
                 }
             }
+            
+            self.subscribeToCKIfNeeded()
+            self.cloudFetchLatestEquations()
+            self.queueCloudKitNeedsUpdate()
         }
     }
     
+    func subscribeToCKIfNeeded() {
+        if self.accountStatus == CKAccountStatus.available && NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && self.subscriptionSetup == false {
+            
+            let modifySubscription =  CKQuerySubscription(recordType: "Equation", predicate: NSPredicate(value: true), options: [CKQuerySubscriptionOptions.firesOnRecordCreation, CKQuerySubscriptionOptions.firesOnRecordUpdate])
+            
+//            let notificationInfo = CKNotificationInfo()
+//            
+//            notificationInfo.alertBody = "Equation changed / created"
+//            notificationInfo.shouldBadge = true
+//            
+//            modifySubscription.notificationInfo = notificationInfo
+//            
+            privateDatabase.fetchAllSubscriptions(completionHandler: { (fetchedSubscriptions, error) in
+                
+                DispatchQueue.main.async {
+                    if let fetchedSubscriptions = fetchedSubscriptions {
+                        for sub in fetchedSubscriptions {
+                            
+                            if let sub = sub as? CKQuerySubscription {
+                                
+                                if sub.recordType == "Equation" {
+                                    
+                                    if sub.querySubscriptionOptions.contains(CKQuerySubscriptionOptions.firesOnRecordUpdate) && sub.querySubscriptionOptions.contains(CKQuerySubscriptionOptions.firesOnRecordCreation) {
+                                        
+                                        // We already have this subscription. Not needed.
+                                        self.subscriptionSetup = true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    if self.subscriptionSetup == false {
+                        // We still have something we need to post
+                        self.privateDatabase.save(modifySubscription, completionHandler: { (responseSubscription, error) in
+                            
+                            DispatchQueue.main.async {
+                                print("responseSubscription: \(responseSubscription)")
+                                print("error: \(error)")
+                                print("")
+                                
+                                if error == nil {
+                                    if let _ = responseSubscription {
+                                        // We have subscribed
+                                        self.subscriptionSetup = true
+                                    }
+                                }
+                            }
+                        })
+                    }
+                    
+                }
+            })
+        }
+    }
     
-    
-    
-    
+    func fetchAndSaveEquation(recordID: CKRecordID) {
+        privateDatabase.fetch(withRecordID: recordID) { (record, error) in
+            print("record: \(record)")
+            if let record = record {
+                self.compareRecords(records: [record])
+            }
+        }
+    }
+}
+
+extension CKQuerySubscriptionOptions:Hashable {
+    public var hashValue: Int {
+        return "self".hashValue
+    }
 }
