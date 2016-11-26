@@ -107,12 +107,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let recordID = queryNotification.recordID {
                 print("recordID: \(recordID)")
                 
-                EquationStore.sharedStore.fetchAndSaveEquation(recordID: recordID)
+                EquationStore.sharedStore.fetchAndSaveEquation(recordID: recordID, completion: { (complete) in
+                    if complete {
+                        completionHandler(UIBackgroundFetchResult.newData)
+                    } else {
+                        completionHandler(UIBackgroundFetchResult.failed)
+                    }
+                })
             }
-            
-            
-            
-            
         }
         
     }

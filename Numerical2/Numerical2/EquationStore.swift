@@ -561,8 +561,10 @@ class EquationStore {
             
             let notificationInfo = CKNotificationInfo()
             
-            notificationInfo.alertBody = "test"
-            notificationInfo.shouldBadge = true
+//            notificationInfo.alertBody = "test"
+//            notificationInfo.shouldBadge = true
+            
+            notificationInfo.shouldSendContentAvailable = true
             
             modifySubscription.notificationInfo = notificationInfo
 //
@@ -610,11 +612,14 @@ class EquationStore {
         }
     }
     
-    func fetchAndSaveEquation(recordID: CKRecordID) {
+    func fetchAndSaveEquation(recordID: CKRecordID, completion: @escaping ((_ complete: Bool) -> Void)) {
         privateDatabase.fetch(withRecordID: recordID) { (record, error) in
             print("record: \(record)")
             if let record = record {
                 self.compareRecords(records: [record])
+                completion(true)
+            } else {
+                completion(false)
             }
         }
     }
