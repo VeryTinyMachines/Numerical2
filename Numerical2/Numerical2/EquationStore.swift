@@ -559,13 +559,13 @@ class EquationStore {
             
             let modifySubscription =  CKQuerySubscription(recordType: "Equation", predicate: NSPredicate(value: true), options: [CKQuerySubscriptionOptions.firesOnRecordCreation, CKQuerySubscriptionOptions.firesOnRecordUpdate])
             
-//            let notificationInfo = CKNotificationInfo()
-//            
-//            notificationInfo.alertBody = "Equation changed / created"
-//            notificationInfo.shouldBadge = true
-//            
-//            modifySubscription.notificationInfo = notificationInfo
-//            
+            let notificationInfo = CKNotificationInfo()
+            
+            notificationInfo.alertBody = "test"
+            notificationInfo.shouldBadge = true
+            
+            modifySubscription.notificationInfo = notificationInfo
+//
             privateDatabase.fetchAllSubscriptions(completionHandler: { (fetchedSubscriptions, error) in
                 
                 DispatchQueue.main.async {

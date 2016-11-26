@@ -45,11 +45,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print("EquationStore.sharedStore.subscriptionStates: \(EquationStore.sharedStore.subscriptionStates)")
 //        }
         
-//        UNUserNotificationCenter.current().requestAuthorization(options:
-//            [[.alert, .sound, .badge]],
-//                                                                completionHandler: { (granted, error) in
-//                                                                    // Handle Error
-//        })
+        
+//        UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
+//        [application registerUserNotificationSettings:notificationSettings];
+//        [application registerForRemoteNotifications];
+        
+        
+        
+//        let settings = UIUserNotificationSettings(types: [.alert,  , categories: )
+        
+        UNUserNotificationCenter.current().requestAuthorization(options:
+            [[.alert, .sound, .badge]],
+                                                                completionHandler: { (granted, error) in
+                                                                    // Handle Error
+        })
         
         application.registerForRemoteNotifications()
         
@@ -74,6 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
         EquationStore.sharedStore.refreshiCloudStatusCheck()
+        application.applicationIconBadgeNumber = 0
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -111,7 +121,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("")
     }
     
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("")
+    }
     
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("")
+    }
     
     
     
