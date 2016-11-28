@@ -102,8 +102,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
     func updateBackgroundColorForPresentationType() {
         if let _ = self.navigationController {
             // We are in a navigation controller context and need to define our own background
-            tableView.backgroundColor = UIColor.darkGray
-            view.backgroundColor = UIColor.darkGray
+            tableView.backgroundColor = ThemeCoordinator.shared.currentTheme().firstColor
+            view.backgroundColor = ThemeCoordinator.shared.currentTheme().firstColor
         } else {
             // We are not in a nav controller and should therefore simply have a clear background
             tableView.backgroundColor = UIColor.clear
