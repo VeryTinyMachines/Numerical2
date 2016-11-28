@@ -17,7 +17,9 @@ public enum KeypadSize {
 
 class ViewController: NumericalViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate, GADBannerViewDelegate {
     
-    @IBOutlet weak var statusBarBlur: UIVisualEffectView!
+    @IBOutlet weak var statusBarBlur: UIView!
+    
+    var blurView: UIVisualEffectView?
     
     var historyView: HistoryViewController?
     var workPanelView: WorkPanelViewController?
@@ -35,6 +37,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     var adReadyToDisplay = false
     
+    var gradiantLayer:CAGradientLayer?
+    
     @IBOutlet weak var bannerView: GADBannerView!
     
     @IBOutlet weak var backgroundImageView: UIImageView!
@@ -49,7 +53,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         self.view.backgroundColor = UIColor.green
         
         presentKeypad()
-        themeChanged()
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
         
@@ -63,6 +66,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         let request = GADRequest()
 //        request.testDevices = [kGADSimulatorID]
         bannerView.load(request)
+        
+        themeChanged()
     }
     
     /// Tells the delegate an ad request loaded an ad.
@@ -106,6 +111,42 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func themeChanged() {
         self.backgroundImageView.image = PremiumCoordinator.shared.imageForCurrentTheme()
+        self.backgroundImageView.image = nil
+        self.backgroundImageView.isHidden = true
+        
+        self.view.layoutIfNeeded()
+        
+        if let gradiantLayer = gradiantLayer {
+            gradiantLayer.removeFromSuperlayer()
+        }
+        
+        let layer = ThemeCoordinator.shared.gradiantLayerForCurrentTheme()
+        layer.frame = self.view.frame
+        
+        self.view.layer.insertSublayer(layer, at: 0)
+        
+        self.view.backgroundColor = ThemeCoordinator.shared.currentTheme().firstColor
+        
+        gradiantLayer = layer
+        
+        // Update the status bar blur view
+        updateBlurView()
+        
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    func updateBlurView() {
+        if let currentBlurView = self.blurView {
+            currentBlurView.removeFromSuperview()
+            self.blurView = nil
+        }
+        
+        let visualEffectView = ThemeCoordinator.shared.visualEffectViewForCurrentTheme()
+        self.statusBarBlur.insertSubview(visualEffectView, at: 0)
+        
+        visualEffectView.bindFrameToSuperviewBounds()
+        
+        self.blurView = visualEffectView
     }
     
     func premiumStatusChanged() {
@@ -543,6 +584,10 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         needsEditMenuDismissal()
         
+        if let gradiantLayer = self.gradiantLayer {
+            gradiantLayer.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        }
+        
         super.viewWillTransition(to: size, with: coordinator)
         
         coordinator.animate(alongsideTransition: { (context) -> Void in
@@ -550,6 +595,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             self.updateKeypad()
             self.view.layoutIfNeeded()
             }) { (context) -> Void in
+                self.themeChanged()
         }
     }
     
@@ -603,7 +649,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
+        return ThemeCoordinator.shared.preferredStatusBarStyleForCurrentTheme()
     }
     
     func showAd() -> Bool {

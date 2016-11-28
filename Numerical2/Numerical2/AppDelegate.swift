@@ -37,9 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             SoundManager.primeSounds()
         }
         
-//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { (timer) in
-//            EquationStore.sharedStore.subscribeToCKIfNeeded()
-//        }
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (timer) in
+//            ThemeCoordinator.shared.changeTheme()
+        }
         
 //        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
 //            print("EquationStore.sharedStore.subscriptionStates: \(EquationStore.sharedStore.subscriptionStates)")

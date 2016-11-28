@@ -32,6 +32,10 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     
     var workPanelDelegate: WorkPanelDelegate?
     
+    var blurView: UIVisualEffectView?
+    
+    @IBOutlet weak var seperatorView: UIView!
+    
     @IBOutlet weak var pageControl: UIPageControl!
     
     override func viewDidAppear(_ animated: Bool) {
@@ -45,10 +49,40 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         // Setup notifiction for UIContentSizeCategoryDidChangeNotification
         NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.dynamicTypeChanged), name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
+        
         currentEquation = EquationStore.sharedStore.currentEquation()
         workPanelDelegate?.updateEquation(currentEquation)
         
         updateViews(currentCursor: nil)
+        
+        self.themeChanged()
+    }
+    
+    func themeChanged() {
+        updateBlurView()
+        
+        // Set page control tint
+        self.pageControl.pageIndicatorTintColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
+        self.pageControl.currentPageIndicatorTintColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(1.00)
+        
+//        self.seperatorView.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
+        self.seperatorView.isHidden = true
+        
+    }
+    
+    func updateBlurView() {
+        if let currentBlurView = self.blurView {
+            currentBlurView.removeFromSuperview()
+            self.blurView = nil
+        }
+        
+        let visualEffectView = ThemeCoordinator.shared.visualEffectViewForCurrentTheme()
+        self.view.insertSubview(visualEffectView, at: 0)
+        
+        visualEffectView.bindFrameToSuperviewBounds()
+        
+        self.blurView = visualEffectView
     }
     
     func questionChanged(_ newQuestion: String, overwrite: Bool) {

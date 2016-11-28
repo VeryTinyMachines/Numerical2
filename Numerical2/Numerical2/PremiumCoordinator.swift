@@ -21,11 +21,6 @@ public struct PremiumCoordinatorNotification {
     public static let premiumStatusChanged = "PremiumCoordinatorNotification.premiumStatusChanged"
 }
 
-class Theme {
-    var themeID = ""
-    var title = ""
-}
-
 public enum KeyStyle {
     case Available // A normal button
     case AvailablePremium // A usually premium button that is now available (trial mode)
@@ -583,7 +578,7 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     
     
     func isUserPremium() ->Bool {
-//        return true // TEMP for testing
+        return true // TEMP for testing
         
         if premiumIAPUser {
             // User is paying via an IAP, user is premium

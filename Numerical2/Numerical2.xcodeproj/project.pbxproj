@@ -13,6 +13,7 @@
 		510D3ABF1B6B657F00D1A07F /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
 		510D3AC01B6B657F00D1A07F /* NaturalLanguageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */; };
 		510D3AC21B6B659E00D1A07F /* KeypadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AC11B6B659E00D1A07F /* KeypadViewController.swift */; };
+		510F15801DEBD6E400116A4D /* ThemeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F157F1DEBD6E400116A4D /* ThemeCoordinator.swift */; };
 		5117D8461B941A2B003DF8DA /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
 		5117D8491B941B3D003DF8DA /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
 		5117D84A1B941B3F003DF8DA /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; };
@@ -154,6 +155,7 @@
 		510D3AB91B6B657F00D1A07F /* Glossary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Glossary.swift; sourceTree = "<group>"; };
 		510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NaturalLanguageParser.swift; sourceTree = "<group>"; };
 		510D3AC11B6B659E00D1A07F /* KeypadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeypadViewController.swift; sourceTree = "<group>"; };
+		510F157F1DEBD6E400116A4D /* ThemeCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeCoordinator.swift; sourceTree = "<group>"; };
 		512137B91D967A730042EFC1 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		512137BC1D969C760042EFC1 /* NumericalHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalHelper.swift; sourceTree = "<group>"; };
 		512137BE1D969F280042EFC1 /* NumericalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalViewController.swift; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 			isa = PBXGroup;
 			children = (
 				512137C01D96A76F0042EFC1 /* PremiumCoordinator.swift */,
+				510F157F1DEBD6E400116A4D /* ThemeCoordinator.swift */,
 				512137C21D96AAF70042EFC1 /* ThemesList.plist */,
 				5142AE361DA420EE0076D117 /* 5_Star-(alt).png */,
 				5142AE371DA420EE0076D117 /* 5_Star.png */,
@@ -982,6 +985,7 @@
 				517470CC1D95C7B000E70A74 /* EquationStore.swift in Sources */,
 				518A8BA61D96FAC0001D8B12 /* HistoryViewController.swift in Sources */,
 				51D3AB2F1BC89AD40019B601 /* KeypadPageViewController.swift in Sources */,
+				510F15801DEBD6E400116A4D /* ThemeCoordinator.swift in Sources */,
 				513197121B6ADD5900E9B802 /* ViewController.swift in Sources */,
 				51B2A29F1D95C304002A9AD8 /* Pad.swift in Sources */,
 				51C40ECE1DCC492200930BFD /* CustomDismissAnimationController.swift in Sources */,

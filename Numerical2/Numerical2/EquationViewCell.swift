@@ -34,6 +34,8 @@ class EquationViewCell:UICollectionViewCell {
             mainLabel.font = theFont
         }
         
+        mainLabel.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
+        
     }
     
 }

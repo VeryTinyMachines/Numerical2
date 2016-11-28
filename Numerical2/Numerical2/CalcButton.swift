@@ -52,16 +52,24 @@ class CalcButton: UIButton {
         self.updateEnabledState()
         
         self.updateLockViewPosition()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
+    }
+    
+    func themeChanged() {
+        updateEnabledState()
     }
     
     func updateEnabledState() {
         
+        let color = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
+        
         if isEnabled {
-            setTitleColor(UIColor.white, for: UIControlState())
-            self.backgroundColor = baseColor
+            setTitleColor(color, for: UIControlState())
+            self.backgroundColor = color.withAlphaComponent(0.1)
         } else {
-            setTitleColor(UIColor.white.withAlphaComponent(0.33), for: UIControlState())
-            self.backgroundColor = baseColor.withAlphaComponent(0.0)
+            setTitleColor(color.withAlphaComponent(0.33), for: UIControlState())
+            self.backgroundColor = UIColor.clear
         }
         
         titleLabel?.font = StyleFormatter.preferredFontForButtonOfSize(self.frame.size, keyStyle: keyStyle)
@@ -76,10 +84,10 @@ class CalcButton: UIButton {
             // Hide the entire lockView.
             lockView?.image = nil
         case .AvailablePremium:
-            lockView?.image = UIImage(named: "PremiumBug_3")
+            lockView?.image = UIImage(named: "PremiumBug_3")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         case .PremiumRequired:
             // Premium is required
-            lockView?.image = UIImage(named: "PremiumBug_3")
+            lockView?.image = UIImage(named: "PremiumBug_3")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         }
         
         if self.isEnabled {
@@ -87,6 +95,8 @@ class CalcButton: UIButton {
         } else {
             lockView?.alpha = 0.20
         }
+        
+        lockView?.tintColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
         
         updateLockViewPosition()
     }

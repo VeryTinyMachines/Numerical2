@@ -83,6 +83,14 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         NotificationCenter.default.addObserver(self, selector: #selector(AboutViewController.reloadData), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(AboutViewController.reloadData), name: Notification.Name(rawValue: EquationStoreNotification.accountStatusChanged), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(AboutViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
+        
+        self.themeChanged()
+    }
+    
+    func themeChanged() {
+        self.reloadData()
     }
     
     func userPressedCloseButton() {
@@ -132,6 +140,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         cell.textLabel?.numberOfLines = 2
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.textLabel?.minimumScaleFactor = 0.5
+        cell.textLabel?.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
         cell.backgroundColor = UIColor.clear
         
         switch items[indexPath.row] {
@@ -197,7 +206,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             cell.textLabel?.text = "Change Theme"
         case .seperator:
             cell.textLabel?.text = ""
-            cell.backgroundColor = UIColor.white.withAlphaComponent(0.25)
+            cell.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
         case .sounds:
             if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.sounds) {
                 cell.textLabel?.text = "Sounds are Enabled"

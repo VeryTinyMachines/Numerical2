@@ -270,6 +270,24 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         textField.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
         textField.layer.borderWidth = 1
         textField.layer.cornerRadius = 5
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(QuestionCollectionViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
+        
+        themeChanged()
+    }
+    
+    func themeChanged() {
+        DispatchQueue.main.async {
+            self.collecitonView.reloadData()
+        }
+        
+        textField.tintColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
+        textField.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
+        
+        textField.layer.borderColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.3).cgColor
+        
+        doneButton.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
+        doneButton.setTitleColor(ThemeCoordinator.shared.foregroundColorForCurrentTheme(), for: UIControlState.normal)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -305,9 +323,6 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                         theCell.setAnswerCell(FractionViewCellType.question)
                     }
                 }
-                
-                theCell.numeratorLabel.textColor = UIColor.white
-                theCell.denominatorLabel.textColor = UIColor.white
             }
             
             return cell

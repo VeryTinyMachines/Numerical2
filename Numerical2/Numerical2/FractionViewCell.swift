@@ -19,6 +19,8 @@ class FractionViewCell:UICollectionViewCell {
     @IBOutlet weak var numeratorLabel: UILabel!
     @IBOutlet weak var denominatorLabel: UILabel!
     
+    @IBOutlet weak var seperatorView: UIView!
+    
     func setAnswerCell(_ answer: FractionViewCellType) {
         
         var font:UIFont?
@@ -35,6 +37,10 @@ class FractionViewCell:UICollectionViewCell {
             numeratorLabel.font = theFont
             denominatorLabel.font = theFont
         }
+        
+        numeratorLabel.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
+        denominatorLabel.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
+        seperatorView.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
     }
     
 }
