@@ -42,7 +42,6 @@ class EquationStore {
     var updateCloudKitTimer:Timer?
     var queuedEquationsToSave = [String: Equation]()
     var accountStatus: CKAccountStatus = CKAccountStatus.couldNotDetermine
-    
     var subscriptionSetup = false
     
     lazy var lastFetchDate:NSDate? = {

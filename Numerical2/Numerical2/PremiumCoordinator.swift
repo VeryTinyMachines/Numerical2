@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudKit
 
 public struct PremiumCoordinatorNotification {
     public static let themeChanged = "PremiumCoordinatorNotification.themeChanged"
@@ -326,7 +327,6 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
                                 
                                 self.postCompletionNotificationsAndReset(success: true)
                             } else {
-                                print("")
                                 
                                 if status == 21000 {
                                     // The App Store could not read the JSON object you provided.
@@ -433,7 +433,7 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
         // Check the dates, update the states, post it
         if let json = jsonFromValidatedData() {
             
-            print(json)
+//            print(json)
             
             let formatter = NumberFormatter()
             
@@ -453,9 +453,6 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
                                 if let expiryDateString = purchaseDict["expires_date_ms"] as? String {
                                     if let number = formatter.number(from: expiryDateString) {
                                         let newDate = Date(timeIntervalSince1970: TimeInterval(number.intValue / 1000))
-                                        
-                                        print(newDate)
-                                        
                                         if let compareDate = furthestDate {
                                             if newDate > compareDate {
                                                 // This newDate is further in the future than compare date, replace it!
@@ -473,17 +470,25 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
             }
             
             // Check the latest expiry date from subscriptions
-            
             if let furthestDate = furthestDate {
                 UserDefaults.standard.set(furthestDate, forKey: "ProModeExpirationDate")
+                UserDefaults.standard.synchronize()
+                
+                // We have a new furthestDate from the receipt (but it wasn't saved in UserDefaults) so we should sync this with CK
+                self.syncExpiryDate()
             }
-            
-            UserDefaults.standard.synchronize()
         } else {
             // Could not load local validate data for some reason.
         }
         
+        self.updatePremiumIAPUserFromUserDefaults()
+    }
+    
+    func updatePremiumIAPUserFromUserDefaults() {
         // Now look at the expiry date in NSUserDefaults and determine if it is
+        
+        let previousIAPState = premiumIAPUser
+        
         if let expiryDate = UserDefaults.standard.object(forKey: "ProModeExpirationDate") as? Date {
             
             if expiryDate.timeIntervalSinceNow > 0 {
@@ -495,11 +500,13 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
             }
         }
         
-        DispatchQueue.main.async {
-            // Post that the user status has changed
-            NotificationCenter.default.post(name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
-        }
         
+        if previousIAPState != premiumIAPUser {
+            DispatchQueue.main.async {
+                // Post that the user status has changed
+                NotificationCenter.default.post(name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
+            }
+        }
     }
     
     func jsonFromValidatedData() -> [String: AnyObject]? {
@@ -660,6 +667,67 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
         DispatchQueue.main.async {
             let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: "Ok")
             alert.show()
+        }
+    }
+    
+    
+    func syncExpiryDate() {
+        
+        let localExpiryDate:Date? = UserDefaults.standard.object(forKey: "ProModeExpirationDate") as? Date
+        
+        let cloudExpiryDate:Date? = NSUbiquitousKeyValueStore.default().object(forKey: "ProModeExpirationDate") as? Date
+        
+        var newLocalExpiryDate:Date? = nil
+        var newCloudExpiryDate:Date? = nil
+        
+        if let localExpiryDate = localExpiryDate {
+            // We have a local date, check if we have a cloud date
+            if let cloudExpiryDate = cloudExpiryDate {
+                // Compare them and update the relevant date.
+                
+                if localExpiryDate > cloudExpiryDate {
+                    // Local date is better, update the cloud
+                    newCloudExpiryDate = localExpiryDate
+                } else if cloudExpiryDate > localExpiryDate {
+                    // Save this cloudexpirydate
+                    newLocalExpiryDate = cloudExpiryDate
+                }
+                
+            } else {
+                // No cloud date, time to update the cloud
+                newCloudExpiryDate = localExpiryDate
+            }
+        } else {
+            // No local expiry date, check cloud
+            if let cloudExpiryDate = cloudExpiryDate {
+                // Save this locally
+                print("")
+                newLocalExpiryDate = cloudExpiryDate
+            }
+        }
+        
+        if let newCloudExpiryDate = newCloudExpiryDate {
+            print("newCloudExpiryDate that needs KVS syncing:\(newCloudExpiryDate)")
+            
+            NSUbiquitousKeyValueStore.default().set(newCloudExpiryDate, forKey: "ProModeExpirationDate")
+            NSUbiquitousKeyValueStore.default().synchronize()
+        }
+        
+        if let newLocalExpiryDate = newLocalExpiryDate {
+            print("newLocalExpiryDate that needs local saving:\(newLocalExpiryDate)")
+            
+            UserDefaults.standard.set(newLocalExpiryDate, forKey: "ProModeExpirationDate")
+            UserDefaults.standard.synchronize()
+            
+            self.updatePremiumIAPUserFromUserDefaults()
+        }
+        
+    }
+    
+    func saveRecord(record: CKRecord) {
+        CKContainer.default().privateCloudDatabase.save(record) { (record, error) in
+            print("record: \(record)")
+            print("error: \(error)")
         }
     }
 }

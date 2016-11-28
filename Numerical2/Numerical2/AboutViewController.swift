@@ -202,7 +202,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.sounds) {
                 cell.textLabel?.text = "Sounds are Enabled"
             } else {
-                cell.textLabel?.text = "Sounds are Daisabled"
+                cell.textLabel?.text = "Sounds are Disabled"
             }
         }
         

@@ -84,6 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         EquationStore.sharedStore.refreshiCloudStatusCheck()
         application.applicationIconBadgeNumber = 0
+        PremiumCoordinator.shared.syncExpiryDate()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -105,8 +106,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 notification as! CKQueryNotification
             
             if let recordID = queryNotification.recordID {
-                print("recordID: \(recordID)")
-                
                 EquationStore.sharedStore.fetchAndSaveEquation(recordID: recordID, completion: { (complete) in
                     if complete {
                         completionHandler(UIBackgroundFetchResult.newData)
