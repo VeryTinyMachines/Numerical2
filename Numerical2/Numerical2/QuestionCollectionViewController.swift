@@ -277,9 +277,7 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     }
     
     func themeChanged() {
-        DispatchQueue.main.async {
-            self.collecitonView.reloadData()
-        }
+        self.collecitonView.reloadData()
         
         textField.tintColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
         textField.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()

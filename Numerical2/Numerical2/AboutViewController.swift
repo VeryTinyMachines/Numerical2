@@ -268,43 +268,4 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         }
     }
     
-    func presentThemeSelector() {
-        
-        let alert = UIAlertController(title: "Choose Your Theme", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        
-        for theme in PremiumCoordinator.shared.themes {
-            
-            
-            var title = "           " + theme.title
-            
-            if PremiumCoordinator.shared.canAccessThemes() == false && theme.themeID != "pink001" {
-                title += " (Pro)"
-            }
-            
-            let action = UIAlertAction(title: title, style: UIAlertActionStyle.default, handler: { (action) in
-                if PremiumCoordinator.shared.canAccessThemes() || theme.themeID == "pink001" {
-                    PremiumCoordinator.shared.setTheme(string: theme.themeID)
-                } else {
-                    self.presentSalesScreen(type: SalesScreenType.theme)
-                }
-            })
-            
-            let image = PremiumCoordinator.shared.thumbnailImageForTheme(string: theme.themeID)?.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-            
-            action.setValue(image, forKey: "image")
-            
-            alert.addAction(action)
-        }
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
-            
-        }))
-        
-        present(alert, animated: true) { 
-            
-        }
-        
-    }
-    
-    
 }

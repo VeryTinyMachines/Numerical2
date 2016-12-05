@@ -497,10 +497,14 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
         
         
         if previousIAPState != premiumIAPUser {
-            DispatchQueue.main.async {
-                // Post that the user status has changed
-                NotificationCenter.default.post(name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
-            }
+            self.postUserPremiumStatusChanged()
+        }
+    }
+    
+    func postUserPremiumStatusChanged() {
+        DispatchQueue.main.async {
+            // Post that the user status has changed
+            NotificationCenter.default.post(name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
         }
     }
     
@@ -578,7 +582,7 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     
     
     func isUserPremium() ->Bool {
-        return true // TEMP for testing
+//        return true // TEMP for testing
         
         if premiumIAPUser {
             // User is paying via an IAP, user is premium

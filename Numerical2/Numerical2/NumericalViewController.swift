@@ -131,6 +131,24 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         }
     }
     
+    func presentThemeSelector() {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ThemeViewController") as? ThemeViewController {
+            
+            vc.view.backgroundColor = UIColor.red
+            vc.modalPresentationCapturesStatusBarAppearance = true
+            
+//            self.present(vc, animated: true, completion: {
+//            })
+            
+            let navCon = ThemeNavigationController(rootViewController: vc)
+            navCon.modalPresentationCapturesStatusBarAppearance = true
+            
+            self.present(navCon, animated: true, completion: {
+                
+            })
+        }
+    }
+    
     func presentiTunesManage() {
         self.attemptToOpenURL(urlString: "itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions")
     }

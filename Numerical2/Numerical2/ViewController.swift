@@ -68,6 +68,12 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         bannerView.load(request)
         
         themeChanged()
+        
+        /*
+        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { (timer) in
+            
+        })
+ */
     }
     
     /// Tells the delegate an ad request loaded an ad.

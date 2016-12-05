@@ -37,20 +37,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             SoundManager.primeSounds()
         }
         
-        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (timer) in
+//        Timer.scheduledTimer(withTimeInterval: 10.0, repea`ts: true) { (timer) in
+//            PremiumCoordinator.shared.premiumIAPUser = true
+//            PremiumCoordinator.shared.postUserPremiumStatusChanged()
 //            ThemeCoordinator.shared.changeTheme()
-        }
+//        }
         
 //        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
 //            print("EquationStore.sharedStore.subscriptionStates: \(EquationStore.sharedStore.subscriptionStates)")
 //        }
         
-        
 //        UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
 //        [application registerUserNotificationSettings:notificationSettings];
 //        [application registerForRemoteNotifications];
-        
-        
         
 //        let settings = UIUserNotificationSettings(types: [.alert,  , categories: )
         

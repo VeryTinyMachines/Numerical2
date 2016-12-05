@@ -50,9 +50,11 @@ class KeypadViewController: UIViewController {
         for button in buttons {
             button.addTarget(self, action: #selector(KeypadViewController.pressedPressedDown(_:) ), for: UIControlEvents.touchDown)
             
-            button.addTarget(self, action: #selector(KeypadViewController.pressedPressedUp(_:) ), for: UIControlEvents.touchCancel)
+            button.addTarget(self, action: #selector(KeypadViewController.pressedCancel(_:) ), for: UIControlEvents.touchCancel)
+            
             button.addTarget(self, action: #selector(KeypadViewController.pressedPressedUp(_:) ), for: UIControlEvents.touchUpInside)
-            button.addTarget(self, action: #selector(KeypadViewController.pressedPressedUp(_:) ), for: UIControlEvents.touchDragExit)
+            
+            button.addTarget(self, action: #selector(KeypadViewController.pressedCancel(_:) ), for: UIControlEvents.touchDragExit)
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(KeypadViewController.updateLegalKeys), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
@@ -69,18 +71,23 @@ class KeypadViewController: UIViewController {
         holdTimer = Timer.scheduledTimer(withTimeInterval: holdTimerInterval, repeats: false, block: { (timer) in
             self.holdFireTimer()
         })
+    }
+    
+    @IBAction func pressedPressedUp(_ sender: UIButton) {
+        currentButton = nil
+        
+        holdTimer?.invalidate()
         
         initateButtonPress(sender: sender)
     }
     
-    @IBAction func pressedPressedUp(_ sender: UIButton) {
+    @IBAction func pressedCancel(_ sender: UIButton) {
         holdTimer?.invalidate()
         
         currentButton = nil
         
         uninitateButtonPress(sender: sender)
     }
-    
     
     func holdFireTimer() {
         if let currentButton = currentButton {

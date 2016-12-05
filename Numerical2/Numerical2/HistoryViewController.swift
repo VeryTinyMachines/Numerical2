@@ -85,10 +85,7 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
     
     func themeChanged() {
         self.tableView.separatorColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
-        
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        self.tableView.reloadData()
     }
     
     

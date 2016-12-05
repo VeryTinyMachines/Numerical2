@@ -66,7 +66,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         self.pageControl.pageIndicatorTintColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
         self.pageControl.currentPageIndicatorTintColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(1.00)
         
-//        self.seperatorView.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
         self.seperatorView.isHidden = true
         
     }

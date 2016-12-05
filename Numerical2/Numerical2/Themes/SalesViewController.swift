@@ -72,7 +72,7 @@ class SalesViewController: NumericalViewController {
         
         if PremiumCoordinator.shared.isUserPremium() {
             
-            var string = "Thanks for being a Numerical Pro subscriber! You now have access to all the fancy scientific keys, can create your own themes, ads are removed, and you're supporting the ongoing development of Numerical!"
+            var string = "Thanks for being a Numerical Pro subscriber! You now have access to all the fancy scientific keys, colorful themes, ads are removed, and you're supporting the ongoing development of Numerical!"
             
             if let expiryDate = PremiumCoordinator.shared.expiryDate() {
                 
@@ -99,7 +99,7 @@ class SalesViewController: NumericalViewController {
             beginRestoreButton.setTitle("Manage Subscription", for: UIControlState.normal)
         } else {
             
-            let string = "Become a Numerical Pro subscriber for \(price) per month to remove ads, use all the fancy scientific keys, and support the ongoing development of Numerical."
+            let string = "Become a Numerical Pro subscriber for \(price) per month to remove ads, use all the fancy scientific keys, themes and support the ongoing development of Numerical."
             
             horizontalLabel.text = string
             portraitLabel.text = string
