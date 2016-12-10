@@ -43,9 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            ThemeCoordinator.shared.changeTheme()
 //        }
         
-//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
-//            print("EquationStore.sharedStore.subscriptionStates: \(EquationStore.sharedStore.subscriptionStates)")
-//        }
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
+            print(UIMenuController.shared.menuItems)
+        }
         
 //        UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
 //        [application registerUserNotificationSettings:notificationSettings];

@@ -363,7 +363,10 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         let viewHeight = viewHeightWithAd()
         
-        let equationHeightPercentage = 140 / viewHeight
+//        let equationHeightPercentage = 140 / viewHeight
+        
+        let equationHeightPercentage = 150 / viewHeight
+        
         
         workPanelPercentage += Float(verticalSpeed) / Float(viewHeight) * 5
         
@@ -569,7 +572,13 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
             let viewHeight = self.viewHeightWithoutAd()
             
+            print("middlePoint: \(middlePoint)")
+            print("newHeight: \(newHeight)")
+            print("offset: \(offset)")
+            
             self.workPanelBottomConstraint.constant = offset * viewHeight
+            
+            print("self.workPanelBottomConstraint.constant: \(self.workPanelBottomConstraint.constant)")
         }
     }
     

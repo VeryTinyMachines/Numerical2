@@ -20,7 +20,7 @@ public enum SalesScreenType {
 class NumericalViewController: UIViewController, MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate, UIViewControllerTransitioningDelegate {
     
     var loadingScreen:UIView?
-    
+    var menuDismissButton:UIButton?
     
     func notifyUser(title: String?, message: String?) {
         DispatchQueue.main.async {
@@ -220,10 +220,64 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         loadingScreen = nil
     }
     
+    func presentMenu(menuItems: [UIMenuItem], targetRect: CGRect, inView: UIView) {
+        self.becomeFirstResponder()
+        
+        let menu = UIMenuController.shared
+        
+        menu.setTargetRect(targetRect, in: view)
+        
+        menu.menuItems = menuItems
+        menu.setMenuVisible(true, animated: true)
+        
+        // Present the dissmiss button in the top most view.
+        
+        if let appDelegate = UIApplication.shared.delegate {
+            if let vc = appDelegate.window??.rootViewController {
+                print(vc)
+                
+                if let menuDismissButton = menuDismissButton {
+                    menuDismissButton.removeFromSuperview()
+                }
+                
+                let button = UIButton(type: UIButtonType.system)
+                button.backgroundColor = UIColor.clear
+                
+                button.frame = CGRect(x: 0, y: 0, width: vc.view.frame.width, height:  vc.view.frame.height)
+                
+                button.addTarget(self, action: #selector(NumericalViewController.hideMenu), for: UIControlEvents.touchUpInside)
+                
+                vc.view.addSubview(button)
+                
+                menuDismissButton = button
+            }
+        }
+    }
+    
+    
     func hideMenu() {
+        self.resignFirstResponder()
         let menu = UIMenuController.shared
         menu.menuItems = nil
         menu.setMenuVisible(false, animated: true)
+        
+        // Hide the dismiss button in the top most view.
+        
+        if let menuDismissButton = menuDismissButton {
+            menuDismissButton.removeFromSuperview()
+        }
+    }
+    
+    func isMenuVisible() -> Bool {
+        
+        if let menuItems = UIMenuController.shared.menuItems {
+            if menuItems.count > 0 {
+                // At least one item in menu, it's visible
+                return true
+            }
+        }
+        
+        return false
     }
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {

@@ -475,7 +475,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4vi-WH-Qda" userLabel="Seperator">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4vi-WH-Qda" userLabel="Seperator">
                                 <rect key="frame" x="0.0" y="100" width="375" height="1"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -508,9 +508,9 @@
                             <constraint firstItem="SSG-vX-v2o" firstAttribute="top" secondItem="05p-8C-l3N" secondAttribute="bottom" constant="-8" id="C6L-EO-mUa"/>
                             <constraint firstItem="05p-8C-l3N" firstAttribute="centerX" secondItem="Skn-B8-EyZ" secondAttribute="centerX" id="Em8-zo-CHK"/>
                             <constraint firstItem="SSG-vX-v2o" firstAttribute="top" secondItem="RED-lI-n0f" secondAttribute="bottom" id="Ngc-H9-Twg"/>
-                            <constraint firstItem="RED-lI-n0f" firstAttribute="top" secondItem="4vi-WH-Qda" secondAttribute="bottom" constant="-1" id="VKr-Ld-Obc"/>
+                            <constraint firstItem="RED-lI-n0f" firstAttribute="top" secondItem="4vi-WH-Qda" secondAttribute="bottom" constant="49" id="VKr-Ld-Obc"/>
                             <constraint firstItem="RED-lI-n0f" firstAttribute="leading" secondItem="Skn-B8-EyZ" secondAttribute="leading" id="dcE-WJ-ONS"/>
-                            <constraint firstAttribute="trailing" secondItem="4vi-WH-Qda" secondAttribute="trailing" id="g3I-7h-MTI"/>
+                            <constraint firstAttribute="trailing" secondItem="4vi-WH-Qda" secondAttribute="trailing" constant="39" id="g3I-7h-MTI"/>
                             <constraint firstAttribute="trailing" secondItem="RED-lI-n0f" secondAttribute="trailing" id="iag-0Y-yNy"/>
                             <constraint firstItem="kwd-MU-jrz" firstAttribute="leading" secondItem="Skn-B8-EyZ" secondAttribute="leading" id="v4y-0j-X3Z"/>
                             <constraint firstItem="kwd-MU-jrz" firstAttribute="top" secondItem="Skn-B8-EyZ" secondAttribute="top" constant="20" id="vge-Ha-EDw"/>

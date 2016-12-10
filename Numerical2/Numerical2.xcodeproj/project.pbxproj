@@ -19,7 +19,6 @@
 		5117D84A1B941B3F003DF8DA /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; };
 		512137BA1D967A730042EFC1 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137B91D967A730042EFC1 /* AboutViewController.swift */; };
 		512137BD1D969C760042EFC1 /* NumericalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137BC1D969C760042EFC1 /* NumericalHelper.swift */; };
-		512137BF1D969F280042EFC1 /* NumericalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137BE1D969F280042EFC1 /* NumericalViewController.swift */; };
 		512137C11D96A76F0042EFC1 /* PremiumCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137C01D96A76F0042EFC1 /* PremiumCoordinator.swift */; };
 		512137C31D96AAF70042EFC1 /* ThemesList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 512137C21D96AAF70042EFC1 /* ThemesList.plist */; };
 		512137E41D96ADEB0042EFC1 /* pink001-thumbnail@1x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 512137C61D96ADEB0042EFC1 /* pink001-thumbnail@1x.jpg */; };
@@ -73,6 +72,7 @@
 		515DABE31DB23BE70028F2C7 /* NumericalTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515DABE21DB23BE60028F2C7 /* NumericalTextField.swift */; };
 		515EB8FB1DA6A0150081D9FB /* SalesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515EB8FA1DA6A0150081D9FB /* SalesViewController.swift */; };
 		515EB8FD1DA6C1960081D9FB /* AppIcon120x120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 515EB8FC1DA6C1960081D9FB /* AppIcon120x120@2x.png */; };
+		515F5EF31DFBCA5B00E182C3 /* NumericalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137BE1D969F280042EFC1 /* NumericalViewController.swift */; };
 		517470CC1D95C7B000E70A74 /* EquationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517470CB1D95C7B000E70A74 /* EquationStore.swift */; };
 		517470CE1D95D35100E70A74 /* DataKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517470CD1D95D35100E70A74 /* DataKeyStore.swift */; };
 		518A8BA61D96FAC0001D8B12 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A8BA51D96FAC0001D8B12 /* HistoryViewController.swift */; };
@@ -961,6 +961,7 @@
 				515DABE31DB23BE70028F2C7 /* NumericalTextField.swift in Sources */,
 				510D3ABE1B6B657F00D1A07F /* Evaluator.swift in Sources */,
 				512138271D96F7590042EFC1 /* Equation+CoreDataClass.swift in Sources */,
+				515F5EF31DFBCA5B00E182C3 /* NumericalViewController.swift in Sources */,
 				5623BDF51BD40FDB0046B84D /* Constants.swift in Sources */,
 				512137C11D96A76F0042EFC1 /* PremiumCoordinator.swift in Sources */,
 				517470CE1D95D35100E70A74 /* DataKeyStore.swift in Sources */,
@@ -983,7 +984,6 @@
 				512137BA1D967A730042EFC1 /* AboutViewController.swift in Sources */,
 				51F2F44F1B6C421B00B845CA /* WorkPanelViewController.swift in Sources */,
 				51D28B0E1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift in Sources */,
-				512137BF1D969F280042EFC1 /* NumericalViewController.swift in Sources */,
 				512138281D96F7590042EFC1 /* Equation+CoreDataProperties.swift in Sources */,
 				51B2A29B1D95C283002A9AD8 /* SinkableUserDefaults.swift in Sources */,
 				517470CC1D95C7B000E70A74 /* EquationStore.swift in Sources */,

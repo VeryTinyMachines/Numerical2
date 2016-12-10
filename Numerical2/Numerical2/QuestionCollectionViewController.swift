@@ -431,11 +431,10 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     
     
     @IBAction func userPressedTapGesureRecogniser(_ sender: UITapGestureRecognizer) {
-        let menu = UIMenuController.shared
         
-        if menu.menuItems == nil {
-            menu.setTargetRect(self.view.frame, in: self.view)
-            
+        if isMenuVisible() {
+            self.hideMenu()
+        } else {
             var menuItems = [UIMenuItem]()
             
             if canEdit() {
@@ -458,14 +457,7 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                 menuItems.append(menuItem)
             }
             
-            self.becomeFirstResponder()
-            
-            menu.menuItems = menuItems
-            
-            menu.setMenuVisible(true, animated: true)
-        } else {
-            menu.menuItems = nil
-            menu.setMenuVisible(false, animated: true)
+            presentMenu(menuItems: menuItems, targetRect: self.view.frame, inView: self.view)
         }
     }
     
