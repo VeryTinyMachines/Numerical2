@@ -188,11 +188,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             SoundManager.playSound(sound: .click)
         }
         
-        // Check if the edit menu needed dismissing
-        if needsEditMenuDismissal() {
-            return
-        }
-        
         // Check if this key is the settings button
         if key == SymbolCharacter.settings {
             // show settings view
@@ -324,9 +319,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                     currentEquation?.question = newQuestion
                     
                     newCursorPosition = range.lower + characters.count
-                    
-                    print(currentEquation?.question)
-                    print("")
                     
                 } else if let index = currentCursorPosition() {
                     

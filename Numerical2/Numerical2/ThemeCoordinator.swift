@@ -7,15 +7,16 @@
 //
 import UIKit
 
-public enum ThemeStyle {
-    case normal // Blur layer is light, text is white
-    case dark // Blue layer is dark, text is white
-    case bright // Blur layer is bright, foreground elements are black.
+public enum ThemeStyle:String {
+    case normal = "normal" // Blur layer is light, text is white
+    case dark = "dark" // Blue layer is dark, text is white
+    case bright = "bright" // Blur layer is bright, foreground elements are black.
 }
 
 class ThemeCoordinator {
     
     var themes = [Theme]()
+    var userThemes = [Theme]()
     
     private var theCurrentTheme:Theme?
     
@@ -42,6 +43,8 @@ class ThemeCoordinator {
         themes.append(Theme(title: "Mint", themeID: "green002", color1: "62b849", color2: "3a80cc", style: ThemeStyle.normal, premium: true))
         themes.append(Theme(title: "Red", themeID: "red001", color1: "b94747", color2: "e10101", style: ThemeStyle.normal, premium: true))
         themes.append(Theme(title: "Leaves", themeID: "leaves001", color1: "3c6511", color2: "6e8811", style: ThemeStyle.normal, premium: true))
+        
+        loadThemes()
         
         // Set the current theme based on the saved ID.
         if let theme = themeForID(themeID: self.currentThemeID()) {
@@ -71,6 +74,12 @@ class ThemeCoordinator {
             }
         }
         
+        for theme in userThemes {
+            if theme.themeID == themeID {
+                return theme
+            }
+        }
+        
         return nil
     }
     
@@ -88,6 +97,84 @@ class ThemeCoordinator {
         NSUbiquitousKeyValueStore.default().set(theme.themeID, forKey: "CurrentTheme")
         NSUbiquitousKeyValueStore.default().synchronize()
         postThemeChangedNotification()
+    }
+    
+    func addNewUserTheme(theme: Theme) {
+        userThemes.append(theme)
+        saveThemes()
+    }
+    
+    func deleteTheme(theme:Theme) {
+        
+        print("userThemes: \(userThemes)")
+        
+        var cleanedThemes = [Theme]()
+        
+        for userTheme in userThemes {
+            if userTheme.themeID != theme.themeID {
+                cleanedThemes.append(userTheme)
+            }
+        }
+        
+        print("cleanedThemes: \(cleanedThemes)")
+        
+        userThemes = cleanedThemes
+        
+        print("userThemes: \(userThemes)")
+        
+        saveThemes()
+        resetTheme()
+    }
+    
+    func doesThemeStillExist(theme: Theme) -> Bool {
+        for userTheme in userThemes {
+            if userTheme.themeID == theme.themeID {
+                return true
+            }
+        }
+        
+        for systemTheme in themes {
+            if systemTheme.themeID == theme.themeID {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    func resetTheme() {
+        self.changeTheme(toTheme: defaultTheme)
+    }
+    
+    func loadThemes() {
+        if let loadedArray = NSKeyedUnarchiver.unarchiveObject(withFile: themeSaveLocation()) as? [Theme] {
+            self.userThemes = loadedArray
+        }
+    }
+    
+    func saveThemes() {
+        NSKeyedArchiver.archiveRootObject(userThemes, toFile: themeSaveLocation())
+    }
+    
+    func themeSaveLocation() -> String {
+        return applicationSupport() + "/userthemes.plist"
+    }
+    
+    
+    func applicationSupport() -> String {
+        
+        let paths = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)
+        let applicationSupportPath = paths[0]
+        
+        if FileManager.default.fileExists(atPath: applicationSupportPath) == false {
+            do {
+                try FileManager.default.createDirectory(atPath: applicationSupportPath, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print("Error - Could not creation Application Support Directory")
+            }
+        }
+        
+        return applicationSupportPath
     }
     
     func postThemeChangedNotification() {
@@ -192,17 +279,18 @@ class ThemeCoordinator {
     }
 }
 
-class Theme {
+class Theme: NSObject, NSCoding {
     var themeID = ""
     var title = ""
     var style = ThemeStyle.normal
     var isPremium = false
+    var isUserCreated = false
     
     var firstColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
     var secondColor = UIColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
     
-    init() {
-        
+    override init() {
+        themeID = UUID().uuidString
     }
     
     init(title: String, themeID: String, color1: String, color2: String, style: ThemeStyle, premium: Bool) {
@@ -212,6 +300,46 @@ class Theme {
         self.firstColor = UIColor(hexString: color1)
         self.secondColor = UIColor(hexString: color2)
         self.isPremium = premium
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(themeID, forKey: "themeID")
+        aCoder.encode(title, forKey: "title")
+        aCoder.encode(style.rawValue, forKey: "style")
+        aCoder.encode(isPremium, forKey: "isPremium")
+        aCoder.encode(isUserCreated, forKey: "isUserCreated")
+        aCoder.encode(firstColor, forKey: "firstColor")
+        aCoder.encode(secondColor, forKey: "secondColor")
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        
+        if let obj = aDecoder.decodeObject(forKey: "themeID") as? String {
+            self.themeID = obj
+        }
+        
+        if let obj = aDecoder.decodeObject(forKey: "title") as? String {
+            self.title = obj
+        }
+        
+        if let obj = aDecoder.decodeObject(forKey: "style") as? String {
+            
+            if let styleObj = ThemeStyle(rawValue: obj) {
+                self.style = styleObj
+            }
+        }
+        
+        self.isPremium = aDecoder.decodeBool(forKey: "isPremium")
+        
+        self.isUserCreated = aDecoder.decodeBool(forKey: "isUserCreated")
+        
+        if let obj = aDecoder.decodeObject(forKey: "firstColor") as? UIColor {
+            self.firstColor = obj
+        }
+        
+        if let obj = aDecoder.decodeObject(forKey: "secondColor") as? UIColor {
+            self.secondColor = obj
+        }
     }
 }
 

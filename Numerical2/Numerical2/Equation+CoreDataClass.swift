@@ -38,6 +38,5 @@ public class Equation: NSManagedObject {
         userDeleted = record.object(forKey: "equationDeleted") as? NSNumber
         posted = NSNumber(value: true)
         
-        print(lastModifiedDate)
     }
 }

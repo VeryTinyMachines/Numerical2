@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(PremiumCoordinator.shared.themes)
         
         EquationStore.sharedStore.initialiseSetup()
+        EquationStore.sharedStore.convertDeprecatedEquationsIfNeeded()
         
         PremiumCoordinator.shared.setupManager()
 //        PremiumCoordinator.shared.updateProductsIfNeeded()
@@ -53,6 +54,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        let settings = UIUserNotificationSettings(types: [.alert,  , categories: )
         
+        
+//        print(NumericalHelper.convertOut(color: NumericalHelper.convertIn(number1: 0.0, number2: 0.5, isSecondColor: false, isLightStyle: false), isSecondColor: false, isLightStyle: false))
+        print(NumericalHelper.convertOut(color: NumericalHelper.convertIn(number1: 0.0, number2: 0.6, isSecondColor: false, isLightStyle: false), isSecondColor: false, isLightStyle: false))
+//        print(NumericalHelper.convertOut(color: NumericalHelper.convertIn(number1: 0.0, number2: 0.7, isSecondColor: false, isLightStyle: false), isSecondColor: false, isLightStyle: false))
+//        print(NumericalHelper.convertOut(color: NumericalHelper.convertIn(number1: 0.0, number2: 0.8, isSecondColor: false, isLightStyle: false), isSecondColor: false, isLightStyle: false))
+//        print(NumericalHelper.convertOut(color: NumericalHelper.convertIn(number1: 0.0, number2: 1.0, isSecondColor: false, isLightStyle: false), isSecondColor: false, isLightStyle: false))
+        
+        print("")
         UNUserNotificationCenter.current().requestAuthorization(options:
             [[.alert, .sound, .badge]],
                                                                 completionHandler: { (granted, error) in

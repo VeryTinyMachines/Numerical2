@@ -91,6 +91,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
     
     func themeChanged() {
         self.reloadData()
+        updateBackgroundColorForPresentationType()
     }
     
     func userPressedCloseButton() {

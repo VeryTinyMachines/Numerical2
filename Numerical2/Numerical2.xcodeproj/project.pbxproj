@@ -73,6 +73,7 @@
 		515EB8FB1DA6A0150081D9FB /* SalesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515EB8FA1DA6A0150081D9FB /* SalesViewController.swift */; };
 		515EB8FD1DA6C1960081D9FB /* AppIcon120x120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 515EB8FC1DA6C1960081D9FB /* AppIcon120x120@2x.png */; };
 		515F5EF31DFBCA5B00E182C3 /* NumericalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137BE1D969F280042EFC1 /* NumericalViewController.swift */; };
+		516C481E1DFE74F1006E68CD /* ThemeCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516C481D1DFE74F1006E68CD /* ThemeCreatorViewController.swift */; };
 		517470CC1D95C7B000E70A74 /* EquationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517470CB1D95C7B000E70A74 /* EquationStore.swift */; };
 		517470CE1D95D35100E70A74 /* DataKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517470CD1D95D35100E70A74 /* DataKeyStore.swift */; };
 		518A8BA61D96FAC0001D8B12 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A8BA51D96FAC0001D8B12 /* HistoryViewController.swift */; };
@@ -83,6 +84,9 @@
 		519BA0991DD11AC900786519 /* PremiumBug_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 519BA0981DD11AC900786519 /* PremiumBug_3.png */; };
 		51B2A29B1D95C283002A9AD8 /* SinkableUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B2A29A1D95C283002A9AD8 /* SinkableUserDefaults.swift */; };
 		51B2A29F1D95C304002A9AD8 /* Pad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B2A29E1D95C304002A9AD8 /* Pad.swift */; };
+		51B4CA281E012947000A9865 /* 1_StatusBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 51B4CA251E012947000A9865 /* 1_StatusBar.png */; };
+		51B4CA291E012947000A9865 /* 2_Keys.png in Resources */ = {isa = PBXBuildFile; fileRef = 51B4CA261E012947000A9865 /* 2_Keys.png */; };
+		51B4CA2A1E012947000A9865 /* 3_Keypad.png in Resources */ = {isa = PBXBuildFile; fileRef = 51B4CA271E012947000A9865 /* 3_Keypad.png */; };
 		51C40E841DCC135C00930BFD /* professional-reverse.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 51C40E7F1DCC135C00930BFD /* professional-reverse.aiff */; };
 		51C40E851DCC135C00930BFD /* professional.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 51C40E801DCC135C00930BFD /* professional.aiff */; };
 		51C40E861DCC135C00930BFD /* rock.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 51C40E811DCC135C00930BFD /* rock.aiff */; };
@@ -219,6 +223,7 @@
 		515DABE21DB23BE60028F2C7 /* NumericalTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalTextField.swift; sourceTree = "<group>"; };
 		515EB8FA1DA6A0150081D9FB /* SalesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalesViewController.swift; sourceTree = "<group>"; };
 		515EB8FC1DA6C1960081D9FB /* AppIcon120x120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon120x120@2x.png"; sourceTree = "<group>"; };
+		516C481D1DFE74F1006E68CD /* ThemeCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeCreatorViewController.swift; sourceTree = "<group>"; };
 		517470CB1D95C7B000E70A74 /* EquationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquationStore.swift; sourceTree = "<group>"; };
 		517470CD1D95D35100E70A74 /* DataKeyStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataKeyStore.swift; sourceTree = "<group>"; };
 		518A8BA51D96FAC0001D8B12 /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
@@ -229,6 +234,9 @@
 		519BA0981DD11AC900786519 /* PremiumBug_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PremiumBug_3.png; sourceTree = "<group>"; };
 		51B2A29A1D95C283002A9AD8 /* SinkableUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinkableUserDefaults.swift; sourceTree = "<group>"; };
 		51B2A29E1D95C304002A9AD8 /* Pad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pad.swift; sourceTree = "<group>"; };
+		51B4CA251E012947000A9865 /* 1_StatusBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_StatusBar.png; sourceTree = "<group>"; };
+		51B4CA261E012947000A9865 /* 2_Keys.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_Keys.png; sourceTree = "<group>"; };
+		51B4CA271E012947000A9865 /* 3_Keypad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_Keypad.png; sourceTree = "<group>"; };
 		51C40E7F1DCC135C00930BFD /* professional-reverse.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = "professional-reverse.aiff"; path = "Sounds/professional-reverse.aiff"; sourceTree = "<group>"; };
 		51C40E801DCC135C00930BFD /* professional.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = professional.aiff; path = Sounds/professional.aiff; sourceTree = "<group>"; };
 		51C40E811DCC135C00930BFD /* rock.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = rock.aiff; path = Sounds/rock.aiff; sourceTree = "<group>"; };
@@ -307,7 +315,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		512137C51D96ADEB0042EFC1 /* Themes */ = {
+		512137C51D96ADEB0042EFC1 /* Themes Assets */ = {
 			isa = PBXGroup;
 			children = (
 				512137C61D96ADEB0042EFC1 /* pink001-thumbnail@1x.jpg */,
@@ -341,6 +349,7 @@
 				512137E21D96ADEB0042EFC1 /* water001-thumbnail@2x.jpg */,
 				512137E31D96ADEB0042EFC1 /* water001@2x.jpg */,
 			);
+			name = "Themes Assets";
 			path = Themes;
 			sourceTree = "<group>";
 		};
@@ -384,9 +393,13 @@
 				51B2A29E1D95C304002A9AD8 /* Pad.swift */,
 				51C40ECB1DCC492200930BFD /* CustomAnimationController.swift */,
 				51C40ECC1DCC492200930BFD /* CustomDismissAnimationController.swift */,
+				51B4CA251E012947000A9865 /* 1_StatusBar.png */,
+				51B4CA261E012947000A9865 /* 2_Keys.png */,
+				51B4CA271E012947000A9865 /* 3_Keypad.png */,
 				5685FE991BCACBB30019BC04 /* Numerical2-Bridging-Header.h */,
 				515AF2171DC9549300170642 /* GoogleService-Info.plist */,
 				51C40E8A1DCC167200930BFD /* SoundManager.swift */,
+				516C481C1DFE74E0006E68CD /* Themes */,
 				5142AE351DA420D70076D117 /* Premium */,
 				5685FE9D1BCAE32B0019BC04 /* IAP */,
 				5685FE8F1BCACA490019BC04 /* OpenEars */,
@@ -428,9 +441,6 @@
 			isa = PBXGroup;
 			children = (
 				512137C01D96A76F0042EFC1 /* PremiumCoordinator.swift */,
-				510F157F1DEBD6E400116A4D /* ThemeCoordinator.swift */,
-				51F24F7F1DEFF8550023D15E /* ThemeViewController.swift */,
-				512137C21D96AAF70042EFC1 /* ThemesList.plist */,
 				5142AE361DA420EE0076D117 /* 5_Star-(alt).png */,
 				5142AE371DA420EE0076D117 /* 5_Star.png */,
 				519BA0941DD1192400786519 /* PremiumBug_1.png */,
@@ -451,6 +461,18 @@
 			);
 			name = "Sales View";
 			path = Themes;
+			sourceTree = "<group>";
+		};
+		516C481C1DFE74E0006E68CD /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				512137C51D96ADEB0042EFC1 /* Themes Assets */,
+				51F24F7F1DEFF8550023D15E /* ThemeViewController.swift */,
+				516C481D1DFE74F1006E68CD /* ThemeCreatorViewController.swift */,
+				512137C21D96AAF70042EFC1 /* ThemesList.plist */,
+				510F157F1DEBD6E400116A4D /* ThemeCoordinator.swift */,
+			);
+			name = Themes;
 			sourceTree = "<group>";
 		};
 		518A8BA71D9703E0001D8B12 /* Frameworks */ = {
@@ -492,7 +514,6 @@
 			children = (
 				512137BE1D969F280042EFC1 /* NumericalViewController.swift */,
 				515EB8F91DA69FDC0081D9FB /* Sales View */,
-				512137C51D96ADEB0042EFC1 /* Themes */,
 				513197111B6ADD5900E9B802 /* ViewController.swift */,
 				51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */,
 				51D7A8391BBA7D4A0064AA4B /* Work Panel View Controller */,
@@ -777,6 +798,7 @@
 				5685FE941BCACA490019BC04 /* AcousticModelEnglish.bundle in Resources */,
 				512137F11D96ADEB0042EFC1 /* leaves001-thumbnail@2x.jpg in Resources */,
 				5131971A1B6ADD5900E9B802 /* LaunchScreen.storyboard in Resources */,
+				51B4CA291E012947000A9865 /* 2_Keys.png in Resources */,
 				512137ED1D96ADEB0042EFC1 /* dark001-thumbnail@1x.jpg in Resources */,
 				510D3ABC1B6B657F00D1A07F /* Dictionary_English.plist in Resources */,
 				512137FA1D96ADEB0042EFC1 /* sand001-thumbnail@2x.jpg in Resources */,
@@ -790,7 +812,9 @@
 				5142AE401DA420EE0076D117 /* 55_Lock-Open-(alt).png in Resources */,
 				512137F41D96ADEB0042EFC1 /* orange001-thumbnail@2x.jpg in Resources */,
 				512137C31D96AAF70042EFC1 /* ThemesList.plist in Resources */,
+				51B4CA281E012947000A9865 /* 1_StatusBar.png in Resources */,
 				512138011D96ADEB0042EFC1 /* water001@2x.jpg in Resources */,
+				51B4CA2A1E012947000A9865 /* 3_Keypad.png in Resources */,
 				512137E91D96ADEB0042EFC1 /* blue001@2x.jpg in Resources */,
 				5142AE3D1DA420EE0076D117 /* 5_Star.png in Resources */,
 				519BA0971DD11A0200786519 /* PremiumBug_2.png in Resources */,
@@ -968,6 +992,7 @@
 				51D28B0C1B6C4B7C009A0AEC /* EquationViewController.swift in Sources */,
 				5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */,
 				5685FEA01BCAE3340019BC04 /* RMStore.m in Sources */,
+				516C481E1DFE74F1006E68CD /* ThemeCreatorViewController.swift in Sources */,
 				510D3AC21B6B659E00D1A07F /* KeypadViewController.swift in Sources */,
 				51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */,
 				51D28B501B6D1C0F009A0AEC /* FractionViewCell.swift in Sources */,

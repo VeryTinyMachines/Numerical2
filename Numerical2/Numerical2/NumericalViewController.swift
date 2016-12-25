@@ -149,24 +149,14 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         }
     }
     
+    
+    
     func presentiTunesManage() {
         self.attemptToOpenURL(urlString: "itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions")
     }
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
-    }
-    
-    func needsEditMenuDismissal() -> Bool {
-        let menu = UIMenuController.shared
-        
-        if menu.menuItems != nil {
-            menu.menuItems = nil
-            menu.setMenuVisible(false, animated: true)
-            return true
-        }
-        
-        return false
     }
     
     func beginLoadingScreen() {
@@ -290,6 +280,22 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         let controller = CustomAnimationController()
         controller.isPresenting = false
         return controller
+    }
+    
+    func autoLayoutAddViewController(viewController: UIViewController, intoView view:UIView, parentViewController: UIViewController) {
+        
+        if let subView = viewController.view {
+            
+            subView.translatesAutoresizingMaskIntoConstraints = false
+            
+            view.addSubview(subView)
+            
+            parentViewController.addChildViewController(viewController)
+            
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[subView]-0-|", options: NSLayoutFormatOptions.directionLeadingToTrailing, metrics: nil, views: ["subView":subView]))
+            
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[subView]-0-|", options: NSLayoutFormatOptions.directionLeadingToTrailing, metrics: nil, views: ["subView":subView]))
+        }
     }
     
 }

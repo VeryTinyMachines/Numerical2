@@ -134,16 +134,24 @@ class EquationStore {
         saveContext()
     }
     
+    func deviceUUID() -> String? {
+        if let vendorID = UIDevice.current.identifierForVendor {
+            return vendorID.uuidString
+        }
+        return nil
+    }
+    
+    func newUUID() -> String {
+        return UUID().uuidString
+    }
+    
     func newEquation() -> Equation {
         
         let entity = NSEntityDescription.entity(forEntityName: "Equation", in: self.persistentContainer.viewContext)
         let equation = NSManagedObject(entity: entity!, insertInto: self.persistentContainer.viewContext) as! Equation
         
-        equation.identifier = UUID().uuidString
-        
-        if let vendorID = UIDevice.current.identifierForVendor {
-            equation.deviceIdentifier = vendorID.uuidString
-        }
+        equation.identifier = newUUID()
+        equation.deviceIdentifier = deviceUUID()
         
         // Find the equation with the highest sortOrder
         
@@ -199,22 +207,26 @@ class EquationStore {
     
     // MARK: - Core Data Saving support
     
-    func saveContext () {
+    func saveContext () -> Bool {
         print("saveContext")
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
                 print("Saved")
+                return true
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                return false
             }
         } else {
             print("No saves necessary")
+            return true
         }
+        
     }
     
     func updateCloudKit() {
@@ -290,7 +302,7 @@ class EquationStore {
             
             self.persistentContainer.performBackgroundTask({ (context) in
                 print("perRecordCompletionBlock")
-                if let record = record {
+                //if let record = record {
                     print("record: \(record)")
                     if let identifier = record.object(forKey: "identifier") as? String {
                         print("identifier: \(identifier)")
@@ -315,7 +327,7 @@ class EquationStore {
                             
                         }
                     }
-                }
+                //}
             })
         }
         
@@ -622,6 +634,66 @@ class EquationStore {
             }
         }
     }
+    
+    func convertDeprecatedEquationsIfNeeded() {
+        
+        let manager = FileManager.default
+        
+        let paths = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)
+        let applicationSupportPath = paths[0]
+        
+        let path = applicationSupportPath + "/calcDataHistory.plist"
+        
+        if let dict = NSDictionary(contentsOfFile: path) as? [String:Any] {
+            print(dict.keys)
+            
+            if let questionArray = dict["LONGHISTORY"] as? NSArray, let answerArray = dict["LONGHISTORYANSWER"] as? NSArray {
+                
+                var totalItems = questionArray.count
+                
+                if totalItems > answerArray.count {
+                    totalItems = answerArray.count
+                }
+                
+                var importedEquations = [DeprecatedEquation]()
+                
+                for number in 0...totalItems - 1 {
+                    if let question = questionArray[number] as? String, let answer = answerArray[number] as? String {
+                        
+                        let dE = DeprecatedEquation(answer: answer, question: question)
+                        importedEquations.append(dE)
+                    }
+                }
+                
+                var count = 0
+                for de in importedEquations {
+                    
+                    let equation = newEquation()
+                    equation.answer = de.answer
+                    equation.question = de.question
+                    equation.creationDate = NSDate(timeIntervalSinceNow: TimeInterval(-count))
+                    equation.lastModifiedDate = NSDate(timeIntervalSinceNow: TimeInterval(-count))
+                    
+                    count += 1
+                }
+                
+                if self.saveContext() {
+                    // save successful
+                    // Delete the calchistory
+                    do {
+                        try manager.removeItem(atPath: path)
+                    } catch {
+                        print("Could not delete old equations file")
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct DeprecatedEquation {
+    var answer = ""
+    var question = ""
 }
 
 extension CKQuerySubscriptionOptions:Hashable {

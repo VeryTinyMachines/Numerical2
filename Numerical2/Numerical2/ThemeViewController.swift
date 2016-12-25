@@ -10,6 +10,12 @@ import UIKit
 
 class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    let kBorder:CGFloat = 10.0
+    let kSectionCount = 2
+    
+    let kSectionCustomThemes = 0
+    let kSectionSystemThemes = 1
+    
     var gradiantLayer:CAGradientLayer?
     
     var selectedTheme:Theme?
@@ -22,12 +28,12 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
         
         self.collectionView.backgroundColor = UIColor.clear
         
-        self.collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        self.collectionView.contentInset = UIEdgeInsets(top: kBorder, left: 0, bottom: 0, right: 0)
         
         self.title = "Theme Selector"
         
         let flow = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        flow.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        flow.sectionInset = UIEdgeInsetsMake(0, 0, kBorder, 0)
         let width = UIScreen.main.bounds.width - 6
         flow.itemSize = CGSize(width: width/3, height: width/3)
         flow.minimumInteritemSpacing = border()
@@ -39,7 +45,7 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
         self.navigationItem.leftBarButtonItem = cancelButton
         self.navigationItem.rightBarButtonItem = doneButton
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ThemeViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ThemeViewController.themeChangedFromNotif), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(ThemeViewController.reloadData), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
         
@@ -51,6 +57,11 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
 //            PremiumCoordinator.shared.premiumIAPUser = true
 //            PremiumCoordinator.shared.postUserPremiumStatusChanged()
 //        }
+    }
+    
+    func themeChangedFromNotif() {
+        selectedTheme = ThemeCoordinator.shared.currentTheme()
+        self.reloadData()
     }
     
     func reloadData() {
@@ -95,26 +106,55 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ThemeCollectionViewCell", for: indexPath) as! ThemeCollectionViewCell
         
-        let theme = ThemeCoordinator.shared.themes[indexPath.row]
-        
-        cell.backgroundColor = UIColor.clear
-        
-        var selected = false
-        
-        if let selectedTheme = selectedTheme {
-            if selectedTheme.themeID == theme.themeID {
-                selected = true
+        if indexPath.section == kSectionCustomThemes {
+            
+            if indexPath.row == 0 {
+                // New theme
+                
+                let theme = Theme(title: "New Theme", themeID: "newtheme", color1: "848484", color2: "848484", style: ThemeStyle.normal, premium: true)
+                
+                cell.backgroundColor = UIColor.clear
+                
+                cell.layoutWithTheme(theme: theme, selected: false)
+                
+            } else {
+                let theme = ThemeCoordinator.shared.userThemes[indexPath.row - 1]
+                
+                cell.backgroundColor = UIColor.clear
+                
+                var selected = false
+                
+                if let selectedTheme = selectedTheme {
+                    if selectedTheme.themeID == theme.themeID {
+                        selected = true
+                    }
+                }
+                
+                cell.layoutWithTheme(theme: theme, selected: selected)
             }
+            
+        } else if indexPath.section == kSectionSystemThemes {
+            let theme = ThemeCoordinator.shared.themes[indexPath.row]
+            
+            cell.backgroundColor = UIColor.clear
+            
+            var selected = false
+            
+            if let selectedTheme = selectedTheme {
+                if selectedTheme.themeID == theme.themeID {
+                    selected = true
+                }
+            }
+            
+            cell.layoutWithTheme(theme: theme, selected: selected)
         }
-        
-        cell.layoutWithTheme(theme: theme, selected: selected)
         
         return cell
     }
     
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return kSectionCount
     }
     
     
@@ -122,17 +162,38 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
     
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return ThemeCoordinator.shared.themes.count
+        
+        if section == kSectionCustomThemes {
+            return ThemeCoordinator.shared.userThemes.count + 1
+        } else if section == kSectionSystemThemes {
+            return ThemeCoordinator.shared.themes.count
+        }
+        
+        return 0
+        
     }
     
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
+        
+        let size = preferredSize()
+        return CGSize(width: size - 1, height: size - 1)
+    }
+    
+    func preferredSize() -> CGFloat {
+        
         let size = (self.view.frame.width - (CGFloat(numberOfColumns()) - 1) * border()) / CGFloat(numberOfColumns())
-        return CGSize(width: size, height: size)
+        
+        return size - 1
     }
     
     func numberOfColumns() -> Int {
-        return 3
+        
+        if NumericalHelper.isDevicePad() {
+            return Int(round(self.view.frame.width / 200.0))
+        } else {
+            return Int(round(self.view.frame.width / 140.0))
+        }
     }
     
     func border() -> CGFloat {
@@ -151,7 +212,6 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
             
             let foregroundColor = ThemeCoordinator.shared.foregroundColorForTheme(theme: selectedTheme)
             self.navigationController?.navigationBar.tintColor = foregroundColor
-            
             self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:foregroundColor]
             
             let layer = ThemeCoordinator.shared.gradiantLayerForTheme(theme: selectedTheme)
@@ -171,6 +231,13 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if let theSelectedTheme = selectedTheme {
+            if ThemeCoordinator.shared.doesThemeStillExist(theme: theSelectedTheme) == false {
+                selectedTheme = ThemeCoordinator.shared.currentTheme()
+            }
+        }
+        
         themeChanged()
     }
     
@@ -185,10 +252,57 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
 
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let theme = ThemeCoordinator.shared.themes[indexPath.row]
-        selectedTheme = theme
-        themeChanged()
+        if indexPath.section == kSectionCustomThemes {
+            if indexPath.row == 0 {
+                // Present theme creator
+                pushThemeCreator(theme: nil)
+            } else {
+                let theme = ThemeCoordinator.shared.userThemes[indexPath.row - 1]
+                
+                if let theSelectedTheme = selectedTheme {
+                    // Edit this theme if allowed.
+                    if theme.themeID == theSelectedTheme.themeID && theSelectedTheme.isUserCreated {
+                        
+                        if PremiumCoordinator.shared.canAccessThemes() {
+                            pushThemeCreator(theme: theSelectedTheme)
+                        } else {
+                            presentSalesScreen(type: SalesScreenType.themeCreator)
+                        }
+                    } else {
+                        selectedTheme = theme
+                    }
+                } else {
+                    selectedTheme = theme
+                }
+                
+                themeChanged()
+            }
+        } else if indexPath.section == kSectionSystemThemes {
+            let theme = ThemeCoordinator.shared.themes[indexPath.row]
+            selectedTheme = theme
+            themeChanged()
+        }
     }
+    
+    func pushThemeCreator(theme: Theme?) {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ThemeCreatorViewController") as? ThemeCreatorViewController {
+            vc.updateTheme = theme
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { (context) in
+            self.reloadData()
+            self.themeChanged()
+        }) { (context) in
+            self.reloadData()
+            self.themeChanged()
+        }
+    }
+    
+    
 }
 
 class ThemeCollectionViewCell: UICollectionViewCell {
@@ -221,6 +335,8 @@ class ThemeCollectionViewCell: UICollectionViewCell {
         
         if theme.isPremium && PremiumCoordinator.shared.canAccessThemes() == false {
             self.mainLabel.text = theme.title + "\n(Pro)"
+        } else if theme.isUserCreated && selected {
+            self.mainLabel.text = "Tap to\nEdit"
         }
         
         self.mainLabel.textColor = ThemeCoordinator.shared.foregroundColorForTheme(theme: theme)

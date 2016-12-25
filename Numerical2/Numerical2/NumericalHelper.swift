@@ -48,6 +48,17 @@ class NumericalHelper {
     }
     
     class func isDevicePad() -> Bool {
+        
+        if UIScreen.main.traitCollection.userInterfaceIdiom == .pad {
+            if let size = UIApplication.shared.delegate?.window??.bounds {
+                if size.width < 400 {
+                    // This device has a width < 760 but is an iPad
+                    // This is a split screen view and should therefore take on the size of a phone deivce
+                    return false
+                }
+            }
+        }
+        
         return UIScreen.main.traitCollection.userInterfaceIdiom == .pad
     }
     
@@ -67,6 +78,137 @@ class NumericalHelper {
         }
         return ""
     }
+    
+    class func convertIn(number1: Float, number2: Float, isSecondColor: Bool, isLightStyle: Bool) -> UIColor {
+        
+        //print("convertIn")
+        //print("number1: \(number1)")
+        //print("number2: \(number2)")
+        
+        var hue:Float = 0
+        var bri:Float = 0
+        var sat:Float = 0
+        
+        if isLightStyle {
+            // Light style
+            
+            if isSecondColor {
+//                //print("lightStyle isSecondColor")
+                // The foreground color
+//                //print("number2: \(number2)")
+                
+                let newNumber2 = 0.25 + (number2 * 0.5)
+                
+//                //print("newNumber2: \(newNumber2)")
+                
+                hue = number1
+                sat = 1.0
+                bri = newNumber2
+                
+//                //print("bri: \(bri)")
+                
+                // return (hue: number1, sat: 1.0, bri: newNumber2)
+            } else {
+                // The background color
+                
+                let newNumber2 = number2 * 0.1
+                
+                hue = number1
+                sat = newNumber2
+                bri = 1.0
+                
+                //return (hue: number1, sat: newNumber2, bri: 1.0)
+            }
+            
+        } else {
+            // Default style
+            
+            let maxSat:Float = 0.75
+            let maxBright:Float = 0.9
+            
+            if number2 > 0.5 {
+                // Brightness is maxed out, start desaturating now
+                
+                let newNumber2 = maxSat - ((number2 - 0.5) * 1.2)
+                
+                hue = number1
+                sat = newNumber2
+                bri = maxBright
+                
+                //return (hue: number1, sat: newNumber2, bri: 1.0)
+                
+            } else {
+                hue = number1
+                sat = maxSat
+                bri = (number2 * 2 * maxBright)
+                //return (hue: number1, sat: 1.0, bri: number2)
+            }
+        }
+        
+        let color = UIColor(hue: CGFloat(hue), saturation: CGFloat(sat), brightness: CGFloat(bri), alpha: 1.0)
+        
+        //print("hue: \(hue)")
+        //print("sat: \(sat)")
+        //print("bri: \(bri)")
+        
+        //print("color: \(color)")
+        
+        return color
+    }
+    
+    class func convertOut(color: UIColor, isSecondColor: Bool, isLightStyle: Bool) -> (number1: Float, number2: Float) {
+        //print("convertOut")
+        var hue:CGFloat = 0.0
+        var sat:CGFloat = 0.0
+        var bri:CGFloat = 0.0
+        
+        color.getHue(&hue, saturation: &sat, brightness: &bri, alpha: nil)
+        
+        //print("hue: \(hue)")
+        //print("sat: \(sat)")
+        //print("bri: \(bri)")
+        
+        if isLightStyle {
+            // Light style
+            
+            if isSecondColor {
+                let number2 = (bri - 0.25) / 0.5
+//                //print("number2: \(number2)")
+                return (Float(hue), Float(number2))
+                //let newNumber2 = 0.25 + (number2 * 0.5)
+                //return (hue: number1, sat: 1.0, bri: newNumber2)
+                
+            } else {
+                
+                let number2 = sat / 0.1
+                return (Float(hue), Float(number2))
+            }
+            
+        } else {
+            // Default style
+            
+            let maxSat:Float = 0.75
+            let maxBright:Float = 0.9
+            
+            if bri >= CGFloat(maxBright) {
+                // Brightness is maxed out, start desaturating now
+                //print("Brightness is maxed out, start desaturating now")
+                let number2 = (((sat - CGFloat(maxSat)) / 1.2) * -1) + 0.5
+                //print("number2: \(number2)")
+                return (Float(hue), Float(number2))
+                
+            } else {
+                // Normal
+                let number2 = bri / 2 / CGFloat(maxBright)
+                return (Float(hue), Float(number2))
+            }
+            
+        }
+        
+        
+        
+        //return (0.0, 0.0)
+    }
 }
 
 extension UIView {
@@ -75,7 +217,7 @@ extension UIView {
     /// Please note that this has no effect if its `superview` is `nil` – add this `UIView` instance as a subview before calling this.
     func bindFrameToSuperviewBounds() {
         guard let superview = self.superview else {
-            print("Error! `superview` was nil – call `addSubview(view: UIView)` before calling `bindFrameToSuperviewBounds()` to fix this.")
+            //print("Error! `superview` was nil – call `addSubview(view: UIView)` before calling `bindFrameToSuperviewBounds()` to fix this.")
             return
         }
         

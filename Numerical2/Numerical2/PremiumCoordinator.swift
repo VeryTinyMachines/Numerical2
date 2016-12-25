@@ -582,7 +582,7 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     
     
     func isUserPremium() ->Bool {
-//        return true // TEMP for testing
+        return true // TEMP for testing
         
         if premiumIAPUser {
             // User is paying via an IAP, user is premium

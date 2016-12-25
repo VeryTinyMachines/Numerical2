@@ -78,7 +78,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     /// Tells the delegate an ad request loaded an ad.
     func adViewDidReceiveAd(_ bannerView: GADBannerView!) {
-        print("adViewDidReceiveAd")
+       //print("adViewDidReceiveAd")
         adReadyToDisplay = true
         premiumStatusChanged()
     }
@@ -86,7 +86,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     /// Tells the delegate an ad request failed.
     func adView(_ bannerView: GADBannerView!,
                 didFailToReceiveAdWithError error: GADRequestError!) {
-        print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+       //print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
         
         adReadyToDisplay = false
         premiumStatusChanged()
@@ -95,23 +95,23 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     /// Tells the delegate that a full screen view will be presented in response
     /// to the user clicking on an ad.
     func adViewWillPresentScreen(_ bannerView: GADBannerView!) {
-        print("adViewWillPresentScreen")
+       //print("adViewWillPresentScreen")
     }
     
     /// Tells the delegate that the full screen view will be dismissed.
     func adViewWillDismissScreen(_ bannerView: GADBannerView!) {
-        print("adViewWillDismissScreen")
+       //print("adViewWillDismissScreen")
     }
     
     /// Tells the delegate that the full screen view has been dismissed.
     func adViewDidDismissScreen(_ bannerView: GADBannerView!) {
-        print("adViewDidDismissScreen")
+       //print("adViewDidDismissScreen")
     }
     
     /// Tells the delegate that a user click will open another app (such as
     /// the App Store), backgrounding the current app.
     func adViewWillLeaveApplication(_ bannerView: GADBannerView!) {
-        print("adViewWillLeaveApplication")
+       //print("adViewWillLeaveApplication")
     }
     
     
@@ -234,27 +234,22 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     
     func workPanelPanned(_ sender: UIPanGestureRecognizer) {
-        print("workPanelPanned")
+       //print("workPanelPanned")
         
         let location = sender.location(in: view)
-        print(location)
-        
-        if needsEditMenuDismissal() {
-            sender.isEnabled = false
-            sender.isEnabled = true
-            return
-        }
+       //print(location)
         
         switch sender.state {
         case .began:
-            print("began")
+           //print("began")
             workPanelSlideOrigin = location
             workPanelLastLocation = location
             view.layer.removeAllAnimations()
         case .cancelled:
-            print("cancelled")
+           //print("cancelled")
+            break
         case .changed:
-            print("changed")
+           //print("changed")
 
             // origin is where the touch started.
             // location is where the touch is now.
@@ -283,7 +278,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 } else {
                     let newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
                     
-                    print("newHeight: \(newHeight)")
+                   //print("newHeight: \(newHeight)")
                     
                     updateWorkPanelForHeight(Float(newHeight))
                     
@@ -300,18 +295,18 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             workPanelLastLocation = location
             
         case .ended:
-            print("ended")
+           //print("ended")
             
             panning = false
             
             if let origin = workPanelSlideOrigin {
                 let verticalDelta = location.y - origin.y
                 
-                print("verticalDelta: \(verticalDelta)")
+               //print("verticalDelta: \(verticalDelta)")
                 
                 let verticalDeltaPercentage = verticalDelta / view.bounds.height
                 
-                print("verticalDeltaPercentage: \(verticalDeltaPercentage)")
+               //print("verticalDeltaPercentage: \(verticalDeltaPercentage)")
                 
                 let newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
                 
@@ -339,10 +334,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             workPanelVerticalSpeed = 0
             
         case .failed:
-            print("failed")
+           //print("failed")
             panning = false
         case .possible:
-            print("possible")
+           //print("possible")
+            break
         }
     }
     
@@ -355,7 +351,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func snapPercentageHeight(_ verticalSpeed: CGFloat, viewSize: CGSize) {
         
-        print("snapPercentageHeight: \(verticalSpeed)")
+       //print("snapPercentageHeight: \(verticalSpeed)")
         
         // Look at the vertical speed to decide what height to snap it to.
         
@@ -572,13 +568,13 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
             let viewHeight = self.viewHeightWithoutAd()
             
-            print("middlePoint: \(middlePoint)")
-            print("newHeight: \(newHeight)")
-            print("offset: \(offset)")
+           //print("middlePoint: \(middlePoint)")
+           //print("newHeight: \(newHeight)")
+           //print("offset: \(offset)")
             
             self.workPanelBottomConstraint.constant = offset * viewHeight
             
-            print("self.workPanelBottomConstraint.constant: \(self.workPanelBottomConstraint.constant)")
+           //print("self.workPanelBottomConstraint.constant: \(self.workPanelBottomConstraint.constant)")
         }
     }
     
@@ -596,8 +592,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        
-        needsEditMenuDismissal()
         
         if let gradiantLayer = self.gradiantLayer {
             gradiantLayer.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
