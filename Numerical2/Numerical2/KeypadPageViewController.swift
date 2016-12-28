@@ -117,7 +117,7 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
     
     func viewIsWide() -> Bool {
         
-        if NumericalHelper.isDevicePad() {
+        if NumericalViewHelper.isDevicePad() {
             // It's an iPad!
             return true
         } else {
@@ -143,13 +143,13 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
                     return scientificPad;
                 }
             } else if currentView.layoutType == KeypadLayout.compactScientific {
-                if NumericalHelper.shouldSettingsScreenBeModal() == false {
+                if NumericalViewHelper.shouldSettingsScreenBeModal() == false {
                     if let aboutView = viewControllerForAboutView() {
                         return aboutView
                     }
                 }
             } else if currentView.layoutType == KeypadLayout.regular {
-                if NumericalHelper.shouldSettingsScreenBeModal() == false {
+                if NumericalViewHelper.shouldSettingsScreenBeModal() == false {
                     if let aboutView = viewControllerForAboutView() {
                         return aboutView
                     }
@@ -277,7 +277,7 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
     func pageCount() -> (currentPage: Int, numberOfPages: Int) {
         
         if let viewController = pageViewController?.viewControllers?.first {
-            let modal:Int = NumericalHelper.shouldSettingsScreenBeModal() ? 0 : 1
+            let modal:Int = NumericalViewHelper.shouldSettingsScreenBeModal() ? 0 : 1
             
             if let keypadViewController = viewController as? KeypadViewController {
                 switch keypadViewController.layoutType {

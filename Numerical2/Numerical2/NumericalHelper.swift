@@ -47,25 +47,6 @@ class NumericalHelper {
         setSetting(string: string, enabled: !isSettingEnabled(string: string))
     }
     
-    class func isDevicePad() -> Bool {
-        
-        if UIScreen.main.traitCollection.userInterfaceIdiom == .pad {
-            if let size = UIApplication.shared.delegate?.window??.bounds {
-                if size.width < 400 {
-                    // This device has a width < 760 but is an iPad
-                    // This is a split screen view and should therefore take on the size of a phone deivce
-                    return false
-                }
-            }
-        }
-        
-        return UIScreen.main.traitCollection.userInterfaceIdiom == .pad
-    }
-    
-    class func shouldSettingsScreenBeModal() -> Bool {
-        return isDevicePad()
-    }
-    
     class func currentDeviceInfo(includeBuildNumber: Bool) -> String {
         if let info = Bundle.main.infoDictionary {
             if let version = info["CFBundleShortVersionString"] as? String, let buildNumber = info["CFBundleVersion"] as? String {

@@ -27,7 +27,7 @@ class CustomAnimationController: NSObject, UIViewControllerAnimatedTransitioning
             
             var finalFrameForVC = transitionContext.finalFrame(for: toViewController)
             
-            if NumericalHelper.isDevicePad() {
+            if NumericalViewHelper.isDevicePad() {
                 
                 let width:CGFloat = 600.0
                 let height:CGFloat = 700.0

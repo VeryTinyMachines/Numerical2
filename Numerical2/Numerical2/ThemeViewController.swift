@@ -189,7 +189,7 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
     
     func numberOfColumns() -> Int {
         
-        if NumericalHelper.isDevicePad() {
+        if NumericalViewHelper.isDevicePad() {
             return Int(round(self.view.frame.width / 200.0))
         } else {
             return Int(round(self.view.frame.width / 140.0))

@@ -368,7 +368,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         var allowMiddlePosition = true
         
-        if NumericalHelper.isDevicePad() == false && viewSize.width > viewSize.height {
+        if NumericalViewHelper.isDevicePad() == false && viewSize.width > viewSize.height {
             // Device is landscape iPhone - don't allow the middle position
             allowMiddlePosition = false
         }

@@ -77,6 +77,10 @@ public struct SymbolCharacter {
     
     public static let settings:Character = "ℹ︎"
     
+    public static let publish:Character = "⋏"
+    
+    public static let keyboard:Character = "♁"
+    
     public static let numbers:Set<Character> = ["0","1","2","3","4","5","6","7","8","9",".",SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, SymbolCharacter.fraction]
     
     public static let operators:Set<Character> = [SymbolCharacter.add, SymbolCharacter.subtract, SymbolCharacter.multiply, SymbolCharacter.divide, SymbolCharacter.exponent, SymbolCharacter.percentage, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage]
@@ -131,7 +135,10 @@ open class Glossary {
         SymbolCharacter.divide:"÷",
         SymbolCharacter.exponent:"^",
         SymbolCharacter.sqrt:"√",
-        SymbolCharacter.settings:"≣"
+        SymbolCharacter.settings:"≣",
+        
+        SymbolCharacter.publish:"↑",
+        SymbolCharacter.keyboard:"ABC"
     ]
     
     static let reverseFormattedLookup = [

@@ -113,7 +113,7 @@ class KeypadViewController: UIViewController {
         } else if layoutType == KeypadLayout.compactScientific {
             keyCharacters = SymbolCharacter.compactScientific
         } else if layoutType == KeypadLayout.regular {
-            if NumericalHelper.isDevicePad() {
+            if NumericalViewHelper.isDevicePad() {
                 keyCharacters = SymbolCharacter.regularPad
             } else {
                 keyCharacters = SymbolCharacter.regularPhone

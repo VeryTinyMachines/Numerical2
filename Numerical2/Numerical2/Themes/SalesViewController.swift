@@ -171,7 +171,7 @@ class SalesViewController: NumericalViewController {
     
     func viewNeedsHorizontalSales() -> Bool {
         
-        if NumericalHelper.isDevicePad() {
+        if NumericalViewHelper.isDevicePad() {
             // It's an iPad!
             return false
         } else {
