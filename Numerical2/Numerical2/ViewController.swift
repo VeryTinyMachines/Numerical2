@@ -74,6 +74,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
         })
  */
+        
     }
     
     /// Tells the delegate an ad request loaded an ad.
@@ -116,7 +117,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     
     func themeChanged() {
-        self.backgroundImageView.image = PremiumCoordinator.shared.imageForCurrentTheme()
         self.backgroundImageView.image = nil
         self.backgroundImageView.isHidden = true
         
@@ -662,6 +662,10 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     }
     
     func showAd() -> Bool {
+        if PremiumCoordinator.shared.preventAd {
+            return false
+        }
+        
         if adReadyToDisplay == false {
             return false // We are still loading the first ad.
         }

@@ -14,3 +14,10 @@ let ColorDataKey = "colorData"
 let EquationStringKey = "equationString"
 let AnswerStringKey = "answerString"
 let DeviceIdStringKey = "deviceIdString"
+
+
+let KeyboardAnswer = "keyboardAnswer"
+let KeyboardQuestion = "keyboardQuestion"
+
+let KeyboardCurrentAddedToHistory = "keyboardCurrentAddedToHistory"
+let KeyboardHistoryToSync = "keyboardHistoryToSync"

@@ -17,10 +17,14 @@
 		5117D8461B941A2B003DF8DA /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
 		5117D8491B941B3D003DF8DA /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
 		5117D84A1B941B3F003DF8DA /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; };
+		511D2A921E34760500957ADB /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; };
+		511D2A941E3480EE00957ADB /* ThemeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511D2A931E3480EE00957ADB /* ThemeFormatter.swift */; };
+		511D2A951E3482D300957ADB /* ThemeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511D2A931E3480EE00957ADB /* ThemeFormatter.swift */; };
+		511D2A971E3485CB00957ADB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511D2A961E3485CB00957ADB /* Theme.swift */; };
+		511D2A981E3485D300957ADB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511D2A961E3485CB00957ADB /* Theme.swift */; };
 		512137BA1D967A730042EFC1 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137B91D967A730042EFC1 /* AboutViewController.swift */; };
 		512137BD1D969C760042EFC1 /* NumericalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137BC1D969C760042EFC1 /* NumericalHelper.swift */; };
 		512137C11D96A76F0042EFC1 /* PremiumCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137C01D96A76F0042EFC1 /* PremiumCoordinator.swift */; };
-		512137C31D96AAF70042EFC1 /* ThemesList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 512137C21D96AAF70042EFC1 /* ThemesList.plist */; };
 		512137E41D96ADEB0042EFC1 /* pink001-thumbnail@1x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 512137C61D96ADEB0042EFC1 /* pink001-thumbnail@1x.jpg */; };
 		512137E51D96ADEB0042EFC1 /* pink001-thumbnail@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 512137C71D96ADEB0042EFC1 /* pink001-thumbnail@2x.jpg */; };
 		512137E61D96ADEB0042EFC1 /* pink001@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 512137C81D96ADEB0042EFC1 /* pink001@2x.jpg */; };
@@ -98,6 +102,7 @@
 		51BE48B71E139BDF002A2B92 /* KeyboardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51BE48B51E139BDF002A2B92 /* KeyboardView.xib */; };
 		51BE48BA1E13AA38002A2B92 /* UIColor+Numerical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BE48B91E13AA38002A2B92 /* UIColor+Numerical.swift */; };
 		51BE48BB1E13AA41002A2B92 /* UIColor+Numerical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BE48B91E13AA38002A2B92 /* UIColor+Numerical.swift */; };
+		51C1F15D1E2C3EA400A413A7 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C1F15C1E2C3EA400A413A7 /* TutorialViewController.swift */; };
 		51C40E841DCC135C00930BFD /* professional-reverse.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 51C40E7F1DCC135C00930BFD /* professional-reverse.aiff */; };
 		51C40E851DCC135C00930BFD /* professional.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 51C40E801DCC135C00930BFD /* professional.aiff */; };
 		51C40E861DCC135C00930BFD /* rock.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 51C40E811DCC135C00930BFD /* rock.aiff */; };
@@ -190,11 +195,12 @@
 		510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NaturalLanguageParser.swift; sourceTree = "<group>"; };
 		510D3AC11B6B659E00D1A07F /* KeypadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeypadViewController.swift; sourceTree = "<group>"; };
 		510F157F1DEBD6E400116A4D /* ThemeCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeCoordinator.swift; sourceTree = "<group>"; };
+		511D2A931E3480EE00957ADB /* ThemeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeFormatter.swift; sourceTree = "<group>"; };
+		511D2A961E3485CB00957ADB /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		512137B91D967A730042EFC1 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		512137BC1D969C760042EFC1 /* NumericalHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalHelper.swift; sourceTree = "<group>"; };
 		512137BE1D969F280042EFC1 /* NumericalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalViewController.swift; sourceTree = "<group>"; };
 		512137C01D96A76F0042EFC1 /* PremiumCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PremiumCoordinator.swift; sourceTree = "<group>"; };
-		512137C21D96AAF70042EFC1 /* ThemesList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ThemesList.plist; sourceTree = "<group>"; };
 		512137C61D96ADEB0042EFC1 /* pink001-thumbnail@1x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "pink001-thumbnail@1x.jpg"; sourceTree = "<group>"; };
 		512137C71D96ADEB0042EFC1 /* pink001-thumbnail@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "pink001-thumbnail@2x.jpg"; sourceTree = "<group>"; };
 		512137C81D96ADEB0042EFC1 /* pink001@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "pink001@2x.jpg"; sourceTree = "<group>"; };
@@ -269,10 +275,11 @@
 		51BE489F1E13990B002A2B92 /* Keyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Keyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		51BE48A31E13990C002A2B92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51BE48B01E139AE3002A2B92 /* NumericalViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalViewHelper.swift; sourceTree = "<group>"; };
-		51BE48B31E139BDF002A2B92 /* Keyboard.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Keyboard.entitlements; sourceTree = "<group>"; };
 		51BE48B41E139BDF002A2B92 /* KeyboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		51BE48B51E139BDF002A2B92 /* KeyboardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeyboardView.xib; sourceTree = "<group>"; };
 		51BE48B91E13AA38002A2B92 /* UIColor+Numerical.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Numerical.swift"; sourceTree = "<group>"; };
+		51BE48BF1E147006002A2B92 /* Keyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Keyboard.entitlements; sourceTree = "<group>"; };
+		51C1F15C1E2C3EA400A413A7 /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		51C40E7F1DCC135C00930BFD /* professional-reverse.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = "professional-reverse.aiff"; path = "Sounds/professional-reverse.aiff"; sourceTree = "<group>"; };
 		51C40E801DCC135C00930BFD /* professional.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = professional.aiff; path = Sounds/professional.aiff; sourceTree = "<group>"; };
 		51C40E811DCC135C00930BFD /* rock.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = rock.aiff; path = Sounds/rock.aiff; sourceTree = "<group>"; };
@@ -427,6 +434,7 @@
 			isa = PBXGroup;
 			children = (
 				5131970F1B6ADD5900E9B802 /* AppDelegate.swift */,
+				517470CB1D95C7B000E70A74 /* EquationStore.swift */,
 				512138251D96F7590042EFC1 /* Equation+CoreDataClass.swift */,
 				512138261D96F7590042EFC1 /* Equation+CoreDataProperties.swift */,
 				515EB8FC1DA6C1960081D9FB /* AppIcon120x120@2x.png */,
@@ -435,7 +443,6 @@
 				51BE48B01E139AE3002A2B92 /* NumericalViewHelper.swift */,
 				51B2A29A1D95C283002A9AD8 /* SinkableUserDefaults.swift */,
 				517470CD1D95D35100E70A74 /* DataKeyStore.swift */,
-				517470CB1D95C7B000E70A74 /* EquationStore.swift */,
 				512138231D96F6770042EFC1 /* CoreData.xcdatamodel */,
 				51B2A29E1D95C304002A9AD8 /* Pad.swift */,
 				51C40ECB1DCC492200930BFD /* CustomAnimationController.swift */,
@@ -454,6 +461,7 @@
 				51C40E891DCC136400930BFD /* Sounds */,
 				512137B91D967A730042EFC1 /* AboutViewController.swift */,
 				515DABE21DB23BE60028F2C7 /* NumericalTextField.swift */,
+				51C1F15C1E2C3EA400A413A7 /* TutorialViewController.swift */,
 				513197131B6ADD5900E9B802 /* Main.storyboard */,
 				5125B49C1C9EA66C006D7BDC /* background@2x.jpg */,
 				51D7A8371BBA7D320064AA4B /* View Hierarchy */,
@@ -516,8 +524,9 @@
 				512137C51D96ADEB0042EFC1 /* Themes Assets */,
 				51F24F7F1DEFF8550023D15E /* ThemeViewController.swift */,
 				516C481D1DFE74F1006E68CD /* ThemeCreatorViewController.swift */,
-				512137C21D96AAF70042EFC1 /* ThemesList.plist */,
 				510F157F1DEBD6E400116A4D /* ThemeCoordinator.swift */,
+				511D2A931E3480EE00957ADB /* ThemeFormatter.swift */,
+				511D2A961E3485CB00957ADB /* Theme.swift */,
 			);
 			name = Themes;
 			sourceTree = "<group>";
@@ -536,7 +545,7 @@
 		51BE48A01E13990C002A2B92 /* Keyboard */ = {
 			isa = PBXGroup;
 			children = (
-				51BE48B31E139BDF002A2B92 /* Keyboard.entitlements */,
+				51BE48BF1E147006002A2B92 /* Keyboard.entitlements */,
 				51BE48B41E139BDF002A2B92 /* KeyboardViewController.swift */,
 				51BE48B51E139BDF002A2B92 /* KeyboardView.xib */,
 				51BE48A31E13990C002A2B92 /* Info.plist */,
@@ -570,10 +579,10 @@
 		51D7A8371BBA7D320064AA4B /* View Hierarchy */ = {
 			isa = PBXGroup;
 			children = (
-				512137BE1D969F280042EFC1 /* NumericalViewController.swift */,
-				515EB8F91DA69FDC0081D9FB /* Sales View */,
 				513197111B6ADD5900E9B802 /* ViewController.swift */,
+				512137BE1D969F280042EFC1 /* NumericalViewController.swift */,
 				51F2F44E1B6C421B00B845CA /* WorkPanelViewController.swift */,
+				515EB8F91DA69FDC0081D9FB /* Sales View */,
 				51D7A8391BBA7D4A0064AA4B /* Work Panel View Controller */,
 				51D7A8381BBA7D3D0064AA4B /* History View Controller */,
 			);
@@ -795,7 +804,7 @@
 								enabled = 1;
 							};
 							com.apple.BackgroundModes = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -822,6 +831,11 @@
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = C583RN882K;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -886,7 +900,6 @@
 				513197171B6ADD5900E9B802 /* Assets.xcassets in Resources */,
 				5142AE401DA420EE0076D117 /* 55_Lock-Open-(alt).png in Resources */,
 				512137F41D96ADEB0042EFC1 /* orange001-thumbnail@2x.jpg in Resources */,
-				512137C31D96AAF70042EFC1 /* ThemesList.plist in Resources */,
 				51B4CA281E012947000A9865 /* 1_StatusBar.png in Resources */,
 				512138011D96ADEB0042EFC1 /* water001@2x.jpg in Resources */,
 				51B4CA2A1E012947000A9865 /* 3_Keypad.png in Resources */,
@@ -1067,6 +1080,7 @@
 			files = (
 				515DABE31DB23BE70028F2C7 /* NumericalTextField.swift in Sources */,
 				510D3ABE1B6B657F00D1A07F /* Evaluator.swift in Sources */,
+				511D2A941E3480EE00957ADB /* ThemeFormatter.swift in Sources */,
 				512138271D96F7590042EFC1 /* Equation+CoreDataClass.swift in Sources */,
 				515F5EF31DFBCA5B00E182C3 /* NumericalViewController.swift in Sources */,
 				5623BDF51BD40FDB0046B84D /* Constants.swift in Sources */,
@@ -1091,10 +1105,12 @@
 				51C40E8B1DCC167200930BFD /* SoundManager.swift in Sources */,
 				51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */,
 				512137BA1D967A730042EFC1 /* AboutViewController.swift in Sources */,
+				511D2A971E3485CB00957ADB /* Theme.swift in Sources */,
 				51F2F44F1B6C421B00B845CA /* WorkPanelViewController.swift in Sources */,
 				51D28B0E1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift in Sources */,
 				51BE48BA1E13AA38002A2B92 /* UIColor+Numerical.swift in Sources */,
 				512138281D96F7590042EFC1 /* Equation+CoreDataProperties.swift in Sources */,
+				51C1F15D1E2C3EA400A413A7 /* TutorialViewController.swift in Sources */,
 				51B2A29B1D95C283002A9AD8 /* SinkableUserDefaults.swift in Sources */,
 				517470CC1D95C7B000E70A74 /* EquationStore.swift in Sources */,
 				518A8BA61D96FAC0001D8B12 /* HistoryViewController.swift in Sources */,
@@ -1137,7 +1153,10 @@
 				51BE48AE1E139A20002A2B92 /* Constants.swift in Sources */,
 				51BE48B61E139BDF002A2B92 /* KeyboardViewController.swift in Sources */,
 				51BE48AD1E139A12002A2B92 /* NumericalHelper.swift in Sources */,
+				511D2A921E34760500957ADB /* StyleFormatter.swift in Sources */,
+				511D2A951E3482D300957ADB /* ThemeFormatter.swift in Sources */,
 				51BE48AC1E1399FB002A2B92 /* Glossary.swift in Sources */,
+				511D2A981E3485D300957ADB /* Theme.swift in Sources */,
 				51BE48AB1E1399FB002A2B92 /* CalculatorBrain.swift in Sources */,
 				51BE48B21E139B8B002A2B92 /* Evaluator.swift in Sources */,
 			);
@@ -1291,6 +1310,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Numerical2/Framework/Numerical2-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -1318,6 +1338,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Numerical2/Framework/Numerical2-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};
@@ -1384,6 +1405,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CODE_SIGN_ENTITLEMENTS = Keyboard/Keyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = C583RN882K;
@@ -1405,6 +1427,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CODE_SIGN_ENTITLEMENTS = Keyboard/Keyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = C583RN882K;
@@ -1465,6 +1488,7 @@
 				51BE48A81E13990C002A2B92 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

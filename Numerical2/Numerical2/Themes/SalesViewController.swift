@@ -99,7 +99,7 @@ class SalesViewController: NumericalViewController {
             beginRestoreButton.setTitle("Manage Subscription", for: UIControlState.normal)
         } else {
             
-            let string = "Become a Numerical Pro subscriber for \(price) per month to remove ads, use all the fancy scientific keys, themes and support the ongoing development of Numerical."
+            let string = "Become a Numerical Pro subscriber for \(price) per month to remove ads, use all the fancy scientific keys, themes, theme creator and support the ongoing development of Numerical."
             
             horizontalLabel.text = string
             portraitLabel.text = string

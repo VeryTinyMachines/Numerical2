@@ -59,7 +59,6 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
             
             self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.top, animated: true)
         }
-        
     }
     
     override func viewDidLoad() {
@@ -80,9 +79,15 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         
         NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.iCloudSyncChanged), name: Notification.Name(rawValue: NumericalHelperSetting.iCloudHistorySync), object: nil)
+        
         themeChanged()
     }
     
+    func iCloudSyncChanged() {
+        self.tableView.reloadData()
+    }
+
     func themeChanged() {
         self.tableView.separatorColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
         self.tableView.reloadData()
@@ -94,8 +99,6 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
     }
     
     func updateContentInsets(_ insets: UIEdgeInsets) {
-        
-        print("before: \(tableView.contentInset)")
         
         var indexPath:IndexPath?
         
@@ -114,7 +117,6 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
             }
         }
         
-        
         UIView.animate(withDuration: 0.2, animations: {
             self.tableView.contentInset = insets
             
@@ -125,8 +127,6 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         }) { (complete) in
             
         }
-        
-        print("after: \(tableView.contentInset)")
     }
     
     func toggleEditing() {

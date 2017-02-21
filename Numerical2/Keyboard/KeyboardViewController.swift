@@ -17,7 +17,11 @@ class KeyboardViewController: UIInputViewController {
     var question:String = ""
     var answer:String = ""
     
+    @IBOutlet weak var separator: UIView!
+    
     var interfaceSetup = false
+    
+    var gradiantLayer:CAGradientLayer?
     
     var legalCharacters:Set<Character>?
     
@@ -31,7 +35,15 @@ class KeyboardViewController: UIInputViewController {
         if interfaceSetup == false {
             layoutInterface()
             interfaceSetup = true
+            
+            load()
         }
+        
+        self.update()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         self.update()
     }
@@ -53,6 +65,8 @@ class KeyboardViewController: UIInputViewController {
                 theButton.setTitle(String(buttonRaw), for: UIControlState.normal)
             }
             
+            theButton.titleLabel?.font = StyleFormatter.preferredFontForButtonOfSize(theButton.frame.size, keyStyle: KeyStyle.Available)
+            
             if buttonRaw == SymbolCharacter.keyboard {
                 theButton.addTarget(self, action: #selector(handleInputModeList(from:with:)), for: .allTouchEvents)
             } else {
@@ -61,7 +75,90 @@ class KeyboardViewController: UIInputViewController {
         }
     }
     
+    func save() {
+        if let defs = UserDefaults(suiteName: "group.andrewjclark.numericalapp") {
+            defs.set(question, forKey: KeyboardQuestion)
+            defs.set(answer, forKey: KeyboardAnswer)
+            defs.synchronize()
+        }
+    }
+    
+    func load() {
+        
+        question = ""
+        answer = ""
+        
+        if let defs = UserDefaults(suiteName: "group.andrewjclark.numericalapp") {
+            if let loadedQuestion = defs.object(forKey: KeyboardQuestion) as? String {
+                question = loadedQuestion
+                if let loadedAnswer = defs.object(forKey: KeyboardAnswer) as? String {
+                    answer = loadedAnswer
+                }
+            }
+        }
+    }
+    
     func update() {
+        
+        var firstColor = UIColor.white
+        var foregroundColor = UIColor.white
+        var style = ThemeStyle.normal
+        
+        if let defs = UserDefaults(suiteName: "group.andrewjclark.numericalapp") {
+            print("")
+            if let loadedFirstColor = defs.colorForKey(key: "CurrentTheme.firstColor") {
+                firstColor = loadedFirstColor
+                
+                if let loadedSecondColor = defs.colorForKey(key: "CurrentTheme.secondColor") {
+                    print("")
+                    if let loadedStyle = defs.object(forKey: "CurrentTheme.style") as? String {
+                        
+                        print(loadedFirstColor)
+                        print(loadedSecondColor)
+                        
+                        
+                        switch loadedStyle {
+                        case "normal":
+                            style = ThemeStyle.normal
+                        case "bright":
+                            style = ThemeStyle.bright
+                        case "dark":
+                            style = ThemeStyle.dark
+                        default:
+                            style = ThemeStyle.normal
+                        }
+                        
+                        let layer = ThemeFormatter.gradiantLayerFor(firstColor: loadedFirstColor, secondColor: loadedSecondColor, style: style)
+                        layer.frame = self.view.frame
+                        
+                        gradiantLayer?.removeFromSuperlayer()
+                        self.view.layer.insertSublayer(layer, at: 0)
+                        
+                        gradiantLayer = layer
+                        
+                        foregroundColor = ThemeFormatter.foregroundColorFor(firstColor: loadedFirstColor, secondColor: loadedSecondColor, style: style)
+                    }
+                }
+            }
+        }
+        
+        if gradiantLayer == nil {
+            
+            let theme = ThemeFormatter.defaultTheme()
+            
+            let layer = ThemeFormatter.gradiantLayerForTheme(theme: theme)
+            layer.frame = self.view.frame
+            
+            gradiantLayer?.removeFromSuperlayer()
+            self.view.layer.insertSublayer(layer, at: 0)
+            
+            gradiantLayer = layer
+            
+            firstColor = theme.firstColor
+            foregroundColor = ThemeFormatter.foregroundColorForTheme(theme: theme)
+            style = theme.style
+        }
+        
         if question == "" {
             mainLabel.text = nil
         } else {
@@ -71,6 +168,8 @@ class KeyboardViewController: UIInputViewController {
             let formattedQuestion = Glossary.formattedStringForQuestion(Evaluator.balanceBracketsForQuestionDisplay(question))
             
             mainLabel.text = "\(formattedAnswer) = \(formattedQuestion)"
+            mainLabel.font = StyleFormatter.preferredFontForContext(FontDisplayContext.question)
+            mainLabel.textColor = foregroundColor
         }
         
         var legals = Set<Character>()
@@ -86,9 +185,15 @@ class KeyboardViewController: UIInputViewController {
         if answer != "" {
             legals.insert(SymbolCharacter.publish)
         }
-    
-        let activeColor = UIColor(hexString: "ff3caa")
-        let disabledColor = UIColor(white: 0.0, alpha: 0.5)
+        
+        self.separator.isHidden = true
+        /*
+        if style == .normal {
+            self.separator.isHidden = true
+        } else {
+            self.separator.backgroundColor = foregroundColor.withAlphaComponent(0.33)
+        }
+ */
         
         for theButton in button {
             let buttonRaw = buttonLookup[theButton.tag]
@@ -96,44 +201,29 @@ class KeyboardViewController: UIInputViewController {
             if buttonRaw == SymbolCharacter.keyboard {
                 // enabled
                 theButton.isEnabled = true
-                theButton.setTitleColor(activeColor, for: UIControlState.normal)
-                theButton.backgroundColor = nil
+                theButton.setTitleColor(foregroundColor, for: UIControlState.normal)
+                theButton.backgroundColor = foregroundColor.withAlphaComponent(0.1)
             } else {
                 if legals.contains(buttonRaw) {
                     // enabled
                     theButton.isEnabled = true
-                    theButton.setTitleColor(activeColor, for: UIControlState.normal)
-                    theButton.backgroundColor = activeColor.withAlphaComponent(0.05)
+                    theButton.setTitleColor(foregroundColor, for: UIControlState.normal)
+                    theButton.backgroundColor = foregroundColor.withAlphaComponent(0.1)
                 } else {
                     // disabled
+                    
+                    /*
+                     setTitleColor(color.withAlphaComponent(0.33), for: UIControlState())
+                     self.backgroundColor = UIColor.clear
+ */
                     theButton.isEnabled = false
-                    theButton.setTitleColor(disabledColor, for: UIControlState.normal)
+                    theButton.setTitleColor(foregroundColor.withAlphaComponent(0.33), for: UIControlState.normal)
                     theButton.backgroundColor = nil
                 }
             }
-            
         }
-        
-        
     }
     
-    func createButtons(titles: [String]) -> [UIButton] {
-        
-        var buttons = [UIButton]()
-        
-        for title in titles {
-            let button = UIButton(type: .system) as UIButton
-            button.setTitle(title, for: .normal)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            //button.setTranslatesAutoresizingMaskIntoConstraints(false)
-            button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
-            button.setTitleColor(UIColor.darkGray, for: .normal)
-            button.addTarget(self, action: #selector(KeyboardViewController.keyPressed(sender:)), for: .touchUpInside)
-            buttons.append(button)
-        }
-        
-        return buttons
-    }
     
     func keyPressed(sender: AnyObject?) {
         let button = sender as! UIButton
@@ -182,70 +272,11 @@ class KeyboardViewController: UIInputViewController {
                 self.answer = "Error"
             }
             
+            self.save()
+            
             self.update()
         }
-        
     }
-    
-    func addConstraints(buttons: [[UIButton]], containingView: UIView){
-        
-        var topLeftButton:UIButton!
-        
-        var rowCount = 0
-        var index = 0
-        
-        for row in buttons {
-            for button in row {
-                
-                var topConstraint: NSLayoutConstraint!
-                
-                // If we're at the top left most button then we need to put the button
-                
-                
-                
-                topConstraint = NSLayoutConstraint(item: button, attribute: .top, relatedBy: .equal, toItem: containingView, attribute: .top, multiplier: 1.0, constant: 1)
-                
-                //let bottomConstraint = NSLayoutConstraint(item: button, attribute: .bottom, relatedBy: .equal, toItem: containingView, attribute: .bottom, multiplier: 1.0, constant: -1)
-                
-                var leftConstraint : NSLayoutConstraint!
-                
-                let widthConstraint = NSLayoutConstraint(item: topLeftButton, attribute: .width, relatedBy: .equal, toItem: button, attribute: .width, multiplier: 1.0, constant: 0)
-                
-                let heightConstraint = NSLayoutConstraint(item: topLeftButton, attribute: .height, relatedBy: .equal, toItem: button, attribute: .height, multiplier: 1.0, constant: 0)
-                
-                containingView.addConstraint(widthConstraint)
-                containingView.addConstraint(heightConstraint)
-                
-                if index == 0 {
-                    
-                    leftConstraint = NSLayoutConstraint(item: button, attribute: .left, relatedBy: .equal, toItem: containingView, attribute: .left, multiplier: 1.0, constant: 1)
-                    
-                }else{
-                    
-                    leftConstraint = NSLayoutConstraint(item: button, attribute: .left, relatedBy: .equal, toItem: buttons[index-1], attribute: .right, multiplier: 1.0, constant: 1)
-                }
-                
-                var rightConstraint : NSLayoutConstraint!
-                
-                if index == buttons.count - 1 {
-                    
-                    rightConstraint = NSLayoutConstraint(item: button, attribute: .right, relatedBy: .equal, toItem: containingView, attribute: .right, multiplier: 1.0, constant: -1)
-                    
-                }else{
-                    
-                    rightConstraint = NSLayoutConstraint(item: button, attribute: .right, relatedBy: .equal, toItem: buttons[index+1], attribute: .left, multiplier: 1.0, constant: -1)
-                }
-                
-                containingView.addConstraints([topConstraint, rightConstraint, leftConstraint])
-                //containingView.addConstraints([topConstraint, bottomConstraint, rightConstraint, leftConstraint])
-                
-                index += 1
-                
-            }
-            rowCount += 1
-        }
-    }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

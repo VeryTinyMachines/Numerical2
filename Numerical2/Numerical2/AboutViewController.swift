@@ -21,6 +21,7 @@ public enum AboutViewItem {
     case website
     case seperator
     case cloudSync
+    case keyboard
 }
 
 class AboutViewController: NumericalViewController, UITableViewDelegate, UITableViewDataSource {
@@ -39,13 +40,10 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         updateBackgroundColorForPresentationType()
         
         items = [
-//        AboutViewItem.about,
         
-//        AboutViewItem.seperator,
+        // AboutViewItem.premiumInfo,
         
-        AboutViewItem.premiumInfo,
-        
-        AboutViewItem.seperator,
+        // AboutViewItem.seperator,
         
         AboutViewItem.themeSelector,
         
@@ -60,6 +58,10 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         AboutViewItem.seperator,
         
         AboutViewItem.cloudSync,
+        
+        AboutViewItem.seperator,
+        
+        AboutViewItem.keyboard,
         
         AboutViewItem.seperator,
         
@@ -143,6 +145,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         cell.textLabel?.minimumScaleFactor = 0.5
         cell.textLabel?.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
         cell.backgroundColor = UIColor.clear
+        cell.selectionStyle = UITableViewCellSelectionStyle.default
         
         switch items[indexPath.row] {
         case .about:
@@ -158,8 +161,12 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             
             var string = ""
             
-            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && EquationStore.sharedStore.accountStatus == .available {
-                string = "iCloud Sync is Enabled"
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
+                if EquationStore.sharedStore.accountStatus == .available {
+                    string = "iCloud Sync is Enabled"
+                } else {
+                    string = "iCloud Sync is Enabled but not working"
+                }
             } else {
                 string = "iCloud Sync is Disabled"
             }
@@ -204,16 +211,19 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         case .share:
             cell.textLabel?.text = "Share"
         case .themeSelector:
-            cell.textLabel?.text = "Change Theme"
+            cell.textLabel?.text = "Change & Create Themes"
         case .seperator:
             cell.textLabel?.text = ""
             cell.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
         case .sounds:
             if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.sounds) {
                 cell.textLabel?.text = "Sounds are Enabled"
             } else {
                 cell.textLabel?.text = "Sounds are Disabled"
             }
+        case .keyboard:
+            cell.textLabel?.text = "Keyboard"
         }
         
         cell.textLabel?.numberOfLines = 3
@@ -231,7 +241,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             NumericalHelper.flipSetting(string: NumericalHelperSetting.autoBrackets)
             reloadData()
         case .contact:
-            self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical")
+            self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical²")
         case .follow:
             self.attemptToOpenURL(urlString: "http://www.twitter.com/VTMachines")
         case .premiumInfo:
@@ -246,7 +256,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical")
         case .cloudSync:
             NumericalHelper.flipSetting(string: NumericalHelperSetting.iCloudHistorySync)
-            reloadData()
+            
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: NumericalHelperSetting.iCloudHistorySync), object: nil)
             
             if EquationStore.sharedStore.accountStatus == .available {
                 if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
@@ -254,10 +265,36 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                     EquationStore.sharedStore.initialiseiCloud()
                     EquationStore.sharedStore.subscribeToCKIfNeeded()
                 }
+            } else {
+                if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
+                    // This is enabled but iCloud isn't available. Show a help message.
+                    self.displayAlert(title: "iCloud Issue", message: "Sorry but there is something wrong with iCloud. Please check the iOS Settings app and enable iCloud Drive for Numerical²")
+                }
             }
+            
+            reloadData()
         case .sounds:
             NumericalHelper.flipSetting(string: NumericalHelperSetting.sounds)
             reloadData()
+        case .keyboard:
+            let alert = UIAlertController(title: "Numerical² Keyboard", message: "To install the Numerical² keyboard open Settings > General > Keyboard > Keyboards and select Numerical²", preferredStyle: UIAlertControllerStyle.actionSheet)
+            
+            alert.addAction(UIAlertAction(title: "Open Settings", style: UIAlertActionStyle.default, handler: { (action) in
+                UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Contact Support", style: UIAlertActionStyle.default, handler: { (action) in
+                self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical² Keyboard")
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+                
+            }))
+            
+            self.present(alert, animated: true, completion: {
+                
+            })
+            
         case .seperator:
             break
         }

@@ -17,8 +17,12 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var questionLabel: UILabel!
     
+    @IBOutlet weak var tutorialLabel: UILabel!
+    
     var currentQuestion:String?
     var currentAnswer:AnswerBundle?
+    
+    var inTutorial = false
     
     var questionView:QuestionCollectionViewController?
     var answerView:QuestionCollectionViewController?
@@ -48,7 +52,6 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         updateView()
     }
     
-    
     func updateView() {
         
         if let theQuestionView = questionView, let theQuestion = currentQuestion {
@@ -74,10 +77,6 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     }
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

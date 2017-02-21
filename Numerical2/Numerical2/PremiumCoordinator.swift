@@ -21,12 +21,6 @@ public struct PremiumCoordinatorNotification {
     public static let premiumStatusChanged = "PremiumCoordinatorNotification.premiumStatusChanged"
 }
 
-public enum KeyStyle {
-    case Available // A normal button
-    case AvailablePremium // A usually premium button that is now available (trial mode)
-    case PremiumRequired // A premium button, locked from the user.
-}
-
 class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     
     static let shared = PremiumCoordinator()
@@ -43,6 +37,8 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     var isRestoring = false
     var isPurchasing = false
     
+    var preventAd = false
+    
     private override init() {}
     
     func setupManager() {
@@ -52,37 +48,6 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
         validateReceipt(sandbox: false)
     }
     
-    lazy var themes:[Theme] = {
-        
-        var newThemes = [Theme]()
-        
-        if let path = Bundle.main.path(forResource: "ThemesList", ofType: "plist") {
-            if let array = NSArray(contentsOfFile: path) {
-                
-                for item in array {
-                    if let item = item as? NSDictionary {
-                        print(item)
-                        print("")
-                        
-                        let newTheme = Theme()
-                        
-                        if let obj = item["themeID"] as? String {
-                            newTheme.themeID = obj
-                            
-                            if let obj = item["title"] as? String {
-                                newTheme.title = obj
-                                
-                                newThemes.append(newTheme)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        return newThemes
-    }()
-    
     func themePackPurchased() -> Bool {
         if let themePackString = UserDefaults.standard.object(forKey: "ThemePack001") as? String {
             if themePackString == "YES" {
@@ -91,16 +56,6 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
         }
         
         return false
-    }
-    
-    
-    func currentTheme() -> String {
-        if let string = UserDefaults.standard.object(forKey: "CurrentTheme") as? String {
-            return string
-        }
-        
-        // No current theme picked, return the default.
-        return "pink001"
     }
     
     func imageForTheme(string: String) -> UIImage? {
@@ -118,10 +73,6 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
         } else {
             return nil
         }
-    }
-    
-    func imageForCurrentTheme() -> UIImage? {
-        return imageForTheme(string: currentTheme())
     }
     
     func setTheme(string: String?) {
@@ -580,9 +531,16 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
         return false
     }
     
+    func canEditThemes() -> Bool {
+        if isUserPremium() || isUserInTrial() {
+            return true
+        }
+        return false
+    }
     
     func isUserPremium() ->Bool {
-        return true // TEMP for testing
+        
+        return true // always return true, we're not going to offer a premium level
         
         if premiumIAPUser {
             // User is paying via an IAP, user is premium
@@ -596,6 +554,9 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     }
     
     func shouldUserSeeAd() -> Bool {
+        
+        return false // we're not going to show ads.
+        
         if isUserPremium() {
             return false
         }
@@ -671,6 +632,7 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     
     
     func syncExpiryDate() {
+        return
         
         let localExpiryDate:Date? = UserDefaults.standard.object(forKey: "ProModeExpirationDate") as? Date
         

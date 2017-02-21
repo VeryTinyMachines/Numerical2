@@ -75,7 +75,6 @@ class ThemeCreatorViewController:NumericalViewController {
         navigationItem.rightBarButtonItems = items
         
         // Initial Setup
-        
         if let image = self.keypadImage1.image {
             self.keypadImage1.image = image.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         }
@@ -117,60 +116,55 @@ class ThemeCreatorViewController:NumericalViewController {
     }
     
     func userPressedDoneButton() {
-        var lightStyle = false
         
-        if styleSelector.selectedSegmentIndex > 0 {
-            lightStyle = true
-        }
-        
-        let slider1ColorAug = NumericalHelper.convertIn(number1: slider1.value, number2: slider1Augment.value, isSecondColor: false, isLightStyle: lightStyle)
-        
-        let slider2ColorAug = NumericalHelper.convertIn(number1: slider2.value, number2: slider2Augment.value, isSecondColor: true, isLightStyle: lightStyle)
-        
-        let topColor = slider1ColorAug
-        let bottomColor = slider2ColorAug
-        
-        if let updateTheme = updateTheme {
+        if PremiumCoordinator.shared.canEditThemes() {
+            var lightStyle = false
             
-            updateTheme.firstColor = topColor
-            updateTheme.secondColor = bottomColor
-            updateTheme.style = ThemeStyle.normal
-            
-            if lightStyle {
-                updateTheme.style = ThemeStyle.bright
+            if styleSelector.selectedSegmentIndex > 0 {
+                lightStyle = true
             }
             
-            ThemeCoordinator.shared.saveThemes() // TODO - This is weird to do here.
-            ThemeCoordinator.shared.changeTheme(toTheme: updateTheme)
+            let slider1ColorAug = NumericalHelper.convertIn(number1: slider1.value, number2: slider1Augment.value, isSecondColor: false, isLightStyle: lightStyle)
             
-        } else {
-            let newTheme = Theme()
+            let slider2ColorAug = NumericalHelper.convertIn(number1: slider2.value, number2: slider2Augment.value, isSecondColor: true, isLightStyle: lightStyle)
             
-            newTheme.firstColor = topColor
-            newTheme.secondColor = bottomColor
-            newTheme.style = ThemeStyle.normal
-            newTheme.isUserCreated = true
-            newTheme.isPremium = true
+            let topColor = slider1ColorAug
+            let bottomColor = slider2ColorAug
             
-            if lightStyle {
-                newTheme.style = ThemeStyle.bright
+            if let updateTheme = updateTheme {
+                
+                updateTheme.firstColor = topColor
+                updateTheme.secondColor = bottomColor
+                updateTheme.style = ThemeStyle.normal
+                
+                if lightStyle {
+                    updateTheme.style = ThemeStyle.bright
+                }
+                
+                ThemeCoordinator.shared.saveThemes() // TODO - This is weird to do here.
+                ThemeCoordinator.shared.changeTheme(toTheme: updateTheme)
+                
+            } else {
+                let newTheme = Theme()
+                
+                newTheme.firstColor = topColor
+                newTheme.secondColor = bottomColor
+                newTheme.style = ThemeStyle.normal
+                newTheme.isUserCreated = true
+                newTheme.isPremium = true
+                
+                if lightStyle {
+                    newTheme.style = ThemeStyle.bright
+                }
+                
+                ThemeCoordinator.shared.addNewUserTheme(theme: newTheme)
+                ThemeCoordinator.shared.changeTheme(toTheme: newTheme)
             }
             
-            ThemeCoordinator.shared.addNewUserTheme(theme: newTheme)
-            ThemeCoordinator.shared.changeTheme(toTheme: newTheme)
-        }
-        
-        DispatchQueue.main.async {
             self.navigationController?.popViewController(animated: true)
+        } else {
+            self.presentSalesScreen(type: SalesScreenType.themeCreator)
         }
-        /*
-        let deadlineTime = DispatchTime.now() + .seconds(0.5)
-        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-            navigationController?.popViewController(animated: true)
-        }
-        */
-        
-        
     }
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
@@ -277,7 +271,6 @@ class ThemeCreatorViewController:NumericalViewController {
                     
                     self.backgroundColorView.layer.insertSublayer(layer2, at: 0)
                     
-                    
                     self.gradiantLayer2 = layer2
                     
                     self.backgroundColorView.alpha = 0.5
@@ -306,8 +299,6 @@ class ThemeCreatorViewController:NumericalViewController {
                     self.navigationController?.navigationBar.tintColor = foregroundColor
                     self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:foregroundColor]
                     
-                    self.setNeedsStatusBarAppearanceUpdate()
-                    
                     self.gradiantBlockRunning = false
                     
                     if sliderState != self.currentSliderState() {
@@ -316,9 +307,9 @@ class ThemeCreatorViewController:NumericalViewController {
                     }
                 }
             }
-        } else {
-            
         }
+        
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     func updateColorsMethod() {
@@ -413,12 +404,19 @@ class ThemeCreatorViewController:NumericalViewController {
         self.navigationController?.navigationBar.tintColor = foregroundColor
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:foregroundColor]
         
-        self.setNeedsStatusBarAppearanceUpdate()
-        
         self.gradiantBlockRunning = false
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
+        if let styleSelector = styleSelector {
+            if styleSelector.selectedSegmentIndex == 0 {
+                // Default - light
+                return UIStatusBarStyle.lightContent
+            } else {
+                return UIStatusBarStyle.default
+            }
+        }
+        
         return UIStatusBarStyle.lightContent
     }
     

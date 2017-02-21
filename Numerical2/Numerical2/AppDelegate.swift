@@ -19,17 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-//        WatchCommunicator.sharedCommunicator.setup()
-        
-        print(PremiumCoordinator.shared.themes)
         
         EquationStore.sharedStore.initialiseSetup()
         EquationStore.sharedStore.convertDeprecatedEquationsIfNeeded()
         
         PremiumCoordinator.shared.setupManager()
-//        PremiumCoordinator.shared.updateProductsIfNeeded()
-//        PremiumCoordinator.shared.validateReceipt()
-//        PremiumCoordinator.shared.updatePremiumStatusFromValidatedJSON()
         
         FIRApp.configure()
         GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544~1458002511")
@@ -38,30 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             SoundManager.primeSounds()
         }
         
-//        Timer.scheduledTimer(withTimeInterval: 10.0, repea`ts: true) { (timer) in
-//            PremiumCoordinator.shared.premiumIAPUser = true
-//            PremiumCoordinator.shared.postUserPremiumStatusChanged()
-//            ThemeCoordinator.shared.changeTheme()
-//        }
-        
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
-            print(UIMenuController.shared.menuItems)
-        }
-        
-//        UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
-//        [application registerUserNotificationSettings:notificationSettings];
-//        [application registerForRemoteNotifications];
-        
-//        let settings = UIUserNotificationSettings(types: [.alert,  , categories: )
-        
-        
-//        print(NumericalHelper.convertOut(color: NumericalHelper.convertIn(number1: 0.0, number2: 0.5, isSecondColor: false, isLightStyle: false), isSecondColor: false, isLightStyle: false))
-        print(NumericalHelper.convertOut(color: NumericalHelper.convertIn(number1: 0.0, number2: 0.6, isSecondColor: false, isLightStyle: false), isSecondColor: false, isLightStyle: false))
-//        print(NumericalHelper.convertOut(color: NumericalHelper.convertIn(number1: 0.0, number2: 0.7, isSecondColor: false, isLightStyle: false), isSecondColor: false, isLightStyle: false))
-//        print(NumericalHelper.convertOut(color: NumericalHelper.convertIn(number1: 0.0, number2: 0.8, isSecondColor: false, isLightStyle: false), isSecondColor: false, isLightStyle: false))
-//        print(NumericalHelper.convertOut(color: NumericalHelper.convertIn(number1: 0.0, number2: 1.0, isSecondColor: false, isLightStyle: false), isSecondColor: false, isLightStyle: false))
-        
-        print("")
+        /*
         UNUserNotificationCenter.current().requestAuthorization(options:
             [[.alert, .sound, .badge]],
                                                                 completionHandler: { (granted, error) in
@@ -69,6 +40,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         
         application.registerForRemoteNotifications()
+        */
+        
+        // Test saving to group.andrewjclark.numericalapp
+//        
+//        if let defs = UserDefaults(suiteName: "group.andrewjclark.numericalapp") {
+//            print(defs.colorForKey(key: "CurrentTheme.firstColor"))
+//            print(defs.colorForKey(key: "CurrentTheme.secondColor"))
+//            print(defs.colorForKey(key: "CurrentTheme.foregroundColor"))
+//            print(defs.object(forKey: "CurrentTheme.style"))
+//            
+//            defs.set(true, forKey: "test")
+//            defs.synchronize()
+//        }
+        
+        
+        let currentVersion = NumericalHelper.currentDeviceInfo(includeBuildNumber: false)
+        UserDefaults.standard.set(currentVersion, forKey: "CurrentVersion")
         
         return true
     }

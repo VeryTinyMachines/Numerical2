@@ -20,6 +20,11 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     
     @IBOutlet weak var equationViewHeightConstraint: NSLayoutConstraint!
     
+    var inTutorial = false
+    var tutorialPage = 0
+    var tutorialPages = [String]()
+    var tutorialTimer:Timer?
+    
     var currentEquation: Equation?
     
     var equationView:EquationViewController?
@@ -34,13 +39,131 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     
     var blurView: UIVisualEffectView?
     
+    @IBOutlet weak var tutorialLabel: UILabel!
+    
     @IBOutlet weak var seperatorView: UIView!
     
     @IBOutlet weak var pageControl: UIPageControl!
     
+    @IBOutlet weak var tutorialButton: UIButton!
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateLegalKeys()
+        
+        var needsTutorial = false
+        
+        if inTutorial == false {
+            if let lastTutorialScene = UserDefaults.standard.object(forKey: "HasSeenTutorial") as? String {
+                if lastTutorialScene != "2.0.0" {
+                    needsTutorial = true
+                }
+            } else {
+                needsTutorial = true
+            }
+            
+            if needsTutorial {
+                
+                PremiumCoordinator.shared.preventAd = true
+                
+                DispatchQueue.main.async {
+                    self.tutorialTimer?.invalidate()
+                    self.tutorialTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { (timer) in
+                        self.beginTutorial()
+                    })
+                }
+            }
+        }
+    }
+    
+    func beginTutorial() {
+        inTutorial = true
+        
+        tutorialPage = 0
+        tutorialLabel.text = tutorialPages[tutorialPage]
+        
+        tutorialLabel.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
+        
+        tutorialLabel.isHidden = false
+        equationView?.view.isHidden = false
+        self.tutorialButton.isHidden = false
+        
+        tutorialLabel.alpha = 0.0
+        equationView?.view.alpha = 1.0
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tutorialLabel.alpha = 1.0
+            self.equationView?.view.alpha = 0.0
+        }) { (complete) in
+            self.tutorialLabel.isHidden = false
+            self.equationView?.view.isHidden = true
+            
+            self.queueTutorialTimer()
+        }
+    }
+    
+    func nextTutorialPage() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tutorialLabel.alpha = 0.0
+            
+        }) { (complete) in
+            self.tutorialPage += 1
+            
+            self.tutorialLabel.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
+            
+            if self.tutorialPage < self.tutorialPages.count {
+                // We can show the next one
+                
+                self.tutorialLabel.text = self.tutorialPages[self.tutorialPage]
+                
+                UIView.animate(withDuration: 0.5, animations: { 
+                    self.tutorialLabel.alpha = 1.0
+                }, completion: { (complete) in
+                    self.queueTutorialTimer()
+                })
+                
+            } else {
+                // No more pages, end the tutorial.
+                self.endTutorialIfNeeded()
+            }
+        }
+    }
+    
+    func queueTutorialTimer() {
+        tutorialTimer?.invalidate()
+        tutorialTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false, block: { (timer) in
+            self.nextTutorialPage()
+        })
+    }
+    
+    func endTutorialIfNeeded() {
+        
+        tutorialTimer?.invalidate()
+        
+        if inTutorial {
+            UserDefaults.standard.set("2.0.0", forKey: "HasSeenTutorial")
+            UserDefaults.standard.synchronize()
+            
+            inTutorial = false
+            
+            tutorialLabel.isHidden = false
+            equationView?.view.isHidden = false
+            self.tutorialButton.isHidden = true
+            
+            equationView?.view.alpha = 0.0
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                self.tutorialLabel.alpha = 0.0
+                self.equationView?.view.alpha = 1.0
+            }) { (complete) in
+                self.tutorialLabel.isHidden = true
+                self.equationView?.view.isHidden = false
+            }
+        }
+    }
+    
+    @IBAction func userPressedTutorialButton(_ sender: UIButton) {
+        self.endTutorialIfNeeded()
     }
     
     override func viewDidLoad() {
@@ -57,6 +180,16 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         updateViews(currentCursor: nil)
         
         self.themeChanged()
+        
+        // Setup tutorial pages
+        if NumericalViewHelper.isDevicePad() {
+            tutorialPages = ["Welcome to Numerical²!\nIt's still the calculator without equal.","Pull down to see your History.\nIt syncs with iCloud\n(or you can turn that off).", "Press the Menu button \nto get to Settings and\nthe Theme Creator.", "Thanks!"]
+        } else {
+            tutorialPages = ["Welcome to Numerical²!\nIt's still the calculator without equal.","Pull down to see your History.\nIt syncs with iCloud\n(or you can turn that off).", "Swipe Left to get to the scientific keys.\nSwipe again for Settings,\nand the Theme Creator.", "Thanks!"]
+        }
+        
+        self.tutorialLabel.isHidden = true
+        self.tutorialButton.isHidden = true
     }
     
     func themeChanged() {
@@ -68,6 +201,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         self.seperatorView.isHidden = true
         
+        tutorialLabel.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
     }
     
     func updateBlurView() {
@@ -181,6 +315,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     }
     
     func pressedKey(_ key: Character, sourceView: UIView?) {
+        self.endTutorialIfNeeded()
         
         if key == SymbolCharacter.clear {
             SoundManager.playSound(sound: .clear)
@@ -458,7 +593,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             var currentlyEditing = false
             
             if let equationView = equationView {
-                print("The equation view")
                 if equationView.isQuestionEditting() == true {
                     currentlyEditing = true
                 }
@@ -479,16 +613,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             }
         }
     }
-    
-    
-    func updateEquationViewSize() {
-//        if showEquationView {
-//            equationViewHeightConstraint.constant = 110
-//        } else {
-//            equationViewHeightConstraint.constant = 0
-//        }
-    }
-    
     
     func updateLayout() {
         if let theEquationView = equationView {

@@ -298,4 +298,11 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         }
     }
     
+    func displayAlert(title: String?, message: String?) {
+        let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: "Ok")
+        alert.show()
+    }
+    
+    
+    
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2016 Very Tiny Machines. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CoreData
 import CloudKit
 

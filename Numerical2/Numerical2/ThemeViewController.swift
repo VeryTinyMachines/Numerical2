@@ -210,11 +210,11 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
             
             self.navigationController?.navigationBar.barTintColor = selectedTheme.firstColor
             
-            let foregroundColor = ThemeCoordinator.shared.foregroundColorForTheme(theme: selectedTheme)
+            let foregroundColor = ThemeFormatter.foregroundColorForTheme(theme: selectedTheme)
             self.navigationController?.navigationBar.tintColor = foregroundColor
             self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:foregroundColor]
             
-            let layer = ThemeCoordinator.shared.gradiantLayerForTheme(theme: selectedTheme)
+            let layer = ThemeFormatter.gradiantLayerForTheme(theme: selectedTheme)
             layer.frame = self.view.frame
             
             self.view.layer.insertSublayer(layer, at: 0)
@@ -244,7 +244,7 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
         if let selectedTheme = selectedTheme {
-            return ThemeCoordinator.shared.preferredStatusBarStyleForTheme(theme: selectedTheme)
+            return ThemeFormatter.preferredStatusBarStyleForTheme(theme: selectedTheme)
         } else {
             return ThemeCoordinator.shared.preferredStatusBarStyleForCurrentTheme()
         }
@@ -263,11 +263,15 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
                     // Edit this theme if allowed.
                     if theme.themeID == theSelectedTheme.themeID && theSelectedTheme.isUserCreated {
                         
+                        pushThemeCreator(theme: theSelectedTheme) // A user can always access the theme creator scree, but they cannot press the Done button.
+                        
+                        /*
                         if PremiumCoordinator.shared.canAccessThemes() {
                             pushThemeCreator(theme: theSelectedTheme)
                         } else {
                             presentSalesScreen(type: SalesScreenType.themeCreator)
                         }
+ */
                     } else {
                         selectedTheme = theme
                     }
@@ -314,12 +318,12 @@ class ThemeCollectionViewCell: UICollectionViewCell {
         
         self.gradiantLayer?.removeFromSuperlayer()
         
-        let newLayer = ThemeCoordinator.shared.gradiantLayerForTheme(theme: theme)
+        let newLayer = ThemeFormatter.gradiantLayerForTheme(theme: theme)
         
         newLayer.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
         
         if selected {
-            newLayer.borderColor = ThemeCoordinator.shared.foregroundColorForTheme(theme: theme).cgColor
+            newLayer.borderColor = ThemeFormatter.foregroundColorForTheme(theme: theme).cgColor
             newLayer.borderWidth = 5
         } else {
             newLayer.borderColor = nil
@@ -333,13 +337,13 @@ class ThemeCollectionViewCell: UICollectionViewCell {
         self.gradiantLayer = newLayer
         self.mainLabel.text = theme.title
         
-        if theme.isPremium && PremiumCoordinator.shared.canAccessThemes() == false {
+        if theme.isPremium && PremiumCoordinator.shared.canAccessThemes() == false && theme.isUserCreated == false {
             self.mainLabel.text = theme.title + "\n(Pro)"
         } else if theme.isUserCreated && selected {
             self.mainLabel.text = "Tap to\nEdit"
         }
         
-        self.mainLabel.textColor = ThemeCoordinator.shared.foregroundColorForTheme(theme: theme)
+        self.mainLabel.textColor = ThemeFormatter.foregroundColorForTheme(theme: theme)
         self.mainLabel.font = NumericalHelper.aboutMenuFont()
     }
 }
@@ -347,12 +351,12 @@ class ThemeCollectionViewCell: UICollectionViewCell {
 class ThemeNavigationController: UINavigationController {
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
-        if let rootView = self.viewControllers.first as? ThemeViewController {
-            return rootView.preferredStatusBarStyle
-        } else {
-            return UIStatusBarStyle.lightContent
+        
+        if let visibleView = self.viewControllers.last {
+            return visibleView.preferredStatusBarStyle
         }
+        
+        return UIStatusBarStyle.lightContent
     }
-    
 }
 

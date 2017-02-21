@@ -60,6 +60,16 @@ class NumericalHelper {
         return ""
     }
     
+    
+    class func currentVersionNumber() -> String {
+        if let info = Bundle.main.infoDictionary {
+            if let version = info["CFBundleShortVersionString"] as? String {
+                return version
+            }
+        }
+        return ""
+    }
+    
     class func convertIn(number1: Float, number2: Float, isSecondColor: Bool, isLightStyle: Bool) -> UIColor {
         
         //print("convertIn")
