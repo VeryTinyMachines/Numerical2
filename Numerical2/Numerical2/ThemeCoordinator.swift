@@ -48,7 +48,6 @@ class ThemeCoordinator {
                 theCurrentTheme = theme
                 self.saveCurrentThemeForKeyboard()
             }
-            
         } else {
             theCurrentTheme = ThemeFormatter.defaultTheme()
             self.saveCurrentThemeForKeyboard()
@@ -253,7 +252,7 @@ class ThemeCoordinator {
         }
         
         // No current theme picked, return the default.
-        return "pink001"
+        return "candy001"
     }
 }
 

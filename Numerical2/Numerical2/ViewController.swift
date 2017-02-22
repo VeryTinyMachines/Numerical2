@@ -58,6 +58,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.premiumStatusChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
         
+        /*
         bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
         bannerView.rootViewController = self
         bannerView.delegate = self
@@ -66,6 +67,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         let request = GADRequest()
 //        request.testDevices = [kGADSimulatorID]
         bannerView.load(request)
+        */
         
         themeChanged()
         
@@ -77,6 +79,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
     }
     
+    /*
     /// Tells the delegate an ad request loaded an ad.
     func adViewDidReceiveAd(_ bannerView: GADBannerView!) {
        //print("adViewDidReceiveAd")
@@ -114,7 +117,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     func adViewWillLeaveApplication(_ bannerView: GADBannerView!) {
        //print("adViewWillLeaveApplication")
     }
-    
+    */
     
     func themeChanged() {
         self.backgroundImageView.image = nil
@@ -276,16 +279,17 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                         self.view.layoutIfNeeded()
                     }
                 } else {
-                    let newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
+                    var newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
                     
-                   //print("newHeight: \(newHeight)")
+                    if newHeight > 1 {
+                        let diff = newHeight - 1
+                        newHeight = 1 + (diff / 4)
+                    }
                     
                     updateWorkPanelForHeight(Float(newHeight))
                     
                     view.layoutIfNeeded()
-
                 }
-                
             }
             
             if let lastLocation = workPanelLastLocation {
@@ -662,6 +666,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     }
     
     func showAd() -> Bool {
+        return false
+        
         if PremiumCoordinator.shared.preventAd {
             return false
         }

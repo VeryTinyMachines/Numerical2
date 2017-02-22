@@ -23,10 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         EquationStore.sharedStore.initialiseSetup()
         EquationStore.sharedStore.convertDeprecatedEquationsIfNeeded()
         
-        PremiumCoordinator.shared.setupManager()
+        // PremiumCoordinator.shared.setupManager()
         
-        FIRApp.configure()
-        GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544~1458002511")
+        // FIRApp.configure()
+        // GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544~1458002511")
         
         DispatchQueue.main.async {
             SoundManager.primeSounds()
