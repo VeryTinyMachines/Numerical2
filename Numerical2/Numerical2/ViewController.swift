@@ -39,6 +39,12 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     var gradiantLayer:CAGradientLayer?
     
+    var currentStatus = UIStatusBarStyle.default
+    
+    @IBOutlet weak var shadeView: UIView!
+    @IBOutlet weak var shadeViewLeftCorner: UIImageView!
+    @IBOutlet weak var shadeViewRightCorner: UIImageView!
+    
     @IBOutlet weak var bannerView: GADBannerView!
     
     @IBOutlet weak var backgroundImageView: UIImageView!
@@ -68,6 +74,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
 //        request.testDevices = [kGADSimulatorID]
         bannerView.load(request)
         */
+        
+        currentStatus = self.preferredStatusBarStyle
         
         themeChanged()
         
@@ -140,8 +148,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         // Update the status bar blur view
         updateBlurView()
-        
-        self.setNeedsStatusBarAppearanceUpdate()
+        updateBackgroundVisibility()
     }
     
     func updateBlurView() {
@@ -156,6 +163,45 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         visualEffectView.bindFrameToSuperviewBounds()
         
         self.blurView = visualEffectView
+    }
+    
+    func updateBackgroundVisibility() {
+        updateBackgroundVisibility(height: CGFloat(workPanelPercentage))
+    }
+    
+    
+    func updateBackgroundVisibility(height: CGFloat) {
+        self.shadeView.backgroundColor = UIColor.black
+        
+        var shadeAlpha:CGFloat = 0.0
+        
+        shadeAlpha = CGFloat(height - 0.5)
+        
+        if shadeAlpha > 0.5 {
+            shadeAlpha = 0.5
+        }
+        
+        self.shadeView.alpha = shadeAlpha
+        
+        self.shadeViewLeftCorner.alpha = shadeAlpha
+        self.shadeViewRightCorner.alpha = shadeAlpha
+        
+        
+        // History view hide at 1.0
+        self.historyView?.view.alpha = CGFloat((height * -9) + 9)
+        print("self.historyView?.view.alpha: \(self.historyView?.view.alpha)")
+        
+        updateStatusBarIfNeeded()
+    }
+    
+    func updateStatusBarIfNeeded() {
+        print("updateStatusBarIfNeeded:")
+        print("\(currentStatus.rawValue) vs \(statusBarStyleForHeight().rawValue)")
+        
+        if currentStatus != statusBarStyleForHeight() {
+            self.setNeedsStatusBarAppearanceUpdate()
+            currentStatus = statusBarStyleForHeight()
+        }
     }
     
     func premiumStatusChanged() {
@@ -355,6 +401,12 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func snapPercentageHeight(_ verticalSpeed: CGFloat, viewSize: CGSize) {
         
+        var totalHeight:Float = 1.0
+        
+        if statusBarHidden() == false {
+            totalHeight = (Float(viewSize.height) - 20) / Float(viewSize.height)  // remove 20 for the status bar section
+        }
+        
        //print("snapPercentageHeight: \(verticalSpeed)")
         
         // Look at the vertical speed to decide what height to snap it to.
@@ -365,8 +417,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
 //        let equationHeightPercentage = 140 / viewHeight
         
-        let equationHeightPercentage = 150 / viewHeight
-        
+        let equationHeightPercentage = 125 / viewHeight
         
         workPanelPercentage += Float(verticalSpeed) / Float(viewHeight) * 5
         
@@ -384,7 +435,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 if workPanelPercentage > 0.66 {
                     
                     if verticalSpeed > 0 {
-                        workPanelPercentage = 1.0
+                        workPanelPercentage = totalHeight
                     } else {
                         workPanelPercentage = 0.5
                     }
@@ -403,7 +454,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             } else {
                 // Landscape
                 if verticalSpeed > 0 {
-                    workPanelPercentage = 1.0
+                    workPanelPercentage = totalHeight
                 } else {
                     workPanelPercentage = Float(equationHeightPercentage)
                 }
@@ -413,7 +464,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             if allowMiddlePosition {
                 // Portrait
                 if workPanelPercentage > 0.66 {
-                    workPanelPercentage = 1.0
+                    workPanelPercentage = totalHeight
                 } else if workPanelPercentage > 0.33 {
                     workPanelPercentage = 0.5
                 } else {
@@ -422,7 +473,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             } else {
                 // Landscape
                 if workPanelPercentage > 0.5 {
-                    workPanelPercentage = 1.0
+                    workPanelPercentage = totalHeight
                 } else {
                     workPanelPercentage = Float(equationHeightPercentage)
                 }
@@ -536,6 +587,10 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         self.historyView?.updateContentInsets(UIEdgeInsets(top: topHeight, left: 0, bottom: bottomInset + (effectiveBannerHeight() / 2), right: 0))
     }
     
+    func statusBarHidden() -> Bool {
+        return UIApplication.shared.isStatusBarHidden
+    }
+    
     func updateWorkPanelForHeight(_ heightPercentage: Float) {
         
         // Between 1.0 and 0.5 the height shrinks. Below this the height remains the same but the position is offset.
@@ -546,13 +601,18 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         // If there is a status bar
         
-        if UIApplication.shared.isStatusBarHidden {
-            // Status bar is NOT visible, hide the status bar blur view.
-            statusBarBlur.isHidden = true
-        } else {
-            // Status bar is visible
-            statusBarBlur.isHidden = false
-        }
+        /*
+         if UIApplication.shared.isStatusBarHidden {
+         // Status bar is NOT visible, hide the status bar blur view.
+         statusBarBlur.isHidden = true
+         } else {
+         // Status bar is visible
+         statusBarBlur.isHidden = false
+         }
+         */
+        
+        // temp, entirely hide the status bar
+        statusBarBlur.isHidden = true
         
         if newHeight < 0 {
             newHeight = 0
@@ -572,16 +632,20 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
             let viewHeight = self.viewHeightWithoutAd()
             
-           //print("middlePoint: \(middlePoint)")
-           //print("newHeight: \(newHeight)")
-           //print("offset: \(offset)")
+            print("")
+            print("middlePoint: \(middlePoint)")
+            print("newHeight: \(newHeight)")
+            print("offset: \(offset)")
             
             self.workPanelBottomConstraint.constant = offset * viewHeight
             
-           //print("self.workPanelBottomConstraint.constant: \(self.workPanelBottomConstraint.constant)")
+            //print("self.workPanelBottomConstraint.constant: \(self.workPanelBottomConstraint.constant)")
         }
+        
+        // Depending on this height we may need to make the history view invisible.
+        
+        updateBackgroundVisibility(height: CGFloat(heightPercentage))
     }
-    
     
     func changeHeightMultipler(_ height: CGFloat) {
         if let theWorkPanel = workPanelView?.view, let view = self.view {
@@ -661,8 +725,19 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         }
     }
     
-    override var preferredStatusBarStyle : UIStatusBarStyle {
+    func statusBarStyleForHeight() -> UIStatusBarStyle {
+        if let workPanelHeight = workPanelHeight {
+            if workPanelHeight.multiplier > 0.75 {
+                return UIStatusBarStyle.lightContent
+            }
+        }
+        
         return ThemeCoordinator.shared.preferredStatusBarStyleForCurrentTheme()
+        
+    }
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return statusBarStyleForHeight()
     }
     
     func showAd() -> Bool {

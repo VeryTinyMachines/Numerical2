@@ -22,6 +22,13 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
     var loadingScreen:UIView?
     var menuDismissButton:UIButton?
     
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+    }
+    
     func notifyUser(title: String?, message: String?) {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)

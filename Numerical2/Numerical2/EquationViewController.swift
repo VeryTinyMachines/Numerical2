@@ -84,14 +84,14 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         if segue.identifier == "QuestionView" {
             if let theQuestionView = segue.destination as? QuestionCollectionViewController {
                 theQuestionView.isAnswerView = false
+                theQuestionView.delegate = self.questionTextDelegate
                 questionView = theQuestionView
-                questionView?.delegate = self.questionTextDelegate
             }
         } else if segue.identifier == "AnswerView" {
             if let theAnswerView = segue.destination as? QuestionCollectionViewController {
                 theAnswerView.isAnswerView = true
+                theAnswerView.delegate = self.questionTextDelegate
                 answerView = theAnswerView
-                
             }
         }
     }

@@ -17,6 +17,9 @@
 		5117D8461B941A2B003DF8DA /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
 		5117D8491B941B3D003DF8DA /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
 		5117D84A1B941B3F003DF8DA /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; };
+		5119A9E01E6D08B500F16CE1 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5119A9DF1E6D08B500F16CE1 /* SettingsCell.swift */; };
+		5119A9E21E6D24C900F16CE1 /* RoundedCorner_Left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5119A9E11E6D24C900F16CE1 /* RoundedCorner_Left@2x.png */; };
+		5119A9E41E6D267D00F16CE1 /* RoundedCorner_Right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5119A9E31E6D267D00F16CE1 /* RoundedCorner_Right@2x.png */; };
 		511D2A921E34760500957ADB /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; };
 		511D2A941E3480EE00957ADB /* ThemeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511D2A931E3480EE00957ADB /* ThemeFormatter.swift */; };
 		511D2A951E3482D300957ADB /* ThemeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511D2A931E3480EE00957ADB /* ThemeFormatter.swift */; };
@@ -119,6 +122,7 @@
 		51D28B501B6D1C0F009A0AEC /* FractionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */; };
 		51D3AB2F1BC89AD40019B601 /* KeypadPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */; };
 		51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; };
+		51D941A41E6CFBB300844568 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D941A31E6CFBB300844568 /* SwitchCell.swift */; };
 		51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E84D301B8B5C3B00C3E28E /* CalcButton.swift */; };
 		51EE5BA01BC5203A001C9D38 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */; };
 		51F24F801DEFF8550023D15E /* ThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F24F7F1DEFF8550023D15E /* ThemeViewController.swift */; };
@@ -195,6 +199,9 @@
 		510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NaturalLanguageParser.swift; sourceTree = "<group>"; };
 		510D3AC11B6B659E00D1A07F /* KeypadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeypadViewController.swift; sourceTree = "<group>"; };
 		510F157F1DEBD6E400116A4D /* ThemeCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeCoordinator.swift; sourceTree = "<group>"; };
+		5119A9DF1E6D08B500F16CE1 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		5119A9E11E6D24C900F16CE1 /* RoundedCorner_Left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RoundedCorner_Left@2x.png"; sourceTree = "<group>"; };
+		5119A9E31E6D267D00F16CE1 /* RoundedCorner_Right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RoundedCorner_Right@2x.png"; sourceTree = "<group>"; };
 		511D2A931E3480EE00957ADB /* ThemeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeFormatter.swift; sourceTree = "<group>"; };
 		511D2A961E3485CB00957ADB /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		512137B91D967A730042EFC1 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
@@ -296,6 +303,7 @@
 		51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FractionViewCell.swift; sourceTree = "<group>"; };
 		51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeypadPageViewController.swift; sourceTree = "<group>"; };
 		51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleFormatter.swift; sourceTree = "<group>"; };
+		51D941A31E6CFBB300844568 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		51E84D301B8B5C3B00C3E28E /* CalcButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalcButton.swift; sourceTree = "<group>"; };
 		51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Numerical2.entitlements; sourceTree = "<group>"; };
 		51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -461,7 +469,11 @@
 				51C40E891DCC136400930BFD /* Sounds */,
 				512137B91D967A730042EFC1 /* AboutViewController.swift */,
 				515DABE21DB23BE60028F2C7 /* NumericalTextField.swift */,
+				51D941A31E6CFBB300844568 /* SwitchCell.swift */,
+				5119A9DF1E6D08B500F16CE1 /* SettingsCell.swift */,
 				51C1F15C1E2C3EA400A413A7 /* TutorialViewController.swift */,
+				5119A9E11E6D24C900F16CE1 /* RoundedCorner_Left@2x.png */,
+				5119A9E31E6D267D00F16CE1 /* RoundedCorner_Right@2x.png */,
 				513197131B6ADD5900E9B802 /* Main.storyboard */,
 				5125B49C1C9EA66C006D7BDC /* background@2x.jpg */,
 				51D7A8371BBA7D320064AA4B /* View Hierarchy */,
@@ -875,11 +887,13 @@
 				512137F01D96ADEB0042EFC1 /* leaves001-thumbnail@1x.jpg in Resources */,
 				512137F91D96ADEB0042EFC1 /* sand001-thumbnail@1x.jpg in Resources */,
 				5142AE3E1DA420EE0076D117 /* 54_Lock-(alt).png in Resources */,
+				5119A9E41E6D267D00F16CE1 /* RoundedCorner_Right@2x.png in Resources */,
 				512137EC1D96ADEB0042EFC1 /* cloud001@2x.jpg in Resources */,
 				512137F61D96ADEB0042EFC1 /* purple001-thumbnail@1x.jpg in Resources */,
 				512137F71D96ADEB0042EFC1 /* purple001-thumbnail@2x.jpg in Resources */,
 				512137F81D96ADEB0042EFC1 /* purple001@2x.jpg in Resources */,
 				512137FE1D96ADEB0042EFC1 /* space001@2x.jpg in Resources */,
+				5119A9E21E6D24C900F16CE1 /* RoundedCorner_Left@2x.png in Resources */,
 				512137E81D96ADEB0042EFC1 /* blue001-thumbnail@2x.jpg in Resources */,
 				51C40E881DCC135C00930BFD /* slide-paper.aiff in Resources */,
 				512137FF1D96ADEB0042EFC1 /* water001-thumbnail@1x.jpg in Resources */,
@@ -1087,12 +1101,14 @@
 				512137C11D96A76F0042EFC1 /* PremiumCoordinator.swift in Sources */,
 				51BE48B11E139AE3002A2B92 /* NumericalViewHelper.swift in Sources */,
 				517470CE1D95D35100E70A74 /* DataKeyStore.swift in Sources */,
+				5119A9E01E6D08B500F16CE1 /* SettingsCell.swift in Sources */,
 				51D28B0C1B6C4B7C009A0AEC /* EquationViewController.swift in Sources */,
 				5685FEA21BCAE38B0019BC04 /* StoreKitWrapper.swift in Sources */,
 				5685FEA01BCAE3340019BC04 /* RMStore.m in Sources */,
 				516C481E1DFE74F1006E68CD /* ThemeCreatorViewController.swift in Sources */,
 				510D3AC21B6B659E00D1A07F /* KeypadViewController.swift in Sources */,
 				51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */,
+				51D941A41E6CFBB300844568 /* SwitchCell.swift in Sources */,
 				51D28B501B6D1C0F009A0AEC /* FractionViewCell.swift in Sources */,
 				510D3ABB1B6B657F00D1A07F /* CalculatorBrain.swift in Sources */,
 				512138241D96F6770042EFC1 /* CoreData.xcdatamodel in Sources */,
@@ -1410,7 +1426,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = C583RN882K;
 				INFOPLIST_FILE = Keyboard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.Keyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1432,7 +1448,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = C583RN882K;
 				INFOPLIST_FILE = Keyboard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.Keyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";

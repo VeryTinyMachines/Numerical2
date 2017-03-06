@@ -18,7 +18,7 @@ public struct NumericalHelperSetting {
 class NumericalHelper {
     
     class func aboutMenuFont() -> UIFont {
-        return UIFont(name: "AvenirNext-Regular", size: 14.0)!
+        return UIFont(name: "AvenirNext-Regular", size: 15.0)!
     }
     
     class func isSettingEnabled(string: String) -> Bool {

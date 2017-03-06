@@ -328,13 +328,15 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         attributedString.append(NSMutableAttributedString(string: " = \(question)", attributes: [NSFontAttributeName:questionFont, NSForegroundColorAttributeName:color]))
         
         cell.textLabel?.attributedText = attributedString
-        cell.detailTextLabel?.text = ""
+        cell.detailTextLabel?.text = nil
         
+        /*
         if let posted = equation.posted?.boolValue {
             if posted == false && NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
                 cell.detailTextLabel?.text = "..."
             }
         }
+ */
         
         cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 15.0)
         cell.detailTextLabel?.textColor = UIColor(white: 1.0, alpha: 0.8)

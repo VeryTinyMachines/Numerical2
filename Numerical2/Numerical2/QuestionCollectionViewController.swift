@@ -11,6 +11,7 @@ import UIKit
 
 protocol QuestionCollectionViewDelegate {
     func textFieldChanged(string: String, view: QuestionCollectionViewController)
+    func startNew(string: String, view: QuestionCollectionViewController)
 }
 
 class QuestionCollectionViewController:NumericalViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
@@ -447,6 +448,11 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                 menuItems.append(menuItem)
             }
             
+            if canUseAnswerAsNew() {
+                let menuItem = UIMenuItem(title: "Start New", action: #selector(QuestionCollectionViewController.pressedMenuItemStartNewWith))
+                menuItems.append(menuItem)
+            }
+            
             if canPaste() {
                 let menuItem = UIMenuItem(title: "Paste", action: #selector(QuestionCollectionViewController.pressedMenuItemPaste))
                 menuItems.append(menuItem)
@@ -480,6 +486,20 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
             if let answer = bundle.answer {
                 if answer != "" {
                     return true
+                }
+            }
+        }
+        
+        return false
+    }
+    
+    func canUseAnswerAsNew() -> Bool {
+        if isAnswerView {
+            if let bundle = questionBundle {
+                if let answer = bundle.answer {
+                    if answer != "" {
+                        return true
+                    }
                 }
             }
         }
@@ -534,6 +554,16 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         hideMenu()
     }
     
+    func pressedMenuItemStartNewWith() {
+        if let bundle = questionBundle {
+            if let answer = bundle.answer {
+                delegate?.startNew(string: answer, view: self)
+            }
+        }
+        
+        hideMenu()
+    }
+    
     func pressedMenuItemPaste() {
         let board = UIPasteboard.general
         if let string = board.string {
@@ -579,8 +609,6 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         print("textFieldChanged")
         informDelegateOfTextChange()
     }
-    
-    
     
     func isQuestionEditting() -> Bool {
         return !textField.isHidden

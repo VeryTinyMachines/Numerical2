@@ -74,14 +74,30 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 }
             }
         }
+        
+        // Add rounded corners
+        self.view.layer.cornerRadius = 10.0
+        /*
+ - (void)setMaskTo:(UIView*)view byRoundingCorners:(UIRectCorner)corners
+ {
+ UIBezierPath *rounded = [UIBezierPath bezierPathWithRoundedRect:view.bounds
+ byRoundingCorners:corners
+ cornerRadii:CGSizeMake(8.0, 8.0)];
+ CAShapeLayer *shape = [[CAShapeLayer alloc] init];
+ [shape setPath:rounded.CGPath];
+ view.layer.mask = shape;
+ }
+ */
     }
     
+    
+ 
     func beginTutorial() {
         inTutorial = true
-        
+ 
         tutorialPage = 0
         tutorialLabel.text = tutorialPages[tutorialPage]
-        
+ 
         tutorialLabel.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
         
         tutorialLabel.isHidden = false
@@ -396,7 +412,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 
                 if let question = equation.question {
                     
-                    if Glossary.shouldAddClosingBracketToAppendString(question, newOperator: key) {
+                    if Glossary.shouldAddClosingBracketToAppendString(question, newOperator: key) && currentCursorPositionIsAtEnd() {
                         newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")"), key])
                     } else {
                         newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [key])
@@ -416,6 +432,23 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         if let theDelegate = delegate {
             theDelegate.pressedKey(key, sourceView: sourceView)
         }
+    }
+    
+    func currentCursorPositionIsAtEnd() -> Bool {
+        
+        if let equation = currentEquation {
+            if var question = equation.question {
+                if currentSelectedRange() == nil {
+                    if let index = currentCursorPosition() {
+                        if index == question.characters.count {
+                            return true
+                        }
+                    }
+                }
+            }
+        }
+        
+        return false
     }
     
     func updateCurrentQuestionByAppendingCharacters(characters: [Character]) -> Int? {
@@ -455,14 +488,23 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                     
                     newCursorPosition = range.lower + characters.count
                     
-                } else if let index = currentCursorPosition() {
+                } else if var index = currentCursorPosition() {
                     
                     print(index)
                     
                     var newQuestion = question
                     
                     for character in characters {
+                        print("character: \(character)")
+                        
+                        print("newQuestion before: \(newQuestion)")
+                        
                         newQuestion.insert(character, at: newQuestion.index(newQuestion.startIndex, offsetBy: index))
+                        
+                        index += 1
+                        
+                        print("newQuestion after: \(newQuestion)")
+                        
                     }
                     
                     currentEquation?.question = newQuestion
@@ -644,6 +686,37 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             updateViews(currentCursor: nil)
         }
         
+        updateLegalKeys()
+    }
+    
+    func startNew(string: String, view: QuestionCollectionViewController) {
+        // Start a new equation using this as a base.
+        
+        // Save this current equation
+        if let equation = currentEquation {
+            equation.lastModifiedDate = NSDate()
+            currentEquation = nil
+            EquationStore.sharedStore.equationUpdated(equation: equation)
+        }
+        
+        // Start a new equation
+        
+        
+        let theNewEquation = EquationStore.sharedStore.newEquation()
+        
+        EquationStore.sharedStore.setCurrentEquationID(string: theNewEquation.identifier)
+        
+        theNewEquation.question = string
+        
+        currentEquation = theNewEquation
+        
+        EquationStore.sharedStore.equationUpdated(equation: currentEquation!)
+        
+        if let theWorkPanelDelegate = workPanelDelegate {
+            theWorkPanelDelegate.updateEquation(currentEquation)
+        }
+        
+        updateViews(currentCursor: nil)
         updateLegalKeys()
     }
     

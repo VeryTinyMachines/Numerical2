@@ -28,6 +28,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
     
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var separatorView: UIView!
+    
     var items = [AboutViewItem]()
     
     override func viewDidLoad() {
@@ -88,11 +90,19 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         
         NotificationCenter.default.addObserver(self, selector: #selector(AboutViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
         
+//        for cellName in ["SwitchCell"] {
+//            let nib = UINib(nibName: cellName, bundle: nil)
+//            self.tableView.register(nib, forCellReuseIdentifier: cellName)
+//        }
+        
         self.themeChanged()
     }
     
     func themeChanged() {
         self.reloadData()
+        
+        separatorView.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.33)
+        
         updateBackgroundColorForPresentationType()
     }
     
@@ -145,35 +155,32 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         cell.textLabel?.minimumScaleFactor = 0.5
         cell.textLabel?.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
         cell.backgroundColor = UIColor.clear
-        cell.selectionStyle = UITableViewCellSelectionStyle.default
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         
         switch items[indexPath.row] {
         case .about:
             cell.textLabel?.text = "Numerical is the calculator without equal. We hope you like it!"
         case .autoBracket:
-            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.autoBrackets) {
-                cell.textLabel?.text = "Auto brackets are Enabled"
-            } else {
-                cell.textLabel?.text = "Auto brackets are Disabled\n(Remember your order of operation)"
+            
+            let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
+            
+            var string = "Auto Brackets"
+            
+            if !NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.autoBrackets) {
+                string += "\n(Remeber your Order Of Evaluation)"
             }
+            
+            setSwitchCell(text: "Auto Brackets", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.autoBrackets), row: indexPath.row, switchCell: switchCell)
+            
+            return switchCell
             
         case .cloudSync:
             
-            var string = ""
-            
-            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
-                if EquationStore.sharedStore.accountStatus == .available {
-                    string = "iCloud Sync is Enabled"
-                } else {
-                    string = "iCloud Sync is Enabled but not working"
-                }
-            } else {
-                string = "iCloud Sync is Disabled"
-            }
+            var string = "iCloud Sync"
             
             switch EquationStore.sharedStore.accountStatus {
             case .available:
-                string += ""
+                break
             case .couldNotDetermine:
                 string += "\n(Could not determine iCloud Status)"
             case .noAccount:
@@ -182,8 +189,11 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                 string += "\n(iCloud access restricted)"
             }
             
-            cell.textLabel?.text = string
+            let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
             
+            setSwitchCell(text: string, isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync), row: indexPath.row, switchCell: switchCell)
+            
+            return switchCell
         case .contact:
             cell.textLabel?.text = "Contact Us"
         case .follow:
@@ -217,11 +227,13 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             cell.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
             cell.selectionStyle = UITableViewCellSelectionStyle.none
         case .sounds:
-            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.sounds) {
-                cell.textLabel?.text = "Sounds are Enabled"
-            } else {
-                cell.textLabel?.text = "Sounds are Disabled"
-            }
+            
+            let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
+            
+            setSwitchCell(text: "Sounds", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.sounds), row: indexPath.row, switchCell: switchCell)
+            
+            return switchCell
+
         case .keyboard:
             cell.textLabel?.text = "Keyboard"
         }
@@ -231,29 +243,29 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+    func setSwitchCell(text: String, isOn: Bool, row: Int, switchCell: SwitchCell) {
+        switchCell.backgroundColor = UIColor.clear
+        switchCell.backgroundColor = UIColor.clear
+        switchCell.selectionStyle = UITableViewCellSelectionStyle.none
         
-        switch items[indexPath.row] {
-        case .about:
-            break
-        case .autoBracket:
-            NumericalHelper.flipSetting(string: NumericalHelperSetting.autoBrackets)
-            reloadData()
-        case .contact:
-            self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical²")
-        case .follow:
-            self.attemptToOpenURL(urlString: "http://www.twitter.com/VTMachines")
-        case .premiumInfo:
-            self.presentSalesScreen(type: SalesScreenType.generic)
-        case .rate:
-            self.attemptToOpenURL(urlString: "https://itunes.apple.com/app/id804548449&mt=8")
-        case .share:
-            self.share(string: "http://itunes.apple.com/app/id804548449&mt=8")
-        case .themeSelector:
-            presentThemeSelector()
-        case .website:
-            self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical")
+        switchCell.mainLabel.font =  NumericalHelper.aboutMenuFont()
+        switchCell.mainLabel.numberOfLines = 2
+        switchCell.mainLabel.adjustsFontSizeToFitWidth = true
+        switchCell.mainLabel.minimumScaleFactor = 0.5
+        switchCell.mainLabel.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
+        switchCell.mainLabel.text = text
+        
+        switchCell.mainSwitch.tag = row
+        switchCell.mainSwitch.onTintColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.66)
+        
+        switchCell.mainSwitch.addTarget(self, action: #selector(AboutViewController.switchChanged(_:)), for: UIControlEvents.valueChanged)
+        
+        switchCell.mainSwitch.isOn = isOn
+    }
+    
+    func switchChanged(_ sender: UISwitch) {
+        
+        switch items[sender.tag] {
         case .cloudSync:
             NumericalHelper.flipSetting(string: NumericalHelperSetting.iCloudHistorySync)
             
@@ -272,15 +284,49 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                 }
             }
             
-            reloadData()
+        case .autoBracket:
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.autoBrackets)
         case .sounds:
             NumericalHelper.flipSetting(string: NumericalHelperSetting.sounds)
-            reloadData()
+        default:
+            break
+        }
+        
+        reloadData()
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        switch items[indexPath.row] {
+        case .about:
+            break
+        case .autoBracket:
+            break
+        case .contact:
+            self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical²")
+        case .follow:
+            self.attemptToOpenURL(urlString: "http://www.twitter.com/VTMachines")
+        case .premiumInfo:
+            self.presentSalesScreen(type: SalesScreenType.generic)
+        case .rate:
+            self.attemptToOpenURL(urlString: "https://itunes.apple.com/app/id804548449&mt=8")
+        case .share:
+            self.share(string: "http://itunes.apple.com/app/id804548449&mt=8")
+        case .themeSelector:
+            presentThemeSelector()
+        case .website:
+            self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical")
+        case .cloudSync:
+            break
+        case .sounds:
+            break
         case .keyboard:
             let alert = UIAlertController(title: "Numerical² Keyboard", message: "To install the Numerical² keyboard open Settings > General > Keyboard > Keyboards and select Numerical²", preferredStyle: UIAlertControllerStyle.actionSheet)
             
             alert.addAction(UIAlertAction(title: "Open Settings", style: UIAlertActionStyle.default, handler: { (action) in
-                UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+                UIApplication.shared.open(URL(string: "App-Prefs:root=General&path=Keyboard")!)
             }))
             
             alert.addAction(UIAlertAction(title: "Contact Support", style: UIAlertActionStyle.default, handler: { (action) in
