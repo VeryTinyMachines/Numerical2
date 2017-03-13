@@ -396,7 +396,7 @@ open class Glossary {
         
         if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.autoBrackets) {
             if newOperator == SymbolCharacter.multiply || newOperator == SymbolCharacter.divide {
-                let termArray = Evaluator.termArrayFromString(string, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
+                let termArray = Evaluator.termArrayFromString(string, allowNonLegalCharacters: false, treatConstantsAsNumbers: true)
                 
                 if termArray.count > 1 {
                     

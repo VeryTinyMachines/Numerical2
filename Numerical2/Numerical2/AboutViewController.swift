@@ -43,9 +43,9 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         
         items = [
         
-        // AboutViewItem.premiumInfo,
+        AboutViewItem.premiumInfo,
         
-        // AboutViewItem.seperator,
+        AboutViewItem.seperator,
         
         AboutViewItem.themeSelector,
         
@@ -203,14 +203,14 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             var string = ""
             
             if PremiumCoordinator.shared.isUserPremium() {
-                string += "Numerical Pro - You are a member!"
+                string += "Thanks for supporting Numerical - you rock!\nManage Subscription"
             } else {
-                string += "Numerical Pro - Upgrade Today!"
+                string += "Support Numerical"
             }
             
-            if PremiumCoordinator.shared.legacyThemeUser {
-                string += "\nYou have purchased the legacy theme pack."
-            }
+//            if PremiumCoordinator.shared.legacyThemeUser {
+//                string += "\nYou have purchased the legacy theme pack."
+//            }
             
             cell.textLabel?.text = string
             
@@ -280,7 +280,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             } else {
                 if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
                     // This is enabled but iCloud isn't available. Show a help message.
-                    self.displayAlert(title: "iCloud Issue", message: "Sorry but there is something wrong with iCloud. Please check the iOS Settings app and enable iCloud Drive for Numerical²")
+                    self.displayAlert(title: "iCloud Issue", message: "Sorry but there is something wrong with iCloud. Please check the iOS Settings App and enable iCloud Drive for Numerical²")
                 }
             }
             
@@ -299,51 +299,54 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        switch items[indexPath.row] {
-        case .about:
-            break
-        case .autoBracket:
-            break
-        case .contact:
-            self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical²")
-        case .follow:
-            self.attemptToOpenURL(urlString: "http://www.twitter.com/VTMachines")
-        case .premiumInfo:
-            self.presentSalesScreen(type: SalesScreenType.generic)
-        case .rate:
-            self.attemptToOpenURL(urlString: "https://itunes.apple.com/app/id804548449&mt=8")
-        case .share:
-            self.share(string: "http://itunes.apple.com/app/id804548449&mt=8")
-        case .themeSelector:
-            presentThemeSelector()
-        case .website:
-            self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical")
-        case .cloudSync:
-            break
-        case .sounds:
-            break
-        case .keyboard:
-            let alert = UIAlertController(title: "Numerical² Keyboard", message: "To install the Numerical² keyboard open Settings > General > Keyboard > Keyboards and select Numerical²", preferredStyle: UIAlertControllerStyle.actionSheet)
-            
-            alert.addAction(UIAlertAction(title: "Open Settings", style: UIAlertActionStyle.default, handler: { (action) in
-                UIApplication.shared.open(URL(string: "App-Prefs:root=General&path=Keyboard")!)
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Contact Support", style: UIAlertActionStyle.default, handler: { (action) in
-                self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical² Keyboard")
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+        DispatchQueue.main.async {
+            switch self.items[indexPath.row] {
+            case .about:
+                break
+            case .autoBracket:
+                break
+            case .contact:
+                self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical²")
+            case .follow:
+                self.attemptToOpenURL(urlString: "http://www.twitter.com/VTMachines")
+            case .premiumInfo:
+                self.presentSalesScreen(type: SalesScreenType.generic)
+            case .rate:
+                self.attemptToOpenURL(urlString: "https://itunes.apple.com/app/id804548449&mt=8")
+            case .share:
+                self.share(string: "http://itunes.apple.com/app/id804548449&mt=8")
+            case .themeSelector:
+                self.presentThemeSelector()
+            case .website:
+                self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical")
+            case .cloudSync:
+                break
+            case .sounds:
+                break
+            case .keyboard:
+                let alert = UIAlertController(title: "Numerical² Keyboard", message: "To install the Numerical² keyboard open Settings > General > Keyboard > Keyboards and select Numerical²", preferredStyle: UIAlertControllerStyle.actionSheet)
                 
-            }))
-            
-            self.present(alert, animated: true, completion: {
+                alert.addAction(UIAlertAction(title: "Open Settings", style: UIAlertActionStyle.default, handler: { (action) in
+                    UIApplication.shared.open(URL(string: "App-Prefs:root=General&path=Keyboard")!)
+                }))
                 
-            })
-            
-        case .seperator:
-            break
+                alert.addAction(UIAlertAction(title: "Contact Support", style: UIAlertActionStyle.default, handler: { (action) in
+                    self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical² Keyboard")
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+                    
+                }))
+                
+                self.present(alert, animated: true, completion: {
+                    
+                })
+            case .seperator:
+                break
+            }
         }
+        
+        
     }
     
     func reloadData() {

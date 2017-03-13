@@ -91,7 +91,8 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     
     func updateProductsIfNeeded() {
         if productMonthlySubscription == nil || productLegacyTheme == nil {
-            let productRequest = SKProductsRequest(productIdentifiers: ["com.numericalapp.themepack001", "com.numericalapp.promode_monthly"])
+            // let productRequest = SKProductsRequest(productIdentifiers: ["com.numericalapp.themepack001", "com.numericalapp.supporter_monthly"])
+            let productRequest = SKProductsRequest(productIdentifiers: ["com.numericalapp.supporter_monthly"])
             productRequest.delegate = self
             productRequest.start()
         }
@@ -102,7 +103,7 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
             for product in response.products {
                 if product.productIdentifier == "com.numericalapp.themepack001" {
                     productLegacyTheme = product
-                } else if product.productIdentifier == "com.numericalapp.promode_monthly" {
+                } else if product.productIdentifier == "com.numericalapp.supporter_monthly" {
                     productMonthlySubscription = product
                 }
             }
@@ -329,21 +330,19 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
                     if let _ = self.expiryDate() {
                         if self.isUserPremium() {
                             // Restored and premium
-                            self.notifyUser(title: "Subscription Restored", message: "We hope you enjoying using Numerical Pro!")
+                            self.notifyUser(title: "Subscription Restored", message: "Thanks for supporting Numerical!")
                         } else {
                             // Restored but still not premium
-                            self.notifyUser(title: "Subscription Expired", message: "Your subscription has been restored but it looks like it has expired. Please continue your Subscription!")
+                            self.notifyUser(title: "Subscription Expired", message: "Your subscription has been restored but it looks like it has expired. Please continue your Subscription for lots of good karma!")
                         }
                     } else {
                         // No expiry date
                         
                         if self.legacyThemeUser {
-                            self.notifyUser(title: "Theme Pack Restored", message: "Your theme pack has been restored but you will need to subscribe to Numerical Pro to access the other premium features.")
+                            self.notifyUser(title: "Theme Pack Restored", message: "Your theme pack has been restored but you if you'd like to become a Numerical Supporter you'll need to start a subscription.")
                         } else {
                             self.notifyUser(title: nil, message: "Nothing to restore. Perhaps you are signed in with a different App Store account?")
                         }
-                        
-                        
                     }
                     
                     NotificationCenter.default.post(name: Notification.Name(rawValue: PremiumCoordinatorNotification.restoreCompleted), object: nil)
@@ -525,6 +524,8 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     
     
     func canAccessThemes() -> Bool {
+        return true
+        
         if isUserPremium() || isUserInTrial() || self.legacyThemeUser {
             return true
         }
@@ -532,6 +533,7 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     }
     
     func canEditThemes() -> Bool {
+        return true
         if isUserPremium() || isUserInTrial() {
             return true
         }
@@ -539,9 +541,6 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     }
     
     func isUserPremium() ->Bool {
-        
-        return true // always return true, we're not going to offer a premium level
-        
         if premiumIAPUser {
             // User is paying via an IAP, user is premium
             return true
@@ -574,6 +573,8 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     }
     
     func canUserAccessKey(character: Character) -> Bool {
+        return true // any user can access all keys
+        
         if isKeyPremium(character: character) {
             if isUserPremium() || isUserInTrial() {
                 return true
@@ -587,6 +588,8 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     }
     
     private func isKeyPremium(character: Character) -> Bool {
+        return false // no more premium keys
+        
         if SymbolCharacter.premiumOperators.contains(character) {
             // User is not premium and this is a premium operator.
             return true
@@ -632,7 +635,6 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     
     
     func syncExpiryDate() {
-        return
         
         let localExpiryDate:Date? = UserDefaults.standard.object(forKey: "ProModeExpirationDate") as? Date
         

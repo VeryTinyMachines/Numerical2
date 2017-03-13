@@ -78,7 +78,6 @@
 		515AF2181DC9549300170642 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 515AF2171DC9549300170642 /* GoogleService-Info.plist */; };
 		515DABE31DB23BE70028F2C7 /* NumericalTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515DABE21DB23BE60028F2C7 /* NumericalTextField.swift */; };
 		515EB8FB1DA6A0150081D9FB /* SalesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515EB8FA1DA6A0150081D9FB /* SalesViewController.swift */; };
-		515EB8FD1DA6C1960081D9FB /* AppIcon120x120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 515EB8FC1DA6C1960081D9FB /* AppIcon120x120@2x.png */; };
 		515F5EF31DFBCA5B00E182C3 /* NumericalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137BE1D969F280042EFC1 /* NumericalViewController.swift */; };
 		516C481E1DFE74F1006E68CD /* ThemeCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516C481D1DFE74F1006E68CD /* ThemeCreatorViewController.swift */; };
 		517470CC1D95C7B000E70A74 /* EquationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517470CB1D95C7B000E70A74 /* EquationStore.swift */; };
@@ -123,6 +122,8 @@
 		51D3AB2F1BC89AD40019B601 /* KeypadPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */; };
 		51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; };
 		51D941A41E6CFBB300844568 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D941A31E6CFBB300844568 /* SwitchCell.swift */; };
+		51E032861E76C6F20000A2A5 /* AppIcon120x120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51E032851E76C6F20000A2A5 /* AppIcon120x120@2x.png */; };
+		51E032881E76E6610000A2A5 /* WorkPanelShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51E032871E76E6610000A2A5 /* WorkPanelShadow@2x.png */; };
 		51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E84D301B8B5C3B00C3E28E /* CalcButton.swift */; };
 		51EE5BA01BC5203A001C9D38 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */; };
 		51F24F801DEFF8550023D15E /* ThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F24F7F1DEFF8550023D15E /* ThemeViewController.swift */; };
@@ -264,7 +265,6 @@
 		515AF2171DC9549300170642 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		515DABE21DB23BE60028F2C7 /* NumericalTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalTextField.swift; sourceTree = "<group>"; };
 		515EB8FA1DA6A0150081D9FB /* SalesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalesViewController.swift; sourceTree = "<group>"; };
-		515EB8FC1DA6C1960081D9FB /* AppIcon120x120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon120x120@2x.png"; sourceTree = "<group>"; };
 		516C481D1DFE74F1006E68CD /* ThemeCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeCreatorViewController.swift; sourceTree = "<group>"; };
 		517470CB1D95C7B000E70A74 /* EquationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquationStore.swift; sourceTree = "<group>"; };
 		517470CD1D95D35100E70A74 /* DataKeyStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataKeyStore.swift; sourceTree = "<group>"; };
@@ -304,6 +304,8 @@
 		51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeypadPageViewController.swift; sourceTree = "<group>"; };
 		51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleFormatter.swift; sourceTree = "<group>"; };
 		51D941A31E6CFBB300844568 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
+		51E032851E76C6F20000A2A5 /* AppIcon120x120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon120x120@2x.png"; sourceTree = "<group>"; };
+		51E032871E76E6610000A2A5 /* WorkPanelShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WorkPanelShadow@2x.png"; sourceTree = "<group>"; };
 		51E84D301B8B5C3B00C3E28E /* CalcButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalcButton.swift; sourceTree = "<group>"; };
 		51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Numerical2.entitlements; sourceTree = "<group>"; };
 		51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -443,9 +445,10 @@
 			children = (
 				5131970F1B6ADD5900E9B802 /* AppDelegate.swift */,
 				517470CB1D95C7B000E70A74 /* EquationStore.swift */,
+				51E032871E76E6610000A2A5 /* WorkPanelShadow@2x.png */,
+				51E032851E76C6F20000A2A5 /* AppIcon120x120@2x.png */,
 				512138251D96F7590042EFC1 /* Equation+CoreDataClass.swift */,
 				512138261D96F7590042EFC1 /* Equation+CoreDataProperties.swift */,
-				515EB8FC1DA6C1960081D9FB /* AppIcon120x120@2x.png */,
 				51BE48B91E13AA38002A2B92 /* UIColor+Numerical.swift */,
 				512137BC1D969C760042EFC1 /* NumericalHelper.swift */,
 				51BE48B01E139AE3002A2B92 /* NumericalViewHelper.swift */,
@@ -728,6 +731,7 @@
 				D0D57190BD0E25E31A36268E /* [CP] Embed Pods Frameworks */,
 				939AB4276A5E83E11A420786 /* [CP] Copy Pods Resources */,
 				51BE48AA1E13990C002A2B92 /* Embed App Extensions */,
+				51F4DCEA1E6D7CE60069A8C7 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -897,13 +901,13 @@
 				512137E81D96ADEB0042EFC1 /* blue001-thumbnail@2x.jpg in Resources */,
 				51C40E881DCC135C00930BFD /* slide-paper.aiff in Resources */,
 				512137FF1D96ADEB0042EFC1 /* water001-thumbnail@1x.jpg in Resources */,
-				515EB8FD1DA6C1960081D9FB /* AppIcon120x120@2x.png in Resources */,
 				5685FE941BCACA490019BC04 /* AcousticModelEnglish.bundle in Resources */,
 				512137F11D96ADEB0042EFC1 /* leaves001-thumbnail@2x.jpg in Resources */,
 				5131971A1B6ADD5900E9B802 /* LaunchScreen.storyboard in Resources */,
 				51B4CA291E012947000A9865 /* 2_Keys.png in Resources */,
 				512137ED1D96ADEB0042EFC1 /* dark001-thumbnail@1x.jpg in Resources */,
 				510D3ABC1B6B657F00D1A07F /* Dictionary_English.plist in Resources */,
+				51E032861E76C6F20000A2A5 /* AppIcon120x120@2x.png in Resources */,
 				512137FA1D96ADEB0042EFC1 /* sand001-thumbnail@2x.jpg in Resources */,
 				512137E51D96ADEB0042EFC1 /* pink001-thumbnail@2x.jpg in Resources */,
 				51D28B101B6D0FE1009A0AEC /* EquationViewCell.xib in Resources */,
@@ -927,6 +931,7 @@
 				512137EA1D96ADEB0042EFC1 /* cloud001-thumbnail@1x.jpg in Resources */,
 				512137EF1D96ADEB0042EFC1 /* dark001@2x.jpg in Resources */,
 				51C40E871DCC135C00930BFD /* simple.aiff in Resources */,
+				51E032881E76E6610000A2A5 /* WorkPanelShadow@2x.png in Resources */,
 				51D28B4E1B6D1BA9009A0AEC /* FractionViewCell.xib in Resources */,
 				5125B49D1C9EA66C006D7BDC /* background@2x.jpg in Resources */,
 				515AF2181DC9549300170642 /* GoogleService-Info.plist in Resources */,
@@ -979,6 +984,19 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		51F4DCEA1E6D7CE60069A8C7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 19a9a2eacc330393b337b28ae42dcc90041d6156 a166a52ad577759cd209fef62497192f1b02dcd94697799411f3eacccbd4a71b";
 		};
 		5F3CE673BFA0B4EF42F23A7C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1311,6 +1329,7 @@
 				CODE_SIGN_ENTITLEMENTS = Numerical2/Numerical2.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C583RN882K;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

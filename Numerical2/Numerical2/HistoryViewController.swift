@@ -185,6 +185,8 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         if let equation = fetchedResultsController.object(at: indexPath) as? Equation, let theDelegate = delegate {
             theDelegate.selectedEquation(equation)
         }
+        
+        self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -311,6 +313,7 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         }
         
         cell.backgroundColor = UIColor.clear
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         
         var color = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.8)
         

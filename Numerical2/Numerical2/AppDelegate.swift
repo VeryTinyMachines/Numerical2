@@ -11,6 +11,8 @@ import Firebase
 import FirebaseAnalytics
 import CloudKit
 import UserNotifications
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,7 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         EquationStore.sharedStore.initialiseSetup()
         EquationStore.sharedStore.convertDeprecatedEquationsIfNeeded()
         
-        // PremiumCoordinator.shared.setupManager()
+        Fabric.with([Crashlytics.self])
+        
+        PremiumCoordinator.shared.setupManager()
         
         // FIRApp.configure()
         // GADMobileAds.configure(withApplicationID: "ca-app-pub-3940256099942544~1458002511")

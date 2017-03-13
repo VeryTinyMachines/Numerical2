@@ -266,7 +266,6 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
     }
     
     func isMenuVisible() -> Bool {
-        
         if let menuItems = UIMenuController.shared.menuItems {
             if menuItems.count > 0 {
                 // At least one item in menu, it's visible

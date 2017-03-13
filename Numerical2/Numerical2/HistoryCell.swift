@@ -13,4 +13,18 @@ class HistoryCell: UITableViewCell {
     var equation:Equation?
     var currentEquation = false
     
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        if highlighted {
+            contentView.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
+        } else {
+            contentView.backgroundColor = UIColor.clear
+        }
+        
+        super.setHighlighted(highlighted, animated: animated)
+    }
 }

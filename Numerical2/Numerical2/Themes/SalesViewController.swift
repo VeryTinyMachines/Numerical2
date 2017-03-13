@@ -72,7 +72,7 @@ class SalesViewController: NumericalViewController {
         
         if PremiumCoordinator.shared.isUserPremium() {
             
-            var string = "Thanks for being a Numerical Pro subscriber! You now have access to all the fancy scientific keys, colorful themes, ads are removed, and you're supporting the ongoing development of Numerical!"
+            var string = "Thanks for being a Numerical Pro subscriber! This is a total passion project so your support helps us keep working on it and adding new features. Seriously, you're a gem <3"
             
             if let expiryDate = PremiumCoordinator.shared.expiryDate() {
                 
@@ -86,7 +86,7 @@ class SalesViewController: NumericalViewController {
                 if expiryDate.timeIntervalSinceNow < 0 {
                     string += "\n\nYour subscription expired on\n\(dateString)"
                 } else {
-                    string += "\n\nYour subscription renews/expires on\n\(dateString)"
+                    string += "\n\nYour subscription renews (or expires) on\n\(dateString)"
                 }
             }
             
@@ -99,7 +99,7 @@ class SalesViewController: NumericalViewController {
             beginRestoreButton.setTitle("Manage Subscription", for: UIControlState.normal)
         } else {
             
-            let string = "Become a Numerical Pro subscriber for \(price) per month to remove ads, use all the fancy scientific keys, themes, theme creator and support the ongoing development of Numerical."
+            let string = "Become a Numerical Supporter for \(price) per month and keep the calculator without equal alive! This is a total passion project so your support is what lets us keep working on it and adding new features. Thanks and we love you <3"
             
             horizontalLabel.text = string
             portraitLabel.text = string
@@ -112,7 +112,7 @@ class SalesViewController: NumericalViewController {
             if let _ = PremiumCoordinator.shared.expiryDate() {
                 beginPurchaseButton.setTitle("Continue Subscription", for: UIControlState.normal)
             } else {
-                beginPurchaseButton.setTitle("Start Free Trial", for: UIControlState.normal)
+                beginPurchaseButton.setTitle("Start Subscription", for: UIControlState.normal)
             }
         }
     }

@@ -189,10 +189,18 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
     
     func numberOfColumns() -> Int {
         
+        var columnCount = 3
+        
         if NumericalViewHelper.isDevicePad() {
-            return Int(round(self.view.frame.width / 200.0))
+            columnCount = Int(round(self.view.frame.width / 200.0))
         } else {
-            return Int(round(self.view.frame.width / 140.0))
+            columnCount = Int(round(self.view.frame.width / 140.0))
+        }
+        
+        if columnCount > 3 {
+            return columnCount
+        } else {
+            return 3
         }
     }
     

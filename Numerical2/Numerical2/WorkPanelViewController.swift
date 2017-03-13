@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Crashlytics
 
 protocol WorkPanelDelegate {
     func updateEquation(_ equation: Equation?)
@@ -257,7 +258,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 theView.setQuestion(question, cursorPosition: currentCursor)
                 
                 // Solve this question
-                
                 let originalRequestEquation = currentEquation
                 
                 CalculatorBrain.sharedBrain.solveStringAsyncQueue(question, completion: { (answer: AnswerBundle) -> Void in
@@ -356,6 +356,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         var newCursorPosition:Int?
         
         if key == SymbolCharacter.clear {
+
             if let equation = currentEquation {
                 
                 // Clear - Need to load a new equation from the EquationStore
@@ -441,8 +442,12 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 if currentSelectedRange() == nil {
                     if let index = currentCursorPosition() {
                         if index == question.characters.count {
+                            // There is a currentCursorPosition but it's at the end, therefore we should add a closing bracket.
                             return true
                         }
+                    } else {
+                        // There is no currentCursorPosition so we are simply at the end
+                        return true
                     }
                 }
             }

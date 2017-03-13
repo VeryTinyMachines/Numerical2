@@ -69,6 +69,9 @@ class NumberTerm {
     }
     
     func processTerm(_ term: String) -> Bool {
+        
+        print("processTerm: \(term)")
+        
         if term == "-" {
             if negative {
                 // - and - = +
