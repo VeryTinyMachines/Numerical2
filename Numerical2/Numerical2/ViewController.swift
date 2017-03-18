@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 
 public enum KeypadSize {
     case maximum
@@ -15,7 +14,7 @@ public enum KeypadSize {
     case minimum
 }
 
-class ViewController: NumericalViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate, GADBannerViewDelegate {
+class ViewController: NumericalViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate {
     
     @IBOutlet weak var statusBarBlur: UIView!
     
@@ -47,7 +46,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     @IBOutlet weak var workPanelShadow: UIImageView!
     
-    @IBOutlet weak var bannerView: GADBannerView!
+    @IBOutlet weak var bannerView: UIView!
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     
@@ -624,13 +623,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             }
         }
         
-        var topHeight:CGFloat = 44.0
-        
-        if showAd() {
-            topHeight += bannerView.frame.height
-        }
-        
-        self.historyView?.updateContentInsets(UIEdgeInsets(top: topHeight, left: 0, bottom: bottomInset + (effectiveBannerHeight() / 2), right: 0))
+        self.historyView?.updateContentInsets(UIEdgeInsets(top: 0, left: 0, bottom: bottomInset + (effectiveBannerHeight() / 2), right: 0))
     }
     
     func statusBarHidden() -> Bool {

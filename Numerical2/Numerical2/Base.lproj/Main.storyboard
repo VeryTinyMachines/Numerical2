@@ -36,7 +36,7 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTE-ia-Cj5" userLabel="History Container">
-                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <connections>
                                     <segue destination="VuE-mr-NBt" kind="embed" id="8aY-tF-fya"/>
                                 </connections>
@@ -113,7 +113,7 @@
                             <constraint firstItem="Ce3-JB-ZTc" firstAttribute="top" secondItem="pRv-bj-Wrb" secondAttribute="bottom" id="LWo-Jd-07T"/>
                             <constraint firstAttribute="bottom" secondItem="68R-zT-cl3" secondAttribute="bottom" id="M5h-wi-b7d"/>
                             <constraint firstItem="fz3-wy-GNQ" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="O4S-j4-Moc"/>
-                            <constraint firstItem="sTE-ia-Cj5" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="-20" id="OCK-dc-ly7"/>
+                            <constraint firstItem="sTE-ia-Cj5" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="OCK-dc-ly7"/>
                             <constraint firstAttribute="trailing" secondItem="Ce3-JB-ZTc" secondAttribute="trailing" id="OEZ-8q-tGf"/>
                             <constraint firstItem="68R-zT-cl3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="RUx-ej-rLo"/>
                             <constraint firstAttribute="trailing" secondItem="Q1h-gR-NPH" secondAttribute="trailing" id="VFg-qk-jha"/>
@@ -140,6 +140,7 @@
                             <constraint firstAttribute="trailing" secondItem="EHg-0v-8c6" secondAttribute="trailing" id="zhk-Rt-nv7"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
                         <outlet property="backgroundImageView" destination="68R-zT-cl3" id="VWT-T1-MEd"/>
                         <outlet property="bannerView" destination="Ce3-JB-ZTc" id="RKT-tE-ZXf"/>
@@ -175,18 +176,18 @@
                         <viewControllerLayoutGuide type="bottom" id="Gr9-Lv-s1P"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jph-ld-qfw">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="687"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6CL-N5-5ys">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="756"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" textLabel="UN1-ku-fPN" detailTextLabel="Mqv-fj-mTl" style="IBUITableViewCellStyleValue1" id="qYX-SV-TdK" customClass="HistoryCell" customModule="Numerical2" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qYX-SV-TdK" id="aDX-Et-5D5">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UN1-ku-fPN">
@@ -197,7 +198,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mqv-fj-mTl">
-                                                    <rect key="frame" x="355" y="11" width="44" height="21"/>
+                                                    <rect key="frame" x="316" y="11" width="44" height="21"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -213,17 +214,18 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="6CL-N5-5ys" secondAttribute="trailing" id="9LY-BH-sJz"/>
                             <constraint firstItem="6CL-N5-5ys" firstAttribute="leading" secondItem="jph-ld-qfw" secondAttribute="leading" id="NwC-Ha-7Vr"/>
-                            <constraint firstItem="6CL-N5-5ys" firstAttribute="top" secondItem="E73-3A-v1V" secondAttribute="bottom" id="lcX-Kx-pjd"/>
                             <constraint firstItem="Gr9-Lv-s1P" firstAttribute="top" secondItem="6CL-N5-5ys" secondAttribute="bottom" id="ldq-Hl-PNK"/>
+                            <constraint firstItem="6CL-N5-5ys" firstAttribute="top" secondItem="E73-3A-v1V" secondAttribute="bottom" id="vXy-Ms-pDC"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
                         <outlet property="tableView" destination="6CL-N5-5ys" id="eDb-2q-Ked"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="duR-vt-oof" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="54" y="1681"/>
+            <point key="canvasLocation" x="53.600000000000001" y="1680.8095952023989"/>
         </scene>
         <!--Sales View Controller-->
         <scene sceneID="VfW-8K-RNc">

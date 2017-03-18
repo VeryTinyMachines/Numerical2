@@ -7,8 +7,8 @@ target 'Numerical2' do
 
   # Pods for Numerical2
 
-  pod 'Firebase/Core'
-  pod 'Firebase/AdMob'
+  #pod 'Firebase/Core'
+  #pod 'Firebase/AdMob'
 
   pod 'Fabric'
   pod 'Crashlytics'

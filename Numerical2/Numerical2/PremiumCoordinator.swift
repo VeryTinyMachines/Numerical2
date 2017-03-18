@@ -8,6 +8,7 @@
 
 import UIKit
 import CloudKit
+import StoreKit
 
 public struct PremiumCoordinatorNotification {
     public static let themeChanged = "PremiumCoordinatorNotification.themeChanged"

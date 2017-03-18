@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Firebase
-import FirebaseAnalytics
 import CloudKit
 import UserNotifications
 import Fabric
