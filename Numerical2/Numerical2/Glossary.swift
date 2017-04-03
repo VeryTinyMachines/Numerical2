@@ -234,28 +234,27 @@ open class Glossary {
         
         return formattedString
     }
-
-    /*
-    class func unformattedStringForQuestion(_ string: String) -> String {
+    
+    class func formattedStringForAnswer(_ string: String) -> String {
         
-        // 1. Search and replace all characters
-        // 2. Iterate through and check all remaining ones
+        let numberFormatter = NumberFormatter()
         
-        let keys = Array(reverseFormattedLookup)
+        if let number = numberFormatter.number(from: string) {
+            
+            if number.doubleValue > 1000000000000 || (number.doubleValue > 0 && number.doubleValue < 0.0000000001) {
+                numberFormatter.numberStyle = NumberFormatter.Style.scientific
+            } else {
+                numberFormatter.maximumFractionDigits = 12
+                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+            }
+            
+            if let formattedAnswer = numberFormatter.string(from: number) {
+                return formattedAnswer.replacingOccurrences(of: "E0", with: "")
+            }
+        }
         
-        
-        
-        return "zzzzz"
-//        
-//        var formattedString = ""
-//        
-//        for character in string.characters {
-//            formattedString += stringForCharacter(character)
-//        }
-//        
-//        return formattedString
+        return string.replacingOccurrences(of: "E0", with: "").replacingOccurrences(of: "\(SymbolCharacter.fraction)", with: Glossary.formattedLookup[SymbolCharacter.fraction]!)
     }
-    */
     
     class func formattedStringForCharacter(_ character: Character) -> String {
         if let formattedChar = self.formattedLookup[character] {

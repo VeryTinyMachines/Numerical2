@@ -34,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             SoundManager.primeSounds()
         }
         
+        
+        
         /*
         UNUserNotificationCenter.current().requestAuthorization(options:
             [[.alert, .sound, .badge]],

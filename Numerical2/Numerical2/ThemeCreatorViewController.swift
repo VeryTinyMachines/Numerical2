@@ -24,11 +24,13 @@ class ThemeCreatorViewController:NumericalViewController {
     
     @IBOutlet weak var keypadImage2: UIImageView! // Keypad
     
-    @IBOutlet weak var keypadImage3: UIImageView! // Foreground keypad
-    
     @IBOutlet weak var backgroundColorView: UIView!
     
     @IBOutlet weak var styleSelector: UISegmentedControl!
+    
+    @IBOutlet weak var exampleAspectRatio: NSLayoutConstraint!
+    
+    @IBOutlet weak var exampleContainerView: UIView!
     
     var updateTheme:Theme?
     var gradiantLayer:CAGradientLayer?
@@ -74,6 +76,23 @@ class ThemeCreatorViewController:NumericalViewController {
         
         navigationItem.rightBarButtonItems = items
         
+        
+        // Setup images
+        
+        if NumericalViewHelper.isDevicePad() {
+            self.keypadImage1.image = UIImage(named: "Theme_Pad_StatusBar")
+            self.keypadImage2.image = UIImage(named: "Theme_Pad_Keypad")
+            
+            self.changeHeightMultipler(3/4)
+        } else {
+            self.keypadImage1.image = UIImage(named: "Theme_Phone_StatusBar")
+            self.keypadImage2.image = UIImage(named: "Theme_Phone_Keypad")
+            
+            self.changeHeightMultipler(16/9)
+        }
+        
+        
+        
         // Initial Setup
         if let image = self.keypadImage1.image {
             self.keypadImage1.image = image.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
@@ -84,13 +103,38 @@ class ThemeCreatorViewController:NumericalViewController {
             self.keypadImage2.image = image.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         }
         
-        if let image = self.keypadImage3.image {
-            self.keypadImage3.image = image.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-        }
-        
         self.backgroundColorView.backgroundColor = UIColor.clear
         
         updateColorsMethod()
+        exampleView.alpha = 0
+    }
+    
+    
+    
+    func changeHeightMultipler(_ height: CGFloat) {
+        
+        if let view = exampleContainerView {
+            
+            exampleView.removeConstraint(exampleAspectRatio)
+            
+            let newConstraint = NSLayoutConstraint(item: exampleView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: exampleView, attribute: NSLayoutAttribute.width, multiplier: height, constant: 1.0)
+            
+            exampleAspectRatio = newConstraint
+            exampleView.addConstraint(newConstraint)
+            
+        }
+        
+        
+        
+        
+//        if let exampleView = workPanelView?.view, let view = self.view {
+//            view.removeConstraint(workPanelHeight)
+//            
+//            let newConstraint = NSLayoutConstraint(item: theWorkPanel, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: view, attribute: NSLayoutAttribute.height, multiplier: height, constant: 1.0)
+//            
+//            workPanelHeight = newConstraint
+//            view.addConstraint(newConstraint)
+//        }
     }
     
     func userPressedDeleteButton() {
@@ -180,6 +224,12 @@ class ThemeCreatorViewController:NumericalViewController {
         super.viewWillAppear(animated)
         
         updateColors()
+        
+        if exampleView.alpha == 0 {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.exampleView.alpha = 1
+            })
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -278,7 +328,6 @@ class ThemeCreatorViewController:NumericalViewController {
                     
                     self.keypadImage1.alpha = 1.0
                     self.keypadImage2.alpha = 1.0
-                    self.keypadImage3.alpha = 0.25
                     
                     // Set the foreground elements
                     self.styleSelector.tintColor = UIColor.white
@@ -290,7 +339,6 @@ class ThemeCreatorViewController:NumericalViewController {
                     }
                     
                     self.keypadImage2.tintColor = foregroundColor
-                    self.keypadImage3.tintColor = foregroundColor
                     
                     // Update the status bar
                     
@@ -383,7 +431,6 @@ class ThemeCreatorViewController:NumericalViewController {
         
         self.keypadImage1.alpha = 1.0
         self.keypadImage2.alpha = 1.0
-        self.keypadImage3.alpha = 0.25
         
         // Set the foreground elements
         self.styleSelector.tintColor = UIColor.white
@@ -395,7 +442,6 @@ class ThemeCreatorViewController:NumericalViewController {
         }
         
         self.keypadImage2.tintColor = foregroundColor
-        self.keypadImage3.tintColor = foregroundColor
         
         // Update the status bar
         

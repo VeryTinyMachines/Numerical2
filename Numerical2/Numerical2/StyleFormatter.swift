@@ -39,11 +39,23 @@ class StyleFormatter {
         }
     }
     
-    class func preferredFontForButtonOfSize(_ size: CGSize, keyStyle: KeyStyle) -> UIFont {
+    class func preferredFontForButtonOfSize(_ size: CGSize, key: Character?) -> UIFont {
         
         let font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
+        var pointSize:CGFloat = font.pointSize * 0.7 + 7
         
-        return UIFont.systemFont(ofSize: font.pointSize * 1.1 + 2)
+        let smallOperands:Set<Character> = [SymbolCharacter.add, SymbolCharacter.multiply, SymbolCharacter.infinity]
+        
+        if let key = key {
+            if key == SymbolCharacter.subtract || key == SymbolCharacter.divide {
+                pointSize *= 1.5
+                return UIFont(name: "Avenir-Light", size: pointSize)!
+            } else if smallOperands.contains(key) {
+                pointSize *= 1.2
+            }
+        }
+        
+        return UIFont(name: "AvenirNext-Regular", size: pointSize)!
     }
     
 }

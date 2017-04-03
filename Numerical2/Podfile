@@ -10,7 +10,7 @@ target 'Numerical2' do
   #pod 'Firebase/Core'
   #pod 'Firebase/AdMob'
 
-  pod 'Fabric'
+  pod 'Fabric’
   pod 'Crashlytics'
 
   target 'Numerical2Tests' do

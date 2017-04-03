@@ -50,7 +50,6 @@ class CalcButton: UIButton {
         self.lockView = imageView
         
         self.updateEnabledState()
-        
         self.updateLockViewPosition()
         
         NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
@@ -66,13 +65,17 @@ class CalcButton: UIButton {
         
         if isEnabled {
             setTitleColor(color, for: UIControlState())
-            self.backgroundColor = color.withAlphaComponent(0.1)
+            // self.backgroundColor = color.withAlphaComponent(0.1)
+            self.backgroundColor = UIColor.clear // Enabled buttons have a clear background
         } else {
             setTitleColor(color.withAlphaComponent(0.33), for: UIControlState())
-            self.backgroundColor = UIColor.clear
+            // self.backgroundColor = UIColor.clear
+            //self.backgroundColor = UIColor(white: 0.0, alpha: 0.02)
+            self.backgroundColor = UIColor.clear // Enabled buttons have a clear background
         }
         
-        titleLabel?.font = StyleFormatter.preferredFontForButtonOfSize(self.frame.size, keyStyle: keyStyle)
+        self.layer.borderWidth = 0.5
+        self.layer.borderColor = color.withAlphaComponent(0.25).cgColor
         
         updateLockViewStyle()
     }
@@ -109,21 +112,23 @@ class CalcButton: UIButton {
     }
     
     func touchDown() {
-        
-        UIView.animate(withDuration: 0.05, delay: 0.0, options: UIViewAnimationOptions.allowUserInteraction, animations: { () -> Void in
-            
-            self.layer.setAffineTransform(CGAffineTransform(scaleX: 0.9, y: 0.9))
-            self.backgroundColor = self.highlightColor
-            
-            }) { (complete) -> Void in
-        }
+        self.backgroundColor = self.highlightColor
     }
     
     func touchUp() {
-        UIView.animate(withDuration: 0.075, delay: 0.0, options: UIViewAnimationOptions.allowUserInteraction, animations: { () -> Void in
-            self.layer.setAffineTransform(CGAffineTransform(scaleX: 1.0, y: 1.0))
-            self.updateEnabledState()
+        
+        self.updateEnabledState()
+        
+        // Make a UIView, add it, and then fade it out really quickly
+        let whiteView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
+        whiteView.backgroundColor = self.highlightColor
+        self.addSubview(whiteView)
+        
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.allowUserInteraction, animations: { () -> Void in
+            whiteView.alpha = 0.0
             }) { (complete) -> Void in
+                whiteView.removeFromSuperview()
         }
+        
     }
 }

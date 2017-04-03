@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-
+import CloudKit
 
 protocol HistoryViewControllerDelegate {
     func selectedEquation(_ equation: Equation)
@@ -305,7 +305,7 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         var question = "No question"
         
         if let theAnswer = equation.answer {
-            answer = Glossary.formattedStringForQuestion(theAnswer)
+            answer = Glossary.formattedStringForAnswer(theAnswer)
         }
         
         if let theQuestion = equation.question {
@@ -335,11 +335,11 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         
         /*
         if let posted = equation.posted?.boolValue {
-            if posted == false && NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) {
-                cell.detailTextLabel?.text = "..."
+            if posted == false && NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && EquationStore.sharedStore.accountStatus != CKAccountStatus.available {
+                cell.detailTextLabel?.text = "⚠"
             }
         }
- */
+        */
         
         cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 15.0)
         cell.detailTextLabel?.textColor = UIColor(white: 1.0, alpha: 0.8)

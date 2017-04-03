@@ -48,6 +48,9 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     
     @IBOutlet weak var tutorialButton: UIButton!
     
+    @IBOutlet weak var separatorView: UIView!
+    @IBOutlet weak var separatorViewHeight: NSLayoutConstraint!
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateLegalKeys()
@@ -216,7 +219,10 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         self.pageControl.pageIndicatorTintColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
         self.pageControl.currentPageIndicatorTintColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(1.00)
         
-        self.seperatorView.isHidden = true
+        //self.seperatorView.isHidden = true
+        self.separatorView.isHidden = false
+        self.separatorView.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
+        self.separatorViewHeight.constant = 0.5
         
         tutorialLabel.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
     }

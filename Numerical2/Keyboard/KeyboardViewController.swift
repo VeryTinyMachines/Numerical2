@@ -14,10 +14,11 @@ class KeyboardViewController: UIInputViewController {
     
     @IBOutlet weak var mainLabel: UILabel!
     
+    @IBOutlet weak var separatorView: UIView!
+    @IBOutlet weak var separatorViewHeight: NSLayoutConstraint!
+    
     var question:String = ""
     var answer:String = ""
-    
-    @IBOutlet weak var separator: UIView!
     
     var interfaceSetup = false
     
@@ -65,7 +66,7 @@ class KeyboardViewController: UIInputViewController {
                 theButton.setTitle(String(buttonRaw), for: UIControlState.normal)
             }
             
-            theButton.titleLabel?.font = StyleFormatter.preferredFontForButtonOfSize(theButton.frame.size, keyStyle: KeyStyle.Available)
+            theButton.titleLabel?.font = StyleFormatter.preferredFontForButtonOfSize(theButton.frame.size, key: buttonRaw)
             
             if buttonRaw == SymbolCharacter.keyboard {
                 theButton.addTarget(self, action: #selector(handleInputModeList(from:with:)), for: .allTouchEvents)
@@ -128,7 +129,7 @@ class KeyboardViewController: UIInputViewController {
                             style = ThemeStyle.normal
                         }
                         
-                        let layer = ThemeFormatter.gradiantLayerFor(firstColor: loadedFirstColor, secondColor: loadedSecondColor, style: style)
+                        let layer = ThemeFormatter.brightGradiantLayerFor(firstColor: loadedFirstColor, secondColor: loadedSecondColor, style: style)
                         layer.frame = self.view.frame
                         
                         gradiantLayer?.removeFromSuperlayer()
@@ -146,7 +147,7 @@ class KeyboardViewController: UIInputViewController {
             
             let theme = ThemeFormatter.defaultTheme()
             
-            let layer = ThemeFormatter.gradiantLayerForTheme(theme: theme)
+            let layer = ThemeFormatter.brightGradiantLayerForTheme(theme: theme)
             layer.frame = self.view.frame
             
             gradiantLayer?.removeFromSuperlayer()
@@ -163,7 +164,7 @@ class KeyboardViewController: UIInputViewController {
             mainLabel.text = nil
         } else {
             
-            let formattedAnswer = Glossary.formattedStringForQuestion(answer)
+            let formattedAnswer = Glossary.formattedStringForAnswer(answer)
             
             let formattedQuestion = Glossary.formattedStringForQuestion(Evaluator.balanceBracketsForQuestionDisplay(question))
             
@@ -186,7 +187,7 @@ class KeyboardViewController: UIInputViewController {
             legals.insert(SymbolCharacter.publish)
         }
         
-        self.separator.isHidden = true
+//        self.separator.isHidden = true
         /*
         if style == .normal {
             self.separator.isHidden = true
@@ -194,6 +195,8 @@ class KeyboardViewController: UIInputViewController {
             self.separator.backgroundColor = foregroundColor.withAlphaComponent(0.33)
         }
  */
+        separatorView.backgroundColor = foregroundColor.withAlphaComponent(0.25)
+        separatorViewHeight.constant = 0.5
         
         for theButton in button {
             let buttonRaw = buttonLookup[theButton.tag]
@@ -202,25 +205,27 @@ class KeyboardViewController: UIInputViewController {
                 // enabled
                 theButton.isEnabled = true
                 theButton.setTitleColor(foregroundColor, for: UIControlState.normal)
-                theButton.backgroundColor = foregroundColor.withAlphaComponent(0.1)
+                //theButton.backgroundColor = foregroundColor.withAlphaComponent(0.1)
+                theButton.backgroundColor = UIColor.clear
             } else {
                 if legals.contains(buttonRaw) {
                     // enabled
                     theButton.isEnabled = true
                     theButton.setTitleColor(foregroundColor, for: UIControlState.normal)
-                    theButton.backgroundColor = foregroundColor.withAlphaComponent(0.1)
+                    // theButton.backgroundColor = foregroundColor.withAlphaComponent(0.1)
+                    theButton.backgroundColor = UIColor.clear
                 } else {
                     // disabled
                     
-                    /*
-                     setTitleColor(color.withAlphaComponent(0.33), for: UIControlState())
-                     self.backgroundColor = UIColor.clear
- */
                     theButton.isEnabled = false
                     theButton.setTitleColor(foregroundColor.withAlphaComponent(0.33), for: UIControlState.normal)
-                    theButton.backgroundColor = nil
+                    // theButton.backgroundColor = nil
+                    theButton.backgroundColor = UIColor.clear
                 }
             }
+            
+            theButton.layer.borderWidth = 0.5
+            theButton.layer.borderColor = foregroundColor.withAlphaComponent(0.25).cgColor
         }
     }
     

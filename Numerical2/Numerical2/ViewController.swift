@@ -589,6 +589,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         snapPercentageHeight()
         
         premiumStatusChanged()
+        
+        themeChanged() // Just in case we have rotated in another view.
     }
     
     func viewHeightWithAd() -> CGFloat {

@@ -8,10 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		510D3ABB1B6B657F00D1A07F /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
-		510D3ABC1B6B657F00D1A07F /* Dictionary_English.plist in Resources */ = {isa = PBXBuildFile; fileRef = 510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */; };
 		510D3ABE1B6B657F00D1A07F /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; };
 		510D3ABF1B6B657F00D1A07F /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
-		510D3AC01B6B657F00D1A07F /* NaturalLanguageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */; };
 		510D3AC21B6B659E00D1A07F /* KeypadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AC11B6B659E00D1A07F /* KeypadViewController.swift */; };
 		510F15801DEBD6E400116A4D /* ThemeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F157F1DEBD6E400116A4D /* ThemeCoordinator.swift */; };
 		5117D8461B941A2B003DF8DA /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
@@ -58,9 +56,6 @@
 		519BA0971DD11A0200786519 /* PremiumBug_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 519BA0961DD11A0200786519 /* PremiumBug_2.png */; };
 		519BA0991DD11AC900786519 /* PremiumBug_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 519BA0981DD11AC900786519 /* PremiumBug_3.png */; };
 		51B2A29F1D95C304002A9AD8 /* Pad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B2A29E1D95C304002A9AD8 /* Pad.swift */; };
-		51B4CA281E012947000A9865 /* 1_StatusBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 51B4CA251E012947000A9865 /* 1_StatusBar.png */; };
-		51B4CA291E012947000A9865 /* 2_Keys.png in Resources */ = {isa = PBXBuildFile; fileRef = 51B4CA261E012947000A9865 /* 2_Keys.png */; };
-		51B4CA2A1E012947000A9865 /* 3_Keypad.png in Resources */ = {isa = PBXBuildFile; fileRef = 51B4CA271E012947000A9865 /* 3_Keypad.png */; };
 		51BE48A61E13990C002A2B92 /* Keyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 51BE489F1E13990B002A2B92 /* Keyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		51BE48AB1E1399FB002A2B92 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
 		51BE48AC1E1399FB002A2B92 /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
@@ -81,6 +76,10 @@
 		51C40E8B1DCC167200930BFD /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C40E8A1DCC167200930BFD /* SoundManager.swift */; };
 		51C40ECD1DCC492200930BFD /* CustomAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C40ECB1DCC492200930BFD /* CustomAnimationController.swift */; };
 		51C40ECE1DCC492200930BFD /* CustomDismissAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C40ECC1DCC492200930BFD /* CustomDismissAnimationController.swift */; };
+		51D116771E8278700059C342 /* Theme_Phone_Keypad.png in Resources */ = {isa = PBXBuildFile; fileRef = 51D116751E8278700059C342 /* Theme_Phone_Keypad.png */; };
+		51D116781E8278700059C342 /* Theme_Phone_StatusBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 51D116761E8278700059C342 /* Theme_Phone_StatusBar.png */; };
+		51D1167B1E827A730059C342 /* Theme_Pad_Keypad.png in Resources */ = {isa = PBXBuildFile; fileRef = 51D116791E827A730059C342 /* Theme_Pad_Keypad.png */; };
+		51D1167C1E827A730059C342 /* Theme_Pad_StatusBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 51D1167A1E827A730059C342 /* Theme_Pad_StatusBar.png */; };
 		51D28B0C1B6C4B7C009A0AEC /* EquationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B0B1B6C4B7C009A0AEC /* EquationViewController.swift */; };
 		51D28B0E1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B0D1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift */; };
 		51D28B101B6D0FE1009A0AEC /* EquationViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51D28B0F1B6D0FE1009A0AEC /* EquationViewCell.xib */; };
@@ -155,10 +154,8 @@
 /* Begin PBXFileReference section */
 		38E3580757802F55FE75C212 /* Pods-Numerical2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Numerical2.release.xcconfig"; path = "Pods/Target Support Files/Pods-Numerical2/Pods-Numerical2.release.xcconfig"; sourceTree = "<group>"; };
 		510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
-		510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Dictionary_English.plist; sourceTree = "<group>"; };
 		510D3AB81B6B657F00D1A07F /* Evaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Evaluator.swift; sourceTree = "<group>"; };
 		510D3AB91B6B657F00D1A07F /* Glossary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Glossary.swift; sourceTree = "<group>"; };
-		510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NaturalLanguageParser.swift; sourceTree = "<group>"; };
 		510D3AC11B6B659E00D1A07F /* KeypadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeypadViewController.swift; sourceTree = "<group>"; };
 		510F157F1DEBD6E400116A4D /* ThemeCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeCoordinator.swift; sourceTree = "<group>"; };
 		5119A9DF1E6D08B500F16CE1 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
@@ -205,9 +202,6 @@
 		519BA0961DD11A0200786519 /* PremiumBug_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PremiumBug_2.png; sourceTree = "<group>"; };
 		519BA0981DD11AC900786519 /* PremiumBug_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PremiumBug_3.png; sourceTree = "<group>"; };
 		51B2A29E1D95C304002A9AD8 /* Pad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pad.swift; sourceTree = "<group>"; };
-		51B4CA251E012947000A9865 /* 1_StatusBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1_StatusBar.png; sourceTree = "<group>"; };
-		51B4CA261E012947000A9865 /* 2_Keys.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_Keys.png; sourceTree = "<group>"; };
-		51B4CA271E012947000A9865 /* 3_Keypad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_Keypad.png; sourceTree = "<group>"; };
 		51BE489F1E13990B002A2B92 /* Keyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Keyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		51BE48A31E13990C002A2B92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51BE48B01E139AE3002A2B92 /* NumericalViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalViewHelper.swift; sourceTree = "<group>"; };
@@ -224,6 +218,10 @@
 		51C40E8A1DCC167200930BFD /* SoundManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		51C40ECB1DCC492200930BFD /* CustomAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnimationController.swift; sourceTree = "<group>"; };
 		51C40ECC1DCC492200930BFD /* CustomDismissAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDismissAnimationController.swift; sourceTree = "<group>"; };
+		51D116751E8278700059C342 /* Theme_Phone_Keypad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Theme_Phone_Keypad.png; sourceTree = "<group>"; };
+		51D116761E8278700059C342 /* Theme_Phone_StatusBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Theme_Phone_StatusBar.png; sourceTree = "<group>"; };
+		51D116791E827A730059C342 /* Theme_Pad_Keypad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Theme_Pad_Keypad.png; sourceTree = "<group>"; };
+		51D1167A1E827A730059C342 /* Theme_Pad_StatusBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Theme_Pad_StatusBar.png; sourceTree = "<group>"; };
 		51D28B0B1B6C4B7C009A0AEC /* EquationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquationViewController.swift; sourceTree = "<group>"; };
 		51D28B0D1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionCollectionViewController.swift; sourceTree = "<group>"; };
 		51D28B0F1B6D0FE1009A0AEC /* EquationViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EquationViewCell.xib; sourceTree = "<group>"; };
@@ -337,9 +335,6 @@
 				51B2A29E1D95C304002A9AD8 /* Pad.swift */,
 				51C40ECB1DCC492200930BFD /* CustomAnimationController.swift */,
 				51C40ECC1DCC492200930BFD /* CustomDismissAnimationController.swift */,
-				51B4CA251E012947000A9865 /* 1_StatusBar.png */,
-				51B4CA261E012947000A9865 /* 2_Keys.png */,
-				51B4CA271E012947000A9865 /* 3_Keypad.png */,
 				5685FE991BCACBB30019BC04 /* Numerical2-Bridging-Header.h */,
 				515AF2171DC9549300170642 /* GoogleService-Info.plist */,
 				51C40E8A1DCC167200930BFD /* SoundManager.swift */,
@@ -352,6 +347,10 @@
 				51D941A31E6CFBB300844568 /* SwitchCell.swift */,
 				5119A9DF1E6D08B500F16CE1 /* SettingsCell.swift */,
 				51C1F15C1E2C3EA400A413A7 /* TutorialViewController.swift */,
+				51D116791E827A730059C342 /* Theme_Pad_Keypad.png */,
+				51D1167A1E827A730059C342 /* Theme_Pad_StatusBar.png */,
+				51D116751E8278700059C342 /* Theme_Phone_Keypad.png */,
+				51D116761E8278700059C342 /* Theme_Phone_StatusBar.png */,
 				5119A9E11E6D24C900F16CE1 /* RoundedCorner_Left@2x.png */,
 				5119A9E31E6D267D00F16CE1 /* RoundedCorner_Right@2x.png */,
 				513197131B6ADD5900E9B802 /* Main.storyboard */,
@@ -461,7 +460,6 @@
 				510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */,
 				510D3AB91B6B657F00D1A07F /* Glossary.swift */,
 				510D3AB81B6B657F00D1A07F /* Evaluator.swift */,
-				51D7A83F1BBA7DE60064AA4B /* Natural Language Parser */,
 			);
 			name = Evaluator;
 			sourceTree = "<group>";
@@ -543,15 +541,6 @@
 				51E84D301B8B5C3B00C3E28E /* CalcButton.swift */,
 			);
 			name = "Key Stack View";
-			sourceTree = "<group>";
-		};
-		51D7A83F1BBA7DE60064AA4B /* Natural Language Parser */ = {
-			isa = PBXGroup;
-			children = (
-				510D3AB61B6B657F00D1A07F /* Dictionary_English.plist */,
-				510D3ABA1B6B657F00D1A07F /* NaturalLanguageParser.swift */,
-			);
-			name = "Natural Language Parser";
 			sourceTree = "<group>";
 		};
 		7F63CC758F8F02505C805196 /* Pods */ = {
@@ -735,29 +724,29 @@
 				51C40E851DCC135C00930BFD /* professional.aiff in Resources */,
 				51C40E861DCC135C00930BFD /* rock.aiff in Resources */,
 				5142AE3C1DA420EE0076D117 /* 5_Star-(alt).png in Resources */,
+				51D116771E8278700059C342 /* Theme_Phone_Keypad.png in Resources */,
 				5142AE3E1DA420EE0076D117 /* 54_Lock-(alt).png in Resources */,
 				5119A9E41E6D267D00F16CE1 /* RoundedCorner_Right@2x.png in Resources */,
 				5119A9E21E6D24C900F16CE1 /* RoundedCorner_Left@2x.png in Resources */,
 				51C40E881DCC135C00930BFD /* slide-paper.aiff in Resources */,
 				5131971A1B6ADD5900E9B802 /* LaunchScreen.storyboard in Resources */,
-				51B4CA291E012947000A9865 /* 2_Keys.png in Resources */,
-				510D3ABC1B6B657F00D1A07F /* Dictionary_English.plist in Resources */,
 				51E032861E76C6F20000A2A5 /* AppIcon120x120@2x.png in Resources */,
 				51D28B101B6D0FE1009A0AEC /* EquationViewCell.xib in Resources */,
 				5142AE411DA420EE0076D117 /* 55_Lock-Open.png in Resources */,
 				51C40E841DCC135C00930BFD /* professional-reverse.aiff in Resources */,
 				513197171B6ADD5900E9B802 /* Assets.xcassets in Resources */,
+				51D1167B1E827A730059C342 /* Theme_Pad_Keypad.png in Resources */,
 				5142AE401DA420EE0076D117 /* 55_Lock-Open-(alt).png in Resources */,
-				51B4CA281E012947000A9865 /* 1_StatusBar.png in Resources */,
-				51B4CA2A1E012947000A9865 /* 3_Keypad.png in Resources */,
 				5142AE3D1DA420EE0076D117 /* 5_Star.png in Resources */,
 				519BA0971DD11A0200786519 /* PremiumBug_2.png in Resources */,
 				519BA0991DD11AC900786519 /* PremiumBug_3.png in Resources */,
+				51D116781E8278700059C342 /* Theme_Phone_StatusBar.png in Resources */,
 				51C40E871DCC135C00930BFD /* simple.aiff in Resources */,
 				51E032881E76E6610000A2A5 /* WorkPanelShadow@2x.png in Resources */,
 				51D28B4E1B6D1BA9009A0AEC /* FractionViewCell.xib in Resources */,
 				515AF2181DC9549300170642 /* GoogleService-Info.plist in Resources */,
 				5142AE3F1DA420EE0076D117 /* 54_Lock.png in Resources */,
+				51D1167C1E827A730059C342 /* Theme_Pad_StatusBar.png in Resources */,
 				513197151B6ADD5900E9B802 /* Main.storyboard in Resources */,
 				519BA0951DD1192400786519 /* PremiumBug_1.png in Resources */,
 			);
@@ -970,7 +959,6 @@
 				513197101B6ADD5900E9B802 /* AppDelegate.swift in Sources */,
 				51C40ECD1DCC492200930BFD /* CustomAnimationController.swift in Sources */,
 				515EB8FB1DA6A0150081D9FB /* SalesViewController.swift in Sources */,
-				510D3AC01B6B657F00D1A07F /* NaturalLanguageParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

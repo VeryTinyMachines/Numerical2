@@ -364,7 +364,6 @@ class EquationStore {
         fetchRequest.predicate = predicate
         
         // Edit the sort key as appropriate.
-        // TODO: Work out the sort order property on Equations for use Sort Descriptors right now we default to modified date in reverse chronological order.
         let sortDescriptor = NSSortDescriptor(key: "sortOrder", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         return fetchRequest
@@ -390,10 +389,11 @@ class EquationStore {
             query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
             
             privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
-//                print(records)
-//                print(error)
+                print(records)
+                print(error)
                 
                 if let records = records {
+                    
                     DispatchQueue.main.async {
                         self.compareRecords(records: records)
                         self.setLastFetchDate(date: fetchDate)

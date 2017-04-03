@@ -44,8 +44,6 @@ class KeypadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupKeys()
-        
         // Connect all the buttons
         for button in buttons {
             button.addTarget(self, action: #selector(KeypadViewController.pressedPressedDown(_:) ), for: UIControlEvents.touchDown)
@@ -58,7 +56,12 @@ class KeypadViewController: UIViewController {
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(KeypadViewController.updateLegalKeys), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(KeypadViewController.setupKeys), name: NSNotification.Name.UIContentSizeCategoryDidChange, object: nil)
+        
     }
+    
+    
     
     @IBAction func pressedPressedDown(_ sender: UIButton) {
         
@@ -131,12 +134,12 @@ class KeypadViewController: UIViewController {
                 
                 if character == " " {
                     button.setTitle("", for: UIControlState())
-                    button.alpha = 0.0
                     button.isEnabled = false
                 } else {
                     let formattedCharacter = Glossary.formattedStringForCharacter(character)
                     
                     button.setTitle(formattedCharacter, for: UIControlState())
+                    button.titleLabel?.font = StyleFormatter.preferredFontForButtonOfSize(button.frame.size, key: character)
                 }
             }
         }

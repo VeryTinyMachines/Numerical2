@@ -14,6 +14,8 @@ class SalesViewController: NumericalViewController {
     
     @IBOutlet weak var beginRestoreButton: UIButton!
     
+    @IBOutlet weak var privacyButton: UIButton!
+    
 //    @IBOutlet weak var mainLabel: UILabel!
     @IBOutlet weak var horizontalLabel: UILabel!
     
@@ -72,7 +74,7 @@ class SalesViewController: NumericalViewController {
         
         if PremiumCoordinator.shared.isUserPremium() {
             
-            var string = "Thanks for being a Numerical Pro subscriber! This is a total passion project so your support helps us keep working on it and adding new features. Seriously, you're a gem <3"
+            var string = "Thanks for being a Numerical Supporter! This is a total passion project so your support helps us keep working on it and adding new features. Seriously, you're a gem <3\n"
             
             if let expiryDate = PremiumCoordinator.shared.expiryDate() {
                 
@@ -95,19 +97,21 @@ class SalesViewController: NumericalViewController {
             
             beginPurchaseButton.isHidden = true
             beginRestoreButton.isHidden = false
+            privacyButton.isHidden = false
             
             beginRestoreButton.setTitle("Manage Subscription", for: UIControlState.normal)
         } else {
             
-            let string = "Become a Numerical Supporter for \(price) per month and keep the calculator without equal alive! This is a total passion project so your support is what lets us keep working on it and adding new features. Thanks and we love you <3"
+            let string = "Become a Numerical Supporter for \(price) per month and keep the calculator without equal alive! This is a total passion project so your support is what lets us keep working on it and adding new features. <3\n\nSubscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period."
             
             horizontalLabel.text = string
             portraitLabel.text = string
             
             beginPurchaseButton.isHidden = false
             beginRestoreButton.isHidden = false
+            privacyButton.isHidden = false
             
-            beginRestoreButton.setTitle("Restore", for: UIControlState.normal)
+            beginRestoreButton.setTitle("Manage", for: UIControlState.normal)
             
             if let _ = PremiumCoordinator.shared.expiryDate() {
                 beginPurchaseButton.setTitle("Continue Subscription", for: UIControlState.normal)
@@ -127,17 +131,47 @@ class SalesViewController: NumericalViewController {
     
     @IBAction func userPressedRestoreButton(_ sender: UIButton) {
         
-        if PremiumCoordinator.shared.isUserPremium() {
+        // Show menu with Restore and Manage subscription
+        
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        
+        alert.addAction(UIAlertAction(title: "Manage Subscription", style: UIAlertActionStyle.default, handler: { (action) in
             // User is alreayd premium, offer to manage subscription
             self.presentiTunesManage()
-        } else {
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Restore", style: UIAlertActionStyle.default, handler: { (action) in
             if PremiumCoordinator.shared.restoreProducts() {
-                beginLoadingScreen()
-            } else {
-                // We can't start this restore
+                self.beginLoadingScreen()
             }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Contact Support", style: UIAlertActionStyle.default, handler: { (action) in
+            self.email(emailAddress: "verytinymachines@gmail.com", subject: "Subscription Issues")
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+            
+        }))
+        
+        self.present(alert, animated: true) { 
+            
         }
     }
+    
+    @IBAction func userPressedPrivacy(_ sender: UIButton) {
+        
+        let url = URL(string: "https://kat-elsby.squarespace.com/numericalprivacy")!
+        
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        }
+        
+    }
+    
+    
     
     func restoreFailed() {
         endLoadingScreen()

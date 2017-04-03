@@ -338,7 +338,11 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                     cellIsOr = true
                     theCell.mainLabel.text = "  or  "
                 } else {
-                    theCell.mainLabel.text = Glossary.formattedStringForQuestion(string)
+                    if isAnswerView {
+                        theCell.mainLabel.text = Glossary.formattedStringForAnswer(string)
+                    } else {
+                        theCell.mainLabel.text = Glossary.formattedStringForQuestion(string)
+                    }
                 }
                 
                 theCell.mainLabel.textColor = UIColor.white
@@ -355,6 +359,7 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                     }
                 }
             }
+            
             return cell
         }
     }
@@ -401,7 +406,7 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
             } else {
                 
                 if isAnswerView {
-                    let size = estimatedSizeOfString(Glossary.formattedStringForQuestion(string), context: FontDisplayContext.answer, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
+                    let size = estimatedSizeOfString(Glossary.formattedStringForAnswer(string), context: FontDisplayContext.answer, cellHeight: collectionView.bounds.height, viewWidth: viewWidth)
                     
                     width = size.width + 1
                 } else {
@@ -426,6 +431,10 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         let attributedText = NSAttributedString(string: string, attributes: [NSFontAttributeName:font])
         
         let size = attributedText.boundingRect(with: CGSize(width: viewWidth, height: cellHeight), options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil);
+        
+        if isAnswerView && size.width > self.view.frame.width - collecitonView.contentInset.left - collecitonView.contentInset.right {
+            return CGSize(width: self.view.frame.width - collecitonView.contentInset.left - collecitonView.contentInset.right, height: size.height)
+        }
         
         return size.size
     }

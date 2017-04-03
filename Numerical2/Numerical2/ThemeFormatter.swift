@@ -57,8 +57,27 @@ class ThemeFormatter {
         }
     }
     
+    
+    class func brightGradiantLayerForTheme(theme: Theme) -> CAGradientLayer {
+        return brightGradiantLayerFor(firstColor: theme.firstColor, secondColor: theme.secondColor, style: theme.style)
+    }
+    
     class func gradiantLayerForTheme(theme: Theme) -> CAGradientLayer {
         return gradiantLayerFor(firstColor: theme.firstColor, secondColor: theme.secondColor, style: theme.style)
+    }
+    
+    
+    class func brightGradiantLayerFor(firstColor: UIColor, secondColor: UIColor, style: ThemeStyle) -> CAGradientLayer {
+        
+        var firstColor = firstColor
+        var secondColor = secondColor
+        
+        if style == .normal {
+            firstColor = firstColor.lighterColor
+            secondColor = secondColor.lighterColor
+        }
+        
+        return gradiantLayerFor(firstColor: firstColor, secondColor: secondColor, style: style)
     }
     
     class func gradiantLayerFor(firstColor: UIColor, secondColor: UIColor, style: ThemeStyle) -> CAGradientLayer {
@@ -81,4 +100,45 @@ class ThemeFormatter {
         return layer
     }
     
+}
+
+extension UIColor {
+    
+    var lighterColor: UIColor {
+        
+        var h: CGFloat = 0, s: CGFloat = 0
+        var b: CGFloat = 0, a: CGFloat = 0
+        
+        guard getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+            else {return self}
+        
+        // b *= 1.5
+        b *= 1.4
+        s *= 0.8
+        
+        if b > 1.0 {
+            b = 1.0
+        }
+        
+        return UIColor(hue: h,
+                       saturation: s,
+                       brightness: b,
+                       alpha: 1.0)
+        
+        
+        //return lighterColor(removeSaturation: 0.2, resultAlpha: 0)
+    }
+    
+    func lighterColor(removeSaturation val: CGFloat, resultAlpha alpha: CGFloat) -> UIColor {
+        var h: CGFloat = 0, s: CGFloat = 0
+        var b: CGFloat = 0, a: CGFloat = 0
+        
+        guard getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+            else {return self}
+        
+        return UIColor(hue: h,
+                       saturation: max(s - val, 0.0),
+                       brightness: b,
+                       alpha: 1.0)
+    }
 }
