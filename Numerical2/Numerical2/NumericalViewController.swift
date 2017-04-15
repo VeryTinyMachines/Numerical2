@@ -157,7 +157,6 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
     }
     
     
-    
     func presentiTunesManage() {
         self.attemptToOpenURL(urlString: "itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions")
     }
@@ -174,7 +173,6 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         let newView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height))
         
         newView.backgroundColor = UIColor(white: 0.0, alpha: 0.75)
-        
         newView.alpha = 0
         newView.isUserInteractionEnabled = true
         

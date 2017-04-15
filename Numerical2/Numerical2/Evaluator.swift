@@ -593,7 +593,8 @@ open class Evaluator {
     class func solveTermArray(_ termArray: Array<String>, operatorArray: Array<String>, operatorType: OperatorType) -> TermBundle {
         var termArray = termArray, operatorArray = operatorArray
         
-//        print("solveTermArray: \(termArray) for operatorArray: \(operatorArray)", appendNewline: true)
+        print("solveTermArray \(termArray) \(operatorArray)")
+        
         
         while operatorArray.count > 0 {
             
@@ -618,6 +619,8 @@ open class Evaluator {
             
             operatorArray.remove(at: 0)
         }
+        
+        print("termArray: \(termArray)")
         
         return TermBundle(termArray: termArray)
     }

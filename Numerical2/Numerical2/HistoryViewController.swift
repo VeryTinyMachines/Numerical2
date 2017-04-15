@@ -102,6 +102,8 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         
         var indexPath:IndexPath?
         
+        /*
+         // do not scroll to current equation, kind of annoying
         if let objects = self.fetchedResultsController.fetchedObjects {
             if let currentEquation = currentEquation {
                 
@@ -116,17 +118,22 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
                 }
             }
         }
+        */
         
         UIView.animate(withDuration: 0.2, animations: {
             self.tableView.contentInset = insets
             
+            /*
+             // do not scroll to current equation, kind of annoying
             if let indexPath = indexPath {
                 self.tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.bottom, animated: true)
             }
+             */
             
         }) { (complete) in
             
         }
+ 
     }
     
     func toggleEditing() {

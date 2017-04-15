@@ -14,6 +14,7 @@ public enum FontDisplayContext {
     case answer
     case answerFraction
     case answerOr
+    case about
 }
 
 public enum KeyStyle {
@@ -25,37 +26,53 @@ public enum KeyStyle {
 class StyleFormatter {
     
     class func preferredFontForContext(_ context: FontDisplayContext) -> UIFont {
+        var pointSize:CGFloat = 20
+        var fontName = "HelveticaNeue-Light"
+        
         switch context {
         case .question:
-            return UIFont.systemFont(ofSize: 20.0)
+            pointSize = 20
+            //return UIFont.systemFont(ofSize: 20.0)
         case .questionFraction:
-            return UIFont.systemFont(ofSize: 14.0)
+            //return UIFont.systemFont(ofSize: 14.0)
+            pointSize = 14
         case .answer:
-            return UIFont.systemFont(ofSize: 72.0, weight: -0.75)
+            pointSize = 72
+            fontName = "HelveticaNeue-Thin"
+            //return UIFont(name: fontName, size: pointSize)!
         case .answerFraction:
-            return UIFont.systemFont(ofSize: 28.0)
+            pointSize = 28
+            //return UIFont.systemFont(ofSize: 28.0)
         case .answerOr:
-            return UIFont.systemFont(ofSize: 18.0)
+            pointSize = 18
+            //return UIFont.systemFont(ofSize: 18.0)
+        case .about:
+            pointSize = 18
+            fontName = "Avenir-Light"
         }
+        
+        return UIFont(name: fontName, size: pointSize)!
     }
     
     class func preferredFontForButtonOfSize(_ size: CGSize, key: Character?) -> UIFont {
         
-        let font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
-        var pointSize:CGFloat = font.pointSize * 0.7 + 7
+        var pointSize:CGFloat = 23 // Numerical 1 was 25
+        var fontName = "HelveticaNeue-Light"
         
         let smallOperands:Set<Character> = [SymbolCharacter.add, SymbolCharacter.multiply, SymbolCharacter.infinity]
         
         if let key = key {
             if key == SymbolCharacter.subtract || key == SymbolCharacter.divide {
-                pointSize *= 1.5
-                return UIFont(name: "Avenir-Light", size: pointSize)!
+                pointSize *= 1.3
+                return UIFont(name: fontName, size: pointSize)!
+                //return UIFont(name: "HelveticaNeue-Thin", size: pointSize)!
+                //return UIFont(name: "AvenirNext-Regular", size: pointSize)!
             } else if smallOperands.contains(key) {
                 pointSize *= 1.2
             }
         }
         
-        return UIFont(name: "AvenirNext-Regular", size: pointSize)!
+        return UIFont(name: fontName, size: pointSize)!
     }
     
 }

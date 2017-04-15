@@ -69,7 +69,8 @@ class EquationStore {
     
     func initialiseiCloud() {
         cloudFetchLatestEquations()
-        updateCloudKit()
+        // updateCloudKit() // AJC 15/April/2017 - Disabled to try and solve crash on launch bug
+        queueCloudKitNeedsUpdate()
     }
     
     func queueCloudKitNeedsUpdate() {
@@ -127,11 +128,13 @@ class EquationStore {
     
     func deleteEquation(equation: Equation) {
         
-        equation.userDeleted = NSNumber(value: true)
-        
-        equationUpdated(equation: equation)
-        
-        saveContext()
+        self.persistentContainer.viewContext.perform {
+            equation.userDeleted = NSNumber(value: true)
+            
+            self.equationUpdated(equation: equation)
+            
+            self.saveContext()
+        }
     }
     
     func deviceUUID() -> String? {
@@ -199,7 +202,10 @@ class EquationStore {
                  * The store could not be migrated to the current model version.
                  Check the error message to determine what the actual problem was.
                  */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+                print("Unresolved error \(error), \(error.userInfo)")
+                
+                let alert = UIAlertView(title: "Equation Store Error 2", message: "\(error.localizedDescription)", delegate: nil, cancelButtonTitle: "Ok")
+                alert.show()
             }
         })
         return container
@@ -207,7 +213,7 @@ class EquationStore {
     
     // MARK: - Core Data Saving support
     
-    func saveContext () -> Bool {
+    func saveContext() -> Bool {
         print("saveContext")
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -219,38 +225,42 @@ class EquationStore {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                print("Unresolved error \(nserror), \(nserror.userInfo)")
+                
+                let alert = UIAlertView(title: "Equation Store Error", message: "\(nserror.localizedDescription)", delegate: nil, cancelButtonTitle: "Ok")
+                alert.show()
+                
                 return false
             }
         } else {
             print("No saves necessary")
             return true
         }
-        
     }
     
     func updateCloudKit() {
-        
-        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && accountStatus == CKAccountStatus.available {
-            // Fetch items from the data base that are posted == nil or posted == 1
-            // posted == nil items have never been uploaded
-            // posted == 0 items have been posted previously but now need updating.
-            // posted == 1 items have been posted and, to the best of our knowledge, are up to date.
-            
-            // When creating new cloudkit equations we define the record ID as "equation.\(identifier)", this gives us an easy way to reconcile and update items in future from only the recordID.
-            
-            // Get all unposted items
-            let fetch = equationsFetchRequest(NSPredicate(format: "posted == nil || posted == NO"))
-            
-            do {
-                let equations = try self.persistentContainer.viewContext.fetch(fetch)
+        self.persistentContainer.viewContext.perform {
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && self.accountStatus == CKAccountStatus.available {
+                // Fetch items from the data base that are posted == nil or posted == 1
+                // posted == nil items have never been uploaded
+                // posted == 0 items have been posted previously but now need updating.
+                // posted == 1 items have been posted and, to the best of our knowledge, are up to date.
                 
-                if equations.count > 0 {
-                    convertEquationsToCKEquations(equations: equations)
+                // When creating new cloudkit equations we define the record ID as "equation.\(identifier)", this gives us an easy way to reconcile and update items in future from only the recordID.
+                
+                // Get all unposted items
+                let fetch = self.equationsFetchRequest(NSPredicate(format: "posted == nil || posted == NO"))
+                
+                do {
+                    let equations = try self.persistentContainer.viewContext.fetch(fetch)
+                    
+                    if equations.count > 0 {
+                        self.convertEquationsToCKEquations(equations: equations)
+                    }
+                    
+                } catch {
+                    print("Error: Could not fetch equations")
                 }
-                
-            } catch {
-                print("Error: Could not fetch equations")
             }
         }
     }
@@ -377,30 +387,33 @@ class EquationStore {
     
     func cloudFetchLatestEquations() {
         
-        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && self.accountStatus == CKAccountStatus.available {
-            let fetchDate = NSDate()
-            
-            var query = CKQuery(recordType: "Equation", predicate: NSPredicate(value: true))
-            
-            if let lastFetchDate = lastFetchDate {
-                query = CKQuery(recordType: "Equation", predicate: NSPredicate(format: "modificationDate > %@", lastFetchDate))
-            }
-            
-            query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
-            
-            privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
-                print(records)
-                print(error)
+        self.persistentContainer.viewContext.perform {
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && self.accountStatus == CKAccountStatus.available {
+                let fetchDate = NSDate()
                 
-                if let records = records {
+                var query = CKQuery(recordType: "Equation", predicate: NSPredicate(value: true))
+                
+                if let lastFetchDate = self.lastFetchDate {
+                    query = CKQuery(recordType: "Equation", predicate: NSPredicate(format: "modificationDate > %@", lastFetchDate))
+                }
+                
+                query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
+                
+                self.privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
+                    print(records)
+                    print(error)
                     
-                    DispatchQueue.main.async {
-                        self.compareRecords(records: records)
-                        self.setLastFetchDate(date: fetchDate)
+                    if let records = records {
+                        
+                        DispatchQueue.main.async {
+                            self.compareRecords(records: records)
+                            self.setLastFetchDate(date: fetchDate)
+                        }
+                        
                     }
-                    
                 }
             }
+            
         }
     }
     
@@ -416,21 +429,21 @@ class EquationStore {
                         if nameItems[0] == "Equation" {
                             let identifier = nameItems[1]
                             
-                            print(identifier)
+                            //print(identifier)
                             
                             if let fetchedEquation = self.fetchEquationWithIdentifier(string: identifier) {
                                 // Found a matching equation, check if it needs updating.
                                 // Who is newer
                                 
-                                print("fetchedEquation: \(fetchedEquation)")
+                                // print("fetchedEquation: \(fetchedEquation)")
                                 
                                 var preferRemoteCopy = false
                                 
                                 if let localModDate = fetchedEquation.lastModifiedDate, let remoteModDate = record.object(forKey: "equationLastModifiedDate") as? NSDate {
                                     // Ok, they both have mod dates. Which is newer.
                                     
-                                    print(remoteModDate)
-                                    print(localModDate)
+                                    //print(remoteModDate)
+                                    //print(localModDate)
                                     
                                     if (remoteModDate as Date).compare(localModDate as Date) == ComparisonResult.orderedDescending {
                                         // The remoteModDate is newer thatn the local one, therefore we prefer the local version.
@@ -446,7 +459,7 @@ class EquationStore {
                             } else {
                                 // Holy moley this is a new equation! Save it!
                                 let newEquation = self.newEquationFromCKRecord(record: record)
-                                print("newEquation: \(newEquation)")
+                                // print("newEquation: \(newEquation)")
                             }
                         }
                     }

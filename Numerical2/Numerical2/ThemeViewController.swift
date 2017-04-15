@@ -76,21 +76,8 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
     func userPressedDone() {
         
         if let selectedTheme = selectedTheme {
-            
-            if selectedTheme.isPremium {
-                
-                if PremiumCoordinator.shared.canAccessThemes() {
-                    ThemeCoordinator.shared.changeTheme(toTheme: selectedTheme)
-                    dismissSelf()
-                } else {
-                    // Cannot apply this theme. Show the sales view
-                    self.presentSalesScreen(type: SalesScreenType.theme)
-                }
-                
-            } else {
-                ThemeCoordinator.shared.changeTheme(toTheme: selectedTheme)
-                dismissSelf()
-            }
+            ThemeCoordinator.shared.changeTheme(toTheme: selectedTheme)
+            dismissSelf()
         } else {
             dismissSelf()
         }

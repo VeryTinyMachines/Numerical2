@@ -46,8 +46,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     @IBOutlet weak var workPanelShadow: UIImageView!
     
-    @IBOutlet weak var bannerView: UIView!
-    
     @IBOutlet weak var backgroundImageView: UIImageView!
     
     @IBOutlet weak var workPanelHeight: NSLayoutConstraint!
@@ -246,6 +244,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func premiumStatusChanged() {
         
+        /*
         if bannerView.isHidden {
             if showAd() {
                 // Banner is hidden, but user should be seeing an ad.
@@ -269,6 +268,9 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 }
             }
         }
+         */
+        snapPercentageHeight()
+        self.view.layoutIfNeeded()
     }
     
     
@@ -603,9 +605,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     
     func effectiveBannerHeight() -> CGFloat {
+        /*
         if showAd() {
             return bannerView.frame.height + bannerView.frame.origin.y
         }
+ */
         return 0
     }
     
