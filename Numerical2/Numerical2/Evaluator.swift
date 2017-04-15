@@ -453,66 +453,67 @@ open class Evaluator {
         operandTerm.reset()
         rightTerm.reset()
         
-        if termArray.contains(theOperator) {
-            for term in termArray {
-                if Glossary.isStringNumber(term) || Glossary.isStringOperator(term) {
-                    // The term is a valid string or operator
-                    
-                    if leftTerm.complete() == false && requireLeftTerm {
-                        // We are solving the left hand term
-                        if leftTerm.processTerm(term) == false {
-                            // Processed term and resulted in a reset, therefore we need to reset everything.
-                            leftTerm.reset()
-                            operandTerm.reset()
-                            rightTerm.reset()
-                            startIndex = -1
-                        } else {
-                            // The processed term was accepted, need to set startIndex IF it has not already been set.
-                            if startIndex == -1 {
-                                startIndex = counter
-                            }
-                            
+        for term in termArray {
+            if Glossary.isStringNumber(term) || Glossary.isStringOperator(term) {
+                // The term is a valid string or operator
+                
+                if leftTerm.complete() == false && requireLeftTerm {
+                    // We are solving the left hand term
+                    if leftTerm.processTerm(term) == false {
+                        // Processed term and resulted in a reset, therefore we need to reset everything.
+                        leftTerm.reset()
+                        operandTerm.reset()
+                        rightTerm.reset()
+                        startIndex = -1
+                    } else {
+                        // The processed term was accepted, need to set startIndex IF it has not already been set.
+                        if startIndex == -1 {
+                            startIndex = counter
                         }
-                    } else if operandTerm.complete() == false && requireOperator {
                         
-                        // We are searching for theOperator
-                        if term == theOperator {
-                            // It IS the operand we need.
+                    }
+                } else if operandTerm.complete() == false && requireOperator {
+                    
+                    // We are searching for theOperator or one of it's variants
+                    
+                    var operatorWasFound = false
+                    
+                    for singleOperator in theOperator.characters {
+                        print("Checking operator \(singleOperator)")
+                        print("")
+                        if term == "\(singleOperator)" {
+                            // We found the operator!
                             operandTerm.processTerm(term)
                             
                             if operatorType == OperatorType.preOperator {
                                 startIndex = counter
                             }
-                        } else {
-                            // We needed to find the primary operator but we did not, reset it all
-                            leftTerm.reset()
-                            operandTerm.reset()
-                            rightTerm.reset()
-                            startIndex = -1
-                        }
-                    } else if rightTerm.complete() == false && requireRightTerm {
-                        
-                        if rightTerm.processTerm(term) == false {
-                            // Processed term and resulted in a reset.
-                            // However as we are simply waiting for a valid number and will ignore superfluous additional operators we can reset the rightTerm and continue.
                             
-                            rightTerm.reset()
+                            operatorWasFound = true
                         }
+                    }
+                    
+                    if operatorWasFound == false {
+                        // We needed to find the primary operator but we did not, reset it all
+                        leftTerm.reset()
+                        operandTerm.reset()
+                        rightTerm.reset()
+                        startIndex = -1
+                    }
+                } else if rightTerm.complete() == false && requireRightTerm {
+                    
+                    if rightTerm.processTerm(term) == false {
+                        // Processed term and resulted in a reset.
+                        // However as we are simply waiting for a valid number and will ignore superfluous additional operators we can reset the rightTerm and continue.
                         
-                    } else if endPercentage.complete() == false && requireEndPercentageTerm {
-                        
-                        if term == String(SymbolCharacter.percentage) {
-                            // It IS the operand we need.
-                            if endPercentage.processTerm(term) == false {
-                                leftTerm.reset()
-                                operandTerm.reset()
-                                rightTerm.reset()
-                                endPercentage.reset()
-                                startIndex = -1
-                            }
-                            
-                        } else {
-                            // We needed to find the percentage operator but we did not, reset it all
+                        rightTerm.reset()
+                    }
+                    
+                } else if endPercentage.complete() == false && requireEndPercentageTerm {
+                    
+                    if term == String(SymbolCharacter.percentage) {
+                        // It IS the operand we need.
+                        if endPercentage.processTerm(term) == false {
                             leftTerm.reset()
                             operandTerm.reset()
                             rightTerm.reset()
@@ -520,57 +521,65 @@ open class Evaluator {
                             startIndex = -1
                         }
                         
+                    } else {
+                        // We needed to find the percentage operator but we did not, reset it all
+                        leftTerm.reset()
+                        operandTerm.reset()
+                        rightTerm.reset()
+                        endPercentage.reset()
+                        startIndex = -1
                     }
                     
-                    if leftTerm.complete() == requireLeftTerm && operandTerm.complete() == requireOperator && rightTerm.complete() == requireRightTerm && endPercentage.complete() == requireEndPercentageTerm && startIndex > -1 {
-                        // We now have all the terms we need - solve it!
-                        
-                        let endIndex = counter
-                        
-                        var answer = AnswerBundle()
-                        
-                        if operatorType == OperatorType.midOperator {
-                            answer = solveUnknownNumber(leftTerm.stringValue(), theOperator: operandTerm.characterValue(), numberB: rightTerm.stringValue(), operatorType: operatorType, endPercentage: false)
-                        } else if operatorType == OperatorType.preOperator {
-                            answer = solveUnknownNumber(nil, theOperator: operandTerm.characterValue(), numberB: rightTerm.stringValue(), operatorType: operatorType, endPercentage: false)
-                        } else if operatorType == OperatorType.postOperator {
-                            answer = solveUnknownNumber(leftTerm.stringValue(), theOperator: operandTerm.characterValue(), numberB: nil, operatorType: operatorType, endPercentage: false)
-                        } else if operatorType == OperatorType.percentageCombine {
-                            answer = solveUnknownNumber(leftTerm.stringValue(), theOperator: operandTerm.characterValue(), numberB: rightTerm.stringValue(), operatorType: operatorType, endPercentage: true)
-                        }
-                        
-                        if let theAnswer = answer.answer {
-                            
-                            let range = (startIndex ..< endIndex + 1)
-                            termArray.removeSubrange(range)
-                            termArray.insert(theAnswer, at: startIndex)
-                            
-                            // Set the answer as the leftNumber
-                            counter = startIndex
-                            
-                            leftTerm.reset()
-                            operandTerm.reset()
-                            rightTerm.reset()
-                            
-                            // Set the leftNumber as the answer
-                            leftTerm.processTerm(theAnswer)
-                            
-                        } else {
-                            
-                            if let errorType = answer.errorType {
-                                return TermBundle(error: errorType)
-                            } else {
-                                // There was an error here
-                                return TermBundle(error: ErrorType.unknown)
-                            }
-                            
-                            
-                        }
-                    }
                 }
                 
-                counter += 1
+                if leftTerm.complete() == requireLeftTerm && operandTerm.complete() == requireOperator && rightTerm.complete() == requireRightTerm && endPercentage.complete() == requireEndPercentageTerm && startIndex > -1 {
+                    // We now have all the terms we need - solve it!
+                    
+                    let endIndex = counter
+                    
+                    var answer = AnswerBundle()
+                    
+                    if operatorType == OperatorType.midOperator {
+                        answer = solveUnknownNumber(leftTerm.stringValue(), theOperator: operandTerm.characterValue(), numberB: rightTerm.stringValue(), operatorType: operatorType, endPercentage: false)
+                    } else if operatorType == OperatorType.preOperator {
+                        answer = solveUnknownNumber(nil, theOperator: operandTerm.characterValue(), numberB: rightTerm.stringValue(), operatorType: operatorType, endPercentage: false)
+                    } else if operatorType == OperatorType.postOperator {
+                        answer = solveUnknownNumber(leftTerm.stringValue(), theOperator: operandTerm.characterValue(), numberB: nil, operatorType: operatorType, endPercentage: false)
+                    } else if operatorType == OperatorType.percentageCombine {
+                        answer = solveUnknownNumber(leftTerm.stringValue(), theOperator: operandTerm.characterValue(), numberB: rightTerm.stringValue(), operatorType: operatorType, endPercentage: true)
+                    }
+                    
+                    if let theAnswer = answer.answer {
+                        
+                        let range = (startIndex ..< endIndex + 1)
+                        termArray.removeSubrange(range)
+                        termArray.insert(theAnswer, at: startIndex)
+                        
+                        // Set the answer as the leftNumber
+                        counter = startIndex
+                        
+                        leftTerm.reset()
+                        operandTerm.reset()
+                        rightTerm.reset()
+                        
+                        // Set the leftNumber as the answer
+                        leftTerm.processTerm(theAnswer)
+                        
+                    } else {
+                        
+                        if let errorType = answer.errorType {
+                            return TermBundle(error: errorType)
+                        } else {
+                            // There was an error here
+                            return TermBundle(error: ErrorType.unknown)
+                        }
+                        
+                        
+                    }
+                }
             }
+            
+            counter += 1
         }
         
         
@@ -600,8 +609,18 @@ open class Evaluator {
             
             if let theOperator = operatorArray.first {
                 
-                if termArray.contains(theOperator) {
-                    
+                
+                // The operator may be a single operator, or it may be 2 equivalent operators
+                var contains = false
+                
+                for singleOperator in theOperator.characters {
+                    let stringSingleOperator:String = "\(singleOperator)"
+                    if termArray.contains(stringSingleOperator) {
+                        contains = true
+                    }
+                }
+                
+                if contains { // eval fix - this term array contains at least one of the provided operators.
                     let termBundle = self.processTermArray(termArray, theOperator: theOperator, operatorType: operatorType)
                     
                     if let newTermArray = termBundle.termArray {
@@ -700,7 +719,8 @@ open class Evaluator {
 //        print("termArray (5): \(termArray)", appendNewLine: true)
         
         // Solve regular operators (and fraction as divisor)
-        let operatorArray = [String(SymbolCharacter.ee),"^", "/", "*", "+" , "-"]
+        // let operatorArray = [String(SymbolCharacter.ee),"^", "/", "*", "+" , "-"] // eval fix
+        let operatorArray = [String(SymbolCharacter.ee),"^", "/*", "+-"]
         
         termBundle = solveTermArray(termArray, operatorArray: operatorArray, operatorType: OperatorType.midOperator)
         

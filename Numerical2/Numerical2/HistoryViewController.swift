@@ -122,7 +122,7 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         
         UIView.animate(withDuration: 0.2, animations: {
             self.tableView.contentInset = insets
-            
+            self.tableView.scrollIndicatorInsets = insets
             /*
              // do not scroll to current equation, kind of annoying
             if let indexPath = indexPath {

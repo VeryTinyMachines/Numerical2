@@ -32,6 +32,10 @@ class ThemeCreatorViewController:NumericalViewController {
     
     @IBOutlet weak var exampleContainerView: UIView!
     
+    var blurView: UIVisualEffectView?
+    
+    @IBOutlet weak var blurViewHolder: UIView!
+    
     var updateTheme:Theme?
     var gradiantLayer:CAGradientLayer?
     var gradiantLayer2:CAGradientLayer?
@@ -106,6 +110,7 @@ class ThemeCreatorViewController:NumericalViewController {
         self.backgroundColorView.backgroundColor = UIColor.clear
         
         updateColorsMethod()
+        updateBlurView()
         exampleView.alpha = 0
     }
     
@@ -217,6 +222,7 @@ class ThemeCreatorViewController:NumericalViewController {
     
     @IBAction func styleSelectorValueChanged(_ sender: UISegmentedControl) {
         updateColors()
+        updateBlurView()
     }
     
     
@@ -262,6 +268,7 @@ class ThemeCreatorViewController:NumericalViewController {
                 //print("gradiantQueue.async")
                 
                 let slider1Color = self.color(float: self.slider1.value)
+                let slider2Color = self.color(float: self.slider2.value)
                 
                 var lightStyle = false
                 
@@ -270,8 +277,6 @@ class ThemeCreatorViewController:NumericalViewController {
                 }
                 
                 let slider1ColorAug = NumericalHelper.convertIn(number1: self.slider1.value, number2: self.slider1Augment.value, isSecondColor: false, isLightStyle: lightStyle)
-                
-                let slider2Color = self.color(float: self.slider2.value)
                 
                 let slider2ColorAug = NumericalHelper.convertIn(number1: self.slider2.value, number2: self.slider2Augment.value, isSecondColor: true, isLightStyle: lightStyle)
                 
@@ -308,7 +313,6 @@ class ThemeCreatorViewController:NumericalViewController {
                     
                     self.slider2Augment.thumbTintColor = slider2ColorAug
                     self.slider2Augment.minimumTrackTintColor = slider2ColorAug
-                    
                     
                     self.exampleView.layer.insertSublayer(layer, at: 0)
                     self.exampleView.backgroundColor = UIColor.clear
@@ -364,7 +368,8 @@ class ThemeCreatorViewController:NumericalViewController {
         
         // TODO - This is dumb as hell, consolidate these methods.
         
-        let slider1Color = self.color(float: self.slider1.value)
+        var slider1Color = self.color(float: self.slider1.value)
+        let slider2Color = self.color(float: self.slider2.value)
         
         var lightStyle = false
         
@@ -373,8 +378,6 @@ class ThemeCreatorViewController:NumericalViewController {
         }
         
         let slider1ColorAug = NumericalHelper.convertIn(number1: self.slider1.value, number2: self.slider1Augment.value, isSecondColor: false, isLightStyle: lightStyle)
-        
-        let slider2Color = self.color(float: self.slider2.value)
         
         let slider2ColorAug = NumericalHelper.convertIn(number1: self.slider2.value, number2: self.slider2Augment.value, isSecondColor: true, isLightStyle: lightStyle)
         
@@ -483,6 +486,22 @@ class ThemeCreatorViewController:NumericalViewController {
     
     func color(float: Float) -> UIColor {
         return UIColor(hue: CGFloat(float), saturation:1.0, brightness:1.0, alpha:1.0)
+    }
+    
+    func updateBlurView() {
+        if let currentBlurView = self.blurView {
+            currentBlurView.removeFromSuperview()
+            self.blurView = nil
+        }
+        
+        let visualEffectView = ThemeCoordinator.shared.visualEffectViewForStyle(style: ThemeStyle.bright)
+        
+        self.autoLayoutAddView(subView: visualEffectView, intoView: blurViewHolder)
+        
+        // visualEffectView
+        visualEffectView.bindFrameToSuperviewBounds()
+        
+        self.blurView = visualEffectView
     }
     
 }

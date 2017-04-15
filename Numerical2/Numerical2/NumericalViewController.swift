@@ -302,6 +302,17 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         }
     }
     
+    func autoLayoutAddView(subView: UIView, intoView:UIView) {
+        
+        subView.translatesAutoresizingMaskIntoConstraints = false
+        
+        intoView.addSubview(subView)
+        
+        intoView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[subView]-0-|", options: NSLayoutFormatOptions.directionLeadingToTrailing, metrics: nil, views: ["subView":subView]))
+        
+        intoView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[subView]-0-|", options: NSLayoutFormatOptions.directionLeadingToTrailing, metrics: nil, views: ["subView":subView]))
+    }
+    
     func displayAlert(title: String?, message: String?) {
         let alert = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: "Ok")
         alert.show()

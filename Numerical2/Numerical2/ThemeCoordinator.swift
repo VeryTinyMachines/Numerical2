@@ -42,12 +42,8 @@ class ThemeCoordinator {
         
         // Set the current theme based on the saved ID.
         if let theme = themeForID(themeID: self.currentThemeID()) {
-            if theme.isPremium && PremiumCoordinator.shared.canAccessThemes() == false {
-                self.changeTheme(toTheme: ThemeFormatter.defaultTheme())
-            } else {
-                theCurrentTheme = theme
-                self.saveCurrentThemeForKeyboard()
-            }
+            theCurrentTheme = theme
+            self.saveCurrentThemeForKeyboard()
         } else {
             theCurrentTheme = ThemeFormatter.defaultTheme()
             self.saveCurrentThemeForKeyboard()
@@ -63,7 +59,7 @@ class ThemeCoordinator {
     }
     
     func saveCurrentThemeForKeyboard() {
-        // print("")
+        
         if let defs = UserDefaults(suiteName: "group.andrewjclark.numericalapp") {
             
             let firstColor = firstColorForCurrentTheme()
@@ -206,10 +202,28 @@ class ThemeCoordinator {
     }
     
     func visualEffectViewForCurrentTheme() -> UIVisualEffectView {
-        if currentTheme().style == ThemeStyle.normal {
+        let theme = currentTheme()
+        return visualEffectViewForTheme(theme: theme)
+    }
+    
+    func visualEffectViewForTheme(theme:Theme) -> UIVisualEffectView {
+        if theme.style == ThemeStyle.normal {
             // Normal aka light
             return UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        } else if currentTheme().style == ThemeStyle.bright {
+        } else if theme.style == ThemeStyle.bright {
+            // Bright
+            return UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        } else {
+            // Dark
+            return UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        }
+    }
+    
+    func visualEffectViewForStyle(style:ThemeStyle) -> UIVisualEffectView {
+        if style == ThemeStyle.normal {
+            // Normal aka light
+            return UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        } else if style == ThemeStyle.bright {
             // Bright
             return UIVisualEffectView(effect: UIBlurEffect(style: .light))
         } else {

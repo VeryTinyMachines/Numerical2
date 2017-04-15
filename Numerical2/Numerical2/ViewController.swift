@@ -76,13 +76,36 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         currentStatus = self.preferredStatusBarStyle
         
-        themeChanged()
-        
         /*
         Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { (timer) in
             
         })
  */
+        
+        let currentVersion = NumericalHelper.currentDeviceInfo(includeBuildNumber: false)
+        
+        if let previousVersion = UserDefaults.standard.string(forKey: "CurrentVersion") {
+            if currentVersion != previousVersion {
+                // Display a tool tip
+                DispatchQueue.main.async {
+                    let alertView = UIAlertController(title: "Numerical² has been updated!", message: "You can learn about the new features by going to settings and selected What's New. Or tap the button below.", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    alertView.addAction(UIAlertAction(title: "What's New", style: UIAlertActionStyle.default, handler: { (action) in
+                        self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical2-whatsnew")
+                    }))
+                    
+                    alertView.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
+                        
+                    }))
+                    
+                    self.present(alertView, animated: true, completion: { 
+                        
+                    })
+                }
+            }
+        }
+        
+        UserDefaults.standard.set(currentVersion, forKey: "CurrentVersion")
         
     }
     
@@ -127,8 +150,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     */
     
     func themeChanged() {
-        self.backgroundImageView.image = nil
-        self.backgroundImageView.isHidden = true
+        //self.backgroundImageView.image = nil
+        //self.backgroundImageView.isHidden = true
         
         self.view.layoutIfNeeded()
         
@@ -139,7 +162,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         let layer = ThemeCoordinator.shared.gradiantLayerForCurrentTheme()
         layer.frame = self.view.frame
         
-        self.view.layer.insertSublayer(layer, at: 0)
+        self.view.layer.insertSublayer(layer, at: 1) // This puts the layer above the background image
         
         self.view.backgroundColor = ThemeCoordinator.shared.currentTheme().firstColor
         
@@ -563,7 +586,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     func delectedEquation(_ equation: Equation) {
         
         if currentEquation == equation {
-            
             currentEquation = nil
             if let theWorkPanel = workPanelView {
                 theWorkPanel.currentEquation = currentEquation
@@ -577,6 +599,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        themeChanged()
         premiumStatusChanged()
     }
     

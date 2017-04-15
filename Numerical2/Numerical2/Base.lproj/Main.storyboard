@@ -24,7 +24,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="68R-zT-cl3" userLabel="Background Image">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchBackground" translatesAutoresizingMaskIntoConstraints="NO" id="68R-zT-cl3" userLabel="Background Image">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRv-bj-Wrb" userLabel="Seperator">
@@ -591,6 +591,9 @@
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V67-25-mZm">
                                         <rect key="frame" x="59" y="0.0" width="217" height="387"/>
                                         <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cJa-M0-yz0" userLabel="blurViewHolder">
+                                                <rect key="frame" x="-0.5" y="-0.5" width="217" height="387"/>
+                                            </view>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Theme_Phone_Keypad.png" translatesAutoresizingMaskIntoConstraints="NO" id="1P7-wK-pfw" userLabel="Keypad_2">
                                                 <rect key="frame" x="0.0" y="0.0" width="217" height="387"/>
                                             </imageView>
@@ -604,11 +607,15 @@
                                             <constraint firstAttribute="bottom" secondItem="FHa-Ya-oc2" secondAttribute="bottom" id="7qj-Lp-7YA"/>
                                             <constraint firstAttribute="trailing" secondItem="FHa-Ya-oc2" secondAttribute="trailing" id="9uZ-ew-UGc"/>
                                             <constraint firstItem="1P7-wK-pfw" firstAttribute="leading" secondItem="V67-25-mZm" secondAttribute="leading" id="D2n-qh-10z"/>
+                                            <constraint firstItem="cJa-M0-yz0" firstAttribute="width" secondItem="1P7-wK-pfw" secondAttribute="width" id="Nfp-ly-VbY"/>
                                             <constraint firstItem="1P7-wK-pfw" firstAttribute="top" secondItem="V67-25-mZm" secondAttribute="top" id="Ofx-Xa-3PB"/>
+                                            <constraint firstItem="cJa-M0-yz0" firstAttribute="centerY" secondItem="1P7-wK-pfw" secondAttribute="centerY" id="XWi-6M-InD"/>
                                             <constraint firstItem="FHa-Ya-oc2" firstAttribute="leading" secondItem="V67-25-mZm" secondAttribute="leading" id="Xuk-zl-DWj"/>
                                             <constraint firstAttribute="bottom" secondItem="1P7-wK-pfw" secondAttribute="bottom" id="dV8-ZS-LZx"/>
                                             <constraint firstItem="FHa-Ya-oc2" firstAttribute="top" secondItem="V67-25-mZm" secondAttribute="top" id="k2q-hU-4DK"/>
+                                            <constraint firstItem="cJa-M0-yz0" firstAttribute="centerX" secondItem="1P7-wK-pfw" secondAttribute="centerX" id="lVo-NZ-Tcn"/>
                                             <constraint firstAttribute="trailing" secondItem="1P7-wK-pfw" secondAttribute="trailing" id="moK-Hf-RCb"/>
+                                            <constraint firstItem="cJa-M0-yz0" firstAttribute="height" secondItem="1P7-wK-pfw" secondAttribute="height" id="q30-ML-ywn"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -655,6 +662,7 @@
                     </view>
                     <connections>
                         <outlet property="backgroundColorView" destination="QSE-Ct-aoa" id="0tE-iL-WaG"/>
+                        <outlet property="blurViewHolder" destination="cJa-M0-yz0" id="hXh-hS-Oco"/>
                         <outlet property="exampleAspectRatio" destination="2da-QD-ip9" id="nRT-TG-QGY"/>
                         <outlet property="exampleContainerView" destination="8P9-95-0HC" id="sFI-pd-lSV"/>
                         <outlet property="exampleView" destination="V67-25-mZm" id="udn-7m-J6h"/>

@@ -336,9 +336,9 @@ open class Glossary {
     
     class func isStringOperator(_ string: String) -> Bool {
         
-        if string.characters.count > 1 {
-            return false
-        }
+//        if string.characters.count > 1 {
+//            return false
+//        }
         
         for character in string.characters {
             if SymbolCharacter.operators.contains(character) == false {

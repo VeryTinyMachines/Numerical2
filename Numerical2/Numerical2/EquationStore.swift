@@ -363,6 +363,7 @@ class EquationStore {
         
         fetchRequest = self.equationsFetchRequest(NSPredicate(format: "userDeleted == nil || userDeleted == 0"))
         
+        
         // Edit the section name key path and cache name if appropriate.
         // nil for section name key path means "no sections".
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -374,7 +375,8 @@ class EquationStore {
         fetchRequest.predicate = predicate
         
         // Edit the sort key as appropriate.
-        let sortDescriptor = NSSortDescriptor(key: "sortOrder", ascending: true)
+        // let sortDescriptor = NSSortDescriptor(key: "sortOrder", ascending: true) // newest at bottom
+        let sortDescriptor = NSSortDescriptor(key: "sortOrder", ascending: false) // newest at top
         fetchRequest.sortDescriptors = [sortDescriptor]
         return fetchRequest
     }

@@ -59,8 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         
-        let currentVersion = NumericalHelper.currentDeviceInfo(includeBuildNumber: false)
-        UserDefaults.standard.set(currentVersion, forKey: "CurrentVersion")
+        // Current Version saving and presentation is now in ViewController
         
         return true
     }

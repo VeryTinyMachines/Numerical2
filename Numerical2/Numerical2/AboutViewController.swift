@@ -22,6 +22,7 @@ public enum AboutViewItem {
     case seperator
     case cloudSync
     case keyboard
+    case whatsnew
 }
 
 class AboutViewController: NumericalViewController, UITableViewDelegate, UITableViewDataSource {
@@ -42,6 +43,10 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         updateBackgroundColorForPresentationType()
         
         items = [
+        
+        AboutViewItem.whatsnew,
+        
+        AboutViewItem.seperator,
         
         AboutViewItem.premiumInfo,
         
@@ -237,6 +242,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
 
         case .keyboard:
             cell.textLabel?.text = "Keyboard"
+        case .whatsnew:
+            cell.textLabel?.text = "What's New?"
         }
         
         cell.textLabel?.numberOfLines = 3
@@ -342,6 +349,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                 self.present(alert, animated: true, completion: {
                     
                 })
+            case .whatsnew:
+                self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical2-whatsnew")
             case .seperator:
                 break
             }

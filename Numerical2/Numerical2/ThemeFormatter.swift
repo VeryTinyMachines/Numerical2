@@ -112,8 +112,14 @@ extension UIColor {
         guard getHue(&h, saturation: &s, brightness: &b, alpha: &a)
             else {return self}
         
+        if b < 0 {
+            b = 0
+        }
+        
         // b *= 1.5
-        b *= 1.4
+        //b *= 1.4
+        
+        b += 0.2
         s *= 0.8
         
         if b > 1.0 {
