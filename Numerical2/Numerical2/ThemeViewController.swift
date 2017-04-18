@@ -21,6 +21,8 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
     var selectedTheme:Theme?
     
     override func viewDidLoad() {
+        SimpleLogger.appendLog(string: "ThemeViewController.viewDidLoad()")
+        
         super.viewDidLoad()
         
         self.collectionView.dataSource = self
@@ -50,13 +52,9 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
         NotificationCenter.default.addObserver(self, selector: #selector(ThemeViewController.reloadData), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
         
         selectedTheme = ThemeCoordinator.shared.currentTheme()
+        SimpleLogger.appendLog(string: "ThemeViewController selected theme set: \(selectedTheme)")
         
         themeChanged()
-        
-//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
-//            PremiumCoordinator.shared.premiumIAPUser = true
-//            PremiumCoordinator.shared.postUserPremiumStatusChanged()
-//        }
     }
     
     func themeChangedFromNotif() {
@@ -196,6 +194,8 @@ class ThemeViewController: NumericalViewController, UICollectionViewDelegate, UI
     }
     
     func themeChanged() {
+        
+        SimpleLogger.appendLog(string: "ThemeViewController.themeChanged()")
         
         self.view.layoutIfNeeded()
         

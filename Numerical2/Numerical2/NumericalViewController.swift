@@ -74,6 +74,10 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
                 }
             }
             
+            if let data = SimpleLogger.shared.logAsData() {
+                picker.addAttachmentData(data, mimeType: "text/plain", fileName: "log.txt")
+            }
+            
             present(picker, animated: true, completion: {
                 () -> Void in
                 
@@ -318,6 +322,25 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         alert.show()
     }
     
+    func convertHistory(block:((_ complete: Bool) -> Void)?) {
+        self.beginLoadingScreen()
+        
+        EquationStore.sharedStore.convertDeprecatedEquationsIfNeeded(complete: { (convertComplete) in
+            DispatchQueue.main.async {
+                self.endLoadingScreen()
+                
+                if convertComplete {
+                    self.displayAlert(title: "Success", message: "Your Numerical v1 history has now been converted to Numerical²!")
+                } else {
+                    self.displayAlert(title: "Error", message: "Your Numerical v1 history could not be converted :(\nPlease contact support")
+                }
+                
+                block?(convertComplete)
+                
+                NotificationCenter.default.post(name: Notification.Name(rawValue: NumericalHelperSetting.migration), object: nil)
+            }
+        })
+    }
     
     
 }

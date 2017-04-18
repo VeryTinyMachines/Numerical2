@@ -13,6 +13,9 @@ public struct NumericalHelperSetting {
     public static let iCloudHistorySync = "iCloudHistorySync"
     public static let autoBrackets = "autoBrackets"
     public static let sounds = "sounds"
+    public static let themes = "themes"
+    public static let logging = "logging"
+    public static let migration = "migration"
 }
 
 class NumericalHelper {
@@ -22,6 +25,10 @@ class NumericalHelper {
     }
     
     class func isSettingEnabled(string: String) -> Bool {
+        
+        if string == NumericalHelperSetting.themes {
+            return true // temp force true
+        }
         
         if let obj = UserDefaults.standard.object(forKey: string) as? NSNumber {
             return obj.boolValue

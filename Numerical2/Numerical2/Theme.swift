@@ -76,4 +76,8 @@ class Theme: NSObject, NSCoding {
             self.secondColor = obj
         }
     }
+    
+    override var description: String {
+        return "Theme[\(title), \(themeID), \(firstColor), \(secondColor), \(style)]"
+    }
 }

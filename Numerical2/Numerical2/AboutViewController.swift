@@ -23,6 +23,9 @@ public enum AboutViewItem {
     case cloudSync
     case keyboard
     case whatsnew
+    case themes
+    case logging
+    case migratehistory
 }
 
 class AboutViewController: NumericalViewController, UITableViewDelegate, UITableViewDataSource {
@@ -42,42 +45,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         
         updateBackgroundColorForPresentationType()
         
-        items = [
-        
-        AboutViewItem.whatsnew,
-        
-        AboutViewItem.seperator,
-        
-        AboutViewItem.premiumInfo,
-        
-        AboutViewItem.seperator,
-        
-        AboutViewItem.themeSelector,
-        
-        AboutViewItem.seperator,
-        
-        AboutViewItem.sounds,
-        
-        AboutViewItem.seperator,
-        
-        AboutViewItem.autoBracket,
-        
-        AboutViewItem.seperator,
-        
-        AboutViewItem.cloudSync,
-        
-        AboutViewItem.seperator,
-        
-        AboutViewItem.keyboard,
-        
-        AboutViewItem.seperator,
-        
-        AboutViewItem.contact,
-        AboutViewItem.follow,
-        AboutViewItem.share,
-        AboutViewItem.rate,
-        AboutViewItem.website
-        ]
+        setupItems()
         
         if let navCon = self.navigationController {
             print(navCon)
@@ -95,12 +63,59 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         
         NotificationCenter.default.addObserver(self, selector: #selector(AboutViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(AboutViewController.reloadData), name: Notification.Name(rawValue: NumericalHelperSetting.migration), object: nil)
+        
 //        for cellName in ["SwitchCell"] {
 //            let nib = UINib(nibName: cellName, bundle: nil)
 //            self.tableView.register(nib, forCellReuseIdentifier: cellName)
 //        }
         
         self.themeChanged()
+    }
+    
+    func setupItems() {
+        
+        items.removeAll()
+        
+        items.append(AboutViewItem.whatsnew)
+        items.append(AboutViewItem.seperator)
+        items.append(AboutViewItem.premiumInfo)
+        items.append(AboutViewItem.seperator)
+        
+        /*
+        items.append(AboutViewItem.themes)
+        items.append(AboutViewItem.seperator)
+        */
+        
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.themes) {
+            items.append(AboutViewItem.themeSelector)
+            items.append(AboutViewItem.seperator)
+        }
+        
+        items.append(AboutViewItem.sounds)
+        items.append(AboutViewItem.seperator)
+        
+        items.append(AboutViewItem.autoBracket)
+        items.append(AboutViewItem.seperator)
+        
+        items.append(AboutViewItem.cloudSync)
+        items.append(AboutViewItem.seperator)
+        
+        items.append(AboutViewItem.logging)
+        items.append(AboutViewItem.seperator)
+        
+        if EquationStore.sharedStore.canConvertDeprecatedEquations() {
+            items.append(AboutViewItem.migratehistory)
+            items.append(AboutViewItem.seperator)
+        }
+        
+        items.append(AboutViewItem.keyboard)
+        items.append(AboutViewItem.seperator)
+        items.append(AboutViewItem.contact)
+        items.append(AboutViewItem.follow)
+        items.append(AboutViewItem.share)
+        items.append(AboutViewItem.rate)
+        items.append(AboutViewItem.website)
     }
     
     func themeChanged() {
@@ -244,6 +259,20 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             cell.textLabel?.text = "Keyboard"
         case .whatsnew:
             cell.textLabel?.text = "What's New?"
+        case .themes:
+            let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
+            
+            setSwitchCell(text: "Enable Themes", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.themes), row: indexPath.row, switchCell: switchCell)
+            
+            return switchCell
+        case .logging:
+            let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
+            
+            setSwitchCell(text: "Enable Debug Logging", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.logging), row: indexPath.row, switchCell: switchCell)
+            
+            return switchCell
+        case .migratehistory:
+            cell.textLabel?.text = "Convert Numerical v1 History"
         }
         
         cell.textLabel?.numberOfLines = 3
@@ -296,6 +325,27 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             NumericalHelper.flipSetting(string: NumericalHelperSetting.autoBrackets)
         case .sounds:
             NumericalHelper.flipSetting(string: NumericalHelperSetting.sounds)
+        case .themes:
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.themes)
+            
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.themes) {
+                // This is enabled.
+                self.displayAlert(title: "Themes", message: "Something is going wrong with themes and we are still determining the cause. If you see a strange grey background color then please switch this off.")
+            }
+            
+            setupItems()
+            reloadData()
+            
+            ThemeCoordinator.shared.postThemeChangedNotification()
+        case .logging:
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.logging)
+            
+            SimpleLogger.shared.loggingEnabled = NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.logging)
+            
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.logging) {
+                // This is enabled.
+                self.displayAlert(title: "Debug Logging is enabled", message: "This may affect app performance so disable this unless you want to use it and are helping AJC fix a bug.")
+            }
         default:
             break
         }
@@ -351,16 +401,24 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                 })
             case .whatsnew:
                 self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical2-whatsnew")
+            case .themes:
+                break
             case .seperator:
                 break
+            case .logging:
+                break
+            case .migratehistory:
+                self.convertHistory(block: { (complete) in
+                    
+                })
             }
         }
-        
-        
     }
+    
     
     func reloadData() {
         DispatchQueue.main.async {
+            self.setupItems()
             self.tableView.reloadData()
         }
     }

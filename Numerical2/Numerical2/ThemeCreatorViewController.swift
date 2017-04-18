@@ -45,6 +45,8 @@ class ThemeCreatorViewController:NumericalViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.transparencyChanged), name: NSNotification.Name.UIAccessibilityReduceTransparencyStatusDidChange, object: nil)
+        
         var items = [UIBarButtonItem]()
         
         let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ThemeCreatorViewController.userPressedDoneButton))
@@ -95,13 +97,10 @@ class ThemeCreatorViewController:NumericalViewController {
             self.changeHeightMultipler(16/9)
         }
         
-        
-        
         // Initial Setup
         if let image = self.keypadImage1.image {
             self.keypadImage1.image = image.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         }
-        
         
         if let image = self.keypadImage2.image {
             self.keypadImage2.image = image.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
@@ -114,7 +113,10 @@ class ThemeCreatorViewController:NumericalViewController {
         exampleView.alpha = 0
     }
     
-    
+    func transparencyChanged() {
+        updateBlurView()
+        updateColors()
+    }
     
     func changeHeightMultipler(_ height: CGFloat) {
         
@@ -259,6 +261,13 @@ class ThemeCreatorViewController:NumericalViewController {
     func updateColors() {
         
         let sliderState = currentSliderState()
+        
+        if ThemeCoordinator.shared.blurViewAllowed() {
+            blurViewHolder.backgroundColor = UIColor.clear
+        } else {
+            blurViewHolder.backgroundColor = UIColor(white: 1.0, alpha: 0.1)
+        }
+        
         
         if self.gradiantBlockRunning == false {
             self.gradiantBlockRunning = true
@@ -494,14 +503,14 @@ class ThemeCreatorViewController:NumericalViewController {
             self.blurView = nil
         }
         
-        let visualEffectView = ThemeCoordinator.shared.visualEffectViewForStyle(style: ThemeStyle.bright)
-        
-        self.autoLayoutAddView(subView: visualEffectView, intoView: blurViewHolder)
-        
-        // visualEffectView
-        visualEffectView.bindFrameToSuperviewBounds()
-        
-        self.blurView = visualEffectView
+        if let visualEffectView = ThemeCoordinator.shared.visualEffectViewForStyle(style: ThemeStyle.bright) {
+            self.autoLayoutAddView(subView: visualEffectView, intoView: blurViewHolder)
+            
+            // visualEffectView
+            visualEffectView.bindFrameToSuperviewBounds()
+            
+            self.blurView = visualEffectView
+        }
     }
     
 }

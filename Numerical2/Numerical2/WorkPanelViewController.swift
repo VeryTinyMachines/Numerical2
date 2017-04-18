@@ -194,6 +194,8 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.themeChanged), name: NSNotification.Name.UIAccessibilityReduceTransparencyStatusDidChange, object: nil)
+        
         currentEquation = EquationStore.sharedStore.currentEquation()
         workPanelDelegate?.updateEquation(currentEquation)
         
@@ -233,12 +235,13 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             self.blurView = nil
         }
         
-        let visualEffectView = ThemeCoordinator.shared.visualEffectViewForCurrentTheme()
-        self.view.insertSubview(visualEffectView, at: 0)
-        
-        visualEffectView.bindFrameToSuperviewBounds()
-        
-        self.blurView = visualEffectView
+        if let visualEffectView = ThemeCoordinator.shared.visualEffectViewForCurrentTheme() {
+            self.view.insertSubview(visualEffectView, at: 0)
+            
+            visualEffectView.bindFrameToSuperviewBounds()
+            
+            self.blurView = visualEffectView
+        }
     }
     
     func questionChanged(_ newQuestion: String, overwrite: Bool) {

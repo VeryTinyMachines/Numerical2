@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import CloudKit
+import Crashlytics
 
 public enum SubscriptionType {
     case modify
@@ -204,6 +205,10 @@ class EquationStore {
                  */
                 print("Unresolved error \(error), \(error.userInfo)")
                 
+                SimpleLogger.appendLog(string: "EquationStore.persistentCoordinator error: \(error.code) \(error.localizedDescription)")
+                
+                Crashlytics.sharedInstance().recordError(error)
+                
                 let alert = UIAlertView(title: "Equation Store Error 2", message: "\(error.localizedDescription)", delegate: nil, cancelButtonTitle: "Ok")
                 alert.show()
             }
@@ -214,6 +219,7 @@ class EquationStore {
     // MARK: - Core Data Saving support
     
     func saveContext() -> Bool {
+        
         print("saveContext")
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -227,6 +233,10 @@ class EquationStore {
                 let nserror = error as NSError
                 print("Unresolved error \(nserror), \(nserror.userInfo)")
                 
+                SimpleLogger.appendLog(string: "EquationStore.saveContext error: \(nserror.code) \(nserror.localizedDescription)")
+                
+                Crashlytics.sharedInstance().recordError(nserror)
+                
                 let alert = UIAlertView(title: "Equation Store Error", message: "\(nserror.localizedDescription)", delegate: nil, cancelButtonTitle: "Ok")
                 alert.show()
                 
@@ -239,28 +249,33 @@ class EquationStore {
     }
     
     func updateCloudKit() {
-        self.persistentContainer.viewContext.perform {
-            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && self.accountStatus == CKAccountStatus.available {
-                // Fetch items from the data base that are posted == nil or posted == 1
-                // posted == nil items have never been uploaded
-                // posted == 0 items have been posted previously but now need updating.
-                // posted == 1 items have been posted and, to the best of our knowledge, are up to date.
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && self.accountStatus == CKAccountStatus.available {
+            // Fetch items from the data base that are posted == nil or posted == 1
+            // posted == nil items have never been uploaded
+            // posted == 0 items have been posted previously but now need updating.
+            // posted == 1 items have been posted and, to the best of our knowledge, are up to date.
+            
+            // When creating new cloudkit equations we define the record ID as "equation.\(identifier)", this gives us an easy way to reconcile and update items in future from only the recordID.
+            
+            // Get all unposted items
+            let fetch = self.equationsFetchRequest(NSPredicate(format: "posted == nil || posted == NO"))
+            
+            do {
+                let equations = try self.persistentContainer.viewContext.fetch(fetch)
                 
-                // When creating new cloudkit equations we define the record ID as "equation.\(identifier)", this gives us an easy way to reconcile and update items in future from only the recordID.
-                
-                // Get all unposted items
-                let fetch = self.equationsFetchRequest(NSPredicate(format: "posted == nil || posted == NO"))
-                
-                do {
-                    let equations = try self.persistentContainer.viewContext.fetch(fetch)
-                    
-                    if equations.count > 0 {
-                        self.convertEquationsToCKEquations(equations: equations)
-                    }
-                    
-                } catch {
-                    print("Error: Could not fetch equations")
+                if equations.count > 0 {
+                    self.convertEquationsToCKEquations(equations: equations)
                 }
+                
+            } catch {
+                
+                let nserror = error as NSError
+                
+                SimpleLogger.appendLog(string: "EquationStore.updateCloudKit error: \(nserror.code) \(nserror.localizedDescription)")
+                
+                Crashlytics.sharedInstance().recordError(nserror)
+                
+                print("Error: Could not fetch equations")
             }
         }
     }
@@ -304,57 +319,54 @@ class EquationStore {
     
     func queueCloudKitEquations(equations: [CKRecord]) {
         
-        let operation = CKModifyRecordsOperation(recordsToSave: equations, recordIDsToDelete: nil)
-        operation.isAtomic = true
-        operation.savePolicy = CKRecordSavePolicy.allKeys
-        
-        operation.perRecordCompletionBlock = {record, error in
+        self.persistentContainer.newBackgroundContext().performAndWait {
+            let operation = CKModifyRecordsOperation(recordsToSave: equations, recordIDsToDelete: nil)
+            operation.isAtomic = true
+            operation.savePolicy = CKRecordSavePolicy.allKeys
             
-            self.persistentContainer.performBackgroundTask({ (context) in
+            operation.perRecordCompletionBlock = {record, error in
                 print("perRecordCompletionBlock")
                 //if let record = record {
-                    print("record: \(record)")
-                    if let identifier = record.object(forKey: "identifier") as? String {
-                        print("identifier: \(identifier)")
+                print("record: \(record)")
+                if let identifier = record.object(forKey: "identifier") as? String {
+                    print("identifier: \(identifier)")
+                    
+                    // Compare the record with the current state of the equation.
+                    // If all aspects are the same then we have successfully posted this equation.
+                    
+                    // Fetch this equation from the supplied equations.
+                    
+                    if let equation = self.queuedEquationsToSave[identifier] {
+                        // Found the queued equation.
                         
-                        // Compare the record with the current state of the equation.
-                        // If all aspects are the same then we have successfully posted this equation.
-                        
-                        // Fetch this equation from the supplied equations.
-                        
-                        if let equation = self.queuedEquationsToSave[identifier] {
-                            // Found the queued equation.
+                        if equation.isEqualToCKEquation(record: record) {
+                            print("This equation is now up to date")
+                            equation.posted = NSNumber(value: true)
+                            self.queuedEquationsToSave[identifier] = nil
                             
-                            if equation.isEqualToCKEquation(record: record) {
-                                print("This equation is now up to date")
-                                equation.posted = NSNumber(value: true)
-                                self.queuedEquationsToSave[identifier] = nil
-                                
-                            } else {
-                                print("Uh oh this equation has changed")
-                            }
-                            
-                            
+                        } else {
+                            print("Uh oh this equation has changed")
                         }
                     }
-                //}
-            })
-        }
-        
-        operation.modifyRecordsCompletionBlock = { modified, deleted, error in
-            print("modifyRecordsCompletionBlock")
-            if let modified = modified {
-                print("modified: \(modified)")
-                print("")
+                }
             }
+            
+            operation.modifyRecordsCompletionBlock = { modified, deleted, error in
+                print("modifyRecordsCompletionBlock")
+                if let modified = modified {
+                    print("modified: \(modified)")
+                    print("")
+                }
+            }
+            
+            operation.completionBlock = {
+                // Operation is complete, save if needed.
+                self.queueSave()
+            }
+            
+            self.privateDatabase.add(operation)
         }
         
-        operation.completionBlock = {
-            // Operation is complete, save if needed.
-            self.queueSave()
-        }
-        
-        privateDatabase.add(operation)
     }
     
     
@@ -388,39 +400,32 @@ class EquationStore {
     } ()
     
     func cloudFetchLatestEquations() {
-        
-        self.persistentContainer.viewContext.perform {
-            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && self.accountStatus == CKAccountStatus.available {
-                let fetchDate = NSDate()
-                
-                var query = CKQuery(recordType: "Equation", predicate: NSPredicate(value: true))
-                
-                if let lastFetchDate = self.lastFetchDate {
-                    query = CKQuery(recordType: "Equation", predicate: NSPredicate(format: "modificationDate > %@", lastFetchDate))
-                }
-                
-                query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
-                
-                self.privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
-                    print(records)
-                    print(error)
-                    
-                    if let records = records {
-                        
-                        DispatchQueue.main.async {
-                            self.compareRecords(records: records)
-                            self.setLastFetchDate(date: fetchDate)
-                        }
-                        
-                    }
-                }
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && self.accountStatus == CKAccountStatus.available {
+            let fetchDate = NSDate()
+            
+            var query = CKQuery(recordType: "Equation", predicate: NSPredicate(value: true))
+            
+            if let lastFetchDate = self.lastFetchDate {
+                query = CKQuery(recordType: "Equation", predicate: NSPredicate(format: "modificationDate > %@", lastFetchDate))
             }
             
+            query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
+            
+            self.privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
+                //print(records)
+                //print(error)
+                
+                if let records = records {
+                    self.compareRecords(records: records)
+                    self.setLastFetchDate(date: fetchDate)
+                }
+            }
         }
     }
     
     func compareRecords(records: [CKRecord]) {
-        DispatchQueue.main.async {
+        
+        self.persistentContainer.newBackgroundContext().performAndWait {
             for record in records {
                 
                 let name = record.recordID.recordName
@@ -469,7 +474,6 @@ class EquationStore {
             }
             
             self.queueSave()
-
         }
     }
     
@@ -650,7 +654,7 @@ class EquationStore {
         }
     }
     
-    func convertDeprecatedEquationsIfNeeded() {
+    func canConvertDeprecatedEquations() -> Bool {
         
         let manager = FileManager.default
         
@@ -660,47 +664,87 @@ class EquationStore {
         let path = applicationSupportPath + "/calcDataHistory.plist"
         
         if let dict = NSDictionary(contentsOfFile: path) as? [String:Any] {
-            print(dict.keys)
-            
             if let questionArray = dict["LONGHISTORY"] as? NSArray, let answerArray = dict["LONGHISTORYANSWER"] as? NSArray {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    func convertDeprecatedEquationsIfNeeded(complete: ((_ complete: Bool) -> Void)?) {
+        
+        self.persistentContainer.newBackgroundContext().performAndWait {
+            let manager = FileManager.default
+            
+            let paths = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)
+            let applicationSupportPath = paths[0]
+            
+            let path = applicationSupportPath + "/calcDataHistory.plist"
+            
+            if let dict = NSDictionary(contentsOfFile: path) as? [String:Any] {
+                print(dict.keys)
                 
-                var totalItems = questionArray.count
-                
-                if totalItems > answerArray.count {
-                    totalItems = answerArray.count
-                }
-                
-                var importedEquations = [DeprecatedEquation]()
-                
-                for number in 0...totalItems - 1 {
-                    if let question = questionArray[number] as? String, let answer = answerArray[number] as? String {
+                if let questionArray = dict["LONGHISTORY"] as? NSArray, let answerArray = dict["LONGHISTORYANSWER"] as? NSArray {
+                    
+                    var totalItems = questionArray.count
+                    
+                    if totalItems > answerArray.count {
+                        totalItems = answerArray.count
+                    }
+                    
+                    var importedEquations = [DeprecatedEquation]()
+                    
+                    for number in 0...totalItems - 1 {
+                        if let question = questionArray[number] as? String, let answer = answerArray[number] as? String {
+                            
+                            print("\(question) = \(answer)")
+                            
+                            let dE = DeprecatedEquation(answer: answer, question: question)
+                            importedEquations.append(dE)
+                        }
+                    }
+                    
+                    var count = 0
+                    for de in importedEquations {
                         
-                        let dE = DeprecatedEquation(answer: answer, question: question)
-                        importedEquations.append(dE)
+                        if count < 100 {
+                            //print("\(count): \(de.question) = \(de.answer)")
+                            
+                            let equation = self.newEquation()
+                            equation.answer = de.answer
+                            equation.question = de.question
+                            equation.creationDate = NSDate(timeIntervalSinceNow: TimeInterval(-count))
+                            equation.lastModifiedDate = NSDate(timeIntervalSinceNow: TimeInterval(-count))
+                        }
+                        
+                        count += 1
                     }
-                }
-                
-                var count = 0
-                for de in importedEquations {
                     
-                    let equation = newEquation()
-                    equation.answer = de.answer
-                    equation.question = de.question
-                    equation.creationDate = NSDate(timeIntervalSinceNow: TimeInterval(-count))
-                    equation.lastModifiedDate = NSDate(timeIntervalSinceNow: TimeInterval(-count))
-                    
-                    count += 1
-                }
-                
-                if self.saveContext() {
-                    // save successful
-                    // Delete the calchistory
-                    do {
-                        try manager.removeItem(atPath: path)
-                    } catch {
-                        print("Could not delete old equations file")
+                    if self.saveContext() {
+                        // save successful
+                        // Delete the calchistory
+                        do {
+                            try manager.removeItem(atPath: path)
+                            
+                            complete?(true)
+                            return
+                        } catch {
+                            print("Could not delete old equations file")
+                            complete?(false)
+                            return
+                        }
+                    } else {
+                        complete?(false)
+                        return
                     }
+                } else {
+                    complete?(false)
+                    return
                 }
+            } else {
+                complete?(false)
+                return
             }
         }
     }

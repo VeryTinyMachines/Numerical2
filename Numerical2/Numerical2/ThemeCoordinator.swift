@@ -16,6 +16,8 @@ class ThemeCoordinator {
     
     static let shared = ThemeCoordinator()
     fileprivate init() {
+        SimpleLogger.appendLog(string: "ThemeCoordinator.init")
+        
         themes.append(Theme(title: "Candy", themeID: "candy001", color1: "fc52ff", color2: "48b1d4", style: ThemeStyle.normal, premium: false))
         themes.append(Theme(title: "Mint", themeID: "green002", color1: "62b849", color2: "3a80cc", style: ThemeStyle.normal, premium: true))
         themes.append(Theme(title: "Lava", themeID: "red001", color1: "b94747", color2: "e10101", style: ThemeStyle.normal, premium: true))
@@ -38,15 +40,22 @@ class ThemeCoordinator {
         
         themes.append(Theme(title: "Leaves", themeID: "leaves001", color1: "3c6511", color2: "6e8811", style: ThemeStyle.normal, premium: true))
         
+        SimpleLogger.appendLog(string: "Setup \(themes.count) themes")
+        
         loadThemes()
+        
+        SimpleLogger.appendLog(string: "Loaded \(userThemes.count) user themes")
         
         // Set the current theme based on the saved ID.
         if let theme = themeForID(themeID: self.currentThemeID()) {
             theCurrentTheme = theme
             self.saveCurrentThemeForKeyboard()
+            SimpleLogger.appendLog(string: "Set current theme \(theme.themeID) with ID")
+            
         } else {
             theCurrentTheme = ThemeFormatter.defaultTheme()
             self.saveCurrentThemeForKeyboard()
+            SimpleLogger.appendLog(string: "Set default theme")
         }
     }
     
@@ -54,7 +63,8 @@ class ThemeCoordinator {
         if let theme = theCurrentTheme {
             return theme
         } else {
-            return ThemeFormatter.defaultTheme()
+            let defaultTheme = ThemeFormatter.defaultTheme()
+            return defaultTheme
         }
     }
     
@@ -95,6 +105,7 @@ class ThemeCoordinator {
             }
         }
         
+        SimpleLogger.appendLog(string: "ThemeCoordinator.themeForID could not find theme with ID, returning nil")
         return nil
     }
     
@@ -115,6 +126,8 @@ class ThemeCoordinator {
         
         postThemeChangedNotification()
         self.saveCurrentThemeForKeyboard()
+        
+        SimpleLogger.appendLog(string: "ThemeCoordinator.changeTheme to \(theme)")
     }
     
     func addNewUserTheme(theme: Theme) {
@@ -124,7 +137,7 @@ class ThemeCoordinator {
     
     func deleteTheme(theme:Theme) {
         
-        print("userThemes: \(userThemes)")
+        //print("userThemes: \(userThemes)")
         
         var cleanedThemes = [Theme]()
         
@@ -134,11 +147,11 @@ class ThemeCoordinator {
             }
         }
         
-        print("cleanedThemes: \(cleanedThemes)")
+        //print("cleanedThemes: \(cleanedThemes)")
         
         userThemes = cleanedThemes
         
-        print("userThemes: \(userThemes)")
+        //print("userThemes: \(userThemes)")
         
         saveThemes()
         resetTheme()
@@ -201,49 +214,81 @@ class ThemeCoordinator {
         }
     }
     
-    func visualEffectViewForCurrentTheme() -> UIVisualEffectView {
-        let theme = currentTheme()
-        return visualEffectViewForTheme(theme: theme)
+    func visualEffectViewForCurrentTheme() -> UIVisualEffectView? {
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.themes) {
+            // This is enabled.
+            let theme = currentTheme()
+            return visualEffectViewForTheme(theme: theme)
+        }
+        
+        return nil
     }
     
-    func visualEffectViewForTheme(theme:Theme) -> UIVisualEffectView {
-        if theme.style == ThemeStyle.normal {
-            // Normal aka light
-            return UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        } else if theme.style == ThemeStyle.bright {
-            // Bright
-            return UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        } else {
-            // Dark
-            return UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+    func visualEffectViewForTheme(theme:Theme) -> UIVisualEffectView? {
+        if blurViewAllowed() {
+            if theme.style == ThemeStyle.normal {
+                // Normal aka light
+                return UIVisualEffectView(effect: UIBlurEffect(style: .light))
+            } else if theme.style == ThemeStyle.bright {
+                // Bright
+                return UIVisualEffectView(effect: UIBlurEffect(style: .light))
+            } else {
+                // Dark
+                return UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+            }
         }
+        
+        return nil
     }
     
-    func visualEffectViewForStyle(style:ThemeStyle) -> UIVisualEffectView {
-        if style == ThemeStyle.normal {
-            // Normal aka light
-            return UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        } else if style == ThemeStyle.bright {
-            // Bright
-            return UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        } else {
-            // Dark
-            return UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+    func visualEffectViewForStyle(style:ThemeStyle) -> UIVisualEffectView? {
+        if blurViewAllowed() {
+            if style == ThemeStyle.normal {
+                // Normal aka light
+                return UIVisualEffectView(effect: UIBlurEffect(style: .light))
+            } else if style == ThemeStyle.bright {
+                // Bright
+                return UIVisualEffectView(effect: UIBlurEffect(style: .light))
+            } else {
+                // Dark
+                return UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+            }
         }
+        
+        return nil
+    }
+    
+    func blurViewAllowed() -> Bool {
+        if (UIAccessibilityIsReduceTransparencyEnabled()) {
+            // transparency is disabled, so blur views are not allowed
+            return false
+        }
+        
+        return true
     }
     
     func foregroundColorForCurrentTheme() -> UIColor {
-        return ThemeFormatter.foregroundColorForTheme(theme: currentTheme())
+        
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.themes) {
+            // This is enabled.
+            return ThemeFormatter.foregroundColorForTheme(theme: currentTheme())
+        }
+        
+        return UIColor.white
     }
     
     func preferredStatusBarStyleForCurrentTheme() -> UIStatusBarStyle {
-        return ThemeFormatter.preferredStatusBarStyleForTheme(theme: self.currentTheme())
+        
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.themes) {
+            // This is enabled.
+            return ThemeFormatter.preferredStatusBarStyleForTheme(theme: self.currentTheme())
+        }
+        
+        return UIStatusBarStyle.lightContent
     }
     
     func gradiantLayerForCurrentTheme() -> CAGradientLayer {
-        
         let currentTheme = self.currentTheme()
-        
         return ThemeFormatter.gradiantLayerForTheme(theme: currentTheme)
     }
     

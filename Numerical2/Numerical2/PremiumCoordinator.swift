@@ -468,7 +468,7 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
             
             return jsonFromValidatedData(data: data)
         } catch {
-            print("Error: Could not load local validated json")
+            //print("Error: Could not load local validated json")
         }
         
         return nil
@@ -485,7 +485,7 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
             }
             
         } catch {
-            print("Error: Could not load local validated json")
+            //print("Error: Could not load local validated json")
         }
         
         return nil

@@ -36,6 +36,7 @@
 		5131971A1B6ADD5900E9B802 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 513197181B6ADD5900E9B802 /* LaunchScreen.storyboard */; };
 		513197251B6ADD5900E9B802 /* Numerical2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513197241B6ADD5900E9B802 /* Numerical2Tests.swift */; };
 		513197301B6ADD5900E9B802 /* Numerical2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */; };
+		513A9E051EA284690017D9A5 /* SimpleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513A9E041EA284690017D9A5 /* SimpleLogger.swift */; };
 		5142AE3C1DA420EE0076D117 /* 5_Star-(alt).png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE361DA420EE0076D117 /* 5_Star-(alt).png */; };
 		5142AE3D1DA420EE0076D117 /* 5_Star.png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE371DA420EE0076D117 /* 5_Star.png */; };
 		5142AE3E1DA420EE0076D117 /* 54_Lock-(alt).png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE381DA420EE0076D117 /* 54_Lock-(alt).png */; };
@@ -183,6 +184,7 @@
 		5131972B1B6ADD5900E9B802 /* Numerical2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Numerical2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numerical2UITests.swift; sourceTree = "<group>"; };
 		513197311B6ADD5900E9B802 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		513A9E041EA284690017D9A5 /* SimpleLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleLogger.swift; sourceTree = "<group>"; };
 		5142AE361DA420EE0076D117 /* 5_Star-(alt).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5_Star-(alt).png"; sourceTree = "<group>"; };
 		5142AE371DA420EE0076D117 /* 5_Star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5_Star.png; sourceTree = "<group>"; };
 		5142AE381DA420EE0076D117 /* 54_Lock-(alt).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "54_Lock-(alt).png"; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				5131970F1B6ADD5900E9B802 /* AppDelegate.swift */,
+				513A9E041EA284690017D9A5 /* SimpleLogger.swift */,
 				517470CB1D95C7B000E70A74 /* EquationStore.swift */,
 				51E032871E76E6610000A2A5 /* WorkPanelShadow@2x.png */,
 				51E032851E76C6F20000A2A5 /* AppIcon120x120@2x.png */,
@@ -939,6 +942,7 @@
 				51F24F801DEFF8550023D15E /* ThemeViewController.swift in Sources */,
 				519B1B131BA0532A00C06E70 /* HistoryCell.swift in Sources */,
 				51D28B121B6D100A009A0AEC /* EquationViewCell.swift in Sources */,
+				513A9E051EA284690017D9A5 /* SimpleLogger.swift in Sources */,
 				512137BD1D969C760042EFC1 /* NumericalHelper.swift in Sources */,
 				51C40E8B1DCC167200930BFD /* SoundManager.swift in Sources */,
 				51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */,

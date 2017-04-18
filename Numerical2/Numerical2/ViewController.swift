@@ -52,6 +52,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     @IBOutlet weak var workPanelBottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var historyViewBottomConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,6 +64,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.premiumStatusChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.transparencyChanged), name: NSNotification.Name.UIAccessibilityReduceTransparencyStatusDidChange, object: nil)
         
         /*
         bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
@@ -106,7 +110,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         }
         
         UserDefaults.standard.set(currentVersion, forKey: "CurrentVersion")
-        
+    }
+    
+    func transparencyChanged() {
+        snapPercentageHeight()
+        themeChanged()
     }
     
     /*
@@ -150,27 +158,43 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     */
     
     func themeChanged() {
-        //self.backgroundImageView.image = nil
-        //self.backgroundImageView.isHidden = true
         
-        self.view.layoutIfNeeded()
-        
-        if let gradiantLayer = gradiantLayer {
-            gradiantLayer.removeFromSuperlayer()
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.themes) {
+            // This is enabled.
+            SimpleLogger.appendLog(string: "ViewController.themeChanged()")
+            
+            //self.backgroundImageView.image = nil
+            //self.backgroundImageView.isHidden = true
+            
+            self.view.layoutIfNeeded()
+            
+            if let gradiantLayer = gradiantLayer {
+                gradiantLayer.removeFromSuperlayer()
+            }
+            
+            let layer = ThemeCoordinator.shared.gradiantLayerForCurrentTheme()
+            layer.frame = self.view.frame
+            
+            self.view.layer.insertSublayer(layer, at: 1) // This puts the layer above the background image
+            
+            self.view.backgroundColor = ThemeCoordinator.shared.currentTheme().firstColor
+            
+            gradiantLayer = layer
+            
+            // Update the status bar blur view
+            updateBlurView()
+            updateBackgroundVisibility()
+        } else {
+            if let gradiantLayer = gradiantLayer {
+                gradiantLayer.removeFromSuperlayer()
+            }
+            
+            gradiantLayer = nil
+            self.view.backgroundColor = UIColor.black
+            
+            updateBlurView()
+            updateBackgroundVisibility()
         }
-        
-        let layer = ThemeCoordinator.shared.gradiantLayerForCurrentTheme()
-        layer.frame = self.view.frame
-        
-        self.view.layer.insertSublayer(layer, at: 1) // This puts the layer above the background image
-        
-        self.view.backgroundColor = ThemeCoordinator.shared.currentTheme().firstColor
-        
-        gradiantLayer = layer
-        
-        // Update the status bar blur view
-        updateBlurView()
-        updateBackgroundVisibility()
     }
     
     func updateBlurView() {
@@ -179,12 +203,13 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             self.blurView = nil
         }
         
-        let visualEffectView = ThemeCoordinator.shared.visualEffectViewForCurrentTheme()
-        self.statusBarBlur.insertSubview(visualEffectView, at: 0)
-        
-        visualEffectView.bindFrameToSuperviewBounds()
-        
-        self.blurView = visualEffectView
+        if let visualEffectView = ThemeCoordinator.shared.visualEffectViewForCurrentTheme() {
+            self.statusBarBlur.insertSubview(visualEffectView, at: 0)
+            
+            visualEffectView.bindFrameToSuperviewBounds()
+            
+            self.blurView = visualEffectView
+        }
     }
     
     func updateBackgroundVisibility() {
@@ -247,6 +272,10 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             workPanelShadow.isHidden = false
             if workPanelShadow.alpha != workPanelAlpha {
                 workPanelShadow.alpha = workPanelAlpha
+            }
+            
+            if ThemeCoordinator.shared.blurViewAllowed() == false {
+                self.workPanelShadow.alpha = 0
             }
         } else {
             workPanelShadow.isHidden = true
@@ -447,6 +476,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 }, completion: { (complete) -> Void in
                     self.updateKeypad()
                     self.updateBackgroundVisibility(height: CGFloat(self.workPanelPercentage))
+                    self.snapPercentageHeight()
                     
             })
             
@@ -638,21 +668,25 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func updateHistoryContentInsets(viewSize: CGSize) {
         
-        let equationHeightPercentage = 140 / viewSize.height
-        
-        let viewHeight = viewSize.height - effectiveBannerHeight()
-        
-        var bottomInset:CGFloat = viewHeight * CGFloat(workPanelPercentage)
-        
-        if viewSize.width > viewSize.height {
-            bottomInset = viewHeight * CGFloat(equationHeightPercentage)
-        } else {
-            if workPanelPercentage > 0.5 {
-                bottomInset = viewHeight * 0.5
+        if ThemeCoordinator.shared.blurViewAllowed() {
+            let equationHeightPercentage = 140 / viewSize.height
+            
+            let viewHeight = viewSize.height - effectiveBannerHeight()
+            
+            var bottomInset:CGFloat = viewHeight * CGFloat(workPanelPercentage)
+            
+            if viewSize.width > viewSize.height {
+                bottomInset = viewHeight * CGFloat(equationHeightPercentage)
+            } else {
+                if workPanelPercentage > 0.5 {
+                    bottomInset = viewHeight * 0.5
+                }
             }
+            
+            self.historyView?.updateContentInsets(UIEdgeInsets(top: 0, left: 0, bottom: bottomInset + (effectiveBannerHeight() / 2), right: 0))
+        } else {
+            self.historyView?.updateContentInsets(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
         }
-        
-        self.historyView?.updateContentInsets(UIEdgeInsets(top: 0, left: 0, bottom: bottomInset + (effectiveBannerHeight() / 2), right: 0))
     }
     
     func statusBarHidden() -> Bool {
@@ -675,10 +709,17 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         // determine the middle float point given this height
         
         let middlePoint = (self.viewHeightWithAd() / self.view.frame.height) / 2
+        var panelSize:CGFloat = 0
         
         if newHeight > middlePoint {
             self.changeHeightMultipler(CGFloat(newHeight))
             self.workPanelBottomConstraint.constant = 0
+            
+            self.historyViewBottomConstraint.constant = 0 // The bottom of the view
+            // What is the visible height of the workpanel?
+            
+            panelSize = self.view.frame.height * newHeight + 1
+            
         } else {
             self.changeHeightMultipler(CGFloat(middlePoint))
             
@@ -687,7 +728,22 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             let viewHeight = self.viewHeightWithoutAd()
             
             self.workPanelBottomConstraint.constant = offset * viewHeight
+            
+            panelSize = (self.view.frame.height * newHeight) - offset + 1
         }
+        
+        print("panelSize: \(panelSize)")
+        
+        
+        if ThemeCoordinator.shared.blurViewAllowed() {
+            self.workPanelView?.view.backgroundColor = UIColor.clear
+            self.historyViewBottomConstraint.constant = 0
+        } else {
+            self.historyViewBottomConstraint.constant = panelSize
+            self.workPanelView?.view.backgroundColor = UIColor(white: 1.0, alpha: 0.1)
+        }
+        
+        
     }
     
     func changeHeightMultipler(_ height: CGFloat) {

@@ -15,7 +15,11 @@ protocol HistoryViewControllerDelegate {
     func delectedEquation(_ equation: Equation)
 }
 
-class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+class HistoryViewController: NumericalViewController, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+    
+    let kSectionEquations = 0
+    let kSectionMigrate = 1
+    let kSectionsCount = 2
     
     var delegate:HistoryViewControllerDelegate?
     var fetchedResultsController = NSFetchedResultsController<Equation>()
@@ -79,15 +83,19 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         
         NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.iCloudSyncChanged), name: Notification.Name(rawValue: NumericalHelperSetting.iCloudHistorySync), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.reloadData), name: Notification.Name(rawValue: NumericalHelperSetting.iCloudHistorySync), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.reloadData), name: Notification.Name(rawValue: NumericalHelperSetting.migration), object: nil)
         
         themeChanged()
     }
     
-    func iCloudSyncChanged() {
-        self.tableView.reloadData()
+    func reloadData() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
-
+    
     func themeChanged() {
         self.tableView.separatorColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
         self.tableView.reloadData()
@@ -120,6 +128,7 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         }
         */
         
+        
         UIView.animate(withDuration: 0.2, animations: {
             self.tableView.contentInset = insets
             self.tableView.scrollIndicatorInsets = insets
@@ -150,7 +159,7 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return kSectionsCount
     }
     
     
@@ -158,14 +167,31 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as UITableViewCell
         
-        self.configureCell(cell, atIndexPath: indexPath)
+        if indexPath.section == kSectionEquations {
+            self.configureCell(cell, atIndexPath: indexPath)
+        } else {
+            let answer = "Convert Numerical v1 History"
+            
+            cell.backgroundColor = UIColor.clear
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            
+            var color = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(1.0)
+            
+            let questionFont = UIFont.systemFont(ofSize: 15.0)
+            let answerFont = UIFont.systemFont(ofSize: 20.0)
+            
+            let attributedString = NSMutableAttributedString(string: answer, attributes: [NSFontAttributeName:questionFont, NSForegroundColorAttributeName:color])
+            
+            cell.textLabel?.attributedText = attributedString
+            cell.detailTextLabel?.text = nil
+        }
         
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        return indexPath.section == kSectionEquations
     }
     
     
@@ -189,11 +215,18 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if let equation = fetchedResultsController.object(at: indexPath) as? Equation, let theDelegate = delegate {
-            theDelegate.selectedEquation(equation)
+        if indexPath.section == kSectionEquations {
+            if let equation = fetchedResultsController.object(at: indexPath) as? Equation, let theDelegate = delegate {
+                theDelegate.selectedEquation(equation)
+            }
+            
+            self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+        } else {
+            // Migrate
+            self.convertHistory(block: { (complete) in
+                // Reloading is done via migration notification
+            })
         }
-        
-        self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -297,8 +330,17 @@ class HistoryViewController: UIViewController, NSFetchedResultsControllerDelegat
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let info = self.fetchedResultsController.sections![section] as NSFetchedResultsSectionInfo
-        return info.numberOfObjects
+        if section == kSectionEquations {
+            let info = self.fetchedResultsController.sections![section] as NSFetchedResultsSectionInfo
+            return info.numberOfObjects
+        } else {
+            if EquationStore.sharedStore.canConvertDeprecatedEquations() {
+                return 1
+            } else {
+                return 0
+            }
+        }
+        
         
     }
     

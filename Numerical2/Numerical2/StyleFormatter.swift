@@ -47,16 +47,20 @@ class StyleFormatter {
             pointSize = 18
             //return UIFont.systemFont(ofSize: 18.0)
         case .about:
-            pointSize = 18
+            pointSize = 16
             fontName = "Avenir-Light"
         }
         
-        return UIFont(name: fontName, size: pointSize)!
+        if let font = UIFont(name: fontName, size: pointSize) {
+            return font
+        } else {
+            return UIFont.systemFont(ofSize: pointSize)
+        }
     }
     
     class func preferredFontForButtonOfSize(_ size: CGSize, key: Character?) -> UIFont {
         
-        var pointSize:CGFloat = 23 // Numerical 1 was 25
+        var pointSize:CGFloat = 25 // Numerical 1 was 25
         var fontName = "HelveticaNeue-Light"
         
         let smallOperands:Set<Character> = [SymbolCharacter.add, SymbolCharacter.multiply, SymbolCharacter.infinity]
@@ -72,7 +76,11 @@ class StyleFormatter {
             }
         }
         
-        return UIFont(name: fontName, size: pointSize)!
+        if let font = UIFont(name: fontName, size: pointSize) {
+            return font
+        } else {
+            return UIFont.systemFont(ofSize: pointSize)
+        }
     }
     
 }

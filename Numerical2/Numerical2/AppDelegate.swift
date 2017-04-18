@@ -20,10 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        EquationStore.sharedStore.initialiseSetup()
-        EquationStore.sharedStore.convertDeprecatedEquationsIfNeeded()
-        
         Fabric.with([Crashlytics.self])
+        
+        EquationStore.sharedStore.initialiseSetup()
+        // EquationStore.sharedStore.convertDeprecatedEquationsIfNeeded()
         
         PremiumCoordinator.shared.setupManager()
         
@@ -33,6 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DispatchQueue.main.async {
             SoundManager.primeSounds()
         }
+        
+        SimpleLogger.appendLog(string: "application.didFinishLaunchingWithOptions")
+        
         
         
         
