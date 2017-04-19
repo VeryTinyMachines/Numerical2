@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		510570831EA760B100120B6E /* QuestionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510570821EA760B100120B6E /* QuestionCollectionView.swift */; };
 		510D3ABB1B6B657F00D1A07F /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
 		510D3ABE1B6B657F00D1A07F /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; };
 		510D3ABF1B6B657F00D1A07F /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
@@ -154,6 +155,7 @@
 
 /* Begin PBXFileReference section */
 		38E3580757802F55FE75C212 /* Pods-Numerical2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Numerical2.release.xcconfig"; path = "Pods/Target Support Files/Pods-Numerical2/Pods-Numerical2.release.xcconfig"; sourceTree = "<group>"; };
+		510570821EA760B100120B6E /* QuestionCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionCollectionView.swift; sourceTree = "<group>"; };
 		510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
 		510D3AB81B6B657F00D1A07F /* Evaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Evaluator.swift; sourceTree = "<group>"; };
 		510D3AB91B6B657F00D1A07F /* Glossary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Glossary.swift; sourceTree = "<group>"; };
@@ -520,6 +522,7 @@
 			isa = PBXGroup;
 			children = (
 				51D28B0D1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift */,
+				510570821EA760B100120B6E /* QuestionCollectionView.swift */,
 				51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */,
 				51D28B4D1B6D1BA9009A0AEC /* FractionViewCell.xib */,
 				51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */,
@@ -926,6 +929,7 @@
 				512138271D96F7590042EFC1 /* Equation+CoreDataClass.swift in Sources */,
 				515F5EF31DFBCA5B00E182C3 /* NumericalViewController.swift in Sources */,
 				5623BDF51BD40FDB0046B84D /* Constants.swift in Sources */,
+				510570831EA760B100120B6E /* QuestionCollectionView.swift in Sources */,
 				512137C11D96A76F0042EFC1 /* PremiumCoordinator.swift in Sources */,
 				51BE48B11E139AE3002A2B92 /* NumericalViewHelper.swift in Sources */,
 				517470CE1D95D35100E70A74 /* DataKeyStore.swift in Sources */,

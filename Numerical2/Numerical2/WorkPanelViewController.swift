@@ -81,20 +81,11 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         // Add rounded corners
         self.view.layer.cornerRadius = 10.0
-        /*
- - (void)setMaskTo:(UIView*)view byRoundingCorners:(UIRectCorner)corners
- {
- UIBezierPath *rounded = [UIBezierPath bezierPathWithRoundedRect:view.bounds
- byRoundingCorners:corners
- cornerRadii:CGSizeMake(8.0, 8.0)];
- CAShapeLayer *shape = [[CAShapeLayer alloc] init];
- [shape setPath:rounded.CGPath];
- view.layer.mask = shape;
- }
- */
     }
     
-    
+    override func viewDidLayoutSubviews() {
+        // equationView?.view.transform = CGAffineTransform(scaleX: -1.0, y: 1.0) // FLIP!
+    }
  
     func beginTutorial() {
         inTutorial = true

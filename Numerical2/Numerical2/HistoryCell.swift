@@ -13,6 +13,10 @@ class HistoryCell: UITableViewCell {
     var equation:Equation?
     var currentEquation = false
     
+    override func awakeFromNib() {
+        self.backgroundColor = UIColor.clear
+        self.selectionStyle = UITableViewCellSelectionStyle.none
+    }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

@@ -31,17 +31,17 @@ class StyleFormatter {
         
         switch context {
         case .question:
-            pointSize = 20
+            pointSize = 26
             //return UIFont.systemFont(ofSize: 20.0)
         case .questionFraction:
             //return UIFont.systemFont(ofSize: 14.0)
-            pointSize = 14
+            pointSize = 26
         case .answer:
-            pointSize = 72
+            pointSize = 80
             fontName = "HelveticaNeue-Thin"
             //return UIFont(name: fontName, size: pointSize)!
         case .answerFraction:
-            pointSize = 28
+            pointSize = 34
             //return UIFont.systemFont(ofSize: 28.0)
         case .answerOr:
             pointSize = 18

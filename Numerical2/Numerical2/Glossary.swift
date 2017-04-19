@@ -239,8 +239,6 @@ open class Glossary {
         
         let numberFormatter = NumberFormatter()
         
-        print("string: \(string)")
-        
         if let number = numberFormatter.number(from: string) {
             
             if number.doubleValue > 1000000000000 || (number.doubleValue > 0 && number.doubleValue < 0.0000000001) {

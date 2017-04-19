@@ -21,6 +21,11 @@ class FractionViewCell:UICollectionViewCell {
     
     @IBOutlet weak var seperatorView: UIView!
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
+    }
+    
     func setAnswerCell(_ answer: FractionViewCellType) {
         
         var font:UIFont?

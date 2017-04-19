@@ -189,8 +189,7 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
             self.reloadCollectionView()
         }
 */
-        
-        self.questionArray = newQuestionComponents
+        self.questionArray = newQuestionComponents.reversed()
         self.reloadCollectionView()
         
     }
@@ -204,19 +203,37 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     @IBOutlet weak var doneButton: UIButton!
     
     func reloadCollectionView() {
+        //self.collecitonView.semanticContentAttribute = UISemanticContentAttribute.forceLeftToRight
+        //self.collecitonView.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
+
+        
         collecitonView.reloadData()
         
+        /*
         if questionArray.count > 0 {
+            let lastItem = self.questionArray.count - 1
+            
+            let indexPath = IndexPath(item: lastItem, section: 0)
+            self.collecitonView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: false)
+            
+            
+            self.collecitonView.semanticContentAttribute = UISemanticContentAttribute.forceRightToLeft
+            
+            self.collecitonView.scrollToItem(at: IndexPath(item: lastItem, section: 0), at: UICollectionViewScrollPosition.right, animated: false)
+            
+            
+            
+             else if lastItem > 0 {
+             self.collecitonView.scrollToItem(at: IndexPath(item: lastItem, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
+             }
+ 
+
+            
             DispatchQueue.main.async {
-                let lastItem = self.questionArray.count - 1
-                
-                if self.isAnswerView {
-                    self.collecitonView.scrollToItem(at: IndexPath(item: 0, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
-                } else if lastItem > 0 {
-                    self.collecitonView.scrollToItem(at: IndexPath(item: lastItem, section: 0), at: UICollectionViewScrollPosition.right, animated: false)
-                }
             }
         }
+ */
+
     }
     
     func setEditingMode(editing: Bool, animated: Bool) {
@@ -323,6 +340,8 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                     }
                 }
             }
+            
+            //cell.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
             
             return cell
         } else {
@@ -622,6 +641,5 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     func isQuestionEditting() -> Bool {
         return !textField.isHidden
     }
-    
     
 }

@@ -31,6 +31,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     var workPanelVerticalSpeed:CGFloat = 0.0
     
     var workPanelPercentage:Float = 1.0
+    let midPoint:CGFloat = 0.7
     
     var panning = false
     
@@ -113,7 +114,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     }
     
     func transparencyChanged() {
-        snapPercentageHeight()
+        // snapPercentageHeight()
         themeChanged()
     }
     
@@ -163,8 +164,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             // This is enabled.
             SimpleLogger.appendLog(string: "ViewController.themeChanged()")
             
-            //self.backgroundImageView.image = nil
-            //self.backgroundImageView.isHidden = true
+            self.backgroundImageView.image = nil
+            self.backgroundImageView.isHidden = true
             
             self.view.layoutIfNeeded()
             
@@ -218,6 +219,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     
     func updateBackgroundVisibility(height: CGFloat) {
+        print("updateBackgroundVisibilityheight: \(height)")
         
         // Height is never quite 1.0 at maximum because we always leave a bit of room for the status bar. As such we should increase height just a little so that the shade and alpha changes are relative to 1.0
         
@@ -232,7 +234,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         self.shadeView.backgroundColor = UIColor.black
         
         var shadeAlpha:CGFloat = 0.0
-        shadeAlpha = CGFloat(originalHeight - 0.5)
+        shadeAlpha = CGFloat(originalHeight - midPoint) // The maths here is weird but it works for some reason.
         if shadeAlpha > 0.5 {
             shadeAlpha = 0.5
         }
@@ -253,6 +255,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 print("self.historyView?.view.alpha: \(self.historyView?.view.alpha)")
             }
         }
+        
         
         // Add the drop shadow as needed.
         var workPanelAlpha = CGFloat((height * -2) + 2)
@@ -321,8 +324,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             }
         }
          */
-        snapPercentageHeight()
-        self.view.layoutIfNeeded()
+        //snapPercentageHeight()
+        //self.view.layoutIfNeeded()
     }
     
     
@@ -376,6 +379,24 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     }
     
     
+    func equationHeight(workPanelHeight: CGFloat) -> CGFloat {
+        let viewHeight = viewHeightWithAd()
+        let equationHeight = (workPanelHeight * viewHeight) / 3
+        print("equationHeight: \(equationHeight)")
+        
+        if equationHeight < minimumEquationHeight() {
+            return minimumEquationHeight()
+        } else {
+            return equationHeight
+        }
+    }
+    
+    func minimumEquationHeight() -> CGFloat {
+        return 160
+    }
+    
+    // pan gesture
+    
     func workPanelPanned(_ sender: UIPanGestureRecognizer) {
        //print("workPanelPanned")
         
@@ -396,8 +417,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
 
             // origin is where the touch started.
             // location is where the touch is now.
-            // the work panel has it's own height as a percentage (workPanelPercentage)
-            // we need to determine, based on the 3 items above, what the new percentage is.
+            
             
             if let origin = workPanelSlideOrigin {
                 
@@ -405,33 +425,14 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 
                 let verticalDeltaPercentage = verticalDelta / view.bounds.height
                 
-                if panning == false {
-                    if verticalDelta > 30 || verticalDelta < -30 {
-                        
-                        panning = true
-                        
-                        // Quickly animate to this pan point
-                        
-                        let newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
-                        
-                        updateWorkPanelForHeight(Float(newHeight))
-                        updateBackgroundVisibility(height: newHeight)
-                        
-                        self.view.layoutIfNeeded()
-                    }
-                } else {
-                    var newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
-                    
-                    if newHeight > 1 {
-                        let diff = newHeight - 1
-                        newHeight = 1 + (diff / 4)
-                    }
-                    
-                    updateWorkPanelForHeight(Float(newHeight))
-                    updateBackgroundVisibility(height: newHeight)
-                    
-                    view.layoutIfNeeded()
+                var newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
+                
+                if newHeight > 1 {
+                    let diff = newHeight - 1
+                    newHeight = 1 + (diff / 4)
                 }
+                
+                self.updateConstraints(heightPercentage: newHeight, viewSize:self.view.frame.size, velocity: 0, animated: false)
             }
             
             if let lastLocation = workPanelLastLocation {
@@ -443,42 +444,33 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         case .ended:
            //print("ended")
             
-            panning = false
             
             if let origin = workPanelSlideOrigin {
-                let verticalDelta = location.y - origin.y
                 
-               //print("verticalDelta: \(verticalDelta)")
+                let verticalDelta = location.y - origin.y
                 
                 let verticalDeltaPercentage = verticalDelta / view.bounds.height
                 
-               //print("verticalDeltaPercentage: \(verticalDeltaPercentage)")
+                var newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
                 
-                let newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
+                if newHeight > 1 {
+                    let diff = newHeight - 1
+                    newHeight = 1 + (diff / 4)
+                }
+                
+                newHeight = snappedHeight(heightPercentage: newHeight, velocity: workPanelVerticalSpeed, viewSize: self.view.frame.size, animated: true)
+                
+                
+                var velocityPercentage = workPanelVerticalSpeed / self.view.frame.height
+                
+                if velocityPercentage < 0 {
+                    velocityPercentage *= -1
+                }
+                
+                self.updateConstraints(heightPercentage: newHeight, viewSize:self.view.frame.size, velocity: velocityPercentage, animated: true)
                 
                 workPanelPercentage = Float(newHeight)
-                
-                updateWorkPanelForHeight(Float(newHeight))
-                
-                view.layoutIfNeeded()
             }
-            
-            workPanelSlideOrigin = nil
-            
-            // Snap to presets
-            snapPercentageHeight(workPanelVerticalSpeed, viewSize: view.frame.size)
-            
-            updateWorkPanelForHeight(workPanelPercentage)
-            
-            UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
-                    self.updateKeypad()
-                    self.updateBackgroundVisibility(height: CGFloat(self.workPanelPercentage))
-                }, completion: { (complete) -> Void in
-                    self.updateKeypad()
-                    self.updateBackgroundVisibility(height: CGFloat(self.workPanelPercentage))
-                    self.snapPercentageHeight()
-                    
-            })
             
             workPanelVerticalSpeed = 0
             
@@ -491,36 +483,15 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         }
     }
     
-    
-    func snapPercentageHeight() {
-        snapPercentageHeight(0, viewSize: view.frame.size)
-        self.updateWorkPanelForHeight(self.workPanelPercentage)
-        self.updateBackgroundVisibility(height: CGFloat(self.workPanelPercentage))
+    func snapAndUpdate(viewSize: CGSize) {
+        
+        let newHeight = snappedHeight(heightPercentage: CGFloat(workPanelPercentage), velocity: 0, viewSize: viewSize, animated: false)
+        self.updateConstraints(heightPercentage: newHeight, viewSize:self.view.frame.size, velocity: 0, animated: false)
+        
+        workPanelPercentage = Float(newHeight)
     }
     
-    
-    func snapPercentageHeight(_ verticalSpeed: CGFloat, viewSize: CGSize) {
-        
-        var totalHeight:Float = 1.0
-        
-        if statusBarHidden() == false {
-            totalHeight = (Float(viewSize.height) - 20) / Float(viewSize.height)  // remove 20 for the status bar section
-        }
-        
-       //print("snapPercentageHeight: \(verticalSpeed)")
-        
-        // Look at the vertical speed to decide what height to snap it to.
-        
-        // Determine the height of equation as a percentage
-        
-        let viewHeight = viewHeightWithAd()
-        
-//        let equationHeightPercentage = 140 / viewHeight
-        
-        let equationHeightPercentage = 125 / viewHeight
-        
-        workPanelPercentage += Float(verticalSpeed) / Float(viewHeight) * 5
-        
+    func allowMiddlePosition(viewSize: CGSize) -> Bool {
         var allowMiddlePosition = true
         
         if NumericalViewHelper.isDevicePad() == false && viewSize.width > viewSize.height {
@@ -528,64 +499,196 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             allowMiddlePosition = false
         }
         
-        if verticalSpeed > 5 || verticalSpeed < -5 {
-
-            if allowMiddlePosition {
-                // Portrait
-                if workPanelPercentage > 0.66 {
-                    
-                    if verticalSpeed > 0 {
-                        workPanelPercentage = totalHeight
-                    } else {
-                        workPanelPercentage = 0.5
-                    }
-                    
-                } else if workPanelPercentage > 0.33 {
-                    
-                    if verticalSpeed > 0 {
-                        workPanelPercentage = 0.5
-                    } else {
-                        workPanelPercentage = Float(equationHeightPercentage)
-                    }
-                    
-                } else {
-                    workPanelPercentage = Float(equationHeightPercentage)
-                }
-            } else {
-                // Landscape
-                if verticalSpeed > 0 {
-                    workPanelPercentage = totalHeight
-                } else {
-                    workPanelPercentage = Float(equationHeightPercentage)
-                }
-            }
+        return allowMiddlePosition
+    }
+    
+    func snappedHeight(heightPercentage: CGFloat, velocity: CGFloat, viewSize:CGSize, animated: Bool) -> CGFloat {
+        
+        var velocity = velocity
+        var velocityDistance:CGFloat = 0
+        
+        
+        for _ in 1...100 {
+            velocityDistance += velocity
+            velocity *= 0.95
+            print("velocity: \(velocity)")
+            print("velocityDistance: \(velocityDistance)")
+        }
+        
+        velocityDistance = velocityDistance / viewSize.height
+        
+        let heightPercentage = heightPercentage + velocityDistance  // determine the height if the velocity died off at 0.95% each frame
+        
+        var maxHeight = (viewSize.height - 20) / viewSize.height
+        
+        if self.statusBarHidden() {
+            maxHeight = 1
+        }
+        
+        // There are 2 or 3 positions, we need to pick the closet
+        
+        var positions = [CGFloat:CGFloat]()
+        
+        let minPoint = minimumEquationHeight() / viewSize.height / 2
+        let minPointResult = minimumEquationHeight() / viewSize.height
+        
+        if self.allowMiddlePosition(viewSize: viewSize) {
+            
+            positions[maxHeight] = maxHeight
+            positions[midPoint] = midPoint
+            positions[minPoint] = minPointResult
             
         } else {
-            if allowMiddlePosition {
-                // Portrait
-                if workPanelPercentage > 0.66 {
-                    workPanelPercentage = totalHeight
-                } else if workPanelPercentage > 0.33 {
-                    workPanelPercentage = 0.5
-                } else {
-                    workPanelPercentage = Float(equationHeightPercentage)
-                }
-            } else {
-                // Landscape
-                if workPanelPercentage > 0.5 {
-                    workPanelPercentage = totalHeight
-                } else {
-                    workPanelPercentage = Float(equationHeightPercentage)
-                }
+            positions[maxHeight] = maxHeight
+            positions[minPoint] = minPointResult
+        }
+        
+        
+        var currentDistance:CGFloat = 1000
+        var newHeight = heightPercentage
+        print("positions: \(positions)")
+        
+        // Let's find the closest item in the array
+        
+        for (pos, result) in positions {
+            print("   Looping   ")
+            print("pos: \(pos)")
+            print("heightPercentage: \(heightPercentage)")
+            print("currentDistance: \(currentDistance)")
+            var distance = heightPercentage - pos
+            
+            if distance < 0 {
+                distance *= -1
+            }
+            
+            print("distance: \(distance)")
+            print("currentDistance: \(currentDistance)")
+            
+            if distance < currentDistance {
+                print("Closer distance found")
+                // This item is closer!
+                newHeight = result
+                currentDistance = distance
             }
         }
         
-        // If the bannerview is present then reduce this percentage by the corrcet amount
-        workPanelPercentage *= Float(viewHeightWithAd() / self.view.frame.height)
-        
-        // Update history view content insets.
-        updateHistoryContentInsets(viewSize: viewSize)
+        return newHeight
     }
+    
+    func updateConstraints(heightPercentage: CGFloat, viewSize:CGSize, velocity: CGFloat, animated: Bool) {
+        
+        var heightPercentage = heightPercentage
+        
+        if heightPercentage < 0 {
+            heightPercentage = 0
+        } else if heightPercentage > 1 {
+            heightPercentage = 1
+        }
+        
+        // Resize the equation view so that it doesn't try and animate with the rest.
+        var equationHeightChanging = true
+        
+        if let workPanelView = workPanelView {
+            
+            
+            let previousHeight = workPanelView.equationViewHeightConstraint.constant
+            let newEquationHeight = equationHeight(workPanelHeight: heightPercentage)
+            
+            /*
+             if Int(previousHeight) != Int(newEquationHeight) {
+             equationHeightChanging = true
+             }
+             */
+            
+            workPanelView.equationViewHeightConstraint.constant = newEquationHeight
+        }
+        
+        var panelSize:CGFloat = 0
+        
+        var newBottomConstaint:CGFloat = 0
+        var newMultiplier:CGFloat = 1.0
+        
+        if self.allowMiddlePosition(viewSize: viewSize) {
+            if heightPercentage > midPoint {
+                newMultiplier = heightPercentage
+                newBottomConstaint = 0
+                
+//                self.changeHeightMultipler(heightPercentage)
+//                self.workPanelBottomConstraint.constant = 0
+                
+                panelSize = viewSize.height * heightPercentage
+                
+            } else {
+                
+                //self.changeHeightMultipler(midPoint)
+                
+                let offset:CGFloat = heightPercentage - midPoint
+                
+                // self.workPanelBottomConstraint.constant = offset * viewSize.height
+                
+                panelSize = (viewSize.height * heightPercentage) - offset
+                
+                newMultiplier = midPoint
+                newBottomConstaint = offset * viewSize.height
+            }
+        } else {
+            // Landscape mode on iPhone
+            //self.changeHeightMultipler(1.0)
+            
+            let offset:CGFloat = heightPercentage - 1.0
+            
+            // self.workPanelBottomConstraint.constant = offset * viewSize.height
+            
+            panelSize = (viewSize.height * heightPercentage) - offset
+            
+            newMultiplier = 1.0
+            newBottomConstaint = offset * viewSize.height
+        }
+        
+        
+        
+        // Force the equation view to update - this seems to be the only combo that really works and is most efficient and does not result in transform animation errors.
+        self.view.layoutIfNeeded()
+        self.workPanelView?.equationView?.questionView?.collecitonView.reloadData()
+        self.workPanelView?.equationView?.answerView?.collecitonView.reloadData()
+        self.view.layoutIfNeeded()
+        
+        
+        // Update the history view
+        if ThemeCoordinator.shared.blurViewAllowed() {
+            self.workPanelView?.view.backgroundColor = UIColor.clear
+            self.historyViewBottomConstraint.constant = 0
+        } else {
+            self.workPanelView?.view.backgroundColor = UIColor(white: 1.0, alpha: 0.1)
+            self.historyViewBottomConstraint.constant = panelSize
+        }
+        
+        // Queue up these constraints to animate.
+        self.changeHeightMultipler(newMultiplier)
+        self.workPanelBottomConstraint.constant = newBottomConstaint
+        
+        print("panelSize: \(panelSize)")
+        
+        
+        if animated {
+            
+            UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: velocity, options: UIViewAnimationOptions(), animations: { () -> Void in
+                self.updateBackgroundVisibility(height: heightPercentage)
+                // self.workPanelView?.updateLayout()
+                self.view.layoutIfNeeded()
+            }, completion: { (complete) -> Void in
+                self.workPanelView?.updateLayout()
+                self.view.layoutIfNeeded()
+            })
+        } else {
+            self.updateHistoryContentInsets(viewSize: viewSize)
+            self.workPanelView?.updateLayout()
+            self.updateBackgroundVisibility(height: heightPercentage)
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    
     
     
     func pressedKey(_ key: Character, sourceView: UIView?) {
@@ -629,6 +732,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        snapAndUpdate(viewSize: self.view.frame.size)
         themeChanged()
         premiumStatusChanged()
     }
@@ -641,7 +745,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         // Focus the history view on the current equation
         historyView?.focusOnCurrentEquation()
         
-        snapPercentageHeight()
+        // snapPercentageHeight()
         
         premiumStatusChanged()
         
@@ -669,7 +773,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     func updateHistoryContentInsets(viewSize: CGSize) {
         
         if ThemeCoordinator.shared.blurViewAllowed() {
-            let equationHeightPercentage = 140 / viewSize.height
+            let equationHeightPercentage = (200 + 10) / viewSize.height
             
             let viewHeight = viewSize.height - effectiveBannerHeight()
             
@@ -767,7 +871,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         super.viewWillTransition(to: size, with: coordinator)
         
         coordinator.animate(alongsideTransition: { (context) -> Void in
-            self.snapPercentageHeight(0.0, viewSize: size)
+            self.snapAndUpdate(viewSize: size)
+            
             self.updateKeypad()
             self.view.layoutIfNeeded()
             }) { (context) -> Void in
@@ -827,7 +932,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func statusBarStyleForHeight() -> UIStatusBarStyle {
         if let workPanelHeight = workPanelHeight {
-            if workPanelHeight.multiplier > 0.75 {
+            
+            // Find the mid point between the mid point and total height
+            let statusBarSwitchPoint = (1.0 + midPoint) / 2
+            
+            if workPanelHeight.multiplier > statusBarSwitchPoint {
                 return UIStatusBarStyle.lightContent
             }
         }

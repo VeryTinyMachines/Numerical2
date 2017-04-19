@@ -18,6 +18,11 @@ class EquationViewCell:UICollectionViewCell {
     
     @IBOutlet weak var mainLabel: UILabel!
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
+    }
+    
     func setAnswerCell(_ answer: EquationViewCellType) {
         
         var font:UIFont?
