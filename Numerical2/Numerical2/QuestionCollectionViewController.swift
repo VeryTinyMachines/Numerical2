@@ -12,6 +12,7 @@ import UIKit
 protocol QuestionCollectionViewDelegate {
     func textFieldChanged(string: String, view: QuestionCollectionViewController)
     func startNew(string: String, view: QuestionCollectionViewController)
+    func userPressedCopyAll()
 }
 
 class QuestionCollectionViewController:NumericalViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
@@ -25,6 +26,9 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
             
             // Divide up the questionString into components
            
+            
+            
+            
             if let theAnswer = self.questionBundle?.answer {
                 // We have an answer
                 
@@ -53,8 +57,11 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                 
             } else if let errorType = self.questionBundle?.errorType {
                 // There is an error
+                // zzz
                 
-                self.questionArray = [errorType.rawValue]
+                let formattedAnswer = Glossary.formattedStringForAnswer(errorType.rawValue)
+                
+                self.questionArray = [formattedAnswer]
                 
                 self.reloadCollectionView()
             }
@@ -471,8 +478,13 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                 menuItems.append(menuItem)
             }
             
-            if canCopy() {
+            if canCopyAnswer() {
                 let menuItem = UIMenuItem(title: "Copy", action: #selector(QuestionCollectionViewController.pressedMenuItemCopy))
+                menuItems.append(menuItem)
+            }
+            
+            if canCopyEquation() {
+                let menuItem = UIMenuItem(title: "Copy", action: #selector(QuestionCollectionViewController.pressedMenuItemCopyAll))
                 menuItems.append(menuItem)
             }
             
@@ -509,11 +521,30 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         hideMenu()
     }
     
-    func canCopy() -> Bool {
-        if let bundle = questionBundle {
-            if let answer = bundle.answer {
-                if answer != "" {
-                    return true
+    func canCopyAnswer() -> Bool {
+        if isAnswerView {
+            // Copying means just copying the answer
+            if let bundle = questionBundle {
+                if let answer = bundle.answer {
+                    if answer != "" {
+                        return true
+                    }
+                }
+            }
+        }
+        
+        
+        return false
+    }
+    
+    func canCopyEquation() -> Bool {
+        if isAnswerView == false {
+            // Copying the equation means copying the question and the answer
+            if let bundle = questionBundle {
+                if let answer = bundle.answer {
+                    if answer != "" {
+                        return true
+                    }
                 }
             }
         }
@@ -582,6 +613,11 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         hideMenu()
     }
     
+    func pressedMenuItemCopyAll() {
+        delegate?.userPressedCopyAll()
+        hideMenu()
+    }
+    
     func pressedMenuItemStartNewWith() {
         if let bundle = questionBundle {
             if let answer = bundle.answer {
@@ -594,7 +630,8 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     
     func pressedMenuItemPaste() {
         let board = UIPasteboard.general
-        if let string = board.string {
+        if var string = board.string {
+            string = cleanupPastedString(string: string)
             delegate?.textFieldChanged(string: string, view: self)
         }
         
@@ -603,20 +640,32 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     
     func pressedMenuItemPasteAppend() {
         let board = UIPasteboard.general
-        if let string = board.string {
-            
-            var newString:String = string
+        if var string = board.string {
+            string = cleanupPastedString(string: string)
             
             if let bundle = questionBundle {
                 if let answer = bundle.answer {
-                    newString = answer + string
+                    string = answer + string
                 }
             }
             
-            delegate?.textFieldChanged(string: newString, view: self)
+            delegate?.textFieldChanged(string: string, view: self)
         }
         
         hideMenu()
+    }
+    
+    func cleanupPastedString(string: String) -> String {
+        let newString = string.replacingOccurrences(of: " ", with: "")
+        
+        if newString.contains("=") {
+            let stringItems = string.components(separatedBy: "=")
+            if let lastString = stringItems.last {
+                return lastString
+            }
+        }
+        
+        return newString
     }
     
     @IBAction func pressDoneButton(_ sender: UIButton) {

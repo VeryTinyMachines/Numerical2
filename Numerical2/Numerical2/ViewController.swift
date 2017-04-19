@@ -16,8 +16,6 @@ public enum KeypadSize {
 
 class ViewController: NumericalViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate {
     
-    @IBOutlet weak var statusBarBlur: UIView!
-    
     var blurView: UIVisualEffectView?
     
     var historyView: HistoryViewController?
@@ -31,7 +29,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     var workPanelVerticalSpeed:CGFloat = 0.0
     
     var workPanelPercentage:Float = 1.0
-    let midPoint:CGFloat = 0.7
+    let midPoint:CGFloat = 0.66
     
     var panning = false
     
@@ -60,11 +58,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         self.view.backgroundColor = UIColor.green
         
-        presentKeypad()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.premiumStatusChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.transparencyChanged), name: NSNotification.Name.UIAccessibilityReduceTransparencyStatusDidChange, object: nil)
         
@@ -182,9 +176,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
             gradiantLayer = layer
             
-            // Update the status bar blur view
-            updateBlurView()
-            updateBackgroundVisibility()
+            
         } else {
             if let gradiantLayer = gradiantLayer {
                 gradiantLayer.removeFromSuperlayer()
@@ -192,25 +184,9 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
             gradiantLayer = nil
             self.view.backgroundColor = UIColor.black
-            
-            updateBlurView()
-            updateBackgroundVisibility()
-        }
-    }
-    
-    func updateBlurView() {
-        if let currentBlurView = self.blurView {
-            currentBlurView.removeFromSuperview()
-            self.blurView = nil
         }
         
-        if let visualEffectView = ThemeCoordinator.shared.visualEffectViewForCurrentTheme() {
-            self.statusBarBlur.insertSubview(visualEffectView, at: 0)
-            
-            visualEffectView.bindFrameToSuperviewBounds()
-            
-            self.blurView = visualEffectView
-        }
+        updateBackgroundVisibility()
     }
     
     func updateBackgroundVisibility() {
@@ -297,37 +273,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         }
     }
     
-    func premiumStatusChanged() {
-        
-        /*
-        if bannerView.isHidden {
-            if showAd() {
-                // Banner is hidden, but user should be seeing an ad.
-                bannerView.isHidden = false
-                
-                snapPercentageHeight()
-                
-                UIView.animate(withDuration: 0.15) {
-                    self.view.layoutIfNeeded()
-                }
-            }
-        } else {
-            // Banner is visible, check if it should be shown
-            if showAd() == false {
-                bannerView.isHidden = true
-                
-                snapPercentageHeight()
-                
-                UIView.animate(withDuration: 0.15) {
-                    self.view.layoutIfNeeded()
-                }
-            }
-        }
-         */
-        //snapPercentageHeight()
-        //self.view.layoutIfNeeded()
-    }
-    
     
     func selectedEquation(_ equation: Equation) {
         
@@ -347,6 +292,25 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         }
     }
     
+    func presentKeypad() {
+        // The user selected an item from the history. Present the keypad IF needed.
+        
+        
+        if workPanelPercentage == Float(self.minimumEquationHeight() / self.view.frame.height) {
+            let newHeight = snappedHeight(heightPercentage: 0.7, velocity: 0, viewSize: self.view.frame.size, animated: true)
+            
+            print("newHeight: \(newHeight)")
+            
+            self.updateHistoryContentInsets(heightPercentage: newHeight, viewSize: self.view.frame.size)
+            
+            self.updateConstraints(heightPercentage: newHeight, viewSize:self.view.frame.size, velocity: 0, animated: true)
+            
+            workPanelPercentage = Float(newHeight)
+        }
+        
+        
+        
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -379,13 +343,15 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     }
     
     
-    func equationHeight(workPanelHeight: CGFloat) -> CGFloat {
-        let viewHeight = viewHeightWithAd()
+    func equationHeight(workPanelHeight: CGFloat, viewSize: CGSize) -> CGFloat {
+        let viewHeight = viewSize.height
         let equationHeight = (workPanelHeight * viewHeight) / 3
         print("equationHeight: \(equationHeight)")
         
         if equationHeight < minimumEquationHeight() {
             return minimumEquationHeight()
+        } else if equationHeight > maximumEquationHeight() {
+            return maximumEquationHeight()
         } else {
             return equationHeight
         }
@@ -393,6 +359,10 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func minimumEquationHeight() -> CGFloat {
         return 160
+    }
+    
+    func maximumEquationHeight() -> CGFloat {
+        return 240
     }
     
     // pan gesture
@@ -460,6 +430,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 
                 newHeight = snappedHeight(heightPercentage: newHeight, velocity: workPanelVerticalSpeed, viewSize: self.view.frame.size, animated: true)
                 
+                self.updateHistoryContentInsets(heightPercentage: newHeight, viewSize: self.view.frame.size)
                 
                 var velocityPercentage = workPanelVerticalSpeed / self.view.frame.height
                 
@@ -486,7 +457,9 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     func snapAndUpdate(viewSize: CGSize) {
         
         let newHeight = snappedHeight(heightPercentage: CGFloat(workPanelPercentage), velocity: 0, viewSize: viewSize, animated: false)
-        self.updateConstraints(heightPercentage: newHeight, viewSize:self.view.frame.size, velocity: 0, animated: false)
+        self.updateConstraints(heightPercentage: newHeight, viewSize:viewSize, velocity: 0, animated: false)
+        
+        self.updateHistoryContentInsets(heightPercentage: newHeight, viewSize: viewSize)
         
         workPanelPercentage = Float(newHeight)
     }
@@ -504,15 +477,13 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func snappedHeight(heightPercentage: CGFloat, velocity: CGFloat, viewSize:CGSize, animated: Bool) -> CGFloat {
         
+        // Simulate where the current velocity will "end up" and snap from there.
         var velocity = velocity
         var velocityDistance:CGFloat = 0
-        
         
         for _ in 1...100 {
             velocityDistance += velocity
             velocity *= 0.95
-            print("velocity: \(velocity)")
-            print("velocityDistance: \(velocityDistance)")
         }
         
         velocityDistance = velocityDistance / viewSize.height
@@ -533,39 +504,27 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         let minPointResult = minimumEquationHeight() / viewSize.height
         
         if self.allowMiddlePosition(viewSize: viewSize) {
-            
             positions[maxHeight] = maxHeight
             positions[midPoint] = midPoint
             positions[minPoint] = minPointResult
-            
         } else {
             positions[maxHeight] = maxHeight
             positions[minPoint] = minPointResult
         }
         
-        
         var currentDistance:CGFloat = 1000
         var newHeight = heightPercentage
-        print("positions: \(positions)")
         
         // Let's find the closest item in the array
         
         for (pos, result) in positions {
-            print("   Looping   ")
-            print("pos: \(pos)")
-            print("heightPercentage: \(heightPercentage)")
-            print("currentDistance: \(currentDistance)")
             var distance = heightPercentage - pos
             
             if distance < 0 {
                 distance *= -1
             }
             
-            print("distance: \(distance)")
-            print("currentDistance: \(currentDistance)")
-            
             if distance < currentDistance {
-                print("Closer distance found")
                 // This item is closer!
                 newHeight = result
                 currentDistance = distance
@@ -586,19 +545,10 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         }
         
         // Resize the equation view so that it doesn't try and animate with the rest.
-        var equationHeightChanging = true
         
         if let workPanelView = workPanelView {
             
-            
-            let previousHeight = workPanelView.equationViewHeightConstraint.constant
-            let newEquationHeight = equationHeight(workPanelHeight: heightPercentage)
-            
-            /*
-             if Int(previousHeight) != Int(newEquationHeight) {
-             equationHeightChanging = true
-             }
-             */
+            let newEquationHeight = equationHeight(workPanelHeight: heightPercentage, viewSize: viewSize)
             
             workPanelView.equationViewHeightConstraint.constant = newEquationHeight
         }
@@ -613,18 +563,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 newMultiplier = heightPercentage
                 newBottomConstaint = 0
                 
-//                self.changeHeightMultipler(heightPercentage)
-//                self.workPanelBottomConstraint.constant = 0
-                
                 panelSize = viewSize.height * heightPercentage
                 
             } else {
                 
-                //self.changeHeightMultipler(midPoint)
-                
                 let offset:CGFloat = heightPercentage - midPoint
-                
-                // self.workPanelBottomConstraint.constant = offset * viewSize.height
                 
                 panelSize = (viewSize.height * heightPercentage) - offset
                 
@@ -633,19 +576,14 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             }
         } else {
             // Landscape mode on iPhone
-            //self.changeHeightMultipler(1.0)
             
             let offset:CGFloat = heightPercentage - 1.0
-            
-            // self.workPanelBottomConstraint.constant = offset * viewSize.height
             
             panelSize = (viewSize.height * heightPercentage) - offset
             
             newMultiplier = 1.0
             newBottomConstaint = offset * viewSize.height
         }
-        
-        
         
         // Force the equation view to update - this seems to be the only combo that really works and is most efficient and does not result in transform animation errors.
         self.view.layoutIfNeeded()
@@ -667,9 +605,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         self.changeHeightMultipler(newMultiplier)
         self.workPanelBottomConstraint.constant = newBottomConstaint
         
-        print("panelSize: \(panelSize)")
-        
-        
         if animated {
             
             UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: velocity, options: UIViewAnimationOptions(), animations: { () -> Void in
@@ -681,14 +616,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 self.view.layoutIfNeeded()
             })
         } else {
-            self.updateHistoryContentInsets(viewSize: viewSize)
             self.workPanelView?.updateLayout()
             self.updateBackgroundVisibility(height: heightPercentage)
             self.view.layoutIfNeeded()
         }
     }
-    
-    
     
     
     func pressedKey(_ key: Character, sourceView: UIView?) {
@@ -700,12 +632,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
     }
     
-    
-    func viewIsWide() -> Bool {
-        return false
-    }
-    
-    
     func updateEquation(_ equation: Equation?) {
         
         currentEquation = equation
@@ -714,7 +640,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             theHistoryView.updateSelectedEquation(currentEquation)
         }
     }
-    
     
     func delectedEquation(_ equation: Equation) {
         
@@ -728,66 +653,35 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         }
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         snapAndUpdate(viewSize: self.view.frame.size)
+        
         themeChanged()
-        premiumStatusChanged()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        updateHistoryContentInsets(viewSize: self.view.frame.size)
-        
         // Focus the history view on the current equation
         historyView?.focusOnCurrentEquation()
-        
-        // snapPercentageHeight()
-        
-        premiumStatusChanged()
-        
         themeChanged() // Just in case we have rotated in another view.
     }
     
-    func viewHeightWithAd() -> CGFloat {
-        return self.view.frame.height - effectiveBannerHeight()
-    }
-    
-    func viewHeightWithoutAd() -> CGFloat {
-        return self.view.frame.height
-    }
-    
-    
-    func effectiveBannerHeight() -> CGFloat {
-        /*
-        if showAd() {
-            return bannerView.frame.height + bannerView.frame.origin.y
-        }
- */
-        return 0
-    }
-    
-    func updateHistoryContentInsets(viewSize: CGSize) {
+    func updateHistoryContentInsets(heightPercentage: CGFloat, viewSize: CGSize) {
         
         if ThemeCoordinator.shared.blurViewAllowed() {
-            let equationHeightPercentage = (200 + 10) / viewSize.height
             
-            let viewHeight = viewSize.height - effectiveBannerHeight()
+            var heightPercentage = heightPercentage
             
-            var bottomInset:CGFloat = viewHeight * CGFloat(workPanelPercentage)
-            
-            if viewSize.width > viewSize.height {
-                bottomInset = viewHeight * CGFloat(equationHeightPercentage)
-            } else {
-                if workPanelPercentage > 0.5 {
-                    bottomInset = viewHeight * 0.5
-                }
+            if heightPercentage > midPoint {
+                heightPercentage = midPoint
             }
             
-            self.historyView?.updateContentInsets(UIEdgeInsets(top: 0, left: 0, bottom: bottomInset + (effectiveBannerHeight() / 2), right: 0))
+            let bottomInset:CGFloat = viewSize.height * CGFloat(heightPercentage)
+            
+            self.historyView?.updateContentInsets(UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0))
         } else {
             self.historyView?.updateContentInsets(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
         }
@@ -795,59 +689,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func statusBarHidden() -> Bool {
         return UIApplication.shared.isStatusBarHidden
-    }
-    
-    func updateWorkPanelForHeight(_ heightPercentage: Float) {
-        
-        // Between 1.0 and 0.5 the height shrinks. Below this the height remains the same but the position is offset.
-        
-        var newHeight = CGFloat(heightPercentage)
-        
-        //  entirely hide the status bar as it's not longer in this design - TODO
-        statusBarBlur.isHidden = true
-        
-        if newHeight < 0 {
-            newHeight = 0
-        }
-        
-        // determine the middle float point given this height
-        
-        let middlePoint = (self.viewHeightWithAd() / self.view.frame.height) / 2
-        var panelSize:CGFloat = 0
-        
-        if newHeight > middlePoint {
-            self.changeHeightMultipler(CGFloat(newHeight))
-            self.workPanelBottomConstraint.constant = 0
-            
-            self.historyViewBottomConstraint.constant = 0 // The bottom of the view
-            // What is the visible height of the workpanel?
-            
-            panelSize = self.view.frame.height * newHeight + 1
-            
-        } else {
-            self.changeHeightMultipler(CGFloat(middlePoint))
-            
-            let offset:CGFloat = (CGFloat(newHeight) - middlePoint)
-            
-            let viewHeight = self.viewHeightWithoutAd()
-            
-            self.workPanelBottomConstraint.constant = offset * viewHeight
-            
-            panelSize = (self.view.frame.height * newHeight) - offset + 1
-        }
-        
-        print("panelSize: \(panelSize)")
-        
-        
-        if ThemeCoordinator.shared.blurViewAllowed() {
-            self.workPanelView?.view.backgroundColor = UIColor.clear
-            self.historyViewBottomConstraint.constant = 0
-        } else {
-            self.historyViewBottomConstraint.constant = panelSize
-            self.workPanelView?.view.backgroundColor = UIColor(white: 1.0, alpha: 0.1)
-        }
-        
-        
     }
     
     func changeHeightMultipler(_ height: CGFloat) {
@@ -872,58 +713,13 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         coordinator.animate(alongsideTransition: { (context) -> Void in
             self.snapAndUpdate(viewSize: size)
-            
-            self.updateKeypad()
             self.view.layoutIfNeeded()
             }) { (context) -> Void in
                 self.themeChanged()
         }
     }
     
-    func updateKeypad() {
-        
-        updateWorkPanelForHeight(workPanelPercentage)
-        updateBackgroundVisibility(height: CGFloat(workPanelPercentage))
-        
-        view.layoutIfNeeded()
-        
-        if let workView = self.workPanelView {
-            workView.updateLayout()
-        }
-    }
     
-    
-    func hideKeypad() {
-        if currentSize == KeypadSize.maximum {
-            currentSize = KeypadSize.medium
-        } else {
-            currentSize = KeypadSize.minimum
-        }
-        
-        updateKeypad()
-    }
-    
-    
-    func presentKeypad() {
-        if currentSize == KeypadSize.minimum {
-            currentSize = KeypadSize.medium
-        } else {
-            currentSize = KeypadSize.maximum
-        }
-        
-        updateKeypad()
-    }
-    
-    
-    @IBAction func swipeDown(_ sender: UISwipeGestureRecognizer) {
-        hideKeypad()
-    }
-    
-    
-    @IBAction func swipeUp(_ sender: UISwipeGestureRecognizer) {
-        presentKeypad()
-    }
-
     @IBAction func toggleEditing(_ sender: AnyObject) {
         if let view = historyView {
             view.toggleEditing()

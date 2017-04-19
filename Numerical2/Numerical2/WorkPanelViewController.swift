@@ -514,7 +514,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                     
                     currentEquation?.question = newQuestion
                     
-                    newCursorPosition = index + characters.count
+                    newCursorPosition = index + characters.count - 1
                     
                 } else {
                     // Just delete from the end
@@ -730,5 +730,29 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             return equationView.isQuestionEditting()
         }
         return false
+    }
+    
+    func userPressedCopyAll() {
+        if let equation = currentEquation {
+            var string = ""
+            
+            if let question = equation.question {
+                let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(question)
+                
+                string += Glossary.formattedStringForQuestion(bracketBalancedString)
+            }
+            
+            if let answer = equation.answer {
+                
+                if string.characters.count > 0 {
+                    string += " = "
+                }
+                
+                string += Glossary.formattedStringForAnswer(answer)
+            }
+            
+            let board = UIPasteboard.general
+            board.string = string
+        }
     }
 }

@@ -216,26 +216,26 @@ open class Glossary {
         
         var formattedString = ""
         
-        if string == ErrorType.divideByZero.rawValue {
-            formattedString = "Division By Zero"
-        } else if string == ErrorType.imaginaryNumbersRequired.rawValue {
-            formattedString = "Imaginary Number Required To Solve"
-        } else if string == ErrorType.overflow.rawValue {
-            formattedString = "Overflow Error"
-        } else if string == ErrorType.underflow.rawValue {
-            formattedString = "Underflow Error"
-        } else if string == ErrorType.unknown.rawValue {
-            formattedString = "Error"
-        } else {
-            for character in string.characters {
-                formattedString += formattedStringForCharacter(character)
-            }
+        for character in string.characters {
+            formattedString += formattedStringForCharacter(character)
         }
         
         return formattedString
     }
     
     class func formattedStringForAnswer(_ string: String) -> String {
+        
+        if string == ErrorType.divideByZero.rawValue {
+            return "Division By Zero"
+        } else if string == ErrorType.imaginaryNumbersRequired.rawValue {
+            return "Imaginary Number Required To Solve"
+        } else if string == ErrorType.overflow.rawValue {
+            return "Overflow Error"
+        } else if string == ErrorType.underflow.rawValue {
+            return "Underflow Error"
+        } else if string == ErrorType.unknown.rawValue {
+            return "Error"
+        }
         
         let numberFormatter = NumberFormatter()
         
@@ -489,13 +489,13 @@ open class Glossary {
         
         var legalCombinations:[Character: String] =
            ["n":"n\(mid))\(clear)\(delete)\(pre)\(post)\(settings)",
-            "(":"n-\(clear)\(delete)\(pre)\(settings)",
+            "(":"n)(-\(clear)\(delete)\(pre)\(settings)",
             ")":"n)(\(clear)\(delete)\(pre)\(mid)\(post)\(settings)",
             "+":"n-+(\(clear)\(delete)\(pre)\(settings)",
             "-":"n-+(\(clear)\(delete)\(pre)\(settings)",
             mid: "n-(\(clear)\(delete)\(pre)\(settings)",
             pre: "n-(\(clear)\(delete)\(settings)",
-            post:"n-+()\(clear)\(delete)\(pre)\(mid)\(post)\(settings)",
+            post:"n-+)\(clear)\(delete)\(pre)\(mid)\(post)\(settings)",
             " ":"n-(\(pre)\(settings)",
             "?":"n)(\(clear)\(delete)\(pre)\(mid)\(post)\(settings)"]
         
