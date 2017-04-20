@@ -34,8 +34,8 @@ public struct EquationCodingKey {
 public struct EquationStoreNotification {
     public static let equationDeleted = "EquationStoreNotification.equationDeleted"
     public static let accountStatusChanged = "EquationStoreNotification.accountStatusChanged"
+    public static let equationLogicChanged = "EquationNotification.equationLogicChanged"
 }
-
 
 class EquationStore {
     
@@ -108,7 +108,7 @@ class EquationStore {
             do {
                 try FileManager.default.createDirectory(atPath: applicationSupportPath, withIntermediateDirectories: true, attributes: nil)
             } catch {
-                print("Error - Could not creation Application Support Directory")
+             // print("Error - Could not creation Application Support Directory")
             }
         }
         
@@ -203,7 +203,7 @@ class EquationStore {
                  * The store could not be migrated to the current model version.
                  Check the error message to determine what the actual problem was.
                  */
-                print("Unresolved error \(error), \(error.userInfo)")
+             // print("Unresolved error \(error), \(error.userInfo)")
                 
                 SimpleLogger.appendLog(string: "EquationStore.persistentCoordinator error: \(error.code) \(error.localizedDescription)")
                 
@@ -220,18 +220,18 @@ class EquationStore {
     
     func saveContext() -> Bool {
         
-        print("saveContext")
+     // print("saveContext")
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
-                print("Saved")
+             // print("Saved")
                 return true
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
-                print("Unresolved error \(nserror), \(nserror.userInfo)")
+             // print("Unresolved error \(nserror), \(nserror.userInfo)")
                 
                 SimpleLogger.appendLog(string: "EquationStore.saveContext error: \(nserror.code) \(nserror.localizedDescription)")
                 
@@ -243,7 +243,7 @@ class EquationStore {
                 return false
             }
         } else {
-            print("No saves necessary")
+         // print("No saves necessary")
             return true
         }
     }
@@ -275,7 +275,7 @@ class EquationStore {
                 
                 Crashlytics.sharedInstance().recordError(nserror)
                 
-                print("Error: Could not fetch equations")
+             // print("Error: Could not fetch equations")
             }
         }
     }
@@ -286,7 +286,7 @@ class EquationStore {
         var ckEquations = [CKRecord]()
         
         for equation in equations {
-            print(equation)
+         // print(equation)
             
             if let identifier = equation.identifier {
                 
@@ -307,7 +307,7 @@ class EquationStore {
                 queuedEquationsToSave[identifier] = equation
                 
             } else {
-                print("Error: equation is missing identifier")
+             // print("Error: equation is missing identifier")
             }
         }
         
@@ -325,11 +325,11 @@ class EquationStore {
             operation.savePolicy = CKRecordSavePolicy.allKeys
             
             operation.perRecordCompletionBlock = {record, error in
-                print("perRecordCompletionBlock")
+             // print("perRecordCompletionBlock")
                 //if let record = record {
-                print("record: \(record)")
+             // print("record: \(record)")
                 if let identifier = record.object(forKey: "identifier") as? String {
-                    print("identifier: \(identifier)")
+                 // print("identifier: \(identifier)")
                     
                     // Compare the record with the current state of the equation.
                     // If all aspects are the same then we have successfully posted this equation.
@@ -340,22 +340,16 @@ class EquationStore {
                         // Found the queued equation.
                         
                         if equation.isEqualToCKEquation(record: record) {
-                            print("This equation is now up to date")
                             equation.posted = NSNumber(value: true)
                             self.queuedEquationsToSave[identifier] = nil
-                            
-                        } else {
-                            print("Uh oh this equation has changed")
                         }
                     }
                 }
             }
             
             operation.modifyRecordsCompletionBlock = { modified, deleted, error in
-                print("modifyRecordsCompletionBlock")
                 if let modified = modified {
-                    print("modified: \(modified)")
-                    print("")
+                    
                 }
             }
             
@@ -366,7 +360,6 @@ class EquationStore {
             
             self.privateDatabase.add(operation)
         }
-        
     }
     
     
@@ -479,8 +472,6 @@ class EquationStore {
     
     func newEquationFromCKRecord(record: CKRecord) -> Equation {
         
-        print(record)
-        
         let entity = NSEntityDescription.entity(forEntityName: "Equation", in: self.persistentContainer.viewContext)
         let equation = NSManagedObject(entity: entity!, insertInto: self.persistentContainer.viewContext) as! Equation
         
@@ -494,23 +485,17 @@ class EquationStore {
         equation.userDeleted = record.object(forKey: "equationDeleted") as? NSNumber
         equation.posted = NSNumber(value: true) // This local equation is now update to date with Cloudkit, to the best of our knowledge.
         
-        print(equation)
-        
         return equation
     }
     
     
     func fetchEquationWithIdentifier(string: String) -> Equation? {
         
-        print("fetchEquationWithIdentifier: \(string)")
-        
         let fetchRequest = equationsFetchRequest(NSPredicate(format: "identifier == %@", string))
         fetchRequest.fetchBatchSize = 1
         
         do {
             let results = try self.persistentContainer.viewContext.fetch(fetchRequest)
-            
-            print("fetched results: \(results)")
             
             if let first = results.first {
                 return first
@@ -530,13 +515,13 @@ class EquationStore {
         do {
             let results = try self.persistentContainer.viewContext.fetch(fetchRequest)
             
-            print("\n\n\n\n")
+         print("\n\n\n\n")
             
             for result in results {
-                print(result)
+             print(result)
             }
             
-            print("")
+         print("")
             
         } catch {
             
@@ -623,15 +608,14 @@ class EquationStore {
                         self.privateDatabase.save(modifySubscription, completionHandler: { (responseSubscription, error) in
                             
                             DispatchQueue.main.async {
-                                print("responseSubscription: \(responseSubscription)")
-                                print("error: \(error)")
-                                print("")
-                                
                                 if error == nil {
                                     if let _ = responseSubscription {
                                         // We have subscribed
                                         self.subscriptionSetup = true
                                     }
+                                } else {
+                                 // print("responseSubscription: \(responseSubscription)")
+                                 // print("error: \(error)")
                                 }
                             }
                         })
@@ -644,7 +628,6 @@ class EquationStore {
     
     func fetchAndSaveEquation(recordID: CKRecordID, completion: @escaping ((_ complete: Bool) -> Void)) {
         privateDatabase.fetch(withRecordID: recordID) { (record, error) in
-            print("record: \(record)")
             if let record = record {
                 self.compareRecords(records: [record])
                 completion(true)
@@ -683,7 +666,7 @@ class EquationStore {
             let path = applicationSupportPath + "/calcDataHistory.plist"
             
             if let dict = NSDictionary(contentsOfFile: path) as? [String:Any] {
-                print(dict.keys)
+             // print(dict.keys)
                 
                 if let questionArray = dict["LONGHISTORY"] as? NSArray, let answerArray = dict["LONGHISTORYANSWER"] as? NSArray {
                     
@@ -698,7 +681,7 @@ class EquationStore {
                     for number in 0...totalItems - 1 {
                         if let question = questionArray[number] as? String, let answer = answerArray[number] as? String {
                             
-                            print("\(question) = \(answer)")
+                         // print("\(question) = \(answer)")
                             
                             let dE = DeprecatedEquation(answer: answer, question: question)
                             importedEquations.append(dE)
@@ -730,7 +713,7 @@ class EquationStore {
                             complete?(true)
                             return
                         } catch {
-                            print("Could not delete old equations file")
+                         // print("Could not delete old equations file")
                             complete?(false)
                             return
                         }

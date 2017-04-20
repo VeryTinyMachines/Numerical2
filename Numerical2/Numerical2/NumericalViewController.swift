@@ -233,7 +233,6 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         
         if let appDelegate = UIApplication.shared.delegate {
             if let vc = appDelegate.window??.rootViewController {
-                print(vc)
                 
                 if let menuDismissButton = menuDismissButton {
                     menuDismissButton.removeFromSuperview()

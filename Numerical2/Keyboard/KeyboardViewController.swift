@@ -56,7 +56,6 @@ class KeyboardViewController: UIInputViewController {
         view = objects[0] as! UIView;
         
         for theButton in button {
-            print(theButton)
             
             let buttonRaw = buttonLookup[theButton.tag]
             
@@ -106,17 +105,13 @@ class KeyboardViewController: UIInputViewController {
         var style = ThemeStyle.normal
         
         if let defs = UserDefaults(suiteName: "group.andrewjclark.numericalapp") {
-            print("")
+            
             if let loadedFirstColor = defs.colorForKey(key: "CurrentTheme.firstColor") {
                 firstColor = loadedFirstColor
                 
                 if let loadedSecondColor = defs.colorForKey(key: "CurrentTheme.secondColor") {
-                    print("")
+                    
                     if let loadedStyle = defs.object(forKey: "CurrentTheme.style") as? String {
-                        
-                        print(loadedFirstColor)
-                        print(loadedSecondColor)
-                        
                         
                         switch loadedStyle {
                         case "normal":

@@ -12,10 +12,6 @@ import CloudKit
 public class Equation: NSManagedObject {
 
     func isEqualToCKEquation(record: CKRecord) -> Bool {
-        print("isEqualToCKEquation")
-        print(record)
-        print(self)
-        
         // If the answer, the question, the modifiedDate, etc is all equal then it is up to date.
         
         if answer == record.object(forKey: "answer") as? String && question == record.object(forKey: "question") as? String && lastModifiedDate == record.object(forKey: "equationLastModifiedDate") as? NSDate && sortOrder == record.object(forKey: "sortOrder") as? NSNumber && userDeleted == record.object(forKey: "equationDeleted") as? NSNumber {

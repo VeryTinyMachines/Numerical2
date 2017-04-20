@@ -177,6 +177,14 @@ open class Glossary {
         
         if Glossary.isStringFractionNumber(answerString) {
             
+            // Let's also express it as a decimal
+            if let decimalAnswer = Evaluator.decimalFromFraction(answerString) {
+                
+                if answersArray.contains(decimalAnswer) == false {
+                    answersArray.append(decimalAnswer)
+                }
+            }
+            
             // This is a fraction - only add it if it has no decimal.
             if answerString.range(of: ".") == nil {
                 answersArray.append(answerString)
@@ -189,14 +197,6 @@ open class Glossary {
                     if reducedAnswer.range(of: ".") == nil {
                         answersArray.append(reducedAnswer)
                     }
-                }
-            }
-            
-            // Let's also express it as a decimal
-            if let decimalAnswer = Evaluator.decimalFromFraction(answerString) {
-                
-                if answersArray.contains(decimalAnswer) == false {
-                    answersArray.append(decimalAnswer)
                 }
             }
         } else {

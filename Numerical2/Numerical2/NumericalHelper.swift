@@ -16,6 +16,7 @@ public struct NumericalHelperSetting {
     public static let themes = "themes"
     public static let logging = "logging"
     public static let migration = "migration"
+    public static let preferdecimal = "preferdecimal"
 }
 
 class NumericalHelper {

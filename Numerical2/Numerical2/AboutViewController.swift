@@ -26,6 +26,7 @@ public enum AboutViewItem {
     case themes
     case logging
     case migratehistory
+    case preferdecimal
 }
 
 class AboutViewController: NumericalViewController, UITableViewDelegate, UITableViewDataSource {
@@ -108,6 +109,9 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             items.append(AboutViewItem.migratehistory)
             items.append(AboutViewItem.seperator)
         }
+        
+        items.append(AboutViewItem.preferdecimal)
+        items.append(AboutViewItem.seperator)
         
         items.append(AboutViewItem.keyboard)
         items.append(AboutViewItem.seperator)
@@ -273,6 +277,12 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             return switchCell
         case .migratehistory:
             cell.textLabel?.text = "Convert Numerical v1 History"
+        case .preferdecimal:
+            let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
+            
+            setSwitchCell(text: "Prefer Decimal Answers", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferdecimal), row: indexPath.row, switchCell: switchCell)
+            
+            return switchCell
         }
         
         cell.textLabel?.numberOfLines = 3
@@ -346,6 +356,11 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                 // This is enabled.
                 self.displayAlert(title: "Debug Logging is enabled", message: "This may affect app performance so disable this unless you want to use it and are helping AJC fix a bug.")
             }
+        case .preferdecimal:
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.preferdecimal)
+            // Reload the answer
+            NotificationCenter.default.post(name: Notification.Name(rawValue: EquationStoreNotification.equationLogicChanged), object: nil)
+            
         default:
             break
         }
@@ -411,6 +426,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                 self.convertHistory(block: { (complete) in
                     
                 })
+            case .preferdecimal:
+                break
             }
         }
     }

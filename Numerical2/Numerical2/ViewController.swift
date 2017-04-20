@@ -14,7 +14,7 @@ public enum KeypadSize {
     case minimum
 }
 
-class ViewController: NumericalViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate {
+class ViewController: NumericalViewController, KeypadDelegate, HistoryViewControllerDelegate, WorkPanelDelegate, UIGestureRecognizerDelegate {
     
     var blurView: UIVisualEffectView?
     
@@ -31,13 +31,15 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     var workPanelPercentage:Float = 1.0
     let midPoint:CGFloat = 0.66
     
-    var panning = false
+    var workpanelPanning = false
     
     var adReadyToDisplay = false
     
     var gradiantLayer:CAGradientLayer?
     
     var currentStatus = UIStatusBarStyle.default
+    
+    var panGesture:UIPanGestureRecognizer?
     
     @IBOutlet weak var shadeView: UIView!
     @IBOutlet weak var shadeViewLeftCorner: UIImageView!
@@ -112,45 +114,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         themeChanged()
     }
     
-    /*
-    /// Tells the delegate an ad request loaded an ad.
-    func adViewDidReceiveAd(_ bannerView: GADBannerView!) {
-       //print("adViewDidReceiveAd")
-        adReadyToDisplay = true
-        premiumStatusChanged()
-    }
-    
-    /// Tells the delegate an ad request failed.
-    func adView(_ bannerView: GADBannerView!,
-                didFailToReceiveAdWithError error: GADRequestError!) {
-       //print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
-        
-        adReadyToDisplay = false
-        premiumStatusChanged()
-    }
-    
-    /// Tells the delegate that a full screen view will be presented in response
-    /// to the user clicking on an ad.
-    func adViewWillPresentScreen(_ bannerView: GADBannerView!) {
-       //print("adViewWillPresentScreen")
-    }
-    
-    /// Tells the delegate that the full screen view will be dismissed.
-    func adViewWillDismissScreen(_ bannerView: GADBannerView!) {
-       //print("adViewWillDismissScreen")
-    }
-    
-    /// Tells the delegate that the full screen view has been dismissed.
-    func adViewDidDismissScreen(_ bannerView: GADBannerView!) {
-       //print("adViewDidDismissScreen")
-    }
-    
-    /// Tells the delegate that a user click will open another app (such as
-    /// the App Store), backgrounding the current app.
-    func adViewWillLeaveApplication(_ bannerView: GADBannerView!) {
-       //print("adViewWillLeaveApplication")
-    }
-    */
     
     func themeChanged() {
         
@@ -195,7 +158,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     
     func updateBackgroundVisibility(height: CGFloat) {
-        print("updateBackgroundVisibilityheight: \(height)")
         
         // Height is never quite 1.0 at maximum because we always leave a bit of room for the status bar. As such we should increase height just a little so that the shade and alpha changes are relative to 1.0
         
@@ -228,7 +190,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
             if historyView.view.alpha != historyAlpha {
                 historyView.view.alpha = historyAlpha
-                print("self.historyView?.view.alpha: \(self.historyView?.view.alpha)")
             }
         }
         
@@ -264,9 +225,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     }
     
     func updateStatusBarIfNeeded() {
-        print("updateStatusBarIfNeeded:")
-        print("\(currentStatus.rawValue) vs \(statusBarStyleForHeight().rawValue)")
-        
         if currentStatus != statusBarStyleForHeight() {
             self.setNeedsStatusBarAppearanceUpdate()
             currentStatus = statusBarStyleForHeight()
@@ -298,8 +256,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         if workPanelPercentage == Float(self.minimumEquationHeight() / self.view.frame.height) {
             let newHeight = snappedHeight(heightPercentage: 0.7, velocity: 0, viewSize: self.view.frame.size, animated: true)
-            
-            print("newHeight: \(newHeight)")
             
             self.updateHistoryContentInsets(heightPercentage: newHeight, viewSize: self.view.frame.size)
             
@@ -336,17 +292,109 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             keyPad.updateViews(currentCursor: nil)
             
             // Add a gesture recogniser to the keypad
-            
             let slideGesture = UIPanGestureRecognizer(target: self, action: #selector(ViewController.workPanelPanned(_:)))
-            keyPad.view.addGestureRecognizer(slideGesture)
+            slideGesture.delegate = self
+            keyPad.view.addGestureRecognizer(slideGesture) // temp for testing
+            panGesture = slideGesture
+ 
+            
+            // Add swipe gesture recogniser
+            let undoSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.swiped(_:)))
+            undoSwipeGesture.direction = .left
+            undoSwipeGesture.delegate = self
+            keyPad.view.addGestureRecognizer(undoSwipeGesture) // temp
         }
     }
     
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        //return true // temp - is this correct? Seems to work fine
+        
+        var swiping = false
+        var panning = false
+        
+        if let _ = gestureRecognizer as? UISwipeGestureRecognizer {
+            swiping = true
+        }
+        
+        if let _ = otherGestureRecognizer as? UISwipeGestureRecognizer {
+            swiping = true
+        }
+        
+        if let _ = gestureRecognizer as? UIPanGestureRecognizer {
+            panning = true
+        }
+        
+        if let _ = otherGestureRecognizer as? UIPanGestureRecognizer {
+            panning = true
+        }
+        
+        if swiping && panning {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func swiped(_ swipeGesture: UISwipeGestureRecognizer) {
+        // This swipe only counts if the equation view is at 0, ie, it did not scroll
+        
+        if let answerView = workPanelView?.equationView?.answerView, let questionView = workPanelView?.equationView?.questionView {
+            let locationAnswer = swipeGesture.location(in: answerView.view)
+            let locationQuestion = swipeGesture.location(in: questionView.view)
+            
+            // Check if swiped in answer
+            if answerView.view.frame.contains(locationAnswer) {
+                // The swipe's location was inside the answer view
+                
+                if answerView.collecitonView.contentOffset.x <= 0 {
+                    // The swipe was for a scrollable view that now has a negative content offset, or the scrollable view has no ability to scroll
+                    // Delete this equation with a small animation.
+                    
+                    SoundManager.sharedStore.playSound(sound: SoundType.restore)
+                    
+                    self.workPanelView?.pressedKey(SymbolCharacter.delete, sourceView: nil)
+                    
+                    // We also need to destroy the pangesture since it may still be working.
+                    
+                    if let panGesture = panGesture {
+                        panGesture.isEnabled = false
+                        panGesture.isEnabled = true
+                        self.snapAndUpdate(viewSize: self.view.frame.size)
+                    }
+                }
+            }
+            
+            if questionView.view.frame.contains(locationQuestion) {
+                // The swipe's location was inside the answer view
+                
+                if questionView.collecitonView.contentOffset.x <= 0 {
+                    // The swipe was for a scrollable view that now has a negative content offset
+                    // Delete this equation with a small animation.
+                    
+                    SoundManager.sharedStore.playSound(sound: SoundType.restore)
+                    
+                    self.workPanelView?.pressedKey(SymbolCharacter.delete, sourceView: nil)
+                    
+                    // We also need to destroy the pangesture since it may still be working.
+                    
+                    if let panGesture = panGesture {
+                        panGesture.isEnabled = false
+                        panGesture.isEnabled = true
+                        self.snapAndUpdate(viewSize: self.view.frame.size)
+                    }
+                }
+            }
+            
+            
+        }
+        
+        
+    }
     
     func equationHeight(workPanelHeight: CGFloat, viewSize: CGSize) -> CGFloat {
         let viewHeight = viewSize.height
         let equationHeight = (workPanelHeight * viewHeight) / 3
-        print("equationHeight: \(equationHeight)")
         
         if equationHeight < minimumEquationHeight() {
             return minimumEquationHeight()
@@ -371,19 +419,17 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
        //print("workPanelPanned")
         
         let location = sender.location(in: view)
-       //print(location)
         
         switch sender.state {
         case .began:
-           //print("began")
+            
             workPanelSlideOrigin = location
             workPanelLastLocation = location
             view.layer.removeAllAnimations()
         case .cancelled:
-           //print("cancelled")
+           
             break
         case .changed:
-           //print("changed")
 
             // origin is where the touch started.
             // location is where the touch is now.
@@ -396,6 +442,49 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 let verticalDeltaPercentage = verticalDelta / view.bounds.height
                 
                 var newHeight = CGFloat(workPanelPercentage) - verticalDeltaPercentage
+                
+                // We only want to start panning if the workPanel has moved down further than it's moved across and one of those is more than 10 points
+                
+                
+                if workpanelPanning == false {
+                    
+                    var yDiff = location.y - origin.y
+                    
+                    if yDiff < 0 {
+                        yDiff *= -1
+                    }
+                    
+                    var xDiff = location.x - origin.x
+                    
+                    if xDiff < 0 {
+                        xDiff *= -1
+                    }
+                    
+                    
+                    if yDiff > 10 {
+                        // We've moved more than 10 points now.
+                        if xDiff < 10 {
+                            // We have moved mostly vertical, so we should start the pan
+                            workpanelPanning = true
+                        } else {
+                            // This pan has been too horizontal. Kill it!
+                            panGesture?.isEnabled = false
+                            panGesture?.isEnabled = true
+                            return
+                        }
+                    } else {
+                        // Haven't moved enouugh to do anything yet
+                        return
+                    }
+                    
+                    
+                }
+                
+                
+                
+                // workpanelPanning
+                
+                
                 
                 if newHeight > 1 {
                     let diff = newHeight - 1
@@ -412,8 +501,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             workPanelLastLocation = location
             
         case .ended:
-           //print("ended")
-            
+           
             
             if let origin = workPanelSlideOrigin {
                 
@@ -432,11 +520,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 
                 self.updateHistoryContentInsets(heightPercentage: newHeight, viewSize: self.view.frame.size)
                 
-                var velocityPercentage = workPanelVerticalSpeed / self.view.frame.height
-                
-                if velocityPercentage < 0 {
-                    velocityPercentage *= -1
-                }
+                let velocityPercentage = workPanelVerticalSpeed / self.view.frame.height
                 
                 self.updateConstraints(heightPercentage: newHeight, viewSize:self.view.frame.size, velocity: velocityPercentage, animated: true)
                 
@@ -445,11 +529,14 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
             workPanelVerticalSpeed = 0
             
+            workPanelSlideOrigin = nil
+            workPanelLastLocation = nil
+            workpanelPanning = false
         case .failed:
-           //print("failed")
-            panning = false
+            workpanelPanning = false
+            workPanelSlideOrigin = nil
+            workPanelLastLocation = nil
         case .possible:
-           //print("possible")
             break
         }
     }

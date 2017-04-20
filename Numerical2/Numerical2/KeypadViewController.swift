@@ -179,8 +179,6 @@ class KeypadViewController: UIViewController {
     func characterForSenderTag(tag: Int) -> Character? {
         var character = keyCharacters[tag]
         
-        print("pressedKey with tag \(tag) with character \(character)")
-        
         // If this is a smart bracket button then figure out what kind of bracket it is
         
         if character == SymbolCharacter.smartBracket {

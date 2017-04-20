@@ -20,31 +20,52 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     var delegate:QuestionCollectionViewDelegate?
     
     var isAnswerView = false
+    var scrollingFromRight = false
     
     var questionBundle: AnswerBundle? {
         didSet {
             
             // Divide up the questionString into components
-           
-            
-            
-            
             if let theAnswer = self.questionBundle?.answer {
                 // We have an answer
                 
                 if self.isAnswerView {
                     
-                    let possibleAnswers = Glossary.possibleAnswersFromString(theAnswer)
+                    var possibleAnswers = Glossary.possibleAnswersFromString(theAnswer)
                     
-                    var formattedAnswers:Array<String> = []
-                    
-                    for anAnswer in possibleAnswers {
+                    // The first answer will always be a decimal. The last answer will always be the smallest possible fraction
+                    if possibleAnswers.count > 1 {
                         
-                        let formattedAnswer = Glossary.formattedStringForQuestion(anAnswer)
-                        
-                        formattedAnswers.append(formattedAnswer)
+                        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferdecimal) {
+                            // We prefer the decimal answer, so just show that one.
+                            possibleAnswers = [possibleAnswers.first!] // Get the decimal answer
+                        } else {
+                            // We prefer fractional answer if available, so show that one
+                            possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
+                        }
                     }
                     
+                    /*
+                    while possibleAnswers.count > 1 {
+                        possibleAnswers.removeLast()
+                    }
+                    */
+                    if possibleAnswers.count > 1 {
+                        //possibleAnswers = [possibleAnswers.first!]
+                    }
+                    
+                    // We now only have 1 or less possibleAnswers
+                    
+                    
+//                    var formattedAnswers:Array<String> = []
+//                    
+//                    for anAnswer in possibleAnswers {
+//                        
+//                        let formattedAnswer = Glossary.formattedStringForQuestion(anAnswer)
+//                        
+//                        formattedAnswers.append(formattedAnswer)
+//                    }
+//                    
                     let answersString = possibleAnswers.joined(separator: " or ")
                     
                     let questionComponents = answersString.components(separatedBy: " ")
@@ -215,6 +236,14 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
 
         
         collecitonView.reloadData()
+        
+        /* // temp
+        if collecitonView.numberOfItems(inSection: 0) == 1 {
+           collecitonView.isScrollEnabled = false
+        } else {
+           collecitonView.isScrollEnabled = true
+        }
+ */
         
         /*
         if questionArray.count > 0 {
@@ -445,6 +474,10 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         
         if width > viewWidth {
             width = viewWidth
+        }
+        
+        if width > collectionView.bounds.width - 20 {
+            width = collectionView.bounds.width - 20
         }
         
         return CGSize(width: width, height: collectionView.bounds.height)
@@ -689,6 +722,30 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     
     func isQuestionEditting() -> Bool {
         return !textField.isHidden
+    }
+    
+    
+    @IBAction func userSwipedLeft(_ sender: UISwipeGestureRecognizer) {
+        print("Swiped")
+    }
+    
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        
+        if scrollView.contentOffset.x >= -10 {
+            scrollingFromRight = true
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.x < -10 && scrollingFromRight {
+            // We have scroll from a starting spot but we should not have
+            scrollView.isScrollEnabled = false
+            scrollView.contentOffset = CGPoint(x: -10, y: 0)
+            scrollView.isScrollEnabled = true
+        }
+        
+        scrollingFromRight = false
     }
     
 }

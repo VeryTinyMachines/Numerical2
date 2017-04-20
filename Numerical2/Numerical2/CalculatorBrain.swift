@@ -58,7 +58,7 @@ open class CalculatorBrain {
         
         backgroundQueue.async(execute: {
             
-            print("start time: \(startTime)", terminator: "\n")
+            //print("start time: \(startTime)", terminator: "\n")
             
             if self.currentQuestion == string {
                 
@@ -69,7 +69,7 @@ open class CalculatorBrain {
                 let readyTime = self.currentTimeMillis()
                 let readyTimeDelta = readyTime - startTime
                 
-                print("readyTimeDelta: \(readyTimeDelta)")
+                //print("readyTimeDelta: \(readyTimeDelta)")
                 
                 if let completionBlock = completion {
                     
@@ -77,7 +77,7 @@ open class CalculatorBrain {
                         let endTime = self.currentTimeMillis()
                         let endTimeDelta = endTime - startTime
                         
-                        print("endTimeDelta: \(endTimeDelta)")
+                        //print("endTimeDelta: \(endTimeDelta)")
                         
                         completionBlock(result)
                     })

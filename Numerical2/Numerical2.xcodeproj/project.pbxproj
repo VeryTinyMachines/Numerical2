@@ -24,6 +24,8 @@
 		511D2A951E3482D300957ADB /* ThemeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511D2A931E3480EE00957ADB /* ThemeFormatter.swift */; };
 		511D2A971E3485CB00957ADB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511D2A961E3485CB00957ADB /* Theme.swift */; };
 		511D2A981E3485D300957ADB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511D2A961E3485CB00957ADB /* Theme.swift */; };
+		511EA1FE1EA8D6D700E843C0 /* Numerical2b_120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 511EA1FD1EA8D6D700E843C0 /* Numerical2b_120@2x.png */; };
+		511EA2001EA8D6F500E843C0 /* Numerical2b_120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 511EA1FF1EA8D6F500E843C0 /* Numerical2b_120@2x.png */; };
 		512137BA1D967A730042EFC1 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137B91D967A730042EFC1 /* AboutViewController.swift */; };
 		512137BD1D969C760042EFC1 /* NumericalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137BC1D969C760042EFC1 /* NumericalHelper.swift */; };
 		512137C11D96A76F0042EFC1 /* PremiumCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137C01D96A76F0042EFC1 /* PremiumCoordinator.swift */; };
@@ -166,6 +168,8 @@
 		5119A9E31E6D267D00F16CE1 /* RoundedCorner_Right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RoundedCorner_Right@2x.png"; sourceTree = "<group>"; };
 		511D2A931E3480EE00957ADB /* ThemeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeFormatter.swift; sourceTree = "<group>"; };
 		511D2A961E3485CB00957ADB /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		511EA1FD1EA8D6D700E843C0 /* Numerical2b_120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Numerical2b_120@2x.png"; sourceTree = "<group>"; };
+		511EA1FF1EA8D6F500E843C0 /* Numerical2b_120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Numerical2b_120@2x.png"; sourceTree = "<group>"; };
 		512137B91D967A730042EFC1 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		512137BC1D969C760042EFC1 /* NumericalHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalHelper.swift; sourceTree = "<group>"; };
 		512137BE1D969F280042EFC1 /* NumericalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalViewController.swift; sourceTree = "<group>"; };
@@ -298,6 +302,7 @@
 		513197031B6ADD5900E9B802 = {
 			isa = PBXGroup;
 			children = (
+				511EA1FD1EA8D6D700E843C0 /* Numerical2b_120@2x.png */,
 				5685FE8D1BCACA300019BC04 /* AudioToolbox.framework */,
 				5685FE8B1BCACA2A0019BC04 /* AVFoundation.framework */,
 				51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */,
@@ -332,6 +337,7 @@
 				51E032851E76C6F20000A2A5 /* AppIcon120x120@2x.png */,
 				512138251D96F7590042EFC1 /* Equation+CoreDataClass.swift */,
 				512138261D96F7590042EFC1 /* Equation+CoreDataProperties.swift */,
+				511EA1FF1EA8D6F500E843C0 /* Numerical2b_120@2x.png */,
 				51BE48B91E13AA38002A2B92 /* UIColor+Numerical.swift */,
 				512137BC1D969C760042EFC1 /* NumericalHelper.swift */,
 				51BE48B01E139AE3002A2B92 /* NumericalViewHelper.swift */,
@@ -727,6 +733,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				511EA1FE1EA8D6D700E843C0 /* Numerical2b_120@2x.png in Resources */,
 				51C40E851DCC135C00930BFD /* professional.aiff in Resources */,
 				51C40E861DCC135C00930BFD /* rock.aiff in Resources */,
 				5142AE3C1DA420EE0076D117 /* 5_Star-(alt).png in Resources */,
@@ -749,6 +756,7 @@
 				51D116781E8278700059C342 /* Theme_Phone_StatusBar.png in Resources */,
 				51C40E871DCC135C00930BFD /* simple.aiff in Resources */,
 				51E032881E76E6610000A2A5 /* WorkPanelShadow@2x.png in Resources */,
+				511EA2001EA8D6F500E843C0 /* Numerical2b_120@2x.png in Resources */,
 				51D28B4E1B6D1BA9009A0AEC /* FractionViewCell.xib in Resources */,
 				515AF2181DC9549300170642 /* GoogleService-Info.plist in Resources */,
 				5142AE3F1DA420EE0076D117 /* 54_Lock.png in Resources */,

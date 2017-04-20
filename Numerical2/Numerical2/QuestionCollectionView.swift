@@ -8,11 +8,9 @@
 
 import UIKit
 
-class QuestionCollectionView:UICollectionView {
+class QuestionCollectionView:UICollectionView, UIGestureRecognizerDelegate {
     
     override func draw(_ rect: CGRect) {
         self.transform = CGAffineTransform(scaleX: -1.0, y: 1.0) // FLIP!
     }
-    
-    
 }

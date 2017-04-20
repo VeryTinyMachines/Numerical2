@@ -185,7 +185,9 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.themeChanged), name: NSNotification.Name.UIAccessibilityReduceTransparencyStatusDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.themeChanged), name: NSNotification.Name.UIAccessibilityReduceTransparencyStatusDidChange, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.equationLogicChanged), name: Notification.Name(rawValue: EquationStoreNotification.equationLogicChanged), object: nil)
         
         currentEquation = EquationStore.sharedStore.currentEquation()
         workPanelDelegate?.updateEquation(currentEquation)
@@ -203,6 +205,10 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         self.tutorialLabel.isHidden = true
         self.tutorialButton.isHidden = true
+    }
+    
+    func equationLogicChanged() {
+        updateViews(currentCursor: nil)
     }
     
     func themeChanged() {
@@ -292,9 +298,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                     
                     let cursorStartPosition = textField.offset(from: textField.beginningOfDocument, to: selectedRange.start)
                     let cursorEndPosition = textField.offset(from: textField.beginningOfDocument, to: selectedRange.end)
-                    
-                    print(cursorStartPosition)
-                    print(cursorEndPosition)
                     
                     if cursorEndPosition > cursorStartPosition {
                         return (lower: cursorStartPosition, upper: cursorEndPosition)
@@ -483,8 +486,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                     
                     // We have removed these items, now insert those characters at the index
                     
-                    print(newQuestion)
-                    
                     for character in characters {
                         newQuestion.insert(character, at: newQuestion.index(newQuestion.startIndex, offsetBy: range.lower))
                     }
@@ -495,21 +496,13 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                     
                 } else if var index = currentCursorPosition() {
                     
-                    print(index)
-                    
                     var newQuestion = question
                     
                     for character in characters {
-                        print("character: \(character)")
-                        
-                        print("newQuestion before: \(newQuestion)")
                         
                         newQuestion.insert(character, at: newQuestion.index(newQuestion.startIndex, offsetBy: index))
                         
                         index += 1
-                        
-                        print("newQuestion after: \(newQuestion)")
-                        
                     }
                     
                     currentEquation?.question = newQuestion
@@ -568,8 +561,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                         newCursorPosition = range.lower
                         
                     } else if let index = currentCursorPosition() {
-                        
-                        print(index)
                         
                         if index > 0 {
                             // Remove the character before this index
