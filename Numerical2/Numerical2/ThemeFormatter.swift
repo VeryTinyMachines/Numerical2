@@ -11,6 +11,8 @@ import UIKit
 class ThemeFormatter {
     
     class func defaultTheme() -> Theme {
+        // return Theme(title: "Pink", themeID: "pink001", color1: "fe4c42",  color2: "8e1677", style: ThemeStyle.normal, premium: false) // pink
+        
         return Theme(title: "Candy", themeID: "candy001", color1: "fc52ff", color2: "48b1d4", style: ThemeStyle.normal, premium: false)
     }
     

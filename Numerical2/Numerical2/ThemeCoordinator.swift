@@ -260,7 +260,7 @@ class ThemeCoordinator {
     
     func blurViewAllowed() -> Bool {
         
-        return true
+        // return true // temp
         
         if (UIAccessibilityIsReduceTransparencyEnabled()) {
             // transparency is disabled, so blur views are not allowed
@@ -314,7 +314,7 @@ class ThemeCoordinator {
         }
         
         // No current theme picked, return the default.
-        return "candy001"
+        return "candy001" 
     }
 }
 

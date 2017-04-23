@@ -38,10 +38,10 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                         
                         if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferdecimal) {
                             // We prefer the decimal answer, so just show that one.
-                            possibleAnswers = [possibleAnswers.first!] // Get the decimal answer
+                            possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
                         } else {
                             // We prefer fractional answer if available, so show that one
-                            possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
+                            //possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
                         }
                     }
                     
@@ -234,42 +234,9 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         //self.collecitonView.semanticContentAttribute = UISemanticContentAttribute.forceLeftToRight
         //self.collecitonView.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
 
-        
-        collecitonView.reloadData()
-        
-        /* // temp
-        if collecitonView.numberOfItems(inSection: 0) == 1 {
-           collecitonView.isScrollEnabled = false
-        } else {
-           collecitonView.isScrollEnabled = true
+        DispatchQueue.main.async {
+            self.collecitonView.reloadData()
         }
- */
-        
-        /*
-        if questionArray.count > 0 {
-            let lastItem = self.questionArray.count - 1
-            
-            let indexPath = IndexPath(item: lastItem, section: 0)
-            self.collecitonView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: false)
-            
-            
-            self.collecitonView.semanticContentAttribute = UISemanticContentAttribute.forceRightToLeft
-            
-            self.collecitonView.scrollToItem(at: IndexPath(item: lastItem, section: 0), at: UICollectionViewScrollPosition.right, animated: false)
-            
-            
-            
-             else if lastItem > 0 {
-             self.collecitonView.scrollToItem(at: IndexPath(item: lastItem, section: 0), at: UICollectionViewScrollPosition.left, animated: false)
-             }
- 
-
-            
-            DispatchQueue.main.async {
-            }
-        }
- */
-
     }
     
     func setEditingMode(editing: Bool, animated: Bool) {

@@ -81,7 +81,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { (timer) in
             
         })
- */
+         */
         
         let currentVersion = NumericalHelper.currentDeviceInfo(includeBuildNumber: false)
         
@@ -89,7 +89,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             if currentVersion != previousVersion {
                 // Display a tool tip
                 DispatchQueue.main.async {
-                    let alertView = UIAlertController(title: "Numerical² has been updated!", message: "You can learn about the new features by going to settings and selected What's New. Or tap the button below.", preferredStyle: UIAlertControllerStyle.alert)
+                    let alertView = UIAlertController(title: "Numerical² has been\nupdated to \(currentVersion)!", message: "\n- Right aligned equation\n-Bigger equation area so keys are lower\n- Swipe equation to delete\n- Smoother keyboard panning\n- URL Scheme restored\n- Various bracket & logic fixes.\n\nTap \"What's New\" to see a list of new features and upcoming ones. xoxo AJC", preferredStyle: UIAlertControllerStyle.alert)
                     
                     alertView.addAction(UIAlertAction(title: "What's New", style: UIAlertActionStyle.default, handler: { (action) in
                         self.attemptToOpenURL(urlString: "http://verytinymachines.com/numerical2-whatsnew")
@@ -294,7 +294,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             // Add a gesture recogniser to the keypad
             let slideGesture = UIPanGestureRecognizer(target: self, action: #selector(ViewController.workPanelPanned(_:)))
             slideGesture.delegate = self
-            keyPad.view.addGestureRecognizer(slideGesture) // temp for testing
+            keyPad.view.addGestureRecognizer(slideGesture)
             panGesture = slideGesture
  
             
@@ -302,13 +302,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             let undoSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.swiped(_:)))
             undoSwipeGesture.direction = .left
             undoSwipeGesture.delegate = self
-            keyPad.view.addGestureRecognizer(undoSwipeGesture) // temp
+            keyPad.view.addGestureRecognizer(undoSwipeGesture)
         }
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        
-        //return true // temp - is this correct? Seems to work fine
         
         var swiping = false
         var panning = false
@@ -520,7 +518,9 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 
                 self.updateHistoryContentInsets(heightPercentage: newHeight, viewSize: self.view.frame.size)
                 
-                let velocityPercentage = workPanelVerticalSpeed / self.view.frame.height
+                var velocityPercentage = workPanelVerticalSpeed / self.view.frame.height
+                
+                velocityPercentage = 1 // This seems to work better since you're usually dragging it.
                 
                 self.updateConstraints(heightPercentage: newHeight, viewSize:self.view.frame.size, velocity: velocityPercentage, animated: true)
                 
@@ -687,6 +687,9 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             self.workPanelView?.view.backgroundColor = UIColor(white: 1.0, alpha: 0.1)
             self.historyViewBottomConstraint.constant = panelSize
         }
+        
+        
+        
         
         // Queue up these constraints to animate.
         self.changeHeightMultipler(newMultiplier)
