@@ -55,6 +55,12 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     @IBOutlet weak var historyViewBottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var keypadLeadingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var historyTrailingConstraint: NSLayoutConstraint!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -64,6 +70,9 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.transparencyChanged), name: NSNotification.Name.UIAccessibilityReduceTransparencyStatusDidChange, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keypadLayoutChanged), name: Notification.Name(rawValue: NumericalHelperSetting.preferHistoryBehind), object: nil)
+        
+        // preferHistoryBehind
         /*
         bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
         bannerView.rootViewController = self
@@ -109,6 +118,15 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         UserDefaults.standard.set(currentVersion, forKey: "CurrentVersion")
     }
     
+    func keypadLayoutChanged() {
+        updateBackgroundVisibility()
+        themeChanged()
+        
+        workPanelView?.updateLayout()
+        workPanelView?.updateBlurView()
+        workPanelView?.keyPanelView?.setupPageView()
+    }
+    
     func transparencyChanged() {
         // snapPercentageHeight()
         themeChanged()
@@ -130,16 +148,24 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 gradiantLayer.removeFromSuperlayer()
             }
             
-            let layer = ThemeCoordinator.shared.gradiantLayerForCurrentTheme()
-            layer.frame = self.view.frame
-            
-            self.view.layer.insertSublayer(layer, at: 1) // This puts the layer above the background image
+            if NumericalViewHelper.keypadIsDraggable() == false && NumericalViewHelper.historyBesideKeypadNeeded() {
+                let layer = ThemeCoordinator.shared.lightGradiantLayerForCurrentTheme()
+                layer.frame = self.view.frame
+                
+                self.view.layer.insertSublayer(layer, at: 1) // This puts the layer above the background image
+                
+                gradiantLayer = layer
+                
+            } else {
+                let layer = ThemeCoordinator.shared.gradiantLayerForCurrentTheme()
+                layer.frame = self.view.frame
+                
+                self.view.layer.insertSublayer(layer, at: 1) // This puts the layer above the background image
+                
+                gradiantLayer = layer
+            }
             
             self.view.backgroundColor = ThemeCoordinator.shared.currentTheme().firstColor
-            
-            gradiantLayer = layer
-            
-            
         } else {
             if let gradiantLayer = gradiantLayer {
                 gradiantLayer.removeFromSuperlayer()
@@ -149,7 +175,27 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             self.view.backgroundColor = UIColor.black
         }
         
+        if NumericalViewHelper.historyBesideKeypadNeeded() {
+            // The constraints needs to now put the history and the keypanel next to each other.
+            
+            //let historyWidth:CGFloat = 300
+            var viewWidth = self.view.frame.width
+            var historyWidth = viewWidth / 2
+            
+            if historyWidth > 320 {
+                historyWidth = 320
+            }
+            
+            keypadLeadingConstraint.constant = historyWidth
+            historyTrailingConstraint.constant = viewWidth - historyWidth
+        } else {
+            keypadLeadingConstraint.constant = 0
+            historyTrailingConstraint.constant = 0
+        }
+        
         updateBackgroundVisibility()
+        
+        snapAndUpdate(viewSize: self.view.frame.size)
     }
     
     func updateBackgroundVisibility() {
@@ -159,65 +205,96 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func updateBackgroundVisibility(height: CGFloat) {
         
-        // Height is never quite 1.0 at maximum because we always leave a bit of room for the status bar. As such we should increase height just a little so that the shade and alpha changes are relative to 1.0
-        
-        var height = height
-        let originalHeight = height
-        
-        if statusBarHidden() == false {
-            let maximumHeight = (self.view.bounds.height - 20) / self.view.bounds.height // This is the maximum height that we can expect the height to have. This is our "new" 1.0
-            height = height / maximumHeight // This normalises height to 1.0 if it is at the maximum expected height
+        // Does the history view need to be visible, given it's position?
+        if NumericalViewHelper.historyBehindKeypadNeeded() || NumericalViewHelper.historyBehindKeypadNeeded() {
+            // This device needs to display the history behind it, or next to it
+            historyView?.view.isHidden = false
+        } else {
+            historyView?.view.isHidden = true
         }
         
-        self.shadeView.backgroundColor = UIColor.black
         
-        var shadeAlpha:CGFloat = 0.0
-        shadeAlpha = CGFloat(originalHeight - midPoint) // The maths here is weird but it works for some reason.
-        if shadeAlpha > 0.5 {
-            shadeAlpha = 0.5
+        // Does the keypad need to be moveable?
+        if NumericalViewHelper.keypadIsDraggable() {
+            workPanelView?.view.layer.cornerRadius = 10.0
+        } else {
+            workPanelView?.view.layer.cornerRadius = 0.0
         }
         
-        if self.shadeView.alpha != shadeAlpha || self.shadeViewLeftCorner.alpha != shadeAlpha || self.shadeViewRightCorner.alpha != shadeAlpha {
-            // At least one of the view's has an incorrect alpha, update 'em all!
-            self.shadeView.alpha = shadeAlpha
-            self.shadeViewLeftCorner.alpha = shadeAlpha
-            self.shadeViewRightCorner.alpha = shadeAlpha
-        }
         
-        // History view hide at 1.0
-        if let historyView = self.historyView {
-            let historyAlpha = CGFloat((height * -9) + 9)
+        if NumericalViewHelper.keypadIsDraggable() {
             
-            if historyView.view.alpha != historyAlpha {
-                historyView.view.alpha = historyAlpha
+            // Height is never quite 1.0 at maximum because we always leave a bit of room for the status bar. As such we should increase height just a little so that the shade and alpha changes are relative to 1.0
+            
+            var height = height
+            let originalHeight = height
+            
+            if statusBarHidden() == false {
+                let maximumHeight = (self.view.bounds.height - 20) / self.view.bounds.height // This is the maximum height that we can expect the height to have. This is our "new" 1.0
+                height = height / maximumHeight // This normalises height to 1.0 if it is at the maximum expected height
             }
-        }
-        
-        
-        // Add the drop shadow as needed.
-        var workPanelAlpha = CGFloat((height * -2) + 2)
-        if workPanelAlpha > 1.0 {
-            workPanelAlpha = 1.0
-        }
-        workPanelAlpha *= 0.05
-        
-        if ThemeCoordinator.shared.styleForCurrentTheme() == ThemeStyle.bright {
             
+            self.shadeView.backgroundColor = UIColor.black
+            
+            var shadeAlpha:CGFloat = 0.0
+            shadeAlpha = CGFloat(originalHeight - midPoint) // The maths here is weird but it works for some reason.
+            if shadeAlpha > 0.5 {
+                shadeAlpha = 0.5
+            }
+            
+            // Update the shadeView alpha levels.
+            if self.shadeView.alpha != shadeAlpha || self.shadeViewLeftCorner.alpha != shadeAlpha || self.shadeViewRightCorner.alpha != shadeAlpha {
+                // At least one of the view's has an incorrect alpha, update 'em all!
+                self.shadeView.alpha = shadeAlpha
+                self.shadeViewLeftCorner.alpha = shadeAlpha
+                self.shadeViewRightCorner.alpha = shadeAlpha
+            }
+            
+            // History view hide at 1.0
+            if let historyView = self.historyView {
+                let historyAlpha = CGFloat((height * -9) + 9)
+                
+                if historyView.view.alpha != historyAlpha {
+                    historyView.view.alpha = historyAlpha
+                }
+            }
+            
+            // Add the drop shadow as needed.
             var workPanelAlpha = CGFloat((height * -2) + 2)
             if workPanelAlpha > 1.0 {
                 workPanelAlpha = 1.0
             }
             workPanelAlpha *= 0.05
             
-            workPanelShadow.isHidden = false
-            if workPanelShadow.alpha != workPanelAlpha {
-                workPanelShadow.alpha = workPanelAlpha
-            }
-            
-            if ThemeCoordinator.shared.blurViewAllowed() == false {
-                self.workPanelShadow.alpha = 0
+            if ThemeCoordinator.shared.styleForCurrentTheme() == ThemeStyle.bright {
+                
+                var workPanelAlpha = CGFloat((height * -2) + 2)
+                if workPanelAlpha > 1.0 {
+                    workPanelAlpha = 1.0
+                }
+                workPanelAlpha *= 0.05
+                
+                workPanelShadow.isHidden = false
+                if workPanelShadow.alpha != workPanelAlpha {
+                    workPanelShadow.alpha = workPanelAlpha
+                }
+                
+                if ThemeCoordinator.shared.blurViewAllowed() == false {
+                    self.workPanelShadow.alpha = 0
+                }
+            } else {
+                workPanelShadow.isHidden = true
             }
         } else {
+            // The keypad isn't draggable, which means it's full screen
+            let shadeAlpha:CGFloat = 0.0
+            self.shadeView.alpha = shadeAlpha
+            self.shadeViewLeftCorner.alpha = shadeAlpha
+            self.shadeViewRightCorner.alpha = shadeAlpha
+            
+            
+            historyView?.view.alpha = 1.0
+            historyView?.view.isHidden = false
             workPanelShadow.isHidden = true
         }
         
@@ -255,6 +332,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         
         if workPanelPercentage == Float(self.minimumEquationHeight() / self.view.frame.height) {
+            // The work panel is in the minimum configuration. Raise it
+            
             let newHeight = snappedHeight(heightPercentage: 0.7, velocity: 0, viewSize: self.view.frame.size, animated: true)
             
             self.updateHistoryContentInsets(heightPercentage: newHeight, viewSize: self.view.frame.size)
@@ -263,9 +342,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
             workPanelPercentage = Float(newHeight)
         }
-        
-        
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -383,11 +459,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                     }
                 }
             }
-            
-            
         }
-        
-        
     }
     
     func equationHeight(workPanelHeight: CGFloat, viewSize: CGSize) -> CGFloat {
@@ -410,8 +482,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     func maximumEquationHeight() -> CGFloat {
         return 240
     }
-    
-    // pan gesture
     
     func workPanelPanned(_ sender: UIPanGestureRecognizer) {
        //print("workPanelPanned")
@@ -474,15 +544,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                         // Haven't moved enouugh to do anything yet
                         return
                     }
-                    
-                    
                 }
-                
-                
-                
-                // workpanelPanning
-                
-                
                 
                 if newHeight > 1 {
                     let diff = newHeight - 1
@@ -564,6 +626,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func snappedHeight(heightPercentage: CGFloat, velocity: CGFloat, viewSize:CGSize, animated: Bool) -> CGFloat {
         
+        if NumericalViewHelper.keypadIsDraggable() == false {
+            // Override this height pulling
+            return 1.0
+        }
+        
         // Simulate where the current velocity will "end up" and snap from there.
         var velocity = velocity
         var velocityDistance:CGFloat = 0
@@ -631,6 +698,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             heightPercentage = 1
         }
         
+        if NumericalViewHelper.keypadIsDraggable() == false {
+            // Override this height pulling
+            heightPercentage = 1.0
+        }
+        
         // Resize the equation view so that it doesn't try and animate with the rest.
         
         if let workPanelView = workPanelView {
@@ -678,18 +750,14 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         self.workPanelView?.equationView?.answerView?.collecitonView.reloadData()
         self.view.layoutIfNeeded()
         
-        
         // Update the history view
-        if ThemeCoordinator.shared.blurViewAllowed() {
+        if ThemeCoordinator.shared.blurViewAllowed() || NumericalViewHelper.keypadIsDraggable() == false {
             self.workPanelView?.view.backgroundColor = UIColor.clear
             self.historyViewBottomConstraint.constant = 0
         } else {
             self.workPanelView?.view.backgroundColor = UIColor(white: 1.0, alpha: 0.1)
             self.historyViewBottomConstraint.constant = panelSize
         }
-        
-        
-        
         
         // Queue up these constraints to animate.
         self.changeHeightMultipler(newMultiplier)
@@ -761,7 +829,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func updateHistoryContentInsets(heightPercentage: CGFloat, viewSize: CGSize) {
         
-        if ThemeCoordinator.shared.blurViewAllowed() {
+        if ThemeCoordinator.shared.blurViewAllowed() && NumericalViewHelper.keypadIsDraggable() {
             
             var heightPercentage = heightPercentage
             
@@ -801,11 +869,27 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         super.viewWillTransition(to: size, with: coordinator)
         
+        self.historyView?.view.alpha = 0.0
+        self.workPanelView?.equationView?.view.alpha = 0.0
+        self.workPanelView?.keyPanelView?.view.alpha = 0.0
+        
         coordinator.animate(alongsideTransition: { (context) -> Void in
-            self.snapAndUpdate(viewSize: size)
-            self.view.layoutIfNeeded()
+            
             }) { (context) -> Void in
+                
+                self.snapAndUpdate(viewSize: size)
+                self.view.layoutIfNeeded()
                 self.themeChanged()
+                self.workPanelView?.themeChanged()
+                
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.updateBackgroundVisibility()
+                    self.workPanelView?.equationView?.view.alpha = 1.0
+                    self.workPanelView?.keyPanelView?.view.alpha = 1.0
+                }, completion: { (complete) in
+                    
+                })
+                
         }
     }
     
@@ -828,7 +912,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         }
         
         return ThemeCoordinator.shared.preferredStatusBarStyleForCurrentTheme()
-        
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -837,7 +920,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func showAd() -> Bool {
         return false
-        
+        /*
         if PremiumCoordinator.shared.preventAd {
             return false
         }
@@ -847,10 +930,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         }
         
         return PremiumCoordinator.shared.shouldUserSeeAd()
+         */
     }
-    
-    
-    
-    
 }
 

@@ -182,7 +182,9 @@ class KeypadViewController: UIViewController {
         // If this is a smart bracket button then figure out what kind of bracket it is
         
         if character == SymbolCharacter.smartBracket {
-            if currentLegalKeys.contains("(") {
+            if currentLegalKeys.contains(SymbolCharacter.smartBracketPrefersClose) {
+                character = ")"
+            } else if currentLegalKeys.contains("(") {
                 character = "("
             } else if currentLegalKeys.contains(")") {
                 character = ")"
@@ -227,7 +229,9 @@ class KeypadViewController: UIViewController {
                     
                     // Set the smart bracket button
                     if character == SymbolCharacter.smartBracket {
-                        if currentLegalKeys.contains("(") {
+                        if currentLegalKeys.contains(SymbolCharacter.smartBracketPrefersClose) {
+                            button.setTitle(")", for: UIControlState())
+                        } else if currentLegalKeys.contains("(") {
                             button.setTitle("(", for: UIControlState())
                         } else if currentLegalKeys.contains(")") {
                             button.setTitle(")", for: UIControlState())

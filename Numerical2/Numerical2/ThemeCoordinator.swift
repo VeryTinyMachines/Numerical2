@@ -260,7 +260,7 @@ class ThemeCoordinator {
     
     func blurViewAllowed() -> Bool {
         
-        // return true // temp
+        //return false // temp
         
         if (UIAccessibilityIsReduceTransparencyEnabled()) {
             // transparency is disabled, so blur views are not allowed
@@ -293,6 +293,11 @@ class ThemeCoordinator {
     func gradiantLayerForCurrentTheme() -> CAGradientLayer {
         let currentTheme = self.currentTheme()
         return ThemeFormatter.gradiantLayerForTheme(theme: currentTheme)
+    }
+    
+    func lightGradiantLayerForCurrentTheme() -> CAGradientLayer {
+        let currentTheme = self.currentTheme()
+        return ThemeFormatter.brightGradiantLayerForTheme(theme: currentTheme)
     }
     
     func firstColorForCurrentTheme() -> UIColor {

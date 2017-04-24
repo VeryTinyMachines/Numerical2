@@ -27,6 +27,10 @@ public enum AboutViewItem {
     case logging
     case migratehistory
     case preferdecimal
+    case preferradians
+    case showscientific
+    case historybehind
+    
 }
 
 class AboutViewController: NumericalViewController, UITableViewDelegate, UITableViewDataSource {
@@ -83,11 +87,6 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         items.append(AboutViewItem.premiumInfo)
         items.append(AboutViewItem.seperator)
         
-        /*
-        items.append(AboutViewItem.themes)
-        items.append(AboutViewItem.seperator)
-        */
-        
         if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.themes) {
             items.append(AboutViewItem.themeSelector)
             items.append(AboutViewItem.seperator)
@@ -111,6 +110,17 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         }
         
         items.append(AboutViewItem.preferdecimal)
+        items.append(AboutViewItem.seperator)
+        
+        items.append(AboutViewItem.preferradians)
+        items.append(AboutViewItem.seperator)
+        
+        // Show Scientific Keyboard
+        items.append(AboutViewItem.showscientific)
+        items.append(AboutViewItem.seperator)
+        
+        // Prefer History Behind
+        items.append(AboutViewItem.historybehind)
         items.append(AboutViewItem.seperator)
         
         items.append(AboutViewItem.keyboard)
@@ -283,6 +293,33 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             setSwitchCell(text: "Prefer Decimal Answers", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferdecimal), row: indexPath.row, switchCell: switchCell)
             
             return switchCell
+        case .preferradians:
+            let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
+            
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferRadians) {
+                setSwitchCell(text: "Prefer Radians\n(Turn off for Degrees)", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferRadians), row: indexPath.row, switchCell: switchCell)
+            } else {
+                setSwitchCell(text: "Prefer Radians", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferRadians), row: indexPath.row, switchCell: switchCell)
+            }
+            
+            return switchCell
+        case .showscientific:
+            let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
+            
+            setSwitchCell(text: "Show Scientific Keys", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.showScientific), row: indexPath.row, switchCell: switchCell)
+            
+            return switchCell
+        case .historybehind:
+            
+            let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
+            
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferHistoryBehind) {
+                setSwitchCell(text: "Show History Behind Keypad\n(Numerical 2 style)", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferHistoryBehind), row: indexPath.row, switchCell: switchCell)
+            } else {
+                setSwitchCell(text: "Show History Behind Keypad\n(Numerical 1 style)", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferHistoryBehind), row: indexPath.row, switchCell: switchCell)
+            }
+            
+            return switchCell
         }
         
         cell.textLabel?.numberOfLines = 3
@@ -360,7 +397,19 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             NumericalHelper.flipSetting(string: NumericalHelperSetting.preferdecimal)
             // Reload the answer
             NotificationCenter.default.post(name: Notification.Name(rawValue: EquationStoreNotification.equationLogicChanged), object: nil)
+        case .preferradians:
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.preferRadians)
+            // Reload the answer
+            NotificationCenter.default.post(name: Notification.Name(rawValue: EquationStoreNotification.equationLogicChanged), object: nil)
+        case .showscientific:
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.showScientific)
+            ThemeCoordinator.shared.postThemeChangedNotification()
+        case .historybehind:
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.preferHistoryBehind)
             
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: NumericalHelperSetting.preferHistoryBehind), object: nil)
+            }
         default:
             break
         }
@@ -427,6 +476,12 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                     
                 })
             case .preferdecimal:
+                break
+            case .preferradians:
+                break
+            case .showscientific:
+                break
+            case .historybehind:
                 break
             }
         }

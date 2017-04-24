@@ -118,10 +118,41 @@ extension UIColor {
             b = 0
         }
         
-        // b *= 1.5
+        //b *= 1.4
+        //s *= 0.8
+        
         b *= 1.4
+        s *= 0.90
+        
+        if b > 1.0 {
+            b = 1.0
+        }
+        
+        return UIColor(hue: h,
+                       saturation: s,
+                       brightness: b,
+                       alpha: 1.0)
+        
+        
+        //return lighterColor(removeSaturation: 0.2, resultAlpha: 0)
+    }
+    
+    var slightlyLighterColor: UIColor {
+        
+        var h: CGFloat = 0, s: CGFloat = 0
+        var b: CGFloat = 0, a: CGFloat = 0
+        
+        guard getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+            else {return self}
+        
+        if b < 0 {
+            b = 0
+        }
+        
+        // b *= 1.5
+        b *= 1.1
         //b += 0.2
-        s *= 0.8
+        s *= 0.9
         
         if b > 1.0 {
             b = 1.0

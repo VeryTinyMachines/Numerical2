@@ -17,6 +17,14 @@ public struct NumericalHelperSetting {
     public static let logging = "logging"
     public static let migration = "migration"
     public static let preferdecimal = "preferdecimal"
+    public static let preferRadians = "preferRadians"
+    public static let showScientific = "showScientific"
+    public static let preferHistoryBehind = "preferHistoryBehind"
+}
+
+public enum HistoryViewType {
+    case behind
+    case side
 }
 
 class NumericalHelper {
@@ -39,7 +47,7 @@ class NumericalHelper {
     }
     
     class func defaultTrueForSetting(string: String) -> Bool {
-        if string == NumericalHelperSetting.iCloudHistorySync || string == NumericalHelperSetting.autoBrackets {
+        if string == NumericalHelperSetting.iCloudHistorySync || string == NumericalHelperSetting.autoBrackets || string == NumericalHelperSetting.preferRadians || string == NumericalHelperSetting.showScientific || string == NumericalHelperSetting.preferHistoryBehind {
             return true
         }
         
@@ -201,10 +209,7 @@ class NumericalHelper {
                 let number2 = bri / 2 / CGFloat(maxBright)
                 return (Float(hue), Float(number2))
             }
-            
         }
-        
-        
         
         //return (0.0, 0.0)
     }

@@ -36,32 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SimpleLogger.appendLog(string: "application.didFinishLaunchingWithOptions")
         
-        
-        
-        
-        /*
-        UNUserNotificationCenter.current().requestAuthorization(options:
-            [[.alert, .sound, .badge]],
-                                                                completionHandler: { (granted, error) in
-                                                                    // Handle Error
-        })
-        
-        application.registerForRemoteNotifications()
-        */
-        
-        // Test saving to group.andrewjclark.numericalapp
-//        
-//        if let defs = UserDefaults(suiteName: "group.andrewjclark.numericalapp") {
-//            print(defs.colorForKey(key: "CurrentTheme.firstColor"))
-//            print(defs.colorForKey(key: "CurrentTheme.secondColor"))
-//            print(defs.colorForKey(key: "CurrentTheme.foregroundColor"))
-//            print(defs.object(forKey: "CurrentTheme.style"))
-//            
-//            defs.set(true, forKey: "test")
-//            defs.synchronize()
-//        }
-        
-        
         // Current Version saving and presentation is now in ViewController
         
         return true
@@ -117,7 +91,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 })
             }
         }
-        
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
@@ -131,12 +104,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("")
     }
-    
-    
-    
-    
-    
-
-
 }
 

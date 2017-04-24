@@ -10,8 +10,9 @@ import UIKit
 
 class HistoryCell: UITableViewCell {
     
-    var equation:Equation?
-    var currentEquation = false
+    var selectable = true
+    
+    @IBOutlet weak var mainLabel: UILabel!
     
     override func awakeFromNib() {
         self.backgroundColor = UIColor.clear
@@ -23,7 +24,7 @@ class HistoryCell: UITableViewCell {
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        if highlighted {
+        if highlighted && selectable {
             contentView.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
         } else {
             contentView.backgroundColor = UIColor.clear

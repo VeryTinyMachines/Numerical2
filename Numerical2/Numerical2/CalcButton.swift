@@ -67,6 +67,10 @@ class CalcButton: UIButton {
             setTitleColor(color, for: UIControlState())
             // self.backgroundColor = color.withAlphaComponent(0.1)
             self.backgroundColor = UIColor.clear // Enabled buttons have a clear background
+            self.titleLabel?.numberOfLines = 1
+            self.titleLabel?.adjustsFontSizeToFitWidth = true
+            self.titleLabel?.lineBreakMode = NSLineBreakMode.byClipping
+            
         } else {
             setTitleColor(color.withAlphaComponent(0.33), for: UIControlState())
             // self.backgroundColor = UIColor.clear

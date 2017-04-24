@@ -606,7 +606,6 @@ open class Evaluator {
             
             if let theOperator = operatorArray.first {
                 
-                
                 // The operator may be a single operator, or it may be 2 equivalent operators
                 var contains = false
                 
@@ -1510,11 +1509,7 @@ open class Evaluator {
                     
                     return result
                 }
-                
-                
-                
             }
-            
             
         } else if operatorType == OperatorType.preOperator, let theNumberB = numberB {
             // Pre Operator Solutions
@@ -1523,42 +1518,42 @@ open class Evaluator {
             
             if theOperator == SymbolCharacter.sin {
                 // Sin
-                let result = sin(rightDecimalNumber.doubleValue)
+                let result = sin(self.angleNumber(number: rightDecimalNumber).doubleValue)
                 let resultNumber = NSNumber(value: result as Double)
                 
                 return AnswerBundle(number: resultNumber.stringValue)
                 
             } else if theOperator == SymbolCharacter.cos {
                 // Cos
-                let result = cos(rightDecimalNumber.doubleValue)
+                let result = cos(self.angleNumber(number: rightDecimalNumber).doubleValue)
                 let resultNumber = NSNumber(value: result as Double)
                 
                 return AnswerBundle(number: resultNumber.stringValue)
                 
             } else if theOperator == SymbolCharacter.tan {
                 // Tan
-                let result = tan(rightDecimalNumber.doubleValue)
+                let result = tan(self.angleNumber(number: rightDecimalNumber).doubleValue)
                 let resultNumber = NSNumber(value: result as Double)
                 
                 return AnswerBundle(number: resultNumber.stringValue)
                 
             }  else if theOperator == SymbolCharacter.sinh {
                 // Sin
-                let result = sinh(rightDecimalNumber.doubleValue)
+                let result = sinh(self.angleNumber(number: rightDecimalNumber).doubleValue)
                 let resultNumber = NSNumber(value: result as Double)
                 
                 return AnswerBundle(number: resultNumber.stringValue)
                 
             } else if theOperator == SymbolCharacter.cosh {
                 // Cos
-                let result = cosh(rightDecimalNumber.doubleValue)
+                let result = cosh(self.angleNumber(number: rightDecimalNumber).doubleValue)
                 let resultNumber = NSNumber(value: result as Double)
                 
                 return AnswerBundle(number: resultNumber.stringValue)
                 
             } else if theOperator == SymbolCharacter.tanh {
                 // Tan
-                let result = tanh(rightDecimalNumber.doubleValue)
+                let result = tanh(self.angleNumber(number: rightDecimalNumber).doubleValue)
                 let resultNumber = NSNumber(value: result as Double)
                 
                 return AnswerBundle(number: resultNumber.stringValue)
@@ -1628,6 +1623,17 @@ open class Evaluator {
         
         return AnswerBundle(error: ErrorType.unknown)
     }
+    
+    class func angleNumber(number: NSDecimalNumber) -> NSDecimalNumber {
+        // All maths defaults to radians, but, if the user prefers degrees then we need to take the incoming number, and convert it to radians before returning it.
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferRadians) == false {
+            // Degrees need to be converted to radians and returned
+            return number.multiplying(by: NSDecimalNumber(value: 0.0174533))
+        }
+        
+        return number
+    }
+    
 }
 
 

@@ -78,9 +78,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 }
             }
         }
-        
-        // Add rounded corners
-        self.view.layer.cornerRadius = 10.0
     }
     
     override func viewDidLayoutSubviews() {
@@ -189,6 +186,8 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.equationLogicChanged), name: Notification.Name(rawValue: EquationStoreNotification.equationLogicChanged), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.historyDeleted), name: Notification.Name(rawValue: EquationStoreNotification.historyDeleted), object: nil)
+        
         currentEquation = EquationStore.sharedStore.currentEquation()
         workPanelDelegate?.updateEquation(currentEquation)
         
@@ -205,6 +204,13 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         self.tutorialLabel.isHidden = true
         self.tutorialButton.isHidden = true
+    }
+    
+    func historyDeleted() {
+        // The history has been deleted, which means we now have an equation that needs to be nullified. However the user may still be working on the equation, so we should.
+        
+        currentEquation = nil
+        updateViews(currentCursor: nil)
     }
     
     func equationLogicChanged() {
@@ -232,12 +238,14 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             self.blurView = nil
         }
         
-        if let visualEffectView = ThemeCoordinator.shared.visualEffectViewForCurrentTheme() {
-            self.view.insertSubview(visualEffectView, at: 0)
-            
-            visualEffectView.bindFrameToSuperviewBounds()
-            
-            self.blurView = visualEffectView
+        if NumericalViewHelper.historyBesideKeypadNeeded() == false {
+            if let visualEffectView = ThemeCoordinator.shared.visualEffectViewForCurrentTheme() {
+                self.view.insertSubview(visualEffectView, at: 0)
+                
+                visualEffectView.bindFrameToSuperviewBounds()
+                
+                self.blurView = visualEffectView
+            }
         }
     }
     
@@ -402,7 +410,9 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 
                 if let question = currentEquation?.question {
                     if let legalKeys = Glossary.legalCharactersToAppendString(question) {
-                        if legalKeys.contains(")") {
+                        if legalKeys.contains(SymbolCharacter.smartBracketPrefersClose) {
+                            newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")")])
+                        } else if legalKeys.contains(")") {
                             newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")")])
                         } else if legalKeys.contains("(") {
                             newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character("(")])

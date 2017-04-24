@@ -35,6 +35,7 @@ public struct EquationStoreNotification {
     public static let equationDeleted = "EquationStoreNotification.equationDeleted"
     public static let accountStatusChanged = "EquationStoreNotification.accountStatusChanged"
     public static let equationLogicChanged = "EquationNotification.equationLogicChanged"
+    public static let historyDeleted = "EquationNotification.historyDeleted"
 }
 
 class EquationStore {
@@ -508,6 +509,21 @@ class EquationStore {
         return nil
     }
     
+    func fetchAllUndeletedEquations() -> [Equation]? {
+        
+        let fetchRequest = equationsFetchRequest(NSPredicate(format: "userDeleted != 1"))
+        
+        do {
+            let results = try self.persistentContainer.viewContext.fetch(fetchRequest)
+            
+            return results
+            
+        } catch {
+            
+        }
+        
+        return nil
+    }
     
     func printAllEquations() {
         let fetchRequest = equationsFetchRequest(NSPredicate(value: true))
@@ -728,6 +744,39 @@ class EquationStore {
             } else {
                 complete?(false)
                 return
+            }
+        }
+    }
+    
+    func deleteHistory(block:((_ complete: Bool) -> Void)?) {
+        self.saveContext()
+        
+        self.persistentContainer.newBackgroundContext().perform {
+            if let currentEquations = self.fetchAllUndeletedEquations() {
+                for equation in currentEquations {
+                    equation.posted =  NSNumber(value: false)
+                    equation.lastModifiedDate = NSDate()
+                    equation.userDeleted = NSNumber(value: true)
+                }
+                
+                self.persistentContainer.viewContext.perform {
+                    self.saveContext()
+                    
+                    // Also need to clear the current equation
+                    
+                    self.queueCloudKitNeedsUpdate()
+                    
+                    DispatchQueue.main.async {
+                        
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: EquationStoreNotification.historyDeleted), object: nil)
+                        
+                        block?(true)
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    block?(false)
+                }
             }
         }
     }

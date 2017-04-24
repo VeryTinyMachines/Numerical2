@@ -65,6 +65,7 @@ public struct SymbolCharacter {
     public static let clear:Character = "⟭"
     
     public static let smartBracket:Character = "⟠"
+    public static let smartBracketPrefersClose:Character = "⨹"
     
     public static let divide:Character = "/"
     
@@ -564,6 +565,15 @@ open class Glossary {
                 // Add smart bracket
                 if legalCharacterSet.contains("(") || legalCharacterSet.contains(")") {
                     legalCharacterSet.insert(SymbolCharacter.smartBracket)
+                }
+                
+                if legalCharacterSet.contains(")") {
+                    // If we are following a final ) then we want to prefer this bracket
+                    if let last = string.characters.last {
+                        if String(last) == ")" {
+                            legalCharacterSet.insert(SymbolCharacter.smartBracketPrefersClose)
+                        }
+                    }
                 }
                 
                 if legalCharacterSet.contains("n") {

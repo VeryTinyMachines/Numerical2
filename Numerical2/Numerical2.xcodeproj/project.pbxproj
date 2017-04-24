@@ -40,6 +40,7 @@
 		513197251B6ADD5900E9B802 /* Numerical2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513197241B6ADD5900E9B802 /* Numerical2Tests.swift */; };
 		513197301B6ADD5900E9B802 /* Numerical2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */; };
 		513A9E051EA284690017D9A5 /* SimpleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513A9E041EA284690017D9A5 /* SimpleLogger.swift */; };
+		513C77131EAE4A950037121B /* SwipePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513C77121EAE4A950037121B /* SwipePageViewController.swift */; };
 		5142AE3C1DA420EE0076D117 /* 5_Star-(alt).png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE361DA420EE0076D117 /* 5_Star-(alt).png */; };
 		5142AE3D1DA420EE0076D117 /* 5_Star.png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE371DA420EE0076D117 /* 5_Star.png */; };
 		5142AE3E1DA420EE0076D117 /* 54_Lock-(alt).png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE381DA420EE0076D117 /* 54_Lock-(alt).png */; };
@@ -59,6 +60,7 @@
 		519BA0951DD1192400786519 /* PremiumBug_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 519BA0941DD1192400786519 /* PremiumBug_1.png */; };
 		519BA0971DD11A0200786519 /* PremiumBug_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 519BA0961DD11A0200786519 /* PremiumBug_2.png */; };
 		519BA0991DD11AC900786519 /* PremiumBug_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 519BA0981DD11AC900786519 /* PremiumBug_3.png */; };
+		51AA3AD31EACB9B4005C0BD6 /* 18_Trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51AA3AD21EACB9B4005C0BD6 /* 18_Trash@2x.png */; };
 		51B2A29F1D95C304002A9AD8 /* Pad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B2A29E1D95C304002A9AD8 /* Pad.swift */; };
 		51BE48A61E13990C002A2B92 /* Keyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 51BE489F1E13990B002A2B92 /* Keyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		51BE48AB1E1399FB002A2B92 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
@@ -168,7 +170,7 @@
 		5119A9E31E6D267D00F16CE1 /* RoundedCorner_Right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "RoundedCorner_Right@2x.png"; sourceTree = "<group>"; };
 		511D2A931E3480EE00957ADB /* ThemeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeFormatter.swift; sourceTree = "<group>"; };
 		511D2A961E3485CB00957ADB /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		511EA1FD1EA8D6D700E843C0 /* Numerical2b_120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Numerical2b_120@2x.png"; sourceTree = "<group>"; };
+		511EA1FD1EA8D6D700E843C0 /* Numerical2b_120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Numerical2b_120@2x.png"; sourceTree = SOURCE_ROOT; };
 		511EA1FF1EA8D6F500E843C0 /* Numerical2b_120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Numerical2b_120@2x.png"; sourceTree = "<group>"; };
 		512137B91D967A730042EFC1 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		512137BC1D969C760042EFC1 /* NumericalHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalHelper.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 		5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numerical2UITests.swift; sourceTree = "<group>"; };
 		513197311B6ADD5900E9B802 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		513A9E041EA284690017D9A5 /* SimpleLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleLogger.swift; sourceTree = "<group>"; };
+		513C77121EAE4A950037121B /* SwipePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipePageViewController.swift; sourceTree = "<group>"; };
 		5142AE361DA420EE0076D117 /* 5_Star-(alt).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5_Star-(alt).png"; sourceTree = "<group>"; };
 		5142AE371DA420EE0076D117 /* 5_Star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5_Star.png; sourceTree = "<group>"; };
 		5142AE381DA420EE0076D117 /* 54_Lock-(alt).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "54_Lock-(alt).png"; sourceTree = "<group>"; };
@@ -209,6 +212,7 @@
 		519BA0941DD1192400786519 /* PremiumBug_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PremiumBug_1.png; sourceTree = "<group>"; };
 		519BA0961DD11A0200786519 /* PremiumBug_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PremiumBug_2.png; sourceTree = "<group>"; };
 		519BA0981DD11AC900786519 /* PremiumBug_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PremiumBug_3.png; sourceTree = "<group>"; };
+		51AA3AD21EACB9B4005C0BD6 /* 18_Trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "18_Trash@2x.png"; sourceTree = "<group>"; };
 		51B2A29E1D95C304002A9AD8 /* Pad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pad.swift; sourceTree = "<group>"; };
 		51BE489F1E13990B002A2B92 /* Keyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Keyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		51BE48A31E13990C002A2B92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -302,7 +306,6 @@
 		513197031B6ADD5900E9B802 = {
 			isa = PBXGroup;
 			children = (
-				511EA1FD1EA8D6D700E843C0 /* Numerical2b_120@2x.png */,
 				5685FE8D1BCACA300019BC04 /* AudioToolbox.framework */,
 				5685FE8B1BCACA2A0019BC04 /* AVFoundation.framework */,
 				51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */,
@@ -331,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				5131970F1B6ADD5900E9B802 /* AppDelegate.swift */,
+				511EA1FD1EA8D6D700E843C0 /* Numerical2b_120@2x.png */,
 				513A9E041EA284690017D9A5 /* SimpleLogger.swift */,
 				517470CB1D95C7B000E70A74 /* EquationStore.swift */,
 				51E032871E76E6610000A2A5 /* WorkPanelShadow@2x.png */,
@@ -358,6 +362,7 @@
 				51D941A31E6CFBB300844568 /* SwitchCell.swift */,
 				5119A9DF1E6D08B500F16CE1 /* SettingsCell.swift */,
 				51C1F15C1E2C3EA400A413A7 /* TutorialViewController.swift */,
+				51AA3AD21EACB9B4005C0BD6 /* 18_Trash@2x.png */,
 				51D116791E827A730059C342 /* Theme_Pad_Keypad.png */,
 				51D1167A1E827A730059C342 /* Theme_Pad_StatusBar.png */,
 				51D116751E8278700059C342 /* Theme_Phone_Keypad.png */,
@@ -365,6 +370,7 @@
 				5119A9E11E6D24C900F16CE1 /* RoundedCorner_Left@2x.png */,
 				5119A9E31E6D267D00F16CE1 /* RoundedCorner_Right@2x.png */,
 				513197131B6ADD5900E9B802 /* Main.storyboard */,
+				513C77121EAE4A950037121B /* SwipePageViewController.swift */,
 				51D7A8371BBA7D320064AA4B /* View Hierarchy */,
 				51D7A8361BBA7D060064AA4B /* Evaluator */,
 				513197161B6ADD5900E9B802 /* Assets.xcassets */,
@@ -737,6 +743,7 @@
 				51C40E851DCC135C00930BFD /* professional.aiff in Resources */,
 				51C40E861DCC135C00930BFD /* rock.aiff in Resources */,
 				5142AE3C1DA420EE0076D117 /* 5_Star-(alt).png in Resources */,
+				51AA3AD31EACB9B4005C0BD6 /* 18_Trash@2x.png in Resources */,
 				51D116771E8278700059C342 /* Theme_Phone_Keypad.png in Resources */,
 				5142AE3E1DA420EE0076D117 /* 54_Lock-(alt).png in Resources */,
 				5119A9E41E6D267D00F16CE1 /* RoundedCorner_Right@2x.png in Resources */,
@@ -968,6 +975,7 @@
 				517470CC1D95C7B000E70A74 /* EquationStore.swift in Sources */,
 				518A8BA61D96FAC0001D8B12 /* HistoryViewController.swift in Sources */,
 				51D3AB2F1BC89AD40019B601 /* KeypadPageViewController.swift in Sources */,
+				513C77131EAE4A950037121B /* SwipePageViewController.swift in Sources */,
 				510F15801DEBD6E400116A4D /* ThemeCoordinator.swift in Sources */,
 				513197121B6ADD5900E9B802 /* ViewController.swift in Sources */,
 				51B2A29F1D95C304002A9AD8 /* Pad.swift in Sources */,
