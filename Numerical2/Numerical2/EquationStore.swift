@@ -36,6 +36,7 @@ public struct EquationStoreNotification {
     public static let accountStatusChanged = "EquationStoreNotification.accountStatusChanged"
     public static let equationLogicChanged = "EquationNotification.equationLogicChanged"
     public static let historyDeleted = "EquationNotification.historyDeleted"
+    public static let currentEquationChanged = "EquationNotification.currentEquationChanged"
 }
 
 class EquationStore {
@@ -66,7 +67,13 @@ class EquationStore {
     }
     
     func initialiseSetup() {
-        initialiseiCloud()
+        
+        let _ = self.persistentContainer.viewContext // force the context to be loaded
+        
+        let deadlineTime = DispatchTime.now() + .seconds(2)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+            self.initialiseiCloud()
+        }
     }
     
     func initialiseiCloud() {

@@ -9,6 +9,15 @@
 import UIKit
 
 class NumericalViewHelper {
+    
+    class func isDeviceLiterallyPad() -> Bool {
+        if UIScreen.main.traitCollection.userInterfaceIdiom == .pad {
+            return true
+        }
+        
+        return false
+    }
+    
     class func isDevicePad() -> Bool {
         if UIScreen.main.traitCollection.userInterfaceIdiom == .pad {
             if var size = UIApplication.shared.delegate?.window??.bounds {
@@ -67,8 +76,6 @@ class NumericalViewHelper {
             if deviceIsWide() {
                 return true
             }
-            
-            // If there is no scientific keyboard, and history is meant to be on the side, and we're on iPhone in landscape mode, then we should show the
         }
         
         return false

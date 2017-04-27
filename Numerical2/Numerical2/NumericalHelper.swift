@@ -47,7 +47,7 @@ class NumericalHelper {
     }
     
     class func defaultTrueForSetting(string: String) -> Bool {
-        if string == NumericalHelperSetting.iCloudHistorySync || string == NumericalHelperSetting.autoBrackets || string == NumericalHelperSetting.preferRadians || string == NumericalHelperSetting.showScientific || string == NumericalHelperSetting.preferHistoryBehind {
+        if string == NumericalHelperSetting.iCloudHistorySync || string == NumericalHelperSetting.autoBrackets || string == NumericalHelperSetting.preferRadians || string == NumericalHelperSetting.showScientific {
             return true
         }
         

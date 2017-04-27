@@ -124,7 +124,7 @@ class KeyboardViewController: UIInputViewController {
                             style = ThemeStyle.normal
                         }
                         
-                        let layer = ThemeFormatter.brightGradiantLayerFor(firstColor: loadedFirstColor, secondColor: loadedSecondColor, style: style)
+                        let layer = ThemeFormatter.gradiantLayerFor(firstColor: loadedFirstColor, secondColor: loadedSecondColor, style: style)
                         layer.frame = self.view.frame
                         
                         gradiantLayer?.removeFromSuperlayer()
@@ -142,7 +142,7 @@ class KeyboardViewController: UIInputViewController {
             
             let theme = ThemeFormatter.defaultTheme()
             
-            let layer = ThemeFormatter.brightGradiantLayerForTheme(theme: theme)
+            let layer = ThemeFormatter.gradiantLayerForTheme(theme: theme)
             layer.frame = self.view.frame
             
             gradiantLayer?.removeFromSuperlayer()

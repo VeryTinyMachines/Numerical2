@@ -231,6 +231,7 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
                         historyVC.delegate = delegate
                     }
                 }
+                historyVC.updateSelectedEquation()
                 
                 return historyVC
             }

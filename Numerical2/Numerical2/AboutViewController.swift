@@ -150,8 +150,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
     func updateBackgroundColorForPresentationType() {
         if let _ = self.navigationController {
             // We are in a navigation controller context and need to define our own background
-            tableView.backgroundColor = ThemeCoordinator.shared.currentTheme().firstColor.lighterColor
-            view.backgroundColor = ThemeCoordinator.shared.currentTheme().firstColor.lighterColor
+            tableView.backgroundColor = ThemeCoordinator.shared.currentTheme().firstColor
+            view.backgroundColor = ThemeCoordinator.shared.currentTheme().firstColor
         } else {
             // We are not in a nav controller and should therefore simply have a clear background
             tableView.backgroundColor = UIColor.clear
@@ -314,9 +314,9 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
             
             if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferHistoryBehind) {
-                setSwitchCell(text: "Show History Behind Keypad\n(Numerical 2 style)", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferHistoryBehind), row: indexPath.row, switchCell: switchCell)
+                setSwitchCell(text: "History List Behind Keypad", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferHistoryBehind), row: indexPath.row, switchCell: switchCell)
             } else {
-                setSwitchCell(text: "Show History Behind Keypad\n(Numerical 1 style)", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferHistoryBehind), row: indexPath.row, switchCell: switchCell)
+                setSwitchCell(text: "History List Behind Keypad", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferHistoryBehind), row: indexPath.row, switchCell: switchCell)
             }
             
             return switchCell

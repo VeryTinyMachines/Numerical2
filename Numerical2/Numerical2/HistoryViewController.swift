@@ -17,10 +17,10 @@ protocol HistoryViewControllerDelegate {
 
 class HistoryViewController: NumericalViewController, NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    let kSectionGap = 0
-    let kSectionEquations = 1
-    let kSectionMigrate = 2
-    let kSectionsCount = 3
+    let kSectionGap = -100
+    let kSectionEquations = 0
+    let kSectionMigrate = 1
+    let kSectionsCount = 2
     
     var delegate:HistoryViewControllerDelegate?
     var fetchedResultsController = NSFetchedResultsController<Equation>()
@@ -35,6 +35,16 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
     @IBOutlet weak var editView: UIView!
     
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
+    
+    func currentEquationChangedNotif(_ notification: Notification) {
+        self.updateSelectedEquation()
+    }
+    
+    func updateSelectedEquation() {
+        if let rootView = UIApplication.shared.keyWindow?.rootViewController as? ViewController {
+            self.updateSelectedEquation(rootView.currentEquation)
+        }
+    }
     
     func updateSelectedEquation(_ equation: Equation?) {
         
@@ -98,6 +108,8 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
         NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.reloadData), name: Notification.Name(rawValue: NumericalHelperSetting.iCloudHistorySync), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.reloadData), name: Notification.Name(rawValue: NumericalHelperSetting.migration), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.currentEquationChangedNotif(_:)), name: Notification.Name(rawValue: EquationStoreNotification.currentEquationChanged), object: nil)
         
         themeChanged()
         updateButtons()
@@ -240,6 +252,17 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
         return indexPath.section == kSectionEquations
     }
     
+    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
+        // Hide the buttons
+        deleteButton.isHidden = true
+        deleteAllButton.isHidden = true
+    }
+    
+    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
+        DispatchQueue.main.async {
+            self.updateButtons()
+        }
+    }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
@@ -545,14 +568,17 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
                 deleteButton.setTitle("Done", for: UIControlState.normal)
                 deleteAllButton.setTitle("Delete All", for: UIControlState.normal)
                 
+                deleteButton.isHidden = false
                 deleteAllButton.isHidden = false
-                // tableViewTopConstraint.constant = deleteButton.frame.height
-                tableViewTopConstraint.constant = 0
-                editView.alpha = 0.33
+                tableViewTopConstraint.constant = deleteButton.frame.height
+                //tableViewTopConstraint.constant = 0
+                //editView.alpha = 0.33
+                editView.alpha = 0.0
             } else {
                 // Edit
                 deleteButton.setTitle("Edit", for: UIControlState.normal)
                 
+                deleteButton.isHidden = false
                 deleteAllButton.isHidden = true
                 tableViewTopConstraint.constant = 0
                 editView.alpha = 0.0
@@ -564,12 +590,11 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
             editView.alpha = 0.0
         }
         
-        if NumericalViewHelper.keypadIsDraggable() {
-            editView.backgroundColor = ThemeCoordinator.shared.firstColorForCurrentTheme()
-        } else {
-            editView.backgroundColor = ThemeCoordinator.shared.firstColorForCurrentTheme().lighterColor
-        }
-        
+//        if NumericalViewHelper.keypadIsDraggable() {
+//            editView.backgroundColor = ThemeCoordinator.shared.firstColorForCurrentTheme()
+//        } else {
+//            editView.backgroundColor = ThemeCoordinator.shared.firstColorForCurrentTheme().lighterColor
+//        }
         
         self.view.layoutIfNeeded()
     }
