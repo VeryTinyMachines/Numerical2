@@ -16,5 +16,14 @@ class SwipePageViewController:UIPageViewController {
         if let myView = view?.subviews.first as? UIScrollView {
             myView.canCancelContentTouches = false
         }
+        
+        guard let recognizers = view.subviews[0].gestureRecognizers else {
+            print("No gesture recognizers on scrollview.")
+            return
+        }
+        
+        for recognizer in recognizers {
+            recognizer.cancelsTouchesInView = false
+        }
     }
 }

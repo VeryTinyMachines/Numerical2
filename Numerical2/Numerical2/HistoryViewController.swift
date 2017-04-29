@@ -284,6 +284,15 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        // Check if we are in a the page view and it is scrolling - abort if we are.
+        if let parent = parent as? SwipePageViewController {
+            if let parent = parent.parent as? KeypadPageViewController {
+                if parent.isPageScrolling() {
+                    return
+                }
+            }
+        }
+        
         if indexPath.section == kSectionEquations {
             if let equation = equation(row: indexPath.row), let theDelegate = delegate {
                 theDelegate.selectedEquation(equation)
@@ -610,6 +619,9 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
                 } else {
                     self.displayAlert(title: "Error", message: "Uh oh. Something went wrong deleting your history.")
                 }
+                
+                self.tableView.setEditing(false, animated: true)
+                self.updateButtons()
             })
         }))
         

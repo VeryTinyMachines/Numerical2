@@ -122,7 +122,7 @@ class CalcButton: UIButton {
     func touchUp() {
         
         self.updateEnabledState()
-        
+        /*
         // Make a UIView, add it, and then fade it out really quickly
         let whiteView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
         whiteView.backgroundColor = self.highlightColor
@@ -133,6 +133,6 @@ class CalcButton: UIButton {
             }) { (complete) -> Void in
                 whiteView.removeFromSuperview()
         }
-        
+        */
     }
 }

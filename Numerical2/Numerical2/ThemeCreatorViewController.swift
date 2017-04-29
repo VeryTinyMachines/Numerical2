@@ -262,12 +262,13 @@ class ThemeCreatorViewController:NumericalViewController {
         
         let sliderState = currentSliderState()
         
-        if ThemeCoordinator.shared.blurViewAllowed() {
-            blurViewHolder.backgroundColor = UIColor.clear
-        } else {
-            blurViewHolder.backgroundColor = UIColor(white: 1.0, alpha: 0.1)
-        }
+//        if ThemeCoordinator.shared.blurViewAllowed() {
+//            blurViewHolder.backgroundColor = UIColor.clear
+//        } else {
+//            blurViewHolder.backgroundColor = UIColor(white: 1.0, alpha: 0.1)
+//        }
         
+        blurViewHolder.backgroundColor = UIColor.clear
         
         if self.gradiantBlockRunning == false {
             self.gradiantBlockRunning = true
@@ -503,6 +504,7 @@ class ThemeCreatorViewController:NumericalViewController {
             self.blurView = nil
         }
         
+        /*
         if let visualEffectView = ThemeCoordinator.shared.visualEffectViewForStyle(style: ThemeStyle.bright) {
             self.autoLayoutAddView(subView: visualEffectView, intoView: blurViewHolder)
             
@@ -511,6 +513,7 @@ class ThemeCreatorViewController:NumericalViewController {
             
             self.blurView = visualEffectView
         }
+         */
     }
     
 }

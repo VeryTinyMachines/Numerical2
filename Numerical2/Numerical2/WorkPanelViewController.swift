@@ -39,6 +39,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     var workPanelDelegate: WorkPanelDelegate?
     
     var blurView: UIVisualEffectView?
+    var scrollPreventionTimer:Timer?
     
     @IBOutlet weak var tutorialLabel: UILabel!
     
@@ -197,9 +198,9 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         // Setup tutorial pages
         if NumericalViewHelper.isDevicePad() {
-            tutorialPages = ["Welcome to Numerical²!\nIt's still the calculator without equal.","Pull down to see your History.\nIt syncs with iCloud\n(or you can turn that off).", "Press the Menu button \nto get to Settings and\nthe Theme Creator.", "Thanks!"]
+            tutorialPages = ["Welcome to Numerical²!\nIt's still the calculator without equal.","Your calculations are saved in your History List.\nIt syncs with iCloud\n(or you can turn that off).", "Press the Menu button \nto get to Settings and\nthe Theme Creator.", "You can also customise and\ntweak a lot of features.", "Thanks!"]
         } else {
-            tutorialPages = ["Welcome to Numerical²!\nIt's still the calculator without equal.","Pull down to see your History.\nIt syncs with iCloud\n(or you can turn that off).", "Swipe Left to get to the scientific keys.\nSwipe again for Settings,\nand the Theme Creator.", "Thanks!"]
+            tutorialPages = ["Welcome to Numerical²!\nIt's still the calculator without equal.","Swipe Right to see your History.\nIt syncs with iCloud\n(or you can turn that off).", "Swipe Left to get to the scientific keys.\nSwipe again for Settings,\nand the Theme Creator.", "You can also customise and\ntweak a lot of features.", "Thanks!"]
         }
         
         self.tutorialLabel.isHidden = true
@@ -341,7 +342,36 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         return false
     }
     
+    func enableScrolling() {
+        scrollPreventionTimer?.invalidate()
+        scrollPreventionTimer = nil
+        
+        if let keyPanelView = keyPanelView {
+            keyPanelView.enableScrolling()
+        }
+    }
+    
     func pressedKey(_ key: Character, sourceView: UIView?) {
+        print("key: \(key)")
+        
+        if let keyPanelView = keyPanelView {
+            if keyPanelView.isPageScrolling() {
+                // We are scrolling. Abort this.
+                return
+            }
+            
+            // Disable the keyPanelView, set a timer to turn it back on.
+            scrollPreventionTimer?.invalidate()
+            
+            scrollPreventionTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(WorkPanelViewController.enableScrolling), userInfo: nil, repeats: false)
+            
+            keyPanelView.disableScrolling()
+            
+        }
+        
+        // We've registered a keytouch. Disable the keypad from scrolling for a moment.
+        
+        
         self.endTutorialIfNeeded()
         
         if key == SymbolCharacter.clear {

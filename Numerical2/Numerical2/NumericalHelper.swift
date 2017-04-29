@@ -36,7 +36,7 @@ class NumericalHelper {
     class func isSettingEnabled(string: String) -> Bool {
         
         if string == NumericalHelperSetting.themes {
-            return true // temp force true
+            return true // todo - yank out this junk
         }
         
         if let obj = UserDefaults.standard.object(forKey: string) as? NSNumber {

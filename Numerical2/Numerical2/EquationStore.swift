@@ -245,8 +245,8 @@ class EquationStore {
                 
                 Crashlytics.sharedInstance().recordError(nserror)
                 
-                let alert = UIAlertView(title: "Equation Store Error", message: "\(nserror.localizedDescription)", delegate: nil, cancelButtonTitle: "Ok")
-                alert.show()
+//                let alert = UIAlertView(title: "Equation Store Error", message: "\(nserror.localizedDescription)", delegate: nil, cancelButtonTitle: "Ok")
+//                alert.show()
                 
                 return false
             }

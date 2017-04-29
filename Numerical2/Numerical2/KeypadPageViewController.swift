@@ -21,7 +21,7 @@ public enum KeypadViewType {
 }
 
 
-class KeypadPageViewController: NumericalViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, KeypadDelegate {
+class KeypadPageViewController: NumericalViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, KeypadDelegate, UIScrollViewDelegate {
     
     func unpressedKey(_ key: Character, sourceView: UIView?) {
         
@@ -38,6 +38,10 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
     var currentLegalKeys:Set<Character> = []
     
     var pageViewSetup = false
+    var pageIsScrolling = false
+    var originalContentOffset:CGPoint?
+    var scrollingOffset:CGFloat?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,6 +135,10 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
         
         pageViewController!.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
         
+        if let scrollView = pageViewController!.view.subviews.first(where: { $0 is UIScrollView }) as? UIScrollView {
+            scrollView.delegate = self
+        }
+        
         updateDelegatePageControl()
         updateDelegateDatasource()
         
@@ -138,6 +146,53 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
         view.addSubview(pageViewController!.view)
         pageViewController!.didMove(toParentViewController: self)
     }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        originalContentOffset = scrollView.contentOffset
+        pageIsScrolling = true
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if let originalContentOffset = originalContentOffset {
+            self.scrollingOffset = originalContentOffset.x - scrollView.contentOffset.x
+        }
+    }
+    
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        //print("scrollViewDidEndDragging")
+        //pageIsScrolling = false
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (timer) in
+            self.pageIsScrolling = false
+            self.originalContentOffset = nil
+        }
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        self.pageIsScrolling = false
+        self.originalContentOffset = nil
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.pageIsScrolling = false
+        self.originalContentOffset = nil
+    }
+    
+    func isPageScrolling() -> Bool {
+        if self.pageIsScrolling {
+            if let scrollingOffset = scrollingOffset {
+                if scrollingOffset < 10 && scrollingOffset > -10 {
+                    // We still haven't scrolled enough to consider the page "scrolling"
+                    return false
+                }
+            }
+            
+            return true
+        }
+        
+        return false
+    }
+    
     
     func viewIsWide() -> Bool {
         
@@ -473,6 +528,26 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
         
         if let theDelegate = pageViewDelegate {
             theDelegate.updatePageControl(currentPage, numberOfPages: numberOfPages)
+        }
+    }
+    
+    func disableScrolling() {
+        if let pageViewController = pageViewController {
+            for view in pageViewController.view.subviews {
+                if let subView = view as? UIScrollView {
+                    subView.isScrollEnabled = false
+                }
+            }
+        }
+    }
+    
+    func enableScrolling() {
+        if let pageViewController = pageViewController {
+            for view in pageViewController.view.subviews {
+                if let subView = view as? UIScrollView {
+                    subView.isScrollEnabled = true
+                }
+            }
         }
     }
     

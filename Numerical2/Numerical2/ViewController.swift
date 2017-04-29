@@ -88,11 +88,15 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         currentStatus = self.preferredStatusBarStyle
         
-        /*
-        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { (timer) in
-            
+        
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
+//            if let offset = self.workPanelView?.keyPanelView?.currentPageOffset() {
+//                print("offset: \(offset)")
+//            } else {
+//                print("no offset")
+//            }
         })
-         */
+        
         
         let currentVersion = NumericalHelper.currentDeviceInfo(includeBuildNumber: false)
         
@@ -782,9 +786,13 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
             self.historyView?.view.clipsToBounds = true
             self.historyViewBottomConstraint.constant = panelSize
+            
+            panGesture?.isEnabled = true
         } else {
             self.workPanelView?.view.backgroundColor = UIColor.clear
             self.historyViewBottomConstraint.constant = 0
+            
+            panGesture?.isEnabled = false
         }
         
         // Queue up these constraints to animate.
