@@ -48,8 +48,13 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     
     
     func setAnswer(_ answer: AnswerBundle) {
+        TimeTester.shared.printTime(string: "20 - EquationVC set answer")
+        
         currentAnswer = answer
+        
+        TimeTester.shared.printTime(string: "21 - EquationVC about to update view")
         updateView()
+        TimeTester.shared.printTime(string: "22 - EquationVC update finished")
     }
     
     func updateView() {
@@ -58,10 +63,14 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
             let questionBundle = AnswerBundle(number: theQuestion)
             questionBundle.cursorPosition = self.cursorPosition
             
+            TimeTester.shared.printTime(string: "23 - Question about to be set")
+            
             theQuestionView.questionBundle = questionBundle
         }
         
         if let theAnswerView = answerView, let answer = currentAnswer {
+            TimeTester.shared.printTime(string: "24 - Ånswer view about to be set")
+            
             theAnswerView.questionBundle = answer
         }
     }

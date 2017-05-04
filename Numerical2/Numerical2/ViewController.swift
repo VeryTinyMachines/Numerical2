@@ -97,11 +97,12 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
 //            }
         })
         
-        
         let currentVersion = NumericalHelper.currentDeviceInfo(includeBuildNumber: false)
         
         if let previousVersion = UserDefaults.standard.string(forKey: "CurrentVersion") {
-            if currentVersion != previousVersion {
+            print("previousVersion: \(previousVersion)")
+            print("")
+            if currentVersion != previousVersion && previousVersion < "v2.0.4" {
                 // Display a tool tip
                 DispatchQueue.main.async {
                     let alertView = UIAlertController(title: "Numerical² has been\nupdated to \(currentVersion)!", message: "You can now customise the History List and keyboard! Let's begin.\n\nDo you want your History List...", preferredStyle: UIAlertControllerStyle.alert)

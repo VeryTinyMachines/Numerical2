@@ -42,6 +42,11 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
     var originalContentOffset:CGPoint?
     var scrollingOffset:CGFloat?
     
+    // var currentView:KeypadViewController?
+    
+    @IBOutlet weak var keypadHolder1: UIView!
+    
+    @IBOutlet weak var keypadHolder2: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +54,74 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
         // If the theme changes we may need to reset the keyboard (since keyboards might have disappeared)
         
         NotificationCenter.default.addObserver(self, selector: #selector(KeypadPageViewController.setupPageView), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
+        
+        // Add swipe left and swipe right gestures
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(KeypadPageViewController.swipeLeft))
+        swipeLeft.direction = .left
+        self.view.addGestureRecognizer(swipeLeft)
+        
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(KeypadPageViewController.swipeRight))
+        swipeRight.direction = .right
+        self.view.addGestureRecognizer(swipeRight)
+        
+        
     }
     
+    func swipeLeft() {
+        print("left")
+        /*
+        if let currentView = currentView {
+            // Get the view before this one
+            let viewType = keyForView(viewController: currentView)
+            let viewsArray = self.viewsArray()
+            
+            // Find the index of the viewtype, then determine the previous one
+            
+            if let index = viewsArray.index(of: viewType) {
+                if index < viewsArray.count - 1 {
+                    let typeNeeded = viewsArray[index + 1]
+                    if let incomingVC = viewControllerForType(type: typeNeeded) {
+                        currentView.removeFromParentViewController()
+                        currentView.view.removeFromSuperview()
+                        
+                        self.autoLayoutAddViewController(viewController: incomingVC, intoView: self.view, parentViewController: self)
+                        //self.currentView = incomingVC
+                        
+                        self.updateDelegatePageControl()
+                    }
+                }
+            }
+        }
+        */
+    }
+    
+    func swipeRight() {
+        print("right")
+        /*
+        if let currentView = currentView {
+            // Get the view before this one
+            let viewType = keyForView(viewController: currentView)
+            let viewsArray = self.viewsArray()
+            
+            // Find the index of the viewtype, then determine the previous one
+            
+            if let index = viewsArray.index(of: viewType) {
+                if index > 0 {
+                    let typeNeeded = viewsArray[index - 1]
+                    if let incomingVC = viewControllerForType(type: typeNeeded) {
+                        currentView.removeFromParentViewController()
+                        currentView.view.removeFromSuperview()
+                        
+                        self.autoLayoutAddViewController(viewController: incomingVC, intoView: self.view, parentViewController: self)
+                        //self.currentView = incomingVC
+                        
+                        self.updateDelegatePageControl()
+                    }
+                }
+            }
+        }
+         */
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -59,6 +130,7 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
             setupPageView()
         }
     }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
         hideMenu()
@@ -127,6 +199,25 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
         }
         
         pageViewSetup = true
+        
+        if let pageViewController = pageViewController {
+            for view in pageViewController.view.subviews {
+                if let subView = view as? UIScrollView {
+                    subView.isScrollEnabled = false
+                }
+            }
+        }
+        
+        
+        
+        /*
+        if let vc = viewControllerWithKeypadLayout(KeypadLayout.compactStandard) {
+            // Add this keypad
+            
+            self.autoLayoutAddViewController(viewController: vc, intoView: self.view, parentViewController: self)
+            currentView = vc
+        }
+         */
     }
     
     func setupPageViewController(withViewController viewController: UIViewController) {
@@ -428,6 +519,12 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
         if let keyPad = pageViewController?.viewControllers?.first as? KeypadViewController {
             keyPad.setLegalKeys(currentLegalKeys)
         }
+        
+        /*
+        if let keyPad = currentView as? KeypadViewController {
+            keyPad.setLegalKeys(currentLegalKeys)
+        }
+ */
     }
     
     func updateDelegateDatasource() {
@@ -525,7 +622,6 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
     }
     
     func updateDelegatePageControl(_ currentPage: NSInteger, numberOfPages: NSInteger) {
-        
         if let theDelegate = pageViewDelegate {
             theDelegate.updatePageControl(currentPage, numberOfPages: numberOfPages)
         }

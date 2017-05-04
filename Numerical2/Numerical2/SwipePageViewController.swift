@@ -13,6 +13,7 @@ class SwipePageViewController:UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         if let myView = view?.subviews.first as? UIScrollView {
             myView.canCancelContentTouches = false
         }
@@ -25,5 +26,8 @@ class SwipePageViewController:UIPageViewController {
         for recognizer in recognizers {
             recognizer.cancelsTouchesInView = false
         }
+ */
     }
+    
+    
 }

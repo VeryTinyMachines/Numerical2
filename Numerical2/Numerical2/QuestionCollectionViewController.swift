@@ -22,63 +22,85 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     var isAnswerView = false
     var scrollingFromRight = false
     
+    @IBOutlet weak var testLabel: UILabel!
+    
     var questionBundle: AnswerBundle? {
         didSet {
+            TimeTester.shared.printTime(string: "30 - Question bundle set")
             
             // Divide up the questionString into components
             if let theAnswer = self.questionBundle?.answer {
                 // We have an answer
                 
-                if self.isAnswerView {
-                    
-                    var possibleAnswers = Glossary.possibleAnswersFromString(theAnswer)
-                    
-                    // The first answer will always be a decimal. The last answer will always be the smallest possible fraction
-                    if possibleAnswers.count > 1 {
+                testLabel.text = nil
+                //testLabel.text = theAnswer
+                //testLabel.font = UIFont.systemFont(ofSize: 50)
+                
+                
+                DispatchQueue.main.async {
+                    if self.isAnswerView {
                         
-                        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferdecimal) {
-                            // We prefer the decimal answer, so just show that one.
-                            possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
-                        } else {
-                            // We prefer fractional answer if available, so show that one
-                            //possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
+                        TimeTester.shared.printTime(string: "31 - This is an answerView")
+                        
+                        var possibleAnswers = Glossary.possibleAnswersFromString(theAnswer)
+                        
+                        TimeTester.shared.printTime(string: "32 - possible answers")
+                        
+                        // The first answer will always be a decimal. The last answer will always be the smallest possible fraction
+                        if possibleAnswers.count > 1 {
+                            
+                            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferdecimal) {
+                                // We prefer the decimal answer, so just show that one.
+                                possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
+                            } else {
+                                // We prefer fractional answer if available, so show that one
+                                //possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
+                            }
                         }
+                        
+                        /*
+                         while possibleAnswers.count > 1 {
+                         possibleAnswers.removeLast()
+                         }
+                         */
+                        if possibleAnswers.count > 1 {
+                            //possibleAnswers = [possibleAnswers.first!]
+                        }
+                        
+                        // We now only have 1 or less possibleAnswers
+                        
+                        
+                        //                    var formattedAnswers:Array<String> = []
+                        //
+                        //                    for anAnswer in possibleAnswers {
+                        //
+                        //                        let formattedAnswer = Glossary.formattedStringForQuestion(anAnswer)
+                        //
+                        //                        formattedAnswers.append(formattedAnswer)
+                        //                    }
+                        //
+                        let answersString = possibleAnswers.joined(separator: " or ")
+                        
+                        let questionComponents = answersString.components(separatedBy: " ")
+                        
+                        TimeTester.shared.printTime(string: "33 - Need to update question array")
+                        
+                        self.updateQuestionArrayWithComponents(questionComponents)
+                        
+                        TimeTester.shared.printTime(string: "34 - Question array method finished")
+                        
+                    } else {
+                        
+                        TimeTester.shared.printTime(string: "35 - need to update question array with answer")
+                        
+                        self.updateQuestionArrayWithString(theAnswer)
+                        
+                        TimeTester.shared.printTime(string: "36 - need to update question array with question")
                     }
-                    
-                    /*
-                    while possibleAnswers.count > 1 {
-                        possibleAnswers.removeLast()
-                    }
-                    */
-                    if possibleAnswers.count > 1 {
-                        //possibleAnswers = [possibleAnswers.first!]
-                    }
-                    
-                    // We now only have 1 or less possibleAnswers
-                    
-                    
-//                    var formattedAnswers:Array<String> = []
-//                    
-//                    for anAnswer in possibleAnswers {
-//                        
-//                        let formattedAnswer = Glossary.formattedStringForQuestion(anAnswer)
-//                        
-//                        formattedAnswers.append(formattedAnswer)
-//                    }
-//                    
-                    let answersString = possibleAnswers.joined(separator: " or ")
-                    
-                    let questionComponents = answersString.components(separatedBy: " ")
-                    
-                    self.updateQuestionArrayWithComponents(questionComponents)
-                    
-                } else {
-                    self.updateQuestionArrayWithString(theAnswer)
                 }
                 
+                
             } else if let errorType = self.questionBundle?.errorType {
-                // There is an error
-                // zzz
                 
                 let formattedAnswer = Glossary.formattedStringForAnswer(errorType.rawValue)
                 
@@ -101,6 +123,8 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     
     func updateQuestionArrayWithString(_ questionString: String) {
         
+        TimeTester.shared.printTime(string: "40")
+        
         textField.text = questionString
         
         // Add balanced brackets to this string, then divide into components.
@@ -108,6 +132,8 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         let questionComponents = Evaluator.termArrayFromString(Evaluator.balanceBracketsForQuestionDisplay(questionString), allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
         
         // If a component has more than one fraction in it then split it up
+        
+        TimeTester.shared.printTime(string: "41")
         
         var newQuestionComponents:Array<String> = []
         
@@ -142,11 +168,15 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
             }
         }
         
+        TimeTester.shared.printTime(string: "42")
+        
         updateQuestionArrayWithComponents(newQuestionComponents)
     }
     
     
     func updateQuestionArrayWithComponents(_ newQuestionComponents: Array<String>) {
+        
+        TimeTester.shared.printTime(string: "43")
         
         // Now we need to see which parts of the this new array need reloading.
         
@@ -217,8 +247,11 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
             self.reloadCollectionView()
         }
 */
+        TimeTester.shared.printTime(string: "44")
         self.questionArray = newQuestionComponents.reversed()
+        TimeTester.shared.printTime(string: "45")
         self.reloadCollectionView()
+        TimeTester.shared.printTime(string: "46")
         
     }
     
@@ -231,11 +264,18 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     @IBOutlet weak var doneButton: UIButton!
     
     func reloadCollectionView() {
-        //self.collecitonView.semanticContentAttribute = UISemanticContentAttribute.forceLeftToRight
-        //self.collecitonView.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-
-        DispatchQueue.main.async {
+        
+        TimeTester.shared.printTime(string: "50 - reload question view")
+        
+        if Thread.isMainThread {
+            TimeTester.shared.printTime(string: "51 - about to reload data")
             self.collecitonView.reloadData()
+            TimeTester.shared.printTime(string: "52 - reloaded data")
+        } else {
+            TimeTester.shared.printTime(string: "53 - uh oh! not the main thread")
+            DispatchQueue.main.async {
+                self.reloadCollectionView()
+            }
         }
     }
     

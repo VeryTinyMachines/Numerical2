@@ -9,7 +9,13 @@
 import UIKit
 import AudioToolbox
 
+protocol CalcButtonProtocol:class {
+    func pressedButton(button: CalcButton)
+}
+
 class CalcButton: UIButton {
+    
+    weak var delegate:CalcButtonProtocol?
     
     var keyStyle:KeyStyle = KeyStyle.Available
     
@@ -53,6 +59,30 @@ class CalcButton: UIButton {
         self.updateLockViewPosition()
         
         NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
+        
+        // Add tap gesture recogniser
+        let tapGest = UITapGestureRecognizer(target: self, action: #selector(CalcButton.tapGestureFired))
+        // self.addGestureRecognizer(tapGest)
+    }
+    
+    func tapGestureFired() {
+        // Make a UIView, add it, and then fade it out really quickly
+        self.flashWhite()
+        
+        delegate?.pressedButton(button: self)
+    }
+    
+    func flashWhite() {
+        let whiteView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
+        whiteView.backgroundColor = self.highlightColor
+        self.addSubview(whiteView)
+        
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions.allowUserInteraction, animations: { () -> Void in
+            whiteView.alpha = 0.0
+        }) { (complete) -> Void in
+            whiteView.removeFromSuperview()
+        }
+
     }
     
     func themeChanged() {
@@ -121,7 +151,10 @@ class CalcButton: UIButton {
     
     func touchUp() {
         
-        self.updateEnabledState()
+        //self.updateEnabledState()
+        self.flashWhite()
+        //self.backgroundColor = UIColor.clear
+        
         /*
         // Make a UIView, add it, and then fade it out really quickly
         let whiteView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))

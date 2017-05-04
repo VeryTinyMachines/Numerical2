@@ -22,7 +22,7 @@ protocol KeypadDelegate {
 
 
 
-class KeypadViewController: UIViewController {
+class KeypadViewController: UIViewController, CalcButtonProtocol {
     
     @IBOutlet var buttons: [CalcButton]!
     
@@ -53,6 +53,8 @@ class KeypadViewController: UIViewController {
             button.addTarget(self, action: #selector(KeypadViewController.pressedPressedUp(_:) ), for: UIControlEvents.touchUpInside)
             
             button.addTarget(self, action: #selector(KeypadViewController.pressedCancel(_:) ), for: UIControlEvents.touchDragExit)
+            
+            button.delegate = self
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(KeypadViewController.updateLegalKeys), name: Notification.Name(rawValue: PremiumCoordinatorNotification.premiumStatusChanged), object: nil)
@@ -61,11 +63,25 @@ class KeypadViewController: UIViewController {
         
     }
     
+    func pressedButton(button: CalcButton) {
+        currentButton = nil
+        
+        holdTimer?.invalidate()
+        
+        
+        TimeTester.shared.startTimeTester()
+        TimeTester.shared.printTime(string: "1 - User pressed key")
+        
+        initateButtonPress(sender: button)
+    }
     
     
     @IBAction func pressedPressedDown(_ sender: UIButton) {
         
         currentButton = sender
+        
+        TimeTester.shared.startTimeTester()
+        TimeTester.shared.printTime(string: "1 - User pressed key down")
         
         holdTimer?.invalidate()
         
@@ -80,6 +96,8 @@ class KeypadViewController: UIViewController {
         currentButton = nil
         
         holdTimer?.invalidate()
+        
+        TimeTester.shared.printTime(string: "1b - User pressed key up")
         
         initateButtonPress(sender: sender)
     }

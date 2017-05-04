@@ -23,7 +23,7 @@ open class CalculatorBrain {
         return instance
     }()
     
-    func currentTimeMillis() -> Int64{
+    func currentTimeMillis() -> Int64 {
         let nowDouble = Date().timeIntervalSince1970
         return Int64(nowDouble*1000)
     }

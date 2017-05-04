@@ -229,7 +229,7 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         menu.menuItems = menuItems
         menu.setMenuVisible(true, animated: true)
         
-        // Present the dissmiss button in the top most view.
+        // Present the dismiss button in the top most view.
         
         if let appDelegate = UIApplication.shared.delegate {
             if let vc = appDelegate.window??.rootViewController {

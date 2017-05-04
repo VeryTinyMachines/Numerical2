@@ -32,6 +32,7 @@
 		512138241D96F6770042EFC1 /* CoreData.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 512138231D96F6770042EFC1 /* CoreData.xcdatamodel */; };
 		512138271D96F7590042EFC1 /* Equation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512138251D96F7590042EFC1 /* Equation+CoreDataClass.swift */; };
 		512138281D96F7590042EFC1 /* Equation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512138261D96F7590042EFC1 /* Equation+CoreDataProperties.swift */; };
+		512F7EAD1EBA82EA00499EFD /* TimeTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F7EAC1EBA82EA00499EFD /* TimeTester.swift */; };
 		513197101B6ADD5900E9B802 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131970F1B6ADD5900E9B802 /* AppDelegate.swift */; };
 		513197121B6ADD5900E9B802 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513197111B6ADD5900E9B802 /* ViewController.swift */; };
 		513197151B6ADD5900E9B802 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 513197131B6ADD5900E9B802 /* Main.storyboard */; };
@@ -179,6 +180,7 @@
 		512138231D96F6770042EFC1 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		512138251D96F7590042EFC1 /* Equation+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Equation+CoreDataClass.swift"; sourceTree = "<group>"; };
 		512138261D96F7590042EFC1 /* Equation+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Equation+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		512F7EAC1EBA82EA00499EFD /* TimeTester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTester.swift; sourceTree = "<group>"; };
 		5131970C1B6ADD5900E9B802 /* Numerical2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Numerical2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5131970F1B6ADD5900E9B802 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		513197111B6ADD5900E9B802 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				51E032871E76E6610000A2A5 /* WorkPanelShadow@2x.png */,
 				51E032851E76C6F20000A2A5 /* AppIcon120x120@2x.png */,
 				512138251D96F7590042EFC1 /* Equation+CoreDataClass.swift */,
+				512F7EAC1EBA82EA00499EFD /* TimeTester.swift */,
 				512138261D96F7590042EFC1 /* Equation+CoreDataProperties.swift */,
 				511EA1FF1EA8D6F500E843C0 /* Numerical2b_120@2x.png */,
 				51BE48B91E13AA38002A2B92 /* UIColor+Numerical.swift */,
@@ -967,6 +970,7 @@
 				51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */,
 				512137BA1D967A730042EFC1 /* AboutViewController.swift in Sources */,
 				511D2A971E3485CB00957ADB /* Theme.swift in Sources */,
+				512F7EAD1EBA82EA00499EFD /* TimeTester.swift in Sources */,
 				51F2F44F1B6C421B00B845CA /* WorkPanelViewController.swift in Sources */,
 				51D28B0E1B6D0D2D009A0AEC /* QuestionCollectionViewController.swift in Sources */,
 				51BE48BA1E13AA38002A2B92 /* UIColor+Numerical.swift in Sources */,
@@ -1165,7 +1169,7 @@
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.andrewjclark.numericalapp-new";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Numerical2/Framework/Numerical2-Bridging-Header.h";
@@ -1194,7 +1198,7 @@
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.andrewjclark.numericalapp-new";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Numerical2/Framework/Numerical2-Bridging-Header.h";
@@ -1271,9 +1275,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = C583RN882K;
 				INFOPLIST_FILE = Keyboard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.Keyboard;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.andrewjclark.numericalapp-new.Keyboard";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1293,9 +1297,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = C583RN882K;
 				INFOPLIST_FILE = Keyboard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.Keyboard;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.andrewjclark.numericalapp-new.Keyboard";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

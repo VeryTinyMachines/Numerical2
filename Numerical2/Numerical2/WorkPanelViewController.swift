@@ -270,12 +270,19 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         if let theView = equationView {
             
             if let question = currentEquation?.question {
+                
                 theView.setQuestion(question, cursorPosition: currentCursor)
                 
                 // Solve this question
                 let originalRequestEquation = currentEquation
+                // solveStringSyncQueue
                 
-                CalculatorBrain.sharedBrain.solveStringAsyncQueue(question, completion: { (answer: AnswerBundle) -> Void in
+                TimeTester.shared.printTime(string: "6 - Begain evaluation")
+                
+                CalculatorBrain.sharedBrain.solveStringSyncQueue(question, completion: { (answer: AnswerBundle) -> Void in
+                //CalculatorBrain.sharedBrain.solveStringAsyncQueue(question, completion: { (answer: AnswerBundle) -> Void in
+                    
+                    TimeTester.shared.printTime(string: "7 - Async solve finished")
                     
                     if self.currentEquation == originalRequestEquation {
                         
@@ -285,9 +292,15 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                             self.currentEquation?.answer = answer.answer
                         }
                         
+                        TimeTester.shared.printTime(string: "8 - update the equation view")
+                        
                         theView.setAnswer(answer)
                         
+                        TimeTester.shared.printTime(string: "9 - Answer set")
+                        
                         EquationStore.sharedStore.queueSave()
+                        
+                        TimeTester.shared.printTime(string: "10 - Save queued")
                     }
                 })
                 
@@ -352,7 +365,8 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     }
     
     func pressedKey(_ key: Character, sourceView: UIView?) {
-        print("key: \(key)")
+        // print("key: \(key)")
+        TimeTester.shared.printTime(string: "2 - WorkPanelVC, pressed key \(key)")
         
         if let keyPanelView = keyPanelView {
             if keyPanelView.isPageScrolling() {
@@ -388,10 +402,10 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         }
         
         // Check if this key is premium and what the expected behaviour is.
-        if PremiumCoordinator.shared.canUserAccessKey(character: key) == false {
-            self.presentSalesScreen(type: SalesScreenType.scientificKey)
-            return
-        }
+//        if PremiumCoordinator.shared.canUserAccessKey(character: key) == false {
+//            self.presentSalesScreen(type: SalesScreenType.scientificKey)
+//            return
+//        }
         
         // A key has been pressed, determine if we should be inserting this character at the end of the string or somewhere in the middle
         var newCursorPosition:Int?
@@ -415,6 +429,8 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         } else {
             if currentEquation == nil {
                 
+                TimeTester.shared.printTime(string: "3 - WorkPanelVC, need new equation")
+                
                 let theNewEquation = EquationStore.sharedStore.newEquation()
                 
                 EquationStore.sharedStore.setCurrentEquationID(string: theNewEquation.identifier)
@@ -426,6 +442,8 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 if let theWorkPanelDelegate = workPanelDelegate {
                     theWorkPanelDelegate.updateEquation(currentEquation)
                 }
+                
+                TimeTester.shared.printTime(string: "4 - WorkPanelVC, equation fetched")
             }
         }
         
@@ -455,6 +473,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             } else {
                 
                 if let question = equation.question {
+                    TimeTester.shared.printTime(string: "4 - WorkPanelVC, add to existing equation")
                     
                     if Glossary.shouldAddClosingBracketToAppendString(question, newOperator: key) && currentCursorPositionIsAtEnd() {
                         newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")"), key])
@@ -462,16 +481,27 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                         newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [key])
                     }
                     
-                    EquationStore.sharedStore.equationUpdated(equation: equation)
+                    
+                    //newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [key])
+                    
+                     //EquationStore.sharedStore.equationUpdated(equation: equation)
                 } else {
+                    
+                    TimeTester.shared.printTime(string: "5 - Set new equation")
+                    
                     equation.question = String(key)
-                    EquationStore.sharedStore.equationUpdated(equation: equation)
+                    //EquationStore.sharedStore.equationUpdated(equation: equation)
                 }
             }
         }
         
         updateViews(currentCursor: newCursorPosition)
+        
+        TimeTester.shared.printTime(string: "100 - Legal keys need updating")
+        
         updateLegalKeys()
+        
+        TimeTester.shared.printTime(string: "101 - Legal keys updated")
         
         if let theDelegate = delegate {
             theDelegate.pressedKey(key, sourceView: sourceView)

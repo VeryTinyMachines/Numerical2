@@ -224,7 +224,6 @@ class KeyboardViewController: UIInputViewController {
         }
     }
     
-    
     func keyPressed(sender: AnyObject?) {
         let button = sender as! UIButton
         let title = button.title(for: .normal)

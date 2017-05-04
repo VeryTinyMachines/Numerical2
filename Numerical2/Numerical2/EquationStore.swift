@@ -90,12 +90,16 @@ class EquationStore {
     }
     
     func queueSave() {
-        self.saveContext()
-        self.queueCloudKitNeedsUpdate()
+        
+        DispatchQueue.main.async {
+            self.saveTimer?.invalidate()
+            self.saveTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(EquationStore.fireSaveTimer), userInfo: nil, repeats: false)
+        }
     }
     
     @objc func fireSaveTimer() {
         self.saveContext()
+        self.queueCloudKitNeedsUpdate()
     }
     
     @objc func fireUpdateCloudKitTimer() {
