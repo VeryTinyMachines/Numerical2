@@ -279,10 +279,11 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 
                 TimeTester.shared.printTime(string: "6 - Begain evaluation")
                 
-                CalculatorBrain.sharedBrain.solveStringSyncQueue(question, completion: { (answer: AnswerBundle) -> Void in
-                //CalculatorBrain.sharedBrain.solveStringAsyncQueue(question, completion: { (answer: AnswerBundle) -> Void in
-                    
+                
+                CalculatorBrain.sharedBrain.solveStringAsyncQueue(question, completion: { (answer: AnswerBundle) -> Void in
+                
                     TimeTester.shared.printTime(string: "7 - Async solve finished")
+                    print("finished \(Date())")
                     
                     if self.currentEquation == originalRequestEquation {
                         
@@ -303,6 +304,8 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                         TimeTester.shared.printTime(string: "10 - Save queued")
                     }
                 })
+ 
+                
                 
             } else {
                 theView.setQuestion("", cursorPosition: nil)
@@ -366,6 +369,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     
     func pressedKey(_ key: Character, sourceView: UIView?) {
         // print("key: \(key)")
+        
         TimeTester.shared.printTime(string: "2 - WorkPanelVC, pressed key \(key)")
         
         if let keyPanelView = keyPanelView {
@@ -436,12 +440,14 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 EquationStore.sharedStore.setCurrentEquationID(string: theNewEquation.identifier)
                 
                 currentEquation = theNewEquation
-                
+                /*
+                 
                 EquationStore.sharedStore.equationUpdated(equation: currentEquation!)
                 
                 if let theWorkPanelDelegate = workPanelDelegate {
                     theWorkPanelDelegate.updateEquation(currentEquation)
                 }
+                */
                 
                 TimeTester.shared.printTime(string: "4 - WorkPanelVC, equation fetched")
             }
@@ -471,16 +477,18 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 }
                 
             } else {
+                //return
                 
                 if let question = equation.question {
                     TimeTester.shared.printTime(string: "4 - WorkPanelVC, add to existing equation")
                     
+                    /*
                     if Glossary.shouldAddClosingBracketToAppendString(question, newOperator: key) && currentCursorPositionIsAtEnd() {
                         newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")"), key])
                     } else {
                         newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [key])
                     }
-                    
+                    */
                     
                     //newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [key])
                     
@@ -494,7 +502,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 }
             }
         }
-        
+         
         updateViews(currentCursor: newCursorPosition)
         
         TimeTester.shared.printTime(string: "100 - Legal keys need updating")
@@ -506,6 +514,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         if let theDelegate = delegate {
             theDelegate.pressedKey(key, sourceView: sourceView)
         }
+ 
     }
     
     func currentCursorPositionIsAtEnd() -> Bool {

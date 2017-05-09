@@ -28,79 +28,82 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         didSet {
             TimeTester.shared.printTime(string: "30 - Question bundle set")
             
+            
             // Divide up the questionString into components
             if let theAnswer = self.questionBundle?.answer {
                 // We have an answer
                 
-                testLabel.text = nil
-                //testLabel.text = theAnswer
-                //testLabel.font = UIFont.systemFont(ofSize: 50)
+                //testLabel.text = nil
+                testLabel.text = theAnswer
+                testLabel.font = UIFont.systemFont(ofSize: 50)
+                testLabel.minimumScaleFactor = 0.5
                 
-                
-                DispatchQueue.main.async {
-                    if self.isAnswerView {
+                /*
+                if self.isAnswerView {
+                    
+                    TimeTester.shared.printTime(string: "31 - This is an answerView")
+                    
+                    var possibleAnswers = Glossary.possibleAnswersFromString(theAnswer)
+                    
+                    TimeTester.shared.printTime(string: "32 - possible answers")
+                    
+                    // The first answer will always be a decimal. The last answer will always be the smallest possible fraction
+                    if possibleAnswers.count > 1 {
                         
-                        TimeTester.shared.printTime(string: "31 - This is an answerView")
-                        
-                        var possibleAnswers = Glossary.possibleAnswersFromString(theAnswer)
-                        
-                        TimeTester.shared.printTime(string: "32 - possible answers")
-                        
-                        // The first answer will always be a decimal. The last answer will always be the smallest possible fraction
-                        if possibleAnswers.count > 1 {
-                            
-                            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferdecimal) {
-                                // We prefer the decimal answer, so just show that one.
-                                possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
-                            } else {
-                                // We prefer fractional answer if available, so show that one
-                                //possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
-                            }
+                        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferdecimal) {
+                            // We prefer the decimal answer, so just show that one.
+                            possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
+                        } else {
+                            // We prefer fractional answer if available, so show that one
+                            //possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
                         }
-                        
-                        /*
-                         while possibleAnswers.count > 1 {
-                         possibleAnswers.removeLast()
-                         }
-                         */
-                        if possibleAnswers.count > 1 {
-                            //possibleAnswers = [possibleAnswers.first!]
-                        }
-                        
-                        // We now only have 1 or less possibleAnswers
-                        
-                        
-                        //                    var formattedAnswers:Array<String> = []
-                        //
-                        //                    for anAnswer in possibleAnswers {
-                        //
-                        //                        let formattedAnswer = Glossary.formattedStringForQuestion(anAnswer)
-                        //
-                        //                        formattedAnswers.append(formattedAnswer)
-                        //                    }
-                        //
-                        let answersString = possibleAnswers.joined(separator: " or ")
-                        
-                        let questionComponents = answersString.components(separatedBy: " ")
-                        
-                        TimeTester.shared.printTime(string: "33 - Need to update question array")
-                        
-                        self.updateQuestionArrayWithComponents(questionComponents)
-                        
-                        TimeTester.shared.printTime(string: "34 - Question array method finished")
-                        
-                    } else {
-                        
-                        TimeTester.shared.printTime(string: "35 - need to update question array with answer")
-                        
-                        self.updateQuestionArrayWithString(theAnswer)
-                        
-                        TimeTester.shared.printTime(string: "36 - need to update question array with question")
                     }
+                    
+                    /*
+                     while possibleAnswers.count > 1 {
+                     possibleAnswers.removeLast()
+                     }
+                     */
+                    if possibleAnswers.count > 1 {
+                        //possibleAnswers = [possibleAnswers.first!]
+                    }
+                    
+                    // We now only have 1 or less possibleAnswers
+                    
+                    
+                    //                    var formattedAnswers:Array<String> = []
+                    //
+                    //                    for anAnswer in possibleAnswers {
+                    //
+                    //                        let formattedAnswer = Glossary.formattedStringForQuestion(anAnswer)
+                    //
+                    //                        formattedAnswers.append(formattedAnswer)
+                    //                    }
+                    //
+                    let answersString = possibleAnswers.joined(separator: " or ")
+                    
+                    let questionComponents = answersString.components(separatedBy: " ")
+                    
+                    TimeTester.shared.printTime(string: "33 - Need to update question array")
+                    
+                    self.updateQuestionArrayWithComponents(questionComponents)
+                    
+                    TimeTester.shared.printTime(string: "34 - Question array method finished")
+                    
+                } else {
+                    
+                    TimeTester.shared.printTime(string: "35 - need to update question array with answer")
+                    
+                    self.updateQuestionArrayWithString(theAnswer)
+                    
+                    TimeTester.shared.printTime(string: "36 - need to update question array with question")
                 }
+                */
                 
-                
-            } else if let errorType = self.questionBundle?.errorType {
+            }
+            /*
+            
+            else if let errorType = self.questionBundle?.errorType {
                 
                 let formattedAnswer = Glossary.formattedStringForAnswer(errorType.rawValue)
                 
@@ -110,6 +113,7 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
             }
             
             // If there was a cursor position in this and we are currently editing then set the cursor position
+            
             if let arbitraryValue = questionBundle?.cursorPosition {
                 if isEditing {
                     if let newPosition = self.textField.position(from: textField.beginningOfDocument, in: UITextLayoutDirection.right, offset: arbitraryValue) {
@@ -117,6 +121,8 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                     }
                 }
             }
+             */
+ 
         }
     }
 

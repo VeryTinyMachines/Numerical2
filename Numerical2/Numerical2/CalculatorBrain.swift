@@ -51,7 +51,7 @@ open class CalculatorBrain {
         
         currentQuestion = string
         
-        let qualityOfServiceClass = DispatchQoS.QoSClass.background
+        let qualityOfServiceClass = DispatchQoS.QoSClass.userInitiated
         let backgroundQueue = DispatchQueue.global(qos: qualityOfServiceClass)
         
         let startTime = self.currentTimeMillis()

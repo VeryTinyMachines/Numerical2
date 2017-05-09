@@ -152,8 +152,9 @@ class CalcButton: UIButton {
     func touchUp() {
         
         //self.updateEnabledState()
+        self.backgroundColor = UIColor.clear
         self.flashWhite()
-        //self.backgroundColor = UIColor.clear
+        
         
         /*
         // Make a UIView, add it, and then fade it out really quickly
