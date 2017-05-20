@@ -40,6 +40,12 @@ open class CalculatorBrain {
     
     open func solveStringSyncQueue(_ string: String, completion: ((_ answer: AnswerBundle) -> Void)? ) {
         
+        if string == "" {
+            let bundle = AnswerBundle(number: "")
+            completion?(bundle)
+            return
+        }
+        
         let result = Evaluator.solveString(string)
         
         if let completionBlock = completion {
@@ -48,6 +54,12 @@ open class CalculatorBrain {
     }
     
     open func solveStringAsyncQueue(_ string: String, completion: ((_ answer: AnswerBundle) -> Void)? ) {
+        
+        if string == "" {
+            let bundle = AnswerBundle(number: "")
+            completion?(bundle)
+            return
+        }
         
         currentQuestion = string
         

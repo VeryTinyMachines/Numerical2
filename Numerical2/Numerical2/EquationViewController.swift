@@ -32,6 +32,8 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
     
     var cursorPosition:Int?
     
+    @IBOutlet weak var questionViewHeight: NSLayoutConstraint!
+    
     func pressedKey(_ key: Character, sourceView: UIView?) {
         
     }
@@ -71,12 +73,11 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         if let theAnswerView = answerView, let answer = currentAnswer {
             TimeTester.shared.printTime(string: "24 - Ånswer view about to be set")
             
+            print(answer)
+            
             theAnswerView.questionBundle = answer
         }
     }
-    
-    
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         

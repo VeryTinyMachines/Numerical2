@@ -34,9 +34,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             SoundManager.primeSounds()
         }
         
+        //Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
+//            print(WorkingEquationManager.sharedManager.printHistory())
+//        }
+        
         SimpleLogger.appendLog(string: "application.didFinishLaunchingWithOptions")
         
         // Current Version saving and presentation is now in ViewController
+        
+        //DispatchQueue.main.async {
+//            UIApplication.shared.setAlternateIconName("AppIcon-2")
+//        }
         
         return true
     }

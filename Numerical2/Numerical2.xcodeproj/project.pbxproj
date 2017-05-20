@@ -40,6 +40,8 @@
 		5131971A1B6ADD5900E9B802 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 513197181B6ADD5900E9B802 /* LaunchScreen.storyboard */; };
 		513197251B6ADD5900E9B802 /* Numerical2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513197241B6ADD5900E9B802 /* Numerical2Tests.swift */; };
 		513197301B6ADD5900E9B802 /* Numerical2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */; };
+		51354FE51ECC842600A01585 /* WorkingEquationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51354FE41ECC842600A01585 /* WorkingEquationManager.swift */; };
+		51354FE71ECCA02600A01585 /* mellow.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 51354FE61ECCA02600A01585 /* mellow.aiff */; };
 		513A9E051EA284690017D9A5 /* SimpleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513A9E041EA284690017D9A5 /* SimpleLogger.swift */; };
 		513C77131EAE4A950037121B /* SwipePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513C77121EAE4A950037121B /* SwipePageViewController.swift */; };
 		5142AE3C1DA420EE0076D117 /* 5_Star-(alt).png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE361DA420EE0076D117 /* 5_Star-(alt).png */; };
@@ -98,6 +100,7 @@
 		51D941A41E6CFBB300844568 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D941A31E6CFBB300844568 /* SwitchCell.swift */; };
 		51E032861E76C6F20000A2A5 /* AppIcon120x120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51E032851E76C6F20000A2A5 /* AppIcon120x120@2x.png */; };
 		51E032881E76E6610000A2A5 /* WorkPanelShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51E032871E76E6610000A2A5 /* WorkPanelShadow@2x.png */; };
+		51E3262F1ED0CA030031DEE6 /* alticon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51E3262E1ED0CA030031DEE6 /* alticon@2x.png */; };
 		51E84D311B8B5C3B00C3E28E /* CalcButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E84D301B8B5C3B00C3E28E /* CalcButton.swift */; };
 		51EE5BA01BC5203A001C9D38 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */; };
 		51F24F801DEFF8550023D15E /* ThemeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F24F7F1DEFF8550023D15E /* ThemeViewController.swift */; };
@@ -194,6 +197,8 @@
 		5131972B1B6ADD5900E9B802 /* Numerical2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Numerical2UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numerical2UITests.swift; sourceTree = "<group>"; };
 		513197311B6ADD5900E9B802 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51354FE41ECC842600A01585 /* WorkingEquationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkingEquationManager.swift; sourceTree = "<group>"; };
+		51354FE61ECCA02600A01585 /* mellow.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mellow.aiff; sourceTree = "<group>"; };
 		513A9E041EA284690017D9A5 /* SimpleLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleLogger.swift; sourceTree = "<group>"; };
 		513C77121EAE4A950037121B /* SwipePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipePageViewController.swift; sourceTree = "<group>"; };
 		5142AE361DA420EE0076D117 /* 5_Star-(alt).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5_Star-(alt).png"; sourceTree = "<group>"; };
@@ -247,6 +252,7 @@
 		51D941A31E6CFBB300844568 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		51E032851E76C6F20000A2A5 /* AppIcon120x120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon120x120@2x.png"; sourceTree = "<group>"; };
 		51E032871E76E6610000A2A5 /* WorkPanelShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WorkPanelShadow@2x.png"; sourceTree = "<group>"; };
+		51E3262E1ED0CA030031DEE6 /* alticon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alticon@2x.png"; sourceTree = "<group>"; };
 		51E84D301B8B5C3B00C3E28E /* CalcButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalcButton.swift; sourceTree = "<group>"; };
 		51EE5B9E1BC51FDF001C9D38 /* Numerical2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Numerical2.entitlements; sourceTree = "<group>"; };
 		51EE5B9F1BC5203A001C9D38 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -337,8 +343,10 @@
 			children = (
 				5131970F1B6ADD5900E9B802 /* AppDelegate.swift */,
 				511EA1FD1EA8D6D700E843C0 /* Numerical2b_120@2x.png */,
+				51E3262E1ED0CA030031DEE6 /* alticon@2x.png */,
 				513A9E041EA284690017D9A5 /* SimpleLogger.swift */,
 				517470CB1D95C7B000E70A74 /* EquationStore.swift */,
+				51354FE41ECC842600A01585 /* WorkingEquationManager.swift */,
 				51E032871E76E6610000A2A5 /* WorkPanelShadow@2x.png */,
 				51E032851E76C6F20000A2A5 /* AppIcon120x120@2x.png */,
 				512138251D96F7590042EFC1 /* Equation+CoreDataClass.swift */,
@@ -465,6 +473,7 @@
 		51C40E891DCC136400930BFD /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				51354FE61ECCA02600A01585 /* mellow.aiff */,
 				51C40E7F1DCC135C00930BFD /* professional-reverse.aiff */,
 				51C40E801DCC135C00930BFD /* professional.aiff */,
 				51C40E811DCC135C00930BFD /* rock.aiff */,
@@ -764,6 +773,7 @@
 				519BA0971DD11A0200786519 /* PremiumBug_2.png in Resources */,
 				519BA0991DD11AC900786519 /* PremiumBug_3.png in Resources */,
 				51D116781E8278700059C342 /* Theme_Phone_StatusBar.png in Resources */,
+				51E3262F1ED0CA030031DEE6 /* alticon@2x.png in Resources */,
 				51C40E871DCC135C00930BFD /* simple.aiff in Resources */,
 				51E032881E76E6610000A2A5 /* WorkPanelShadow@2x.png in Resources */,
 				511EA2001EA8D6F500E843C0 /* Numerical2b_120@2x.png in Resources */,
@@ -773,6 +783,7 @@
 				51D1167C1E827A730059C342 /* Theme_Pad_StatusBar.png in Resources */,
 				513197151B6ADD5900E9B802 /* Main.storyboard in Resources */,
 				519BA0951DD1192400786519 /* PremiumBug_1.png in Resources */,
+				51354FE71ECCA02600A01585 /* mellow.aiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -986,6 +997,7 @@
 				51C40ECE1DCC492200930BFD /* CustomDismissAnimationController.swift in Sources */,
 				513197101B6ADD5900E9B802 /* AppDelegate.swift in Sources */,
 				51C40ECD1DCC492200930BFD /* CustomAnimationController.swift in Sources */,
+				51354FE51ECC842600A01585 /* WorkingEquationManager.swift in Sources */,
 				515EB8FB1DA6A0150081D9FB /* SalesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1169,7 +1181,7 @@
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.andrewjclark.numericalapp-new";
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Numerical2/Framework/Numerical2-Bridging-Header.h";
@@ -1198,7 +1210,7 @@
 				INFOPLIST_FILE = Numerical2/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.andrewjclark.numericalapp-new";
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Numerical2/Framework/Numerical2-Bridging-Header.h";
@@ -1277,7 +1289,7 @@
 				INFOPLIST_FILE = Keyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.andrewjclark.numericalapp-new.Keyboard";
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.Keyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1299,7 +1311,7 @@
 				INFOPLIST_FILE = Keyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.andrewjclark.numericalapp-new.Keyboard";
+				PRODUCT_BUNDLE_IDENTIFIER = com.andrewjclark.numericalapp.Keyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

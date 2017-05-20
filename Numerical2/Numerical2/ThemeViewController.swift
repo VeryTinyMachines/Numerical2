@@ -335,7 +335,14 @@ class ThemeCollectionViewCell: UICollectionViewCell {
         if theme.isPremium && PremiumCoordinator.shared.canAccessThemes() == false && theme.isUserCreated == false {
             self.mainLabel.text = theme.title + "\n(Pro)"
         } else if theme.isUserCreated && selected {
-            self.mainLabel.text = "Tap to\nEdit"
+            
+            if theme.title != "" {
+                self.mainLabel.text = "\(theme.title)\n(Edit)"
+            } else {
+                self.mainLabel.text = "(Edit)"
+            }
+            
+            
         }
         
         self.mainLabel.textColor = ThemeFormatter.foregroundColorForTheme(theme: theme)

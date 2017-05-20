@@ -263,10 +263,7 @@ open class Evaluator {
         let cleanedString = cleanString(string)
         
         if let bracketsResolvedString = solveBracketsInString(cleanedString) {
-            
             return solveOperatorsInString(bracketsResolvedString)
-            
-            
         } else {
             
             return AnswerBundle(error: ErrorType.unknown)
@@ -1456,9 +1453,14 @@ open class Evaluator {
                     return AnswerBundle(number: result.stringValue)
                 }
             } else if theOperator == SymbolCharacter.exponent {
-                
+                print("")
                 if rightDecimalNumber.doubleValue.truncatingRemainder(dividingBy: 1) == 0 && rightDecimalNumber.doubleValue > 0 {
                     // Whole number
+                    
+                    print("leftDecimalNumber: \(leftDecimalNumber)")
+                    print("rightDecimalNumber: \(rightDecimalNumber)")
+                    print("rightDecimalNumber.intValue: \(rightDecimalNumber.intValue)")
+                    print("")
                     
                     let result = leftDecimalNumber.raising(toPower: rightDecimalNumber.intValue, withBehavior: errorHandler)
                     
@@ -1467,12 +1469,19 @@ open class Evaluator {
 //                    }
                     
                     if let error = errorHandler.error {
+                        
+                        print("result: \(result)")
+                        print("result.stringValue: \(result.stringValue)")
+                        print("error: \(error)")
+                        
                         if error == NSDecimalNumber.CalculationError.overflow {
                             return AnswerBundle(error: ErrorType.overflow)
                         } else if error == NSDecimalNumber.CalculationError.underflow {
                             return AnswerBundle(error: ErrorType.underflow)
-                        } else {
-                            return AnswerBundle(error: ErrorType.unknown)
+                        } else if error == NSDecimalNumber.CalculationError.divideByZero {
+                            return AnswerBundle(error: ErrorType.divideByZero)
+                        } else if error == NSDecimalNumber.CalculationError.lossOfPrecision {
+                            // We don't care about this.
                         }
                     }
                     

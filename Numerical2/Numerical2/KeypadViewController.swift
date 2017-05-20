@@ -68,7 +68,6 @@ class KeypadViewController: UIViewController, CalcButtonProtocol {
         
         holdTimer?.invalidate()
         
-        
         TimeTester.shared.startTimeTester()
         TimeTester.shared.printTime(string: "1 - User pressed key")
         

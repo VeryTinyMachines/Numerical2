@@ -20,7 +20,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     var historyView: HistoryViewController?
     var workPanelView: WorkPanelViewController?
-    var currentEquation: Equation?
+    //var currentEquation: WorkingEquation?
+    
     var currentSize = KeypadSize.maximum
     var workPanelShowEquation = true
     
@@ -40,6 +41,13 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     var currentStatus = UIStatusBarStyle.default
     
     var panGesture:UIPanGestureRecognizer?
+    
+    var leftSwipeGesture:UISwipeGestureRecognizer?
+    var rightSwipeGesture:UISwipeGestureRecognizer?
+    
+    var upSwipeGesture:UISwipeGestureRecognizer?
+    var downSwipeGesture:UISwipeGestureRecognizer?
+    
     
     @IBOutlet weak var shadeView: UIView!
     @IBOutlet weak var shadeViewLeftCorner: UIImageView!
@@ -102,8 +110,25 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         if let previousVersion = UserDefaults.standard.string(forKey: "CurrentVersion") {
             print("previousVersion: \(previousVersion)")
             print("")
-            if currentVersion != previousVersion && previousVersion < "v2.0.4" {
+            if currentVersion != previousVersion {
                 // Display a tool tip
+                DispatchQueue.main.async {
+                    let alertView = UIAlertController(title: "Numerical² has been\nupdated to \(currentVersion)!", message: "You can now swipe left/right to undo/redo, swipe up to clear, swipe down to start new! You can also name and rename themes now :)", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    alertView.addAction(UIAlertAction(title: "What Else Is New?", style: UIAlertActionStyle.default, handler: { (action) in
+                        self.attemptToOpenURL(urlString: "http://www.verytinymachines.com/numerical2-whatsnew/")
+                    }))
+                    
+                    alertView.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
+                        
+                    }))
+                    
+                    self.present(alertView, animated: true, completion: {
+                        
+                    })
+                }
+                
+                /*
                 DispatchQueue.main.async {
                     let alertView = UIAlertController(title: "Numerical² has been\nupdated to \(currentVersion)!", message: "You can now customise the History List and keyboard! Let's begin.\n\nDo you want your History List...", preferredStyle: UIAlertControllerStyle.alert)
                     
@@ -128,6 +153,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                         
                     })
                 }
+                 */
             }
         }
         
@@ -332,20 +358,15 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func selectedEquation(_ equation: Equation) {
         
-        currentEquation = equation
-        
         if let theWorkView = workPanelView {
-            theWorkView.currentEquation = currentEquation
-            theWorkView.updateViews(currentCursor: nil)
-            theWorkView.updateLegalKeys()
+            
+            if let question = equation.question {
+                theWorkView.selectedQuestion(question: question)
+            } else {
+                theWorkView.selectedQuestion(question: "")
+            }
+            
             presentKeypad()
-        }
-        
-        EquationStore.sharedStore.setCurrentEquationID(string: equation.identifier)
-        
-        if let theHistoryView = historyView {
-            //theHistoryView.updateSelectedEquation(equation)
-            self.postEquationChangedNotif()
         }
     }
     
@@ -357,7 +378,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     func presentKeypad() {
         // The user selected an item from the history. Present the keypad IF needed.
-        
         
         if workPanelPercentage == Float(self.minimumEquationHeight() / self.view.frame.height) {
             // The work panel is in the minimum configuration. Raise it
@@ -389,7 +409,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             workPanelView = keyPad
             keyPad.delegate = self
             keyPad.workPanelDelegate = self
-            keyPad.currentEquation = currentEquation
+            
             keyPad.updateViews(currentCursor: nil)
             
             // Add a gesture recogniser to the keypad
@@ -398,11 +418,46 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             keyPad.view.addGestureRecognizer(slideGesture)
             panGesture = slideGesture
             
-            // Add swipe gesture recogniser
+            // Add swipe gesture recogniser (left)
             let undoSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.swiped(_:)))
             undoSwipeGesture.direction = .left
             undoSwipeGesture.delegate = self
             keyPad.view.addGestureRecognizer(undoSwipeGesture)
+            
+            leftSwipeGesture = undoSwipeGesture
+            
+            // Add swipe right gesture recogniser (right)
+            let redoSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.swiped(_:)))
+            redoSwipeGesture.direction = .right
+            redoSwipeGesture.delegate = self
+            keyPad.view.addGestureRecognizer(redoSwipeGesture)
+            
+            rightSwipeGesture = redoSwipeGesture
+            
+            // Add the up / down gestures
+            
+            let clearSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.swiped(_:)))
+            clearSwipeGesture.direction = .up
+            clearSwipeGesture.delegate = self
+            keyPad.view.addGestureRecognizer(clearSwipeGesture)
+            
+            upSwipeGesture = clearSwipeGesture
+            
+            
+            let newSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(ViewController.swiped(_:)))
+            newSwipeGesture.direction = .down
+            newSwipeGesture.delegate = self
+            keyPad.view.addGestureRecognizer(newSwipeGesture)
+            
+            downSwipeGesture = newSwipeGesture
+            
+            
+            /*
+             var upSwipeGesture:UISwipeGestureRecognizer?
+             var downSwipeGesture:UISwipeGestureRecognizer?
+             */
+            
+            
         }
     }
     
@@ -441,48 +496,96 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             let locationAnswer = swipeGesture.location(in: answerView.view)
             let locationQuestion = swipeGesture.location(in: questionView.view)
             
-            // Check if swiped in answer
+            // Check if swiped in answer. The answer view maybe be a collection view but it should never be scrollable so we don't need to check offset.
+            
             if answerView.view.frame.contains(locationAnswer) {
                 // The swipe's location was inside the answer view
                 
-                if answerView.collecitonView.contentOffset.x <= 0 {
-                    // The swipe was for a scrollable view that now has a negative content offset, or the scrollable view has no ability to scroll
-                    // Delete this equation with a small animation.
-                    
-                    SoundManager.sharedStore.playSound(sound: SoundType.restore)
-                    
-                    self.workPanelView?.pressedKey(SymbolCharacter.delete, sourceView: nil)
-                    
-                    // We also need to destroy the pangesture since it may still be working.
-                    
-                    if let panGesture = panGesture {
-                        panGesture.isEnabled = false
-                        panGesture.isEnabled = true
-                        self.snapAndUpdate(viewSize: self.view.frame.size)
-                    }
+                // It's a redo.
+                
+                if swipeGesture == rightSwipeGesture {
+                    // Redo
+                    self.redo()
+                } else if swipeGesture == leftSwipeGesture {
+                    // Undo
+                    self.undo()
+                } else if swipeGesture == upSwipeGesture {
+                    self.swipedUp()
+                } else if swipeGesture == downSwipeGesture {
+                    self.swipedDown()
                 }
             }
             
             if questionView.view.frame.contains(locationQuestion) {
                 // The swipe's location was inside the answer view
                 
-                if questionView.collecitonView.contentOffset.x <= 0 {
-                    // The swipe was for a scrollable view that now has a negative content offset
-                    // Delete this equation with a small animation.
+                if swipeGesture == rightSwipeGesture {
+                    // Redo
                     
-                    SoundManager.sharedStore.playSound(sound: SoundType.restore)
+                    if questionView.collecitonView.delegate == nil {
+                        // We don't have a collection view so just call redo.
+                        self.redo()
+                    } else if questionView.collecitonView.frame.width + questionView.collecitonView.contentOffset.x >= questionView.collecitonView.contentSize.width {
+                        
+                        self.redo()
+                    }
                     
-                    self.workPanelView?.pressedKey(SymbolCharacter.delete, sourceView: nil)
+                } else if swipeGesture == leftSwipeGesture {
+                    // Undo
                     
-                    // We also need to destroy the pangesture since it may still be working.
-                    
-                    if let panGesture = panGesture {
-                        panGesture.isEnabled = false
-                        panGesture.isEnabled = true
-                        self.snapAndUpdate(viewSize: self.view.frame.size)
+                    if questionView.collecitonView.delegate == nil {
+                        self.undo()
+                    } else if questionView.collecitonView.contentOffset.x <= 0 {
+                        // The swipe was for a scrollable view that now has a negative content offset
+                        // Delete this equation with a small animation.
+                        self.undo()
                     }
                 }
             }
+        }
+    }
+    
+    func undo() {
+        if WorkingEquationManager.sharedManager.undo() {
+            workPanelView?.undoEquationAnimation()
+        } else {
+            workPanelView?.undoEquationAnimationFailed()
+        }
+        
+        // We also need to destroy the pangesture since it may still be working.
+        self.resetPanGesture()
+    }
+    
+    func redo() {
+        if WorkingEquationManager.sharedManager.redo() {
+            workPanelView?.redoEquationAnimation()
+        } else {
+            workPanelView?.redoEquationAnimationFailed()
+        }
+        
+        // We also need to destroy the pangesture since it may still be working.
+        self.resetPanGesture()
+    }
+    
+    func swipedUp() {
+        if NumericalViewHelper.historyBehindKeypadNeeded() == false {
+            // Clear it
+            workPanelView?.clearEquationAnimation(forceUp: true)
+        }
+    }
+    
+    func swipedDown() {
+        if NumericalViewHelper.historyBehindKeypadNeeded() == false {
+            // Need to save current item and move the other
+            workPanelView?.startNewFromAnswerAnimation()
+        }
+    }
+    
+    func resetPanGesture() {
+        if let panGesture = panGesture {
+            panGesture.isEnabled = false
+            panGesture.isEnabled = true
+            self.snapAndUpdate(viewSize: self.view.frame.size)
         }
     }
     
@@ -772,8 +875,21 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         // Force the equation view to update - this seems to be the only combo that really works and is most efficient and does not result in transform animation errors.
         self.view.layoutIfNeeded()
-        self.workPanelView?.equationView?.questionView?.collecitonView.reloadData()
-        self.workPanelView?.equationView?.answerView?.collecitonView.reloadData()
+        
+        if let cv = self.workPanelView?.equationView?.questionView?.collecitonView {
+            if cv.delegate != nil {
+                cv.reloadData()
+            }
+        }
+        
+        if let cv = self.workPanelView?.equationView?.answerView?.collecitonView {
+            if cv.delegate != nil {
+                cv.reloadData()
+            }
+        }
+        
+        //self.workPanelView?.equationView?.questionView?.collecitonView.reloadData()
+        //self.workPanelView?.equationView?.answerView?.collecitonView.reloadData()
         self.view.layoutIfNeeded()
         
         // Update the history view
@@ -807,11 +923,11 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 // self.workPanelView?.updateLayout()
                 self.view.layoutIfNeeded()
             }, completion: { (complete) -> Void in
-                self.workPanelView?.updateLayout()
+                //self.workPanelView?.updateLayout()
                 self.view.layoutIfNeeded()
             })
         } else {
-            self.workPanelView?.updateLayout()
+            //self.workPanelView?.updateLayout()
             self.updateBackgroundVisibility(height: heightPercentage)
             self.view.layoutIfNeeded()
         }
@@ -827,26 +943,22 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
     }
     
-    func updateEquation(_ equation: Equation?) {
-        
+    
+    func updateEquation(_ equation: WorkingEquation?) {
+        print("")
+        /*
         currentEquation = equation
         
         if let theHistoryView = historyView {
             //theHistoryView.updateSelectedEquation(currentEquation)
             self.postEquationChangedNotif()
         }
+         */
     }
     
     func delectedEquation(_ equation: Equation) {
+        // todo
         
-        if currentEquation == equation {
-            currentEquation = nil
-            if let theWorkPanel = workPanelView {
-                theWorkPanel.currentEquation = currentEquation
-                theWorkPanel.updateLegalKeys()
-                theWorkPanel.updateViews(currentCursor: nil)
-            }
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -861,7 +973,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         super.viewDidAppear(animated)
         
         // Focus the history view on the current equation
-        historyView?.focusOnCurrentEquation()
+        //historyView?.focusOnCurrentEquation()
         themeChanged() // Just in case we have rotated in another view.
     }
     
@@ -944,6 +1056,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     }
     
     func statusBarStyleForHeight() -> UIStatusBarStyle {
+        /*
         if let workPanelHeight = workPanelHeight {
             
             // Find the mid point between the mid point and total height
@@ -953,6 +1066,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                 return UIStatusBarStyle.lightContent
             }
         }
+         */
         
         return ThemeCoordinator.shared.preferredStatusBarStyleForCurrentTheme()
     }

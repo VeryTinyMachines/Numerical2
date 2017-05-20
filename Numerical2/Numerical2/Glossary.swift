@@ -214,14 +214,44 @@ open class Glossary {
     
     
     class func formattedStringForQuestion(_ string: String) -> String {
+        return formattedStringForQuestion(string, addSpaces: false)
+    }
+    
+    class func formattedStringForQuestion(_ string: String, addSpaces: Bool) -> String {
+        
+        let space:String = " "
+        
+        let string = string.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: space, with: "")
         
         var formattedString = ""
         
-        for character in string.characters {
-            formattedString += formattedStringForCharacter(character)
+        let termArray = Evaluator.termArrayFromString(string, allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
+        
+        for term in termArray {
+            for character in term.characters {
+                formattedString += formattedStringForCharacter(character)
+            }
+            
+            if addSpaces {
+                formattedString += space
+            }
         }
         
         return formattedString
+    }
+    
+    
+    class func maximumDecimals() -> Int {
+        
+        // todo - this should use the numerical helper class
+        
+        let value = UserDefaults.standard.integer(forKey: "decimalLength")
+        
+        if value > 0 {
+            return value
+        } else {
+            return 10 // Default amount
+        }
     }
     
     class func formattedStringForAnswer(_ string: String) -> String {
@@ -242,12 +272,13 @@ open class Glossary {
         
         if let number = numberFormatter.number(from: string) {
             
-            if number.doubleValue > 1000000000000 || (number.doubleValue > 0 && number.doubleValue < 0.0000000001) {
+            if number.doubleValue > 1000000000000 || (number.doubleValue > 0 && number.doubleValue < 0.0000000001) || number.doubleValue < -1000000000000 || (number.doubleValue < 0 && number.doubleValue > -0.0000000001) {
                 numberFormatter.numberStyle = NumberFormatter.Style.scientific
             } else {
-                numberFormatter.maximumFractionDigits = 12
                 numberFormatter.numberStyle = NumberFormatter.Style.decimal
             }
+            
+            numberFormatter.maximumFractionDigits = self.maximumDecimals()
             
             if let formattedAnswer = numberFormatter.string(from: number) {
                 return formattedAnswer.replacingOccurrences(of: "E0", with: "")
@@ -264,24 +295,6 @@ open class Glossary {
         
         return String(character)
     }
-
-    /*
-    class func unformattedCharacterForString(_ string: String) -> Character? {
-        if let formattedChar = self.reverseFormattedLookup[string] {
-            return formattedChar
-        }
-        
-        if string.characters.count == 1 {
-            if let first = string.characters.first {
-                return first
-            }
-        }
-        
-        // This provided string doesn't match anything so it can't be returned.
-        
-        return nil
-    }
-    */
     
     class func isStringSpecialWord(_ string: String) -> Bool {
         if string == "and" || string == "by" || string == "with" {
@@ -489,7 +502,7 @@ open class Glossary {
         // Replace lastCharacter with pre/post/mid if appropriate
         
         var legalCombinations:[Character: String] =
-           ["n":"n\(mid))\(clear)\(delete)\(pre)\(post)\(settings)",
+           ["n":"n)\(mid)\(clear)\(delete)\(pre)\(post)\(settings)",
             "(":"n)(-\(clear)\(delete)\(pre)\(settings)",
             ")":"n)(\(clear)\(delete)\(pre)\(mid)\(post)\(settings)",
             "+":"n-+(\(clear)\(delete)\(pre)\(settings)",
@@ -574,6 +587,8 @@ open class Glossary {
                             legalCharacterSet.insert(SymbolCharacter.smartBracketPrefersClose)
                         }
                     }
+                    
+                    
                 }
                 
                 if legalCharacterSet.contains("n") {

@@ -10,8 +10,15 @@ import UIKit
 import Crashlytics
 
 protocol WorkPanelDelegate {
-    func updateEquation(_ equation: Equation?)
+    func updateEquation(_ equation: WorkingEquation?)
 }
+
+class WorkingEquation {
+    var question = ""
+    var answer:String?
+    var hasChanged = false
+}
+
 
 class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPageViewDelegate, EquationTextFieldDelegate, QuestionCollectionViewDelegate {
     
@@ -26,7 +33,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     var tutorialPages = [String]()
     var tutorialTimer:Timer?
     
-    var currentEquation: Equation?
+    //var currentEquation = WorkingEquation()
     
     var equationView:EquationViewController?
     
@@ -189,8 +196,15 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.historyDeleted), name: Notification.Name(rawValue: EquationStoreNotification.historyDeleted), object: nil)
         
-        currentEquation = EquationStore.sharedStore.currentEquation()
-        workPanelDelegate?.updateEquation(currentEquation)
+        // currentEquation = EquationStore.sharedStore.currentEquation()
+        
+        // initial equation
+        //currentEquation.question = "2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+"
+        //currentEquation.question = "2+2+2+2+2+2+2+2+"
+        
+        self.loadCurrentEquationFromUserDefaults()
+        
+        //workPanelDelegate?.updateEquation(currentEquation)
         
         updateViews(currentCursor: nil)
         
@@ -207,11 +221,22 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         self.tutorialButton.isHidden = true
     }
     
-    func historyDeleted() {
-        // The history has been deleted, which means we now have an equation that needs to be nullified. However the user may still be working on the equation, so we should.
+    
+    func selectedQuestion(question: String) {
+        self.saveCurrentEquationToHistoryIfNeeded()
         
-        currentEquation = nil
+        WorkingEquationManager.sharedManager.insertToHistory(question: question)
+        
+//        currentEquation = WorkingEquation()
+//        currentEquation.question = question
+        
+        updateLegalKeys()
+        
         updateViews(currentCursor: nil)
+    }
+    
+    func historyDeleted() {
+        // Do nothing
     }
     
     func equationLogicChanged() {
@@ -267,56 +292,38 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     
     func updateViews(currentCursor: Int?) {
         
+        let currentEquation = WorkingEquationManager.sharedManager.currentEquation()
+        
         if let theView = equationView {
             
-            if let question = currentEquation?.question {
+            theView.setQuestion(Evaluator.balanceBracketsForQuestionDisplay(currentEquation), cursorPosition: currentCursor)
+            
+            // Solve this question
+            let originalRequestQuestion = currentEquation
+            // solveStringSyncQueue
+            
+            TimeTester.shared.printTime(string: "6 - Begain evaluation")
+            
+            CalculatorBrain.sharedBrain.solveStringAsyncQueue(currentEquation, completion: { (answer: AnswerBundle) -> Void in
                 
-                theView.setQuestion(question, cursorPosition: currentCursor)
-                
-                // Solve this question
-                let originalRequestEquation = currentEquation
-                // solveStringSyncQueue
-                
-                TimeTester.shared.printTime(string: "6 - Begain evaluation")
-                
-                
-                CalculatorBrain.sharedBrain.solveStringAsyncQueue(question, completion: { (answer: AnswerBundle) -> Void in
-                
-                    TimeTester.shared.printTime(string: "7 - Async solve finished")
-                    print("finished \(Date())")
+                if originalRequestQuestion == WorkingEquationManager.sharedManager.currentEquation() {
+                    // Result is relevant
                     
-                    if self.currentEquation == originalRequestEquation {
-                        
-                        if let error = answer.errorType {
-                            self.currentEquation?.answer = error.rawValue
-                        } else {
-                            self.currentEquation?.answer = answer.answer
-                        }
-                        
-                        TimeTester.shared.printTime(string: "8 - update the equation view")
-                        
-                        theView.setAnswer(answer)
-                        
-                        TimeTester.shared.printTime(string: "9 - Answer set")
-                        
-                        EquationStore.sharedStore.queueSave()
-                        
-                        TimeTester.shared.printTime(string: "10 - Save queued")
-                    }
-                })
- 
-                
-                
-            } else {
-                theView.setQuestion("", cursorPosition: nil)
-                theView.setAnswer(AnswerBundle(number: ""))
-            }
+//                    if let error = answer.errorType {
+//                        self.currentEquation.answer = error.rawValue
+//                    } else {
+//                        self.currentEquation.answer = answer.answer
+//                    }
+                    
+                    theView.setAnswer(answer)
+                }
+            })
         }
     }
     
     func currentSelectedRange() -> (lower: Int, upper: Int)? {
         
-        if questionTextFieldIsEditting() {
+        //if questionTextFieldIsEditting() {
             if let textField = equationView?.questionView?.textField {
                 
                 if let selectedRange = textField.selectedTextRange {
@@ -329,7 +336,7 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                     }
                 }
             }
-        }
+        //}
         
         return nil
     }
@@ -375,20 +382,17 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         if let keyPanelView = keyPanelView {
             if keyPanelView.isPageScrolling() {
                 // We are scrolling. Abort this.
-                return
+                //return
             }
             
             // Disable the keyPanelView, set a timer to turn it back on.
+            
             scrollPreventionTimer?.invalidate()
             
-            scrollPreventionTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(WorkPanelViewController.enableScrolling), userInfo: nil, repeats: false)
+            scrollPreventionTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(WorkPanelViewController.enableScrolling), userInfo: nil, repeats: false)
             
             keyPanelView.disableScrolling()
-            
         }
-        
-        // We've registered a keytouch. Disable the keypad from scrolling for a moment.
-        
         
         self.endTutorialIfNeeded()
         
@@ -415,94 +419,50 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         var newCursorPosition:Int?
         
         if key == SymbolCharacter.clear {
-
-            if let equation = currentEquation {
-                
-                // Clear - Need to load a new equation from the EquationStore
-                
-                equation.lastModifiedDate = NSDate()
-                currentEquation = nil
-                EquationStore.sharedStore.equationUpdated(equation: equation)
-                
-                if let theWorkPanelDelegate = workPanelDelegate {
-                    theWorkPanelDelegate.updateEquation(currentEquation)
+            
+            self.clearEquationAnimation()
+            
+            return // Don't do any updates as yet
+            
+        } else if key == SymbolCharacter.delete {
+            
+            // Delete
+            newCursorPosition = updateCurrentQuestionByDeletingCurrentRange()
+            
+        } else if key == SymbolCharacter.smartBracket {
+            
+            let currentEquation = WorkingEquationManager.sharedManager.currentEquation()
+            
+            if let legalKeys = Glossary.legalCharactersToAppendString(currentEquation) {
+                if legalKeys.contains(SymbolCharacter.smartBracketPrefersClose) {
+                    newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")")])
+                } else if legalKeys.contains(")") {
+                    newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")")])
+                } else if legalKeys.contains("(") {
+                    newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character("(")])
                 }
             }
             
-            EquationStore.sharedStore.setCurrentEquationID(string: nil)
+            //EquationStore.sharedStore.equationUpdated(equation: equation)
+            
         } else {
-            if currentEquation == nil {
-                
-                TimeTester.shared.printTime(string: "3 - WorkPanelVC, need new equation")
-                
-                let theNewEquation = EquationStore.sharedStore.newEquation()
-                
-                EquationStore.sharedStore.setCurrentEquationID(string: theNewEquation.identifier)
-                
-                currentEquation = theNewEquation
-                /*
-                 
-                EquationStore.sharedStore.equationUpdated(equation: currentEquation!)
-                
-                if let theWorkPanelDelegate = workPanelDelegate {
-                    theWorkPanelDelegate.updateEquation(currentEquation)
-                }
-                */
-                
-                TimeTester.shared.printTime(string: "4 - WorkPanelVC, equation fetched")
+            
+            let currentEquation = WorkingEquationManager.sharedManager.currentEquation()
+            
+            TimeTester.shared.printTime(string: "4 - WorkPanelVC, add to existing equation")
+            
+            if Glossary.shouldAddClosingBracketToAppendString(currentEquation, newOperator: key) && currentCursorPositionIsAtEnd() {
+                newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")"), key])
+            } else {
+                newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [key])
             }
+            
+            
+            //newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [key])
+            
+            //EquationStore.sharedStore.equationUpdated(equation: equation)
         }
         
-        if let equation = currentEquation {
-            
-            if key == SymbolCharacter.delete {
-                
-                // Delete
-                newCursorPosition = updateCurrentQuestionByDeletingCurrentRange()
-                
-            } else if key == SymbolCharacter.smartBracket {
-                
-                if let question = currentEquation?.question {
-                    if let legalKeys = Glossary.legalCharactersToAppendString(question) {
-                        if legalKeys.contains(SymbolCharacter.smartBracketPrefersClose) {
-                            newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")")])
-                        } else if legalKeys.contains(")") {
-                            newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")")])
-                        } else if legalKeys.contains("(") {
-                            newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character("(")])
-                        }
-                    }
-                    
-                    EquationStore.sharedStore.equationUpdated(equation: equation)
-                }
-                
-            } else {
-                //return
-                
-                if let question = equation.question {
-                    TimeTester.shared.printTime(string: "4 - WorkPanelVC, add to existing equation")
-                    
-                    /*
-                    if Glossary.shouldAddClosingBracketToAppendString(question, newOperator: key) && currentCursorPositionIsAtEnd() {
-                        newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [Character(")"), key])
-                    } else {
-                        newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [key])
-                    }
-                    */
-                    
-                    //newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [key])
-                    
-                     //EquationStore.sharedStore.equationUpdated(equation: equation)
-                } else {
-                    
-                    TimeTester.shared.printTime(string: "5 - Set new equation")
-                    
-                    equation.question = String(key)
-                    //EquationStore.sharedStore.equationUpdated(equation: equation)
-                }
-            }
-        }
-         
         updateViews(currentCursor: newCursorPosition)
         
         TimeTester.shared.printTime(string: "100 - Legal keys need updating")
@@ -514,24 +474,335 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         if let theDelegate = delegate {
             theDelegate.pressedKey(key, sourceView: sourceView)
         }
- 
+        
+        self.saveCurrentEquationToUserDefaults()
+    }
+    
+    func clearEquationAnimation() {
+        clearEquationAnimation(forceUp: false)
+    }
+    
+    func clearEquationAnimation(forceUp: Bool) {
+        // Animate the equation view moving.
+        SoundManager.sharedStore.playSound(sound: SoundType.clear)
+        
+        if let equationView = equationView {
+            
+            UIView.animate(withDuration: 0.1, animations: {
+                
+                if self.currentEquationNeedsSave() || forceUp {
+                    
+                    let distance:CGFloat = 20
+                    
+                    if forceUp {
+                        equationView.view.frame.origin.y -= distance
+                    } else {
+                        if NumericalViewHelper.historyBehindKeypadNeeded() {
+                            // If history is behind keypad then move it up
+                            equationView.view.frame.origin.y -= distance
+                        } else if NumericalViewHelper.historyBesideKeypadNeeded() {
+                            equationView.view.frame.origin.x -= distance
+                        } else if NumericalViewHelper.historyKeypadNeeded() {
+                            equationView.view.frame.origin.x += distance
+                        }
+                    }
+                }
+                
+                equationView.view.alpha = 0.0
+            }, completion: { (complete) in
+                
+                self.resetEquationViewPosition()
+                equationView.view.alpha = 1.0
+                
+                if forceUp {
+                    // Force the save
+                    self.saveCurrentEquation()
+                } else {
+                    self.saveCurrentEquationToHistoryIfNeeded()
+                }
+                
+                // Make a new equation
+                WorkingEquationManager.sharedManager.insertToHistory(question: "") // Start a new equation.
+                
+                self.finishEquationChange()
+            })
+        }
+    }
+    
+    func startNewFromAnswerAnimation() {
+        
+        CalculatorBrain.sharedBrain.solveStringSyncQueue(WorkingEquationManager.sharedManager.currentEquation()) { (bundle) in
+            
+            if let answer = bundle.answer {
+                
+                if let equationView = self.equationView {
+                    
+                    if answer == WorkingEquationManager.sharedManager.currentEquation() {
+                        // Don't complete this animation, bump it.
+                        
+                        SoundManager.sharedStore.playSound(sound: SoundType.thud)
+                        
+                        let distance:CGFloat = 20
+                        
+                        UIView.animate(withDuration: 0.1, animations: {
+                            
+                            equationView.view.frame.origin.y += distance
+                            
+                        }, completion: { (complete) in
+                            
+                            UIView.animate(withDuration: 0.1, animations: {
+                                
+                                self.resetEquationViewPosition()
+                                
+                            }, completion: { (complete) in
+                                
+                            })
+                        })
+                        
+                    } else {
+                        // Animate the shift
+                        
+                        SoundManager.sharedStore.playSound(sound: SoundType.clear)
+                        
+                        UIView.animate(withDuration: 0.1, animations: {
+                            
+                            let distance:CGFloat = 20
+                            
+                            equationView.view.frame.origin.y += distance
+                            
+                            equationView.view.alpha = 0.0
+                        }, completion: { (complete) in
+                            
+                            self.resetEquationViewPosition()
+                            
+                            self.saveCurrentEquationToHistoryIfNeeded()
+                            
+                            // Make a new equation
+                            WorkingEquationManager.sharedManager.insertToHistory(question: answer) // Start a new equation.
+                            
+                            self.finishEquationChange()
+                            
+                            UIView.animate(withDuration: 0.1, animations: {
+                                equationView.view.alpha = 1.0
+                            }, completion: { (complete) in
+                                
+                            })
+                            
+                        })
+                        
+                    }
+                }
+                
+            }
+        }
+    }
+    
+    func redoEquationAnimation() {
+        // The user swiped right in order to restore.
+        
+        SoundManager.sharedStore.playSound(sound: SoundType.redo)
+        
+        if let equationView = equationView {
+            
+            let distance:CGFloat = 20
+            
+            UIView.animate(withDuration: 0.1, animations: {
+                
+                equationView.view.frame.origin.x += distance
+                
+                equationView.view.alpha = 0.0
+                
+            }, completion: { (complete) in
+                
+                self.resetEquationViewPosition()
+                
+                self.finishEquationChange() // This updates the legal keys and views.
+                
+                UIView.animate(withDuration: 0.1, animations: {
+                    
+                    equationView.view.alpha = 1.0
+                    
+                }, completion: { (complete) in
+                    
+                })
+            })
+        }
+    }
+    
+    func undoEquationAnimation() {
+        // The user swiped right in order to restore.
+        
+        SoundManager.sharedStore.playSound(sound: SoundType.undo)
+        
+        if let equationView = equationView {
+            
+            let distance:CGFloat = 20
+            
+            UIView.animate(withDuration: 0.1, animations: {
+                
+                equationView.view.frame.origin.x -= distance
+                
+                equationView.view.alpha = 0.0
+            }, completion: { (complete) in
+                
+                self.resetEquationViewPosition()
+                
+                self.finishEquationChange() // This updates the legal keys and views.
+                
+                UIView.animate(withDuration: 0.1, animations: {
+                    
+                    equationView.view.alpha = 1.0
+                    
+                }, completion: { (complete) in
+                    
+                })
+            })
+        }
+    }
+    
+    func redoEquationAnimationFailed() {
+        // The user swiped right in order to restore but it failed.
+        
+        SoundManager.sharedStore.playSound(sound: SoundType.thud)
+        
+        if let equationView = equationView {
+            
+            let distance:CGFloat = 20
+            
+            UIView.animate(withDuration: 0.1, animations: {
+                
+                equationView.view.frame.origin.x += distance
+                
+            }, completion: { (complete) in
+                
+                UIView.animate(withDuration: 0.1, animations: {
+                    
+                    self.resetEquationViewPosition()
+                    
+                }, completion: { (complete) in
+                    
+                })
+            })
+        }
+    }
+    
+    func undoEquationAnimationFailed() {
+        // The user swiped right in order to restore but it failed.
+        
+        SoundManager.sharedStore.playSound(sound: SoundType.thud)
+        
+        if let equationView = equationView {
+            
+            let distance:CGFloat = 20
+            
+            UIView.animate(withDuration: 0.05, animations: {
+                
+                equationView.view.frame.origin.x -= distance
+                
+            }, completion: { (complete) in
+                
+                UIView.animate(withDuration: 0.05, animations: {
+                    
+                    equationView.view.alpha = 1.0
+                    self.resetEquationViewPosition()
+                    
+                }, completion: { (complete) in
+                    
+                })
+            })
+        }
+    }
+    
+    func resetEquationViewPosition() {
+        if let equationView = equationView {
+            equationView.view.frame = CGRect(x: 0, y: 0, width: equationView.view.frame.width, height: equationView.view.frame.height)
+        }
+    }
+    
+    func finishEquationChange() {
+        self.updateLegalKeys()
+        
+        self.updateViews(currentCursor: nil)
+    }
+    
+    func saveCurrentEquationToHistoryIfNeeded() {
+        if self.currentEquationNeedsSave() {
+            self.saveCurrentEquation()
+        }
+    }
+    
+    func saveCurrentEquation() {
+        let equation = WorkingEquationManager.sharedManager.currentEquation()
+        
+        CalculatorBrain.sharedBrain.solveStringAsyncQueue(equation, completion: { (bundle) in
+            
+            EquationStore.sharedStore.newEquation(question: equation, answer: bundle.answer)
+        })
+    }
+    
+    func currentEquationNeedsSave() -> Bool {
+        let currentEquation = WorkingEquationManager.sharedManager.currentEquation()
+        
+        if currentEquation.characters.count > 0 {
+            
+            var termArray = Evaluator.termArrayFromString(currentEquation, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
+            
+            // Remove leading -'s
+            
+            while termArray.count > 0 && (termArray.first == "-" || termArray.first == String(SymbolCharacter.subtract)) {
+                termArray.removeFirst()
+            }
+            
+            if termArray.count > 1 {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    
+    func loadCurrentEquationFromUserDefaults() {
+        /* // todo
+        if let equationID = UserDefaults.standard.string(forKey: EquationCodingKey.currentEquation) {
+            // We have an ID, fetch it
+            
+            if let storedEquation = EquationStore.sharedStore.fetchEquationWithIdentifier(string: equationID) {
+                if let question = storedEquation.question {
+                    currentEquation.question = question
+                    currentEquation.hasChanged = false
+                }
+            }
+            
+        } else if let question = UserDefaults.standard.string(forKey: EquationCodingKey.currentEquationQuestion) {
+            currentEquation.question = question
+            currentEquation.hasChanged = UserDefaults.standard.bool(forKey: EquationCodingKey.currentEquationChanged)
+        }
+        */
+    }
+    
+    func saveCurrentEquationToUserDefaults() {
+        // Save the current question into UserDefaults
+        /* // todo
+        UserDefaults.standard.set(currentEquation.question, forKey: EquationCodingKey.currentEquationQuestion)
+        UserDefaults.standard.set(currentEquation.hasChanged, forKey: EquationCodingKey.currentEquationChanged)
+        
+        UserDefaults.standard.removeObject(forKey: EquationCodingKey.currentEquation)
+        UserDefaults.standard.synchronize()
+ */
     }
     
     func currentCursorPositionIsAtEnd() -> Bool {
         
-        if let equation = currentEquation {
-            if var question = equation.question {
-                if currentSelectedRange() == nil {
-                    if let index = currentCursorPosition() {
-                        if index == question.characters.count {
-                            // There is a currentCursorPosition but it's at the end, therefore we should add a closing bracket.
-                            return true
-                        }
-                    } else {
-                        // There is no currentCursorPosition so we are simply at the end
-                        return true
-                    }
+        if currentSelectedRange() == nil {
+            if let index = currentCursorPosition() {
+                if index == WorkingEquationManager.sharedManager.currentEquation().characters.count {
+                    // There is a currentCursorPosition but it's at the end, therefore we should add a closing bracket.
+                    return true
                 }
+            } else {
+                // There is no currentCursorPosition so we are simply at the end
+                return true
             }
         }
         
@@ -541,65 +812,70 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     func updateCurrentQuestionByAppendingCharacters(characters: [Character]) -> Int? {
         
         var newCursorPosition:Int?
-        if let equation = currentEquation {
-            if var question = equation.question {
-                
-                if let range = currentSelectedRange() {
-                    // Delete this range
-                    
-                    var newQuestion = ""
-                    
-                    var count = 0
-                    
-                    for character in question.characters {
-                        if count < range.lower {
-                            newQuestion.append(character)
-                        }
-                        
-                        if count >= range.upper {
-                            newQuestion.append(character)
-                        }
-                        
-                        count += 1
-                    }
-                    
-                    // We have removed these items, now insert those characters at the index
-                    
-                    for character in characters {
-                        newQuestion.insert(character, at: newQuestion.index(newQuestion.startIndex, offsetBy: range.lower))
-                    }
-                    
-                    currentEquation?.question = newQuestion
-                    
-                    newCursorPosition = range.lower + characters.count
-                    
-                } else if var index = currentCursorPosition() {
-                    
-                    var newQuestion = question
-                    
-                    for character in characters {
-                        
-                        newQuestion.insert(character, at: newQuestion.index(newQuestion.startIndex, offsetBy: index))
-                        
-                        index += 1
-                    }
-                    
-                    currentEquation?.question = newQuestion
-                    
-                    newCursorPosition = index + characters.count - 1
-                    
-                } else {
-                    // Just delete from the end
-//                    equation.question = question.substring(to: question.characters.index(before: question.endIndex))
-                    
-                    let stringToInsert = String(characters)
-                    
-                    question += stringToInsert
-                    
-                    currentEquation?.question = question
-                    
+        
+        // currentEquation.hasChanged = true // todo
+        
+        if let range = currentSelectedRange() {
+            // Delete this range
+            
+            var newQuestion = ""
+            
+            var count = 0
+            
+            for character in WorkingEquationManager.sharedManager.currentEquation().characters {
+                if count < range.lower {
+                    newQuestion.append(character)
                 }
+                
+                if count >= range.upper {
+                    newQuestion.append(character)
+                }
+                
+                count += 1
             }
+            
+            // We have removed these items, now insert those characters at the index
+            
+            for character in characters {
+                newQuestion.insert(character, at: newQuestion.index(newQuestion.startIndex, offsetBy: range.lower))
+            }
+            
+            WorkingEquationManager.sharedManager.insertToHistory(question: newQuestion)
+            
+            //currentEquation.question = newQuestion
+            
+            newCursorPosition = range.lower + characters.count
+            
+        } else if var index = currentCursorPosition() {
+            
+            var newQuestion = WorkingEquationManager.sharedManager.currentEquation()
+            
+            for character in characters {
+                
+                newQuestion.insert(character, at: newQuestion.index(newQuestion.startIndex, offsetBy: index))
+                
+                index += 1
+            }
+            
+            WorkingEquationManager.sharedManager.insertToHistory(question: newQuestion)
+            
+            // currentEquation.question = newQuestion
+            
+            newCursorPosition = index + characters.count - 1
+            
+        } else {
+            
+            
+            var newQuestion = WorkingEquationManager.sharedManager.currentEquation()
+            
+            let stringToInsert = String(characters)
+            
+            newQuestion += stringToInsert
+            
+            
+            WorkingEquationManager.sharedManager.insertToHistory(question: newQuestion)
+            
+            //currentEquation.question += stringToInsert
         }
         
         // If there is a selected range we need to replace that range with these characters
@@ -614,73 +890,80 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     func updateCurrentQuestionByDeletingCurrentRange() -> Int? { // Returns a new cursor position if needed
         var newCursorPosition: Int?
         
-        if let equation = currentEquation {
-            if var question = equation.question {
-                if question.characters.count > 0 {
-                    
-                    // Here is where we delete the relevant area.
-                    
-                    if let range = currentSelectedRange() {
-                        // Delete this range
-                        
-                        var newQuestion = ""
-                        
-                        var count = 0
-                        
-                        for character in question.characters {
-                            if count < range.lower || count >= range.upper {
-                                newQuestion.append(character)
-                            }
-                            
-                            count += 1
-                        }
-                        
-                        currentEquation?.question = newQuestion
-                        
-                        newCursorPosition = range.lower
-                        
-                    } else if let index = currentCursorPosition() {
-                        
-                        if index > 0 {
-                            // Remove the character before this index
-                            
-                            var newQuestion = ""
-                            
-                            var count = 0
-                            
-                            for character in question.characters {
-                                if count != index-1 {
-                                    newQuestion.append(character)
-                                }
-                                
-                                count += 1
-                            }
-                            
-                            currentEquation?.question = newQuestion
-                            
-                            newCursorPosition = index - 1
-                        }
-                        
-                    } else {
-                        // Just delete from the end
-                        equation.question = question.substring(to: question.characters.index(before: question.endIndex))
+        if WorkingEquationManager.sharedManager.currentEquation().characters.count > 0 {
+            
+            // Here is where we delete the relevant area.
+            
+            if let range = currentSelectedRange() {
+                // Delete this range
+                
+                var newQuestion = ""
+                
+                var count = 0
+                
+                for character in WorkingEquationManager.sharedManager.currentEquation().characters {
+                    if count < range.lower || count >= range.upper {
+                        newQuestion.append(character)
                     }
                     
-                    // If this equation is now empty then we need to delete the equation from the store.
-                    if "" == equation.question {
-                        
-                        EquationStore.sharedStore.deleteEquation(equation: equation)
-                        
-                        currentEquation = nil
-                        
-                        if let theWorkPanelDelegate = workPanelDelegate {
-                            theWorkPanelDelegate.updateEquation(currentEquation)
-                        }
-                    } else {
-                        EquationStore.sharedStore.equationUpdated(equation: equation)
-                    }
+                    count += 1
                 }
+                
+                WorkingEquationManager.sharedManager.insertToHistory(question: newQuestion)
+                
+                // currentEquation.question = newQuestion
+                
+                newCursorPosition = range.lower
+                
+            } else if let index = currentCursorPosition() {
+                
+                if index > 0 {
+                    // Remove the character before this index
+                    
+                    var newQuestion = ""
+                    
+                    var count = 0
+                    
+                    for character in WorkingEquationManager.sharedManager.currentEquation().characters {
+                        if count != index-1 {
+                            newQuestion.append(character)
+                        }
+                        
+                        count += 1
+                    }
+                    
+                    WorkingEquationManager.sharedManager.insertToHistory(question: newQuestion)
+                    
+                    //currentEquation.question = newQuestion
+                    
+                    newCursorPosition = index - 1
+                }
+                
+            } else {
+                // Just delete from the end
+                
+                let currentEquation = WorkingEquationManager.sharedManager.currentEquation()
+                
+                let newQuestion = currentEquation.substring(to: currentEquation.characters.index(before: currentEquation.endIndex))
+                
+                WorkingEquationManager.sharedManager.insertToHistory(question: newQuestion)
             }
+            
+            // If this equation is now empty then we need to delete the equation from the store.
+            /*
+            if "" == currentEquation.question {
+                
+                EquationStore.sharedStore.deleteEquation(equation: equation)
+                
+                currentEquation = nil
+                
+                if let theWorkPanelDelegate = workPanelDelegate {
+                    theWorkPanelDelegate.updateEquation(currentEquation)
+                }
+            } else {
+                EquationStore.sharedStore.equationUpdated(equation: equation)
+            }
+             */
         }
         
         return newCursorPosition
@@ -705,27 +988,21 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     
     func updateLegalKeys() {
         // Determine Legal Keys
-        if let question = currentEquation?.question {
-            
-            var currentlyEditing = false
-            
-            if let equationView = equationView {
-                if equationView.isQuestionEditting() == true {
-                    currentlyEditing = true
-                }
+        
+        var currentlyEditing = false
+        
+        if let equationView = equationView {
+            if equationView.isQuestionEditting() == true {
+                currentlyEditing = true
             }
-            
-            if currentlyEditing {
-                if let legalKeys = Glossary.legalCharactersToAppendString("?"), let theKeyPanel = keyPanelView {
-                    theKeyPanel.setLegalKeys(legalKeys)
-                }
-            } else {
-                if let legalKeys = Glossary.legalCharactersToAppendString(question), let theKeyPanel = keyPanelView {
-                    theKeyPanel.setLegalKeys(legalKeys)
-                }
+        }
+        
+        if currentlyEditing {
+            if let legalKeys = Glossary.legalCharactersToAppendString("?"), let theKeyPanel = keyPanelView {
+                theKeyPanel.setLegalKeys(legalKeys)
             }
         } else {
-            if let legalKeys = Glossary.legalCharactersToAppendString(""), let theKeyPanel = keyPanelView {
+            if let legalKeys = Glossary.legalCharactersToAppendString(WorkingEquationManager.sharedManager.currentEquation()), let theKeyPanel = keyPanelView {
                 theKeyPanel.setLegalKeys(legalKeys)
             }
         }
@@ -749,50 +1026,24 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             
             equationView = theView
             
-            if let question = currentEquation?.question {
-                equationView?.currentQuestion = question
-            }
+            //equationView?.currentQuestion = currentEquation.question
         }
     }
     
     func textFieldChanged(string: String, view: QuestionCollectionViewController) {
-        if let currentEquation = currentEquation {
-            currentEquation.question = string
-            updateViews(currentCursor: nil)
-        }
+        
+        
+        WorkingEquationManager.sharedManager.insertToHistory(question: string)
+        
+        //currentEquation.question = string
+        updateViews(currentCursor: nil)
         
         updateLegalKeys()
     }
     
     func startNew(string: String, view: QuestionCollectionViewController) {
         // Start a new equation using this as a base.
-        
-        // Save this current equation
-        if let equation = currentEquation {
-            equation.lastModifiedDate = NSDate()
-            currentEquation = nil
-            EquationStore.sharedStore.equationUpdated(equation: equation)
-        }
-        
-        // Start a new equation
-        
-        
-        let theNewEquation = EquationStore.sharedStore.newEquation()
-        
-        EquationStore.sharedStore.setCurrentEquationID(string: theNewEquation.identifier)
-        
-        theNewEquation.question = string
-        
-        currentEquation = theNewEquation
-        
-        EquationStore.sharedStore.equationUpdated(equation: currentEquation!)
-        
-        if let theWorkPanelDelegate = workPanelDelegate {
-            theWorkPanelDelegate.updateEquation(currentEquation)
-        }
-        
-        updateViews(currentCursor: nil)
-        updateLegalKeys()
+        self.startNewFromAnswerAnimation()
     }
     
     func isQuestionEditing() -> Bool {
@@ -803,26 +1054,13 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     }
     
     func userPressedCopyAll() {
-        if let equation = currentEquation {
-            var string = ""
-            
-            if let question = equation.question {
-                let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(question)
-                
-                string += Glossary.formattedStringForQuestion(bracketBalancedString)
-            }
-            
-            if let answer = equation.answer {
-                
-                if string.characters.count > 0 {
-                    string += " = "
-                }
-                
-                string += Glossary.formattedStringForAnswer(answer)
-            }
-            
-            let board = UIPasteboard.general
-            board.string = string
-        }
+        var string = ""
+        
+        let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(WorkingEquationManager.sharedManager.currentEquation())
+        
+        string += Glossary.formattedStringForQuestion(bracketBalancedString)
+        
+        let board = UIPasteboard.general
+        board.string = string
     }
 }

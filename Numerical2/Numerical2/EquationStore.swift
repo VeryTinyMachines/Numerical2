@@ -28,6 +28,8 @@ public struct EquationCodingKey {
     public static let lastModifiedDate = "lastModifiedDate"
     public static let question = "question"
     public static let currentEquation = "currentEquation"
+    public static let currentEquationQuestion = "currentEquationQuestion"
+    public static let currentEquationChanged = "currentEquationChanged"
 }
 
 
@@ -40,6 +42,14 @@ public struct EquationStoreNotification {
 }
 
 class EquationStore {
+    
+    lazy var backgroundContext: NSManagedObjectContext = {
+        return self.persistentContainer.newBackgroundContext()
+    }()
+    
+    lazy var viewContext: NSManagedObjectContext = {
+        return self.persistentContainer.viewContext
+    }()
     
     var saveTimer:Timer?
     var updateCloudKitTimer:Timer?
@@ -68,7 +78,8 @@ class EquationStore {
     
     func initialiseSetup() {
         
-        let _ = self.persistentContainer.viewContext // force the context to be loaded
+        let _ = self.viewContext // force the context to be loaded
+        let _ = self.backgroundContext // force the background context
         
         let deadlineTime = DispatchTime.now() + .seconds(2)
         DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
@@ -85,7 +96,7 @@ class EquationStore {
     func queueCloudKitNeedsUpdate() {
         DispatchQueue.main.async {
             self.updateCloudKitTimer?.invalidate()
-            self.updateCloudKitTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(EquationStore.fireUpdateCloudKitTimer), userInfo: nil, repeats: false)
+            self.updateCloudKitTimer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(EquationStore.fireUpdateCloudKitTimer), userInfo: nil, repeats: false)
         }
     }
     
@@ -164,7 +175,7 @@ class EquationStore {
     func newEquation() -> Equation {
         
         let entity = NSEntityDescription.entity(forEntityName: "Equation", in: self.persistentContainer.viewContext)
-        let equation = NSManagedObject(entity: entity!, insertInto: self.persistentContainer.viewContext) as! Equation
+        let equation = NSManagedObject(entity: entity!, insertInto: self.viewContext) as! Equation
         
         equation.identifier = newUUID()
         equation.deviceIdentifier = deviceUUID()
@@ -177,7 +188,7 @@ class EquationStore {
         fetchRequest.fetchLimit = 1
         
         do {
-            if let fetchedEquation = try self.persistentContainer.viewContext.fetch(fetchRequest).first {
+            if let fetchedEquation = try self.viewContext.fetch(fetchRequest).first {
                 if let equationSortOrder = fetchedEquation.sortOrder?.doubleValue {
                     equation.sortOrder = NSNumber(value: equationSortOrder + 1 as Double)
                 }
@@ -191,6 +202,24 @@ class EquationStore {
         }
         
         return equation
+    }
+    
+    func newEquation(question: String, answer: String?) {
+        
+        self.backgroundContext.perform {
+            
+            let new = self.newEquation()
+            
+            new.question = question
+            new.answer = answer
+            new.lastModifiedDate = NSDate()
+            new.creationDate = NSDate()
+            new.posted = NSNumber(value: false)
+            new.lastModifiedDate = NSDate()
+            
+            self.queueCloudKitNeedsUpdate()
+            self.queueSave()
+        }
     }
     
     
@@ -273,7 +302,7 @@ class EquationStore {
             let fetch = self.equationsFetchRequest(NSPredicate(format: "posted == nil || posted == NO"))
             
             do {
-                let equations = try self.persistentContainer.viewContext.fetch(fetch)
+                let equations = try self.viewContext.fetch(fetch)
                 
                 if equations.count > 0 {
                     self.convertEquationsToCKEquations(equations: equations)
@@ -331,7 +360,7 @@ class EquationStore {
     
     func queueCloudKitEquations(equations: [CKRecord]) {
         
-        self.persistentContainer.newBackgroundContext().performAndWait {
+        self.backgroundContext.perform {
             let operation = CKModifyRecordsOperation(recordsToSave: equations, recordIDsToDelete: nil)
             operation.isAtomic = true
             operation.savePolicy = CKRecordSavePolicy.allKeys
@@ -379,7 +408,7 @@ class EquationStore {
         var fetchRequest:NSFetchRequest<Equation>
         
         fetchRequest = self.equationsFetchRequest(NSPredicate(format: "userDeleted == nil || userDeleted == 0"))
-        
+        // fetchRequest = self.equationsFetchRequest(NSPredicate(value: true)) // temp to have more items
         
         // Edit the section name key path and cache name if appropriate.
         // nil for section name key path means "no sections".
@@ -430,7 +459,7 @@ class EquationStore {
     
     func compareRecords(records: [CKRecord]) {
         
-        self.persistentContainer.newBackgroundContext().performAndWait {
+        self.backgroundContext.perform {
             for record in records {
                 
                 let name = record.recordID.recordName
@@ -484,8 +513,8 @@ class EquationStore {
     
     func newEquationFromCKRecord(record: CKRecord) -> Equation {
         
-        let entity = NSEntityDescription.entity(forEntityName: "Equation", in: self.persistentContainer.viewContext)
-        let equation = NSManagedObject(entity: entity!, insertInto: self.persistentContainer.viewContext) as! Equation
+        let entity = NSEntityDescription.entity(forEntityName: "Equation", in: self.viewContext)
+        let equation = NSManagedObject(entity: entity!, insertInto: self.viewContext) as! Equation
         
         equation.answer = record.object(forKey: "answer") as? String
         equation.creationDate = record.object(forKey: "equationCreationDate") as? NSDate
@@ -507,7 +536,7 @@ class EquationStore {
         fetchRequest.fetchBatchSize = 1
         
         do {
-            let results = try self.persistentContainer.viewContext.fetch(fetchRequest)
+            let results = try self.viewContext.fetch(fetchRequest)
             
             if let first = results.first {
                 return first
@@ -525,7 +554,7 @@ class EquationStore {
         let fetchRequest = equationsFetchRequest(NSPredicate(format: "userDeleted != 1"))
         
         do {
-            let results = try self.persistentContainer.viewContext.fetch(fetchRequest)
+            let results = try self.viewContext.fetch(fetchRequest)
             
             return results
             
@@ -540,7 +569,7 @@ class EquationStore {
         let fetchRequest = equationsFetchRequest(NSPredicate(value: true))
         
         do {
-            let results = try self.persistentContainer.viewContext.fetch(fetchRequest)
+            let results = try self.viewContext.fetch(fetchRequest)
             
          print("\n\n\n\n")
             
@@ -553,21 +582,7 @@ class EquationStore {
         } catch {
             
         }
-    }
-    
-    
-    func currentEquation() -> Equation? {
-        if let string = UserDefaults.standard.object(forKey: EquationCodingKey.currentEquation) as? String {
-            if let equation = fetchEquationWithIdentifier(string: string) {
-                return equation
-            } else {
-                setCurrentEquationID(string: nil)
-            }
-        }
-        
-        return nil
-    }
-    
+    }    
     
     func setCurrentEquationID(string: String?) {
         if let string = string {
@@ -684,7 +699,7 @@ class EquationStore {
     
     func convertDeprecatedEquationsIfNeeded(complete: ((_ complete: Bool) -> Void)?) {
         
-        self.persistentContainer.newBackgroundContext().performAndWait {
+        self.backgroundContext.perform {
             let manager = FileManager.default
             
             let paths = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)
@@ -762,7 +777,7 @@ class EquationStore {
     func deleteHistory(block:((_ complete: Bool) -> Void)?) {
         self.saveContext()
         
-        self.persistentContainer.newBackgroundContext().perform {
+        self.backgroundContext.perform {
             if let currentEquations = self.fetchAllUndeletedEquations() {
                 for equation in currentEquations {
                     equation.posted =  NSNumber(value: false)
@@ -770,7 +785,7 @@ class EquationStore {
                     equation.userDeleted = NSNumber(value: true)
                 }
                 
-                self.persistentContainer.viewContext.perform {
+                self.viewContext.perform {
                     self.saveContext()
                     
                     // Also need to clear the current equation

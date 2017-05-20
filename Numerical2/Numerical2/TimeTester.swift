@@ -20,9 +20,9 @@ class TimeTester {
     }
     
     func printTime(string: String) {
-        //let readyTime = self.currentTimeMillis()
-        //let readyTimeDelta = readyTime - startTime
-        //print("\(string) - \(readyTimeDelta)")
+        let readyTime = self.currentTimeMillis()
+        let readyTimeDelta = readyTime - startTime
+        print("\(string) - \(readyTimeDelta)")
     }
     
     func currentTimeMillis() -> Int64 {

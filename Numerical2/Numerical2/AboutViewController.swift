@@ -30,6 +30,8 @@ public enum AboutViewItem {
     case preferradians
     case showscientific
     case historybehind
+    case decimallength
+    
     
 }
 
@@ -109,14 +111,20 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             items.append(AboutViewItem.seperator)
         }
         
+        // Prefer Decimal Answer
         items.append(AboutViewItem.preferdecimal)
         items.append(AboutViewItem.seperator)
         
+        // Prefer Radians Answer
         items.append(AboutViewItem.preferradians)
         items.append(AboutViewItem.seperator)
         
         // Show Scientific Keyboard
         items.append(AboutViewItem.showscientific)
+        items.append(AboutViewItem.seperator)
+        
+        // Decimal Count
+        items.append(AboutViewItem.decimallength)
         items.append(AboutViewItem.seperator)
         
         // Prefer History Behind
@@ -191,6 +199,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         cell.textLabel?.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
         cell.backgroundColor = UIColor.clear
         cell.selectionStyle = UITableViewCellSelectionStyle.none
+        cell.isUserInteractionEnabled = true
         
         switch items[indexPath.row] {
         case .about:
@@ -261,6 +270,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             cell.textLabel?.text = ""
             cell.backgroundColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.25)
             cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.isUserInteractionEnabled = false
         case .sounds:
             
             let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
@@ -320,8 +330,27 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             }
             
             return switchCell
+        case .decimallength:
+            let sliderCell = tableView.dequeueReusableCell(withIdentifier: "SliderViewCell", for: indexPath) as! SliderViewCell
+            
+            sliderCell.selectionStyle = UITableViewCellSelectionStyle.none
+            
+            sliderCell.stepper.minimumValue = 3
+            sliderCell.stepper.maximumValue = 14
+            sliderCell.stepper.value = Double(NumericalHelper.integerForSetting(string: NumericalHelperSetting.decimalLength))
+            sliderCell.item = AboutViewItem.decimallength
+            sliderCell.updateLabel()
+            
+            sliderCell.mainLabel.font = NumericalHelper.aboutMenuFont()
+            sliderCell.mainLabel.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
+            
+            sliderCell.stepper.tintColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.75)
+            sliderCell.backgroundColor = UIColor.clear
+            
+            return sliderCell
         }
         
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         cell.textLabel?.numberOfLines = 3
         
         return cell
@@ -399,8 +428,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             NotificationCenter.default.post(name: Notification.Name(rawValue: EquationStoreNotification.equationLogicChanged), object: nil)
         case .preferradians:
             NumericalHelper.flipSetting(string: NumericalHelperSetting.preferRadians)
-            // Reload the answer
-            NotificationCenter.default.post(name: Notification.Name(rawValue: EquationStoreNotification.equationLogicChanged), object: nil)
+            
+            NumericalHelper.postNotificationForEquationLogicChanged()
         case .showscientific:
             NumericalHelper.flipSetting(string: NumericalHelperSetting.showScientific)
             ThemeCoordinator.shared.postThemeChangedNotification()
@@ -483,6 +512,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                 break
             case .historybehind:
                 break
+            case .decimallength:
+                break
             }
         }
     }
@@ -492,6 +523,43 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         DispatchQueue.main.async {
             self.setupItems()
             self.tableView.reloadData()
+        }
+    }
+}
+
+class SliderViewCell:UITableViewCell {
+    
+    @IBOutlet weak var mainLabel: UILabel!
+    
+    @IBOutlet weak var stepper: UIStepper!
+    
+    var item = AboutViewItem.about // default value
+    
+    var updateTimer:Timer?
+    
+    @IBAction func stepperChanged(_ sender: UIStepper) {
+        self.updateLabel()
+        
+        if item == AboutViewItem.decimallength {
+            let newValue = Int(round(stepper.value))
+            
+            NumericalHelper.setIntegerForSetting(string: NumericalHelperSetting.decimalLength, integer: newValue)
+            
+            updateTimer?.invalidate()
+            
+            updateTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
+                NumericalHelper.postNotificationForEquationLogicChanged()
+            })
+        }
+    }
+    
+    
+    func updateLabel() {
+        
+        if item == AboutViewItem.decimallength {
+            mainLabel.text = "Maximum Decimals: \(Int(round(stepper.value)))"
+            
+            
         }
     }
     

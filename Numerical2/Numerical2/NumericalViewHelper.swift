@@ -63,8 +63,6 @@ class NumericalViewHelper {
     class func historyBehindKeypadNeeded() -> Bool {
         // This history should be behind the keypad if sideHistoryEnabled is false
         
-        //return false // temp
-        
         if sideHistoryEnabled() == false {
             return true
         }

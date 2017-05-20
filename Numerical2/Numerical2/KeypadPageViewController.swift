@@ -27,6 +27,8 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
         
     }
     
+    var cachedViewController = [KeypadViewType:UIViewController]()
+    
     var delegate: KeypadDelegate?
     
     var pageViewDelegate: KeypadPageViewDelegate?
@@ -203,7 +205,7 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
         if let pageViewController = pageViewController {
             for view in pageViewController.view.subviews {
                 if let subView = view as? UIScrollView {
-                    subView.isScrollEnabled = false
+                    // subView.isScrollEnabled = false
                 }
             }
         }
@@ -356,33 +358,43 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
     
     func viewControllerForType(type: KeypadViewType) -> UIViewController? {
         
+        // cachedViewController
+        
+        if let vc = cachedViewController[type] {
+            return vc
+        }
+        
         switch type {
         case .about:
             if let view = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AboutViewController") as? AboutViewController {
+                cachedViewController[type] = view
                 return view
             }
         case .compactScientific:
             if let view = viewControllerWithKeypadLayout(KeypadLayout.compactScientific) {
-                return view;
+                cachedViewController[type] = view
+                return view
             }
         case .compactStandard:
             if let view = viewControllerWithKeypadLayout(KeypadLayout.compactStandard) {
-                return view;
+                return view
             }
         case .history:
-            if let historyVC =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HistoryViewController") as? HistoryViewController {
+            if let view =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "HistoryViewController") as? HistoryViewController {
                 
                 if let delegate = delegate as? WorkPanelViewController {
                     if let delegate = delegate.delegate as? ViewController {
-                        historyVC.delegate = delegate
+                        view.delegate = delegate
                     }
                 }
-                historyVC.updateSelectedEquation()
+                // historyVC.updateSelectedEquation()
                 
-                return historyVC
+                cachedViewController[type] = view
+                return view
             }
         case .regular:
             if let view = viewControllerWithKeypadLayout(KeypadLayout.regular) {
+                cachedViewController[type] = view
                 return view;
             }
         }

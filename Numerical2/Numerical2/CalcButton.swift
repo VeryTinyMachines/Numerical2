@@ -63,6 +63,8 @@ class CalcButton: UIButton {
         // Add tap gesture recogniser
         let tapGest = UITapGestureRecognizer(target: self, action: #selector(CalcButton.tapGestureFired))
         // self.addGestureRecognizer(tapGest)
+        
+        self.setBackgroundImage(UIImage(), for: UIControlState.normal)
     }
     
     func tapGestureFired() {

@@ -222,6 +222,10 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
     func presentMenu(menuItems: [UIMenuItem], targetRect: CGRect, inView: UIView) {
         self.becomeFirstResponder()
         
+        if menuItems.count == 0 {
+            return
+        }
+        
         let menu = UIMenuController.shared
         
         menu.setTargetRect(targetRect, in: view)

@@ -20,6 +20,7 @@ public struct NumericalHelperSetting {
     public static let preferRadians = "preferRadians"
     public static let showScientific = "showScientific"
     public static let preferHistoryBehind = "preferHistoryBehind"
+    public static let decimalLength = "decimalLength"
 }
 
 public enum HistoryViewType {
@@ -44,6 +45,23 @@ class NumericalHelper {
         }
         
         return defaultTrueForSetting(string: string)
+    }
+    
+    class func integerForSetting(string: String) -> Int {
+        
+        let integer = UserDefaults.standard.integer(forKey: string)
+        
+        if string == NumericalHelperSetting.decimalLength && integer == 0 {
+            // Not set, default to 14.
+            return 10 // Default amount
+        }
+        
+        return integer
+    }
+    
+    class func setIntegerForSetting(string: String, integer: Int) {
+        UserDefaults.standard.set(integer, forKey: string)
+        UserDefaults.standard.synchronize()
     }
     
     class func defaultTrueForSetting(string: String) -> Bool {
@@ -74,6 +92,12 @@ class NumericalHelper {
             }
         }
         return ""
+    }
+    
+    class func postNotificationForEquationLogicChanged() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "EquationNotification.equationLogicChanged"), object: nil)
+        }
     }
     
     

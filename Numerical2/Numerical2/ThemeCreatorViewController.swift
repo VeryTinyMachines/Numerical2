@@ -55,7 +55,7 @@ class ThemeCreatorViewController:NumericalViewController {
         
         if updateTheme != nil {
             
-            let deleteButton = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ThemeCreatorViewController.userPressedDeleteButton))
+            let deleteButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ThemeCreatorViewController.userPressedDeleteButton))
             
             items.append(deleteButton)
         }
@@ -111,6 +111,8 @@ class ThemeCreatorViewController:NumericalViewController {
         updateColorsMethod()
         updateBlurView()
         exampleView.alpha = 0
+        
+        self.updateTitle()
     }
     
     func transparencyChanged() {
@@ -145,25 +147,84 @@ class ThemeCreatorViewController:NumericalViewController {
     }
     
     func userPressedDeleteButton() {
+        
+        // Present option for naming / renaming it
         if let updateTheme = updateTheme {
             if updateTheme.isUserCreated {
-                let alert = UIAlertController(title: "Delete Theme", message: "Are you sure you want to delete this theme?", preferredStyle: UIAlertControllerStyle.alert)
                 
-                alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive, handler: { (action) in
-                    
-                    ThemeCoordinator.shared.deleteTheme(theme: updateTheme)
-                    self.navigationController?.popViewController(animated: true)
+                let menu = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+                
+                menu.addAction(UIAlertAction(title: "Rename", style: UIAlertActionStyle.default, handler: { (actio) in
+                    self.getName(block: { (complete, name) in
+                        if let name = name {
+                            updateTheme.title = name
+                            self.updateTitle()
+                            ThemeCoordinator.shared.saveThemes()
+                        }
+                    })
                 }))
                 
-                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+                menu.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive, handler: { (actio) in
+                    let alert = UIAlertController(title: "Delete Theme", message: "Are you sure you want to delete this theme?", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive, handler: { (action) in
+                        
+                        ThemeCoordinator.shared.deleteTheme(theme: updateTheme)
+                        self.navigationController?.popViewController(animated: true)
+                    }))
+                    
+                    alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+                        
+                    }))
+                    
+                    self.present(alert, animated: true) {
+                        
+                    }
+                }))
+                
+                menu.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (actio) in
                     
                 }))
                 
-                present(alert, animated: true) {
+                self.present(menu, animated: true, completion: { 
                     
-                }
+                })
             }
         }
+    }
+    
+    
+    func getName(block:((_ complete: Bool, _ name: String?) -> Void)?) {
+        
+        let textAlert = UIAlertController(title: "Name Theme", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+        
+        textAlert.addTextField { (textField) in
+            
+            textField.placeholder = "My Cool Theme"
+            textField.autocorrectionType = .yes
+            textField.autocapitalizationType = .words
+            
+            if let updateTheme = self.updateTheme {
+                textField.text = updateTheme.title
+            }
+        }
+        
+        textAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (action) in
+            if let text = textAlert.textFields?.first?.text {
+                block?(true, text)
+            } else {
+                block?(true, "")
+            }
+        }))
+        
+        textAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+            block?(false, nil)
+        }))
+        
+        self.present(textAlert, animated: true) { 
+            
+        }
+        
     }
     
     func userPressedDoneButton() {
@@ -195,24 +256,39 @@ class ThemeCreatorViewController:NumericalViewController {
                 ThemeCoordinator.shared.saveThemes() // TODO - This is weird to do here.
                 ThemeCoordinator.shared.changeTheme(toTheme: updateTheme)
                 
+                self.navigationController?.popViewController(animated: true)
+                
             } else {
-                let newTheme = Theme()
                 
-                newTheme.firstColor = topColor
-                newTheme.secondColor = bottomColor
-                newTheme.style = ThemeStyle.normal
-                newTheme.isUserCreated = true
-                newTheme.isPremium = true
+                // Get a name
                 
-                if lightStyle {
-                    newTheme.style = ThemeStyle.bright
-                }
+                self.getName(block: { (complete, name) in
+                    
+                    let newTheme = Theme()
+                    
+                    if let name = name {
+                        newTheme.title = name
+                    }
+                    
+                    newTheme.firstColor = topColor
+                    newTheme.secondColor = bottomColor
+                    newTheme.style = ThemeStyle.normal
+                    newTheme.isUserCreated = true
+                    newTheme.isPremium = true
+                    
+                    if lightStyle {
+                        newTheme.style = ThemeStyle.bright
+                    }
+                    
+                    ThemeCoordinator.shared.addNewUserTheme(theme: newTheme)
+                    ThemeCoordinator.shared.changeTheme(toTheme: newTheme)
+                    
+                })
                 
-                ThemeCoordinator.shared.addNewUserTheme(theme: newTheme)
-                ThemeCoordinator.shared.changeTheme(toTheme: newTheme)
+                
             }
             
-            self.navigationController?.popViewController(animated: true)
+            
         } else {
             self.presentSalesScreen(type: SalesScreenType.themeCreator)
         }
@@ -496,6 +572,22 @@ class ThemeCreatorViewController:NumericalViewController {
     
     func color(float: Float) -> UIColor {
         return UIColor(hue: CGFloat(float), saturation:1.0, brightness:1.0, alpha:1.0)
+    }
+    
+    func updateTitle() {
+        var newTitle = ""
+        
+        if let updateTheme = updateTheme {
+            newTitle = updateTheme.title
+        }
+        
+        if newTitle == "" {
+            self.title = newTitle
+        } else {
+            self.title = ""
+        }
+        
+        self.navigationItem.title = newTitle
     }
     
     func updateBlurView() {

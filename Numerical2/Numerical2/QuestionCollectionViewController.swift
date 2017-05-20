@@ -15,7 +15,7 @@ protocol QuestionCollectionViewDelegate {
     func userPressedCopyAll()
 }
 
-class QuestionCollectionViewController:NumericalViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
+class QuestionCollectionViewController:NumericalViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UITextViewDelegate {
     
     var delegate:QuestionCollectionViewDelegate?
     
@@ -28,104 +28,186 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         didSet {
             TimeTester.shared.printTime(string: "30 - Question bundle set")
             
+            if self.isAnswerView {
+                print(questionBundle?.answer)
+                print(questionBundle?.error)
+                print(questionBundle?.errorType)
+                
+                print("")
+            }
+            
+            var answer = ""
+            
+            if let theAnswer = self.questionBundle?.answer {
+                answer = theAnswer
+            }
+            
+            print("answer: \(answer)!")
+            
+            
             
             // Divide up the questionString into components
-            if let theAnswer = self.questionBundle?.answer {
-                // We have an answer
-                
-                //testLabel.text = nil
-                testLabel.text = theAnswer
-                testLabel.font = UIFont.systemFont(ofSize: 50)
-                testLabel.minimumScaleFactor = 0.5
-                
-                /*
-                if self.isAnswerView {
+            if let bundle = self.questionBundle {
+                if let theAnswer = self.questionBundle?.answer {
+                    // We have an answer
                     
-                    TimeTester.shared.printTime(string: "31 - This is an answerView")
+                    // Determine if we need to display the label, the textview (WIP), or the collection view.
                     
-                    var possibleAnswers = Glossary.possibleAnswersFromString(theAnswer)
-                    
-                    TimeTester.shared.printTime(string: "32 - possible answers")
-                    
-                    // The first answer will always be a decimal. The last answer will always be the smallest possible fraction
-                    if possibleAnswers.count > 1 {
+                    if (theAnswer.characters.contains(SymbolCharacter.fraction) || self.isAnswerView) && self.isEditing == false {
+                        // Need the collectionView's
                         
-                        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferdecimal) {
-                            // We prefer the decimal answer, so just show that one.
-                            possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
+                        if self.isAnswerView {
+                            
+                            TimeTester.shared.printTime(string: "31 - This is an answerView")
+                            
+                            var possibleAnswers = Glossary.possibleAnswersFromString(theAnswer)
+                            
+                            TimeTester.shared.printTime(string: "32 - possible answers")
+                            
+                            // The first answer will always be a decimal. The last answer will always be the smallest possible fraction
+                            if possibleAnswers.count > 1 {
+                                
+                                if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.preferdecimal) {
+                                    // We prefer the decimal answer, so just show that one.
+                                    possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
+                                } else {
+                                    // We prefer fractional answer if available, so show that one
+                                    possibleAnswers = [possibleAnswers.first!] // Get the possibly fractional answer
+                                }
+                            }
+                            
+                            let answersString = possibleAnswers.joined(separator: " or ")
+                            
+                            let questionComponents = answersString.components(separatedBy: " ")
+                            
+                            TimeTester.shared.printTime(string: "33 - Need to update question array")
+                            
+                            self.updateQuestionArrayWithComponents(questionComponents)
+                            
+                            TimeTester.shared.printTime(string: "34 - Question array method finished")
+                            
                         } else {
-                            // We prefer fractional answer if available, so show that one
-                            //possibleAnswers = [possibleAnswers.last!] // Get the decimal answer
+                            
+                            TimeTester.shared.printTime(string: "35 - need to update question array with answer")
+                            
+                            self.updateQuestionArrayWithString(theAnswer)
+                            
+                            TimeTester.shared.printTime(string: "36 - need to update question array with question")
+                            
+                            // Default height for the questionView
+                            updateEquationViewHeight(height: 80)
                         }
+                        
+                        self.testLabel.isHidden = true
+                        self.textField.isHidden = true
+                        
+                        self.collecitonView.delegate = self
+                        self.collecitonView.dataSource = self
+                        self.collecitonView.isHidden = false
+                        
+                    } else {
+                        // Display without the collection views
+                        
+                        if self.isAnswerView {
+                            testLabel.isHidden = false
+                            textField.isHidden = true
+                            
+                            testLabel.text = Glossary.formattedStringForAnswer(theAnswer)
+                            testLabel.font = StyleFormatter.preferredFontForContext(FontDisplayContext.answer)
+                        } else {
+                            testLabel.isHidden = true
+                            textField.isHidden = false
+                            
+                            var newText = ""
+                            
+                            if self.isEditing {
+                                newText = theAnswer
+                                textField.isEditable = true
+                                textField.isSelectable = true
+                            } else {
+                                newText = Glossary.formattedStringForQuestion(theAnswer, addSpaces: true)
+                                textField.isEditable = false
+                                textField.isSelectable = false
+                            }
+                            
+                            textField.text = newText
+                            textField.font = StyleFormatter.preferredFontForContext(FontDisplayContext.question)
+                            
+                            // Estimate the ideal height of the questionView and tell the parent.
+                            
+                            let attrString = NSAttributedString(string: newText, attributes: [NSFontAttributeName:StyleFormatter.preferredFontForContext(FontDisplayContext.question)])
+                            
+                            let boundingRect = attrString.boundingRect(with: CGSize(width: self.view.frame.width - 6 - 6, height: 2000), options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
+                            
+                            print(boundingRect.height)
+                            
+                            if boundingRect.height > 50 || isEditing {
+                                updateEquationViewHeight(height: 80)
+                            } else {
+                                updateEquationViewHeight(height: 50)
+                            }
+                            
+                            let range = NSRange.init(location: newText.characters.count - 1, length: 0)
+                            
+                            UIView.performWithoutAnimation {
+                                textField.scrollRangeToVisible(range)
+                            }
+                            
+                            if let cursorPosition = questionBundle?.cursorPosition {
+                                if let startPosition = textField.position(from: textField.beginningOfDocument, offset: cursorPosition) {
+                                    textField.selectedTextRange = textField.textRange(from: startPosition, to: startPosition)
+                                }
+                            }
+                        }
+                        
+                        if self.isEditing {
+                            textField.isEditable = true
+                            textField.isSelectable = true
+                        } else {
+                            textField.isEditable = false
+                            textField.isSelectable = false
+                        }
+                        
+                        
+                        testLabel.minimumScaleFactor = 0.1
+                        
+                        self.collecitonView.delegate = nil
+                        self.collecitonView.dataSource = nil
+                        self.collecitonView.isHidden = true
                     }
+                } else if let errorType = bundle.errorType {
+                    let formattedAnswer = Glossary.formattedStringForAnswer(errorType.rawValue)
+                    print(formattedAnswer)
+                    print("")
                     
-                    /*
-                     while possibleAnswers.count > 1 {
-                     possibleAnswers.removeLast()
-                     }
-                     */
-                    if possibleAnswers.count > 1 {
-                        //possibleAnswers = [possibleAnswers.first!]
-                    }
-                    
-                    // We now only have 1 or less possibleAnswers
-                    
-                    
-                    //                    var formattedAnswers:Array<String> = []
-                    //
-                    //                    for anAnswer in possibleAnswers {
-                    //
-                    //                        let formattedAnswer = Glossary.formattedStringForQuestion(anAnswer)
-                    //
-                    //                        formattedAnswers.append(formattedAnswer)
-                    //                    }
-                    //
-                    let answersString = possibleAnswers.joined(separator: " or ")
-                    
-                    let questionComponents = answersString.components(separatedBy: " ")
+                    let questionComponents = formattedAnswer.components(separatedBy: " ")
                     
                     TimeTester.shared.printTime(string: "33 - Need to update question array")
                     
-                    self.updateQuestionArrayWithComponents(questionComponents)
+                    self.updateQuestionArrayWithComponents([formattedAnswer])
                     
                     TimeTester.shared.printTime(string: "34 - Question array method finished")
                     
-                } else {
+                    self.testLabel.isHidden = true
+                    self.textField.isHidden = true
                     
-                    TimeTester.shared.printTime(string: "35 - need to update question array with answer")
+                    self.collecitonView.delegate = self
+                    self.collecitonView.dataSource = self
+                    self.collecitonView.isHidden = false
                     
-                    self.updateQuestionArrayWithString(theAnswer)
                     
-                    TimeTester.shared.printTime(string: "36 - need to update question array with question")
-                }
-                */
-                
-            }
-            /*
-            
-            else if let errorType = self.questionBundle?.errorType {
-                
-                let formattedAnswer = Glossary.formattedStringForAnswer(errorType.rawValue)
-                
-                self.questionArray = [formattedAnswer]
-                
-                self.reloadCollectionView()
-            }
-            
-            // If there was a cursor position in this and we are currently editing then set the cursor position
-            
-            if let arbitraryValue = questionBundle?.cursorPosition {
-                if isEditing {
-                    if let newPosition = self.textField.position(from: textField.beginningOfDocument, in: UITextLayoutDirection.right, offset: arbitraryValue) {
-                        self.textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
-                    }
                 }
             }
-             */
- 
+            
         }
     }
 
+    func updateEquationViewHeight(height: CGFloat) {
+        if let parent = self.parent as? EquationViewController {
+            parent.questionViewHeight.constant = height
+            parent.view.layoutIfNeeded()
+        }
+    }
     
     func updateQuestionArrayWithString(_ questionString: String) {
         
@@ -135,7 +217,7 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         
         // Add balanced brackets to this string, then divide into components.
         
-        let questionComponents = Evaluator.termArrayFromString(Evaluator.balanceBracketsForQuestionDisplay(questionString), allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
+        let questionComponents = Evaluator.termArrayFromString(questionString, allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
         
         // If a component has more than one fraction in it then split it up
         
@@ -265,7 +347,9 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     
     @IBOutlet weak var collecitonView: UICollectionView!
     
-    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var textField: UITextView!
+    
+    @IBOutlet weak var textFieldTrailing: NSLayoutConstraint!
     
     @IBOutlet weak var doneButton: UIButton!
     
@@ -289,17 +373,52 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         isEditing = editing
         
         if isEditing {
-            collecitonView.isHidden = true
-            textField.isHidden = false
-            textField.inputView = UIView()
+            
+            self.collecitonView.delegate = nil
+            self.collecitonView.dataSource = nil
+            
+            self.collecitonView.isHidden = true
+            self.testLabel.isHidden = true
+            
+            self.textField.isEditable = true
+            self.textField.isHidden = true
+            
+            if let theAnswer = self.questionBundle?.answer {
+                textField.text = theAnswer
+            }
+            
             textField.becomeFirstResponder()
+            self.textFieldTrailing.constant = doneButton.frame.width + 6
             doneButton.isHidden = false
         } else {
-            collecitonView.isHidden = false
-            textField.isHidden = true
+            
+            let bundle = self.questionBundle
+            
+            self.questionBundle = bundle // this updates the states of all the different display methods.
+            
+            self.textField.isEditable = false
+            self.textFieldTrailing.constant = 0.0
+            
+            if let theAnswer = self.questionBundle?.answer {
+                textField.text = Glossary.formattedStringForQuestion(theAnswer, addSpaces: true)
+            }
+            
             textField.resignFirstResponder()
             doneButton.isHidden = true
         }
+        
+        if animated {
+            doneButton.alpha = 0
+            UIView.animate(withDuration: 0.2, animations: {
+                self.view.layoutIfNeeded()
+                self.doneButton.alpha = 1
+            }, completion: { (complete) in
+                
+            })
+        } else {
+            self.view.layoutIfNeeded()
+        }
+        
     }
     
     
@@ -333,10 +452,13 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         textField.tintColor = UIColor.white
         textField.font = StyleFormatter.preferredFontForContext(FontDisplayContext.question)
         textField.backgroundColor = UIColor.clear
-        textField.borderStyle = UITextBorderStyle.none
-        textField.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
-        textField.layer.borderWidth = 1
-        textField.layer.cornerRadius = 5
+        //textField.borderStyle = UITextBorderStyle.none
+        //textField.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
+//        textField.layer.borderWidth = 1
+//        textField.layer.cornerRadius = 5
+        
+        textField.textContainer.lineBreakMode = NSLineBreakMode.byCharWrapping
+        textField.inputView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         
         NotificationCenter.default.addObserver(self, selector: #selector(QuestionCollectionViewController.themeChanged), name: Notification.Name(rawValue: PremiumCoordinatorNotification.themeChanged), object: nil)
         
@@ -715,9 +837,9 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     }
     
     @IBAction func pressDoneButton(_ sender: UIButton) {
-        setEditingMode(editing: false, animated: true)
-        
         informDelegateOfTextChange()
+        
+        setEditingMode(editing: false, animated: true)
     }
     
     func informDelegateOfTextChange() {
@@ -733,8 +855,13 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         informDelegateOfTextChange()
     }
     
+    func textViewDidChange(_ textView: UITextView) {
+        print("textViewDidChange")
+        informDelegateOfTextChange()
+    }
+    
     func isQuestionEditting() -> Bool {
-        return !textField.isHidden
+        return isEditing
     }
     
     
@@ -760,5 +887,4 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         
         scrollingFromRight = false
     }
-    
 }

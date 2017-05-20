@@ -36,13 +36,16 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
     
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
     
+    var loadedMinorAmount = false
+    
     func currentEquationChangedNotif(_ notification: Notification) {
         self.updateSelectedEquation()
     }
     
     func updateSelectedEquation() {
+        // todo - do we even need this?
         if let rootView = UIApplication.shared.keyWindow?.rootViewController as? ViewController {
-            self.updateSelectedEquation(rootView.currentEquation)
+            //self.updateSelectedEquation(rootView.currentEquation)
         }
     }
     
@@ -91,8 +94,16 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
         super.viewDidLoad()
         
         fetchedResultsController = EquationStore.sharedStore.equationsFetchedResultsController()
+        
+        // Load just enough items to cover the view. In viewDidAppear we will load the rest.
+        let number:Int = Int(self.tableView.frame.size.height / 47.8671875) + 2
+        
+        fetchedResultsController.fetchRequest.fetchLimit = number
+        
         fetchedResultsController.delegate = self
         performFetch()
+        
+        loadedMinorAmount = true
         
         tableView!.delegate = self
         tableView!.dataSource = self
@@ -110,6 +121,8 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
         NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.reloadData), name: Notification.Name(rawValue: NumericalHelperSetting.migration), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.currentEquationChangedNotif(_:)), name: Notification.Name(rawValue: EquationStoreNotification.currentEquationChanged), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.reloadData), name: Notification.Name(rawValue: EquationStoreNotification.equationLogicChanged), object: nil)
         
         themeChanged()
         updateButtons()
@@ -144,6 +157,13 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        if loadedMinorAmount == true {
+            self.fetchedResultsController.fetchRequest.fetchLimit = 100
+            self.performFetch()
+            self.tableView.reloadData()
+            self.loadedMinorAmount = false
+        }
     }
     
     func updateContentInsets(_ insets: UIEdgeInsets) {
@@ -425,6 +445,7 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
     
     func numberOfFetchedEquations() -> Int {
         let info = self.fetchedResultsController.sections![0] as NSFetchedResultsSectionInfo
+        
         return info.numberOfObjects
     }
     
@@ -458,8 +479,6 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
         if let theQuestion = equation.question {
             question = Glossary.formattedStringForQuestion(theQuestion)
         }
-        
-        
         
         var color = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.8)
         
@@ -667,12 +686,12 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
             question = Glossary.formattedStringForQuestion(theQuestion)
         }
         
-        var color = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.7)
+        var color = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(1.0)
         var questionFont = UIFont.systemFont(ofSize: 15.0)
         var answerFont = UIFont.systemFont(ofSize: 20.0)
         
         if equation == currentEquation {
-            color = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(1.0)
+            color = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
             //questionFont = UIFont.boldSystemFont(ofSize: 15.0)
             //answerFont = UIFont.boldSystemFont(ofSize: 20.0)
         }
