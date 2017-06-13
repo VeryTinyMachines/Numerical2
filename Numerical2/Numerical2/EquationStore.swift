@@ -30,6 +30,7 @@ public struct EquationCodingKey {
     public static let currentEquation = "currentEquation"
     public static let currentEquationQuestion = "currentEquationQuestion"
     public static let currentEquationChanged = "currentEquationChanged"
+    public static let lastRestoredEquation = "lastRestoredEquation"
 }
 
 
@@ -56,6 +57,16 @@ class EquationStore {
     var queuedEquationsToSave = [String: Equation]()
     var accountStatus: CKAccountStatus = CKAccountStatus.couldNotDetermine
     var subscriptionSetup = false
+    var lastRestoredEquation:String? {
+        didSet {
+            if let string = lastRestoredEquation {
+                UserDefaults.standard.set(string, forKey: EquationCodingKey.lastRestoredEquation)
+            } else {
+                UserDefaults.standard.removeObject(forKey: EquationCodingKey.lastRestoredEquation)
+            }
+            UserDefaults.standard.synchronize()
+        }
+    }
     
     lazy var lastFetchDate:NSDate? = {
         if let date = UserDefaults.standard.object(forKey: "lastFetchDate") as? NSDate {
@@ -73,7 +84,10 @@ class EquationStore {
     static let sharedStore = EquationStore()
     
     fileprivate init() {
+        self.lastRestoredEquation = UserDefaults.standard.string(forKey: EquationCodingKey.lastRestoredEquation)
         
+        print("lastRestoredEquation: \(lastRestoredEquation)")
+        print("")
     }
     
     func initialiseSetup() {
@@ -389,9 +403,7 @@ class EquationStore {
             }
             
             operation.modifyRecordsCompletionBlock = { modified, deleted, error in
-                if let modified = modified {
-                    
-                }
+                
             }
             
             operation.completionBlock = {
@@ -402,7 +414,6 @@ class EquationStore {
             self.privateDatabase.add(operation)
         }
     }
-    
     
     func equationsFetchedResultsController() -> NSFetchedResultsController<Equation> {
         var fetchRequest:NSFetchRequest<Equation>

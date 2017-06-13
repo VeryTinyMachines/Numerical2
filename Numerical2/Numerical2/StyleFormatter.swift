@@ -66,11 +66,11 @@ class StyleFormatter {
         let smallOperands:Set<Character> = [SymbolCharacter.add, SymbolCharacter.multiply, SymbolCharacter.infinity]
         
         if let key = key {
-            if key == SymbolCharacter.subtract || key == SymbolCharacter.divide {
+            if key == SymbolCharacter.keyboard {
+                pointSize *= 0.7
+                fontName = "HelveticaNeue"
+            } else if key == SymbolCharacter.subtract || key == SymbolCharacter.divide {
                 pointSize *= 1.3
-                return UIFont(name: fontName, size: pointSize)!
-                //return UIFont(name: "HelveticaNeue-Thin", size: pointSize)!
-                //return UIFont(name: "AvenirNext-Regular", size: pointSize)!
             } else if smallOperands.contains(key) {
                 pointSize *= 1.2
             }

@@ -228,8 +228,14 @@ open class Glossary {
         let termArray = Evaluator.termArrayFromString(string, allowNonLegalCharacters: true, treatConstantsAsNumbers: false)
         
         for term in termArray {
-            for character in term.characters {
-                formattedString += formattedStringForCharacter(character)
+            
+            // If this is a number then add some commas
+            if term.characters.count > 1 {
+                formattedString += numberWithCommas(string: term)
+            } else {
+                for character in term.characters {
+                    formattedString += formattedStringForCharacter(character)
+                }
             }
             
             if addSpaces {
@@ -240,6 +246,58 @@ open class Glossary {
         return formattedString
     }
     
+    class func numberWithCommas(string: String) -> String {
+        
+        if string.characters.count > 0 && self.isStringNumber(string) {
+            
+            // Divide it up by the decimal and add some comma's
+            
+            let sections = string.components(separatedBy: ".")
+            
+            if sections.count == 1 {
+                // A whole number, or possibly just stuff following the decimal
+                
+                if string.characters.first! == "." {
+                    // This is the stuff after a decimal, just return it
+                    return string
+                } else {
+                    // Not a leading decimal.
+                    return wholeNumberWithCommas(string: sections.first!)
+                }
+                
+            } else if sections.count > 1 {
+                // Two sections
+                return wholeNumberWithCommas(string: sections[0]) + "." + sections[1]
+            }
+        }
+        
+        return string
+    }
+    
+    class func wholeNumberWithCommas(string: String) -> String {
+        
+        var newNumber = ""
+        var count = 0
+        
+        for letter in string.characters.reversed() {
+            
+            if letter == "." {
+                count = 0
+            }
+            
+            if count >= 3 {
+                // Add the comma
+                newNumber = "," + newNumber
+                count = 0
+            }
+            
+            newNumber = String(letter) + newNumber
+            
+            count += 1
+        }
+        
+        return newNumber
+    }
     
     class func maximumDecimals() -> Int {
         

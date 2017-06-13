@@ -46,6 +46,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            UIApplication.shared.setAlternateIconName("AppIcon-2")
 //        }
         
+        print(Glossary.numberWithCommas(string: "1000000"))
+        print(Glossary.numberWithCommas(string: "1000000."))
+        print(Glossary.numberWithCommas(string: "1000000.000000"))
+        print(Glossary.numberWithCommas(string: ".1000000"))
+        
+        
         return true
     }
 

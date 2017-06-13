@@ -186,6 +186,9 @@ class ThemeCreatorViewController:NumericalViewController {
                     
                 }))
                 
+                // Setup popover for iPad
+                menu.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItems?.last
+                
                 self.present(menu, animated: true, completion: { 
                     
                 })
@@ -282,6 +285,8 @@ class ThemeCreatorViewController:NumericalViewController {
                     
                     ThemeCoordinator.shared.addNewUserTheme(theme: newTheme)
                     ThemeCoordinator.shared.changeTheme(toTheme: newTheme)
+                    
+                    self.navigationController?.popViewController(animated: true)
                     
                 })
                 

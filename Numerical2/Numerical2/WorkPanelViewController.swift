@@ -225,10 +225,11 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
     func selectedQuestion(question: String) {
         self.saveCurrentEquationToHistoryIfNeeded()
         
+        EquationStore.sharedStore.lastRestoredEquation = question
+        
         WorkingEquationManager.sharedManager.insertToHistory(question: question)
         
-//        currentEquation = WorkingEquation()
-//        currentEquation.question = question
+        self.resetEquationViewPosition()
         
         updateLegalKeys()
         
@@ -745,6 +746,13 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         if currentEquation.characters.count > 0 {
             
+            if let lastRestoredEquation = EquationStore.sharedStore.lastRestoredEquation {
+                if lastRestoredEquation == currentEquation {
+                    // This is the same as the most recently restored equation. We shouldn't return it.
+                    return false
+                }
+            }
+            
             var termArray = Evaluator.termArrayFromString(currentEquation, allowNonLegalCharacters: false, treatConstantsAsNumbers: false)
             
             // Remove leading -'s
@@ -1058,9 +1066,20 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         let bracketBalancedString = Evaluator.balanceBracketsForQuestionDisplay(WorkingEquationManager.sharedManager.currentEquation())
         
-        string += Glossary.formattedStringForQuestion(bracketBalancedString)
+        string += Glossary.formattedStringForQuestion(bracketBalancedString, addSpaces: true)
         
-        let board = UIPasteboard.general
-        board.string = string
+        CalculatorBrain.sharedBrain.solveStringAsyncQueue(WorkingEquationManager.sharedManager.currentEquation()) { (bundle) in
+            
+            var answer = ""
+            
+            if let theAnswer = bundle.answer {
+                string += "=" + theAnswer
+            } else if let error = bundle.errorType {
+                string += "=" + Glossary.formattedStringForAnswer(error.rawValue)
+            }
+            
+            let board = UIPasteboard.general
+            board.string = string
+        }
     }
 }

@@ -110,7 +110,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         if let previousVersion = UserDefaults.standard.string(forKey: "CurrentVersion") {
             print("previousVersion: \(previousVersion)")
             print("")
-            if currentVersion != previousVersion {
+            if currentVersion != previousVersion && previousVersion <= "v2.0.5" {
                 // Display a tool tip
                 DispatchQueue.main.async {
                     let alertView = UIAlertController(title: "Numerical² has been\nupdated to \(currentVersion)!", message: "You can now swipe left/right to undo/redo, swipe up to clear, swipe down to start new! You can also name and rename themes now :)", preferredStyle: UIAlertControllerStyle.alert)

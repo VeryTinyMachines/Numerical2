@@ -29,7 +29,6 @@ class SoundManager {
     var redoSoundID: SystemSoundID = 0
     var thudSoundID: SystemSoundID = 0
     
-    
     func playSound(sound: SoundType) {
         
         if !NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.sounds) {
