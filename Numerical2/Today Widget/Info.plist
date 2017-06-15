@@ -22,23 +22,10 @@
 	<string>40</string>
 	<key>NSExtension</key>
 	<dict>
-		<key>NSExtensionAttributes</key>
-		<dict>
-			<key>IsASCIICapable</key>
-			<false/>
-			<key>PrefersRightToLeft</key>
-			<false/>
-			<key>PrimaryLanguage</key>
-			<string>en-US</string>
-			<key>RequestsOpenAccess</key>
-			<false/>
-		</dict>
+		<key>NSExtensionMainStoryboard</key>
+		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.keyboard-service</string>
-		<key>NSExtensionPrincipalClass</key>
-		<string>$(PRODUCT_MODULE_NAME).KeyboardViewController</string>
+		<string>com.apple.widget-extension</string>
 	</dict>
-	<key>RequestsOpenAccess</key>
-	<true/>
 </dict>
 </plist>

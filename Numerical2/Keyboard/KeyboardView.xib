@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -11,9 +11,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KeyboardViewController" customModule="Keyboard" customModuleProvider="target">
             <connections>
+                <outlet property="cancelButton" destination="VJy-Ae-Fw0" id="ite-EC-3Ob"/>
+                <outlet property="copyButton" destination="OOz-bu-htx" id="tkO-uK-e0n"/>
                 <outlet property="mainLabel" destination="kYH-mM-INF" id="0O2-tK-bMY"/>
+                <outlet property="pasteButton" destination="TIv-6b-Nl1" id="VBc-hh-GmE"/>
                 <outlet property="separatorView" destination="COc-fl-qJY" id="n3G-1X-Yck"/>
                 <outlet property="separatorViewHeight" destination="ATk-GV-uT0" id="w2k-1E-DSy"/>
+                <outlet property="stackView" destination="oMV-6V-IWV" id="Oc1-Ud-vb0"/>
                 <outletCollection property="button" destination="EA0-t3-4LW" collectionClass="NSMutableArray" id="G4t-uX-Yrf"/>
                 <outletCollection property="button" destination="BTt-je-cPy" collectionClass="NSMutableArray" id="djb-RP-ZiK"/>
                 <outletCollection property="button" destination="XAW-wt-deP" collectionClass="NSMutableArray" id="zNA-dr-70H"/>
@@ -48,12 +52,44 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lb6-Rd-FzF">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="kYH-mM-INF">
-                                    <rect key="frame" x="12" y="0.0" width="308" height="40"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="kYH-mM-INF">
+                                    <rect key="frame" x="10" y="0.0" width="300" height="40"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Df3-vr-MJt" userLabel="Menu Button">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
+                                    <connections>
+                                        <action selector="userPressedEquationButton:" destination="-1" eventType="touchUpInside" id="eJz-aw-ejZ"/>
+                                    </connections>
+                                </button>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="oMV-6V-IWV">
+                                    <rect key="frame" x="12" y="0.0" width="296" height="39"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VJy-Ae-Fw0" userLabel="Cancel">
+                                            <rect key="frame" x="0.0" y="0.0" width="98.5" height="39"/>
+                                            <state key="normal" title="Cancel"/>
+                                            <connections>
+                                                <action selector="userPressedCancelButton:" destination="-1" eventType="touchUpInside" id="0LK-d5-QXL"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OOz-bu-htx" userLabel="Copy">
+                                            <rect key="frame" x="98.5" y="0.0" width="99" height="39"/>
+                                            <state key="normal" title="Copy"/>
+                                            <connections>
+                                                <action selector="userPressedCopyButton:" destination="-1" eventType="touchUpInside" id="XTO-Xi-aPK"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TIv-6b-Nl1" userLabel="Paste">
+                                            <rect key="frame" x="197.5" y="0.0" width="98.5" height="39"/>
+                                            <state key="normal" title="Insert"/>
+                                            <connections>
+                                                <action selector="userPressedPasteButton:" destination="-1" eventType="touchUpInside" id="Cj4-PO-Zcd"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="COc-fl-qJY">
                                     <rect key="frame" x="0.0" y="39" width="320" height="1"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -63,13 +99,21 @@
                                 </view>
                             </subviews>
                             <constraints>
+                                <constraint firstItem="Df3-vr-MJt" firstAttribute="leading" secondItem="Lb6-Rd-FzF" secondAttribute="leading" id="3q4-cQ-jbn"/>
                                 <constraint firstAttribute="trailing" secondItem="COc-fl-qJY" secondAttribute="trailing" id="6h2-RB-nUU"/>
+                                <constraint firstItem="oMV-6V-IWV" firstAttribute="top" secondItem="Lb6-Rd-FzF" secondAttribute="top" id="75Y-BI-ecL"/>
+                                <constraint firstAttribute="trailing" secondItem="oMV-6V-IWV" secondAttribute="trailing" constant="12" id="7TL-h9-gse"/>
                                 <constraint firstItem="COc-fl-qJY" firstAttribute="leading" secondItem="Lb6-Rd-FzF" secondAttribute="leading" id="8Vr-Hv-rD5"/>
+                                <constraint firstAttribute="trailing" secondItem="Df3-vr-MJt" secondAttribute="trailing" id="JBr-Qd-r4j"/>
                                 <constraint firstAttribute="bottom" secondItem="kYH-mM-INF" secondAttribute="bottom" id="ZzC-0j-LTX"/>
                                 <constraint firstAttribute="bottom" secondItem="COc-fl-qJY" secondAttribute="bottom" id="a7I-ye-5MU"/>
-                                <constraint firstItem="kYH-mM-INF" firstAttribute="leading" secondItem="Lb6-Rd-FzF" secondAttribute="leading" constant="12" id="nde-Qg-IMe"/>
+                                <constraint firstItem="oMV-6V-IWV" firstAttribute="leading" secondItem="Lb6-Rd-FzF" secondAttribute="leading" constant="12" id="bmB-53-sx2"/>
+                                <constraint firstItem="COc-fl-qJY" firstAttribute="top" secondItem="oMV-6V-IWV" secondAttribute="bottom" id="kYx-Ks-lWB"/>
+                                <constraint firstItem="kYH-mM-INF" firstAttribute="leading" secondItem="Lb6-Rd-FzF" secondAttribute="leading" constant="10" id="nde-Qg-IMe"/>
+                                <constraint firstItem="COc-fl-qJY" firstAttribute="top" secondItem="Df3-vr-MJt" secondAttribute="bottom" id="ofp-LQ-70B"/>
+                                <constraint firstItem="Df3-vr-MJt" firstAttribute="top" secondItem="Lb6-Rd-FzF" secondAttribute="top" id="qvs-b0-dJE"/>
                                 <constraint firstItem="kYH-mM-INF" firstAttribute="top" secondItem="Lb6-Rd-FzF" secondAttribute="top" id="rHQ-85-N16"/>
-                                <constraint firstAttribute="trailing" secondItem="kYH-mM-INF" secondAttribute="trailing" id="uE5-gs-mAv"/>
+                                <constraint firstAttribute="trailing" secondItem="kYH-mM-INF" secondAttribute="trailing" constant="10" id="uE5-gs-mAv"/>
                             </constraints>
                         </view>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="1eQ-xk-Mb7">
@@ -95,7 +139,7 @@
                                     <rect key="frame" x="183" y="0.0" width="45.5" height="40"/>
                                     <state key="normal" title="4"/>
                                 </button>
-                                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2a5-Bh-Y58">
+                                <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2a5-Bh-Y58">
                                     <rect key="frame" x="228.5" y="0.0" width="46" height="40"/>
                                     <state key="normal" title="5"/>
                                 </button>

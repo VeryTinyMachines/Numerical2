@@ -294,9 +294,13 @@ class KeypadPageViewController: NumericalViewController, UIPageViewControllerDat
         if NumericalViewHelper.isDevicePad() {
             // It's an iPad!
             
-            if self.view.frame.width < self.view.frame.height && self.view.bounds.width < 450 {
-                // It's an ipad but this view is so thin that really it's more like an iPhone
-                return false
+            if self.view.frame.width < self.view.frame.height {
+                print("self.view.bounds.width: \(self.view.bounds.width)")
+                print("")
+                if self.view.bounds.width < 650 {
+                    // It's an ipad but this view is so thin that really it's more like an iPhone
+                    return false
+                }
             }
             
             return true

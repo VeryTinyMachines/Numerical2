@@ -22,6 +22,7 @@ public enum AboutViewItem {
     case seperator
     case cloudSync
     case keyboard
+    case todaywidget
     case whatsnew
     case themes
     case logging
@@ -133,6 +134,10 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         
         items.append(AboutViewItem.keyboard)
         items.append(AboutViewItem.seperator)
+        
+        items.append(AboutViewItem.todaywidget)
+        items.append(AboutViewItem.seperator)
+        
         items.append(AboutViewItem.contact)
         items.append(AboutViewItem.follow)
         items.append(AboutViewItem.share)
@@ -348,6 +353,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             sliderCell.backgroundColor = UIColor.clear
             
             return sliderCell
+        case .todaywidget:
+            cell.textLabel?.text = "Today Widget"
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -457,7 +464,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             case .autoBracket:
                 break
             case .contact:
-                self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical²")
+                self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical²", message: nil)
             case .follow:
                 self.attemptToOpenURL(urlString: "http://www.twitter.com/VTMachines")
             case .premiumInfo:
@@ -482,7 +489,22 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                 }))
                 
                 alert.addAction(UIAlertAction(title: "Contact Support", style: UIAlertActionStyle.default, handler: { (action) in
-                    self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical² Keyboard")
+                    self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical² Keyboard", message: "I'm having an issue with the Numerical² Keyboard and that issue is...")
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
+                    
+                }))
+                
+                self.present(alert, animated: true, completion: {
+                    
+                })
+            case .todaywidget:
+                
+                let alert = UIAlertController(title: "Numerical² Today Widget", message: "To install the Numerical² Today Widget swipe down to access iOS' Notification Center, swipe left to the Today view, then tap 'Edit' and add the Numerical² widget", preferredStyle: UIAlertControllerStyle.actionSheet)
+                
+                alert.addAction(UIAlertAction(title: "Contact Support", style: UIAlertActionStyle.default, handler: { (action) in
+                    self.email(emailAddress: "verytinymachines@gmail.com", subject: "Numerical² Today Widget", message: "I'm having an issue with the Today Widget and that issue is...")
                 }))
                 
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in

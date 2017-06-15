@@ -82,6 +82,8 @@ public struct SymbolCharacter {
     
     public static let keyboard:Character = "♁"
     
+    public static let app:Character = "⊚"
+    
     public static let numbers:Set<Character> = ["0","1","2","3","4","5","6","7","8","9",".",SymbolCharacter.pi, SymbolCharacter.e, SymbolCharacter.infinity, SymbolCharacter.fraction]
     
     public static let operators:Set<Character> = [SymbolCharacter.add, SymbolCharacter.subtract, SymbolCharacter.multiply, SymbolCharacter.divide, SymbolCharacter.exponent, SymbolCharacter.percentage, SymbolCharacter.sin, SymbolCharacter.cos, SymbolCharacter.tan, SymbolCharacter.sinh, SymbolCharacter.cosh, SymbolCharacter.tanh, SymbolCharacter.ee, SymbolCharacter.sqrt, SymbolCharacter.log, SymbolCharacter.log2, SymbolCharacter.log10, SymbolCharacter.factorial, SymbolCharacter.percentage]
@@ -139,7 +141,8 @@ open class Glossary {
         SymbolCharacter.settings:"≣",
         
         SymbolCharacter.publish:"↑",
-        SymbolCharacter.keyboard:"ABC"
+        SymbolCharacter.keyboard:"ABC",
+        SymbolCharacter.app:"App"
     ]
     
     static let reverseFormattedLookup = [
@@ -243,7 +246,7 @@ open class Glossary {
             }
         }
         
-        return formattedString
+        return localisedString(formattedString)
     }
     
     class func numberWithCommas(string: String) -> String {
@@ -312,7 +315,27 @@ open class Glossary {
         }
     }
     
+    class func localisedString(_ string: String) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale.current
+        
+        var newString = ""
+        
+        for character in string.characters {
+            if character == "." {
+                newString.append(numberFormatter.decimalSeparator)
+            } else if character == "," {
+                newString.append(numberFormatter.groupingSeparator)
+            } else {
+                newString.append(character)
+            }
+        }
+        
+        return newString
+    }
+    
     class func formattedStringForAnswer(_ string: String) -> String {
+        var string = string
         
         if string == ErrorType.divideByZero.rawValue {
             return "Division By Zero"
@@ -327,9 +350,9 @@ open class Glossary {
         }
         
         let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale(identifier: "en_US")
         
         if let number = numberFormatter.number(from: string) {
-            
             if number.doubleValue > 1000000000000 || (number.doubleValue > 0 && number.doubleValue < 0.0000000001) || number.doubleValue < -1000000000000 || (number.doubleValue < 0 && number.doubleValue > -0.0000000001) {
                 numberFormatter.numberStyle = NumberFormatter.Style.scientific
             } else {
@@ -339,11 +362,16 @@ open class Glossary {
             numberFormatter.maximumFractionDigits = self.maximumDecimals()
             
             if let formattedAnswer = numberFormatter.string(from: number) {
-                return formattedAnswer.replacingOccurrences(of: "E0", with: "")
+                string = formattedAnswer
             }
+            
+            return localisedString(string)
         }
         
-        return string.replacingOccurrences(of: "E0", with: "").replacingOccurrences(of: "\(SymbolCharacter.fraction)", with: Glossary.formattedLookup[SymbolCharacter.fraction]!)
+        string = string.replacingOccurrences(of: "E0", with: "").replacingOccurrences(of: "\(SymbolCharacter.fraction)", with: Glossary.formattedLookup[SymbolCharacter.fraction]!)
+        
+        
+        return localisedString(string)
     }
     
     class func formattedStringForCharacter(_ character: Character) -> String {
@@ -392,7 +420,6 @@ open class Glossary {
         }
         
         return true
-        
     }
     
     class func stringContainsDecimal(_ string: String) -> Bool {
@@ -405,10 +432,6 @@ open class Glossary {
     }
     
     class func isStringOperator(_ string: String) -> Bool {
-        
-//        if string.characters.count > 1 {
-//            return false
-//        }
         
         for character in string.characters {
             if SymbolCharacter.operators.contains(character) == false {
@@ -510,7 +533,6 @@ open class Glossary {
                                     } else {
                                         return false
                                     }
-                                    
                                     
                                 } else {
                                     theOperator.processTerm(currentTerm)
@@ -645,8 +667,6 @@ open class Glossary {
                             legalCharacterSet.insert(SymbolCharacter.smartBracketPrefersClose)
                         }
                     }
-                    
-                    
                 }
                 
                 if legalCharacterSet.contains("n") {
@@ -655,6 +675,8 @@ open class Glossary {
                     for numberCharacter in SymbolCharacter.numbers {
                         legalCharacterSet.insert(numberCharacter)
                     }
+                    
+                    legalCharacterSet.remove(".")
                     
                     // If this is an initial string then get rid of the fraction. That's too dumb.
                     if string == " " {
@@ -667,8 +689,8 @@ open class Glossary {
                         
                         if let lastTerm = termArray.last {
                             
-                            if lastTerm.range(of: ".") != nil {
-                                // There IS a decimal here.
+                            if lastTerm.contains(".") {
+                                // There IS a decimal here so don't add it.
                             } else {
                                 // Insert the decimal
                                 legalCharacterSet.insert(".")
@@ -687,7 +709,6 @@ open class Glossary {
             } else {
                 return nil
             }
-
         } else {
             // Something went very very wrong
             return nil

@@ -85,9 +85,6 @@ class EquationStore {
     
     fileprivate init() {
         self.lastRestoredEquation = UserDefaults.standard.string(forKey: EquationCodingKey.lastRestoredEquation)
-        
-        print("lastRestoredEquation: \(lastRestoredEquation)")
-        print("")
     }
     
     func initialiseSetup() {
@@ -145,7 +142,7 @@ class EquationStore {
             do {
                 try FileManager.default.createDirectory(atPath: applicationSupportPath, withIntermediateDirectories: true, attributes: nil)
             } catch {
-             // print("Error - Could not creation Application Support Directory")
+             print("Error - Could not creation Application Support Directory")
             }
         }
         
@@ -258,7 +255,6 @@ class EquationStore {
                  * The store could not be migrated to the current model version.
                  Check the error message to determine what the actual problem was.
                  */
-             // print("Unresolved error \(error), \(error.userInfo)")
                 
                 SimpleLogger.appendLog(string: "EquationStore.persistentCoordinator error: \(error.code) \(error.localizedDescription)")
                 
@@ -275,30 +271,23 @@ class EquationStore {
     
     func saveContext() -> Bool {
         
-     // print("saveContext")
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
-             // print("Saved")
                 return true
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
-             // print("Unresolved error \(nserror), \(nserror.userInfo)")
                 
                 SimpleLogger.appendLog(string: "EquationStore.saveContext error: \(nserror.code) \(nserror.localizedDescription)")
                 
                 Crashlytics.sharedInstance().recordError(nserror)
                 
-//                let alert = UIAlertView(title: "Equation Store Error", message: "\(nserror.localizedDescription)", delegate: nil, cancelButtonTitle: "Ok")
-//                alert.show()
-                
                 return false
             }
         } else {
-         // print("No saves necessary")
             return true
         }
     }
@@ -329,8 +318,6 @@ class EquationStore {
                 SimpleLogger.appendLog(string: "EquationStore.updateCloudKit error: \(nserror.code) \(nserror.localizedDescription)")
                 
                 Crashlytics.sharedInstance().recordError(nserror)
-                
-             // print("Error: Could not fetch equations")
             }
         }
     }
@@ -341,8 +328,7 @@ class EquationStore {
         var ckEquations = [CKRecord]()
         
         for equation in equations {
-         // print(equation)
-            
+         
             if let identifier = equation.identifier {
                 
                 let newEquation = CKRecord(recordType: "Equation", recordID: CKRecordID(recordName: "Equation.\(identifier)"))
@@ -362,7 +348,7 @@ class EquationStore {
                 queuedEquationsToSave[identifier] = equation
                 
             } else {
-             // print("Error: equation is missing identifier")
+                print("Error: equation is missing identifier")
             }
         }
         
@@ -380,12 +366,7 @@ class EquationStore {
             operation.savePolicy = CKRecordSavePolicy.allKeys
             
             operation.perRecordCompletionBlock = {record, error in
-             // print("perRecordCompletionBlock")
-                //if let record = record {
-             // print("record: \(record)")
                 if let identifier = record.object(forKey: "identifier") as? String {
-                 // print("identifier: \(identifier)")
-                    
                     // Compare the record with the current state of the equation.
                     // If all aspects are the same then we have successfully posted this equation.
                     
@@ -457,9 +438,6 @@ class EquationStore {
             query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
             
             self.privateDatabase.perform(query, inZoneWith: nil) { (records, error) in
-                //print(records)
-                //print(error)
-                
                 if let records = records {
                     self.compareRecords(records: records)
                     self.setLastFetchDate(date: fetchDate)
@@ -481,25 +459,17 @@ class EquationStore {
                         if nameItems[0] == "Equation" {
                             let identifier = nameItems[1]
                             
-                            //print(identifier)
-                            
                             if let fetchedEquation = self.fetchEquationWithIdentifier(string: identifier) {
                                 // Found a matching equation, check if it needs updating.
                                 // Who is newer
-                                
-                                // print("fetchedEquation: \(fetchedEquation)")
                                 
                                 var preferRemoteCopy = false
                                 
                                 if let localModDate = fetchedEquation.lastModifiedDate, let remoteModDate = record.object(forKey: "equationLastModifiedDate") as? NSDate {
                                     // Ok, they both have mod dates. Which is newer.
                                     
-                                    //print(remoteModDate)
-                                    //print(localModDate)
-                                    
                                     if (remoteModDate as Date).compare(localModDate as Date) == ComparisonResult.orderedDescending {
                                         // The remoteModDate is newer thatn the local one, therefore we prefer the local version.
-                                        
                                         preferRemoteCopy = true
                                     }
                                     
@@ -510,8 +480,7 @@ class EquationStore {
                                 
                             } else {
                                 // Holy moley this is a new equation! Save it!
-                                let newEquation = self.newEquationFromCKRecord(record: record)
-                                // print("newEquation: \(newEquation)")
+                                let _ = self.newEquationFromCKRecord(record: record)
                             }
                         }
                     }
@@ -552,7 +521,6 @@ class EquationStore {
             if let first = results.first {
                 return first
             }
-            
         } catch {
             
         }
@@ -566,9 +534,7 @@ class EquationStore {
         
         do {
             let results = try self.viewContext.fetch(fetchRequest)
-            
             return results
-            
         } catch {
             
         }
@@ -612,7 +578,6 @@ class EquationStore {
                 
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: Notification.Name(rawValue: EquationStoreNotification.accountStatusChanged), object: nil)
-                    
                 }
             }
             
@@ -629,13 +594,9 @@ class EquationStore {
             
             let notificationInfo = CKNotificationInfo()
             
-//            notificationInfo.alertBody = "test"
-//            notificationInfo.shouldBadge = true
-            
             notificationInfo.shouldSendContentAvailable = true
-            
             modifySubscription.notificationInfo = notificationInfo
-//
+            
             privateDatabase.fetchAllSubscriptions(completionHandler: { (fetchedSubscriptions, error) in
                 
                 DispatchQueue.main.async {
@@ -661,19 +622,17 @@ class EquationStore {
                         self.privateDatabase.save(modifySubscription, completionHandler: { (responseSubscription, error) in
                             
                             DispatchQueue.main.async {
-                                if error == nil {
+                                if let error = error {
+                                    Crashlytics.sharedInstance().recordError(error)
+                                } else {
                                     if let _ = responseSubscription {
                                         // We have subscribed
                                         self.subscriptionSetup = true
                                     }
-                                } else {
-                                 // print("responseSubscription: \(responseSubscription)")
-                                 // print("error: \(error)")
                                 }
                             }
                         })
                     }
-                    
                 }
             })
         }
@@ -692,15 +651,13 @@ class EquationStore {
     
     func canConvertDeprecatedEquations() -> Bool {
         
-        let manager = FileManager.default
-        
         let paths = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)
         let applicationSupportPath = paths[0]
         
         let path = applicationSupportPath + "/calcDataHistory.plist"
         
         if let dict = NSDictionary(contentsOfFile: path) as? [String:Any] {
-            if let questionArray = dict["LONGHISTORY"] as? NSArray, let answerArray = dict["LONGHISTORYANSWER"] as? NSArray {
+            if let _ = dict["LONGHISTORY"] as? NSArray, let _ = dict["LONGHISTORYANSWER"] as? NSArray {
                 return true
             }
         }
@@ -709,7 +666,6 @@ class EquationStore {
     }
     
     func convertDeprecatedEquationsIfNeeded(complete: ((_ complete: Bool) -> Void)?) {
-        
         self.backgroundContext.perform {
             let manager = FileManager.default
             
@@ -719,7 +675,6 @@ class EquationStore {
             let path = applicationSupportPath + "/calcDataHistory.plist"
             
             if let dict = NSDictionary(contentsOfFile: path) as? [String:Any] {
-             // print(dict.keys)
                 
                 if let questionArray = dict["LONGHISTORY"] as? NSArray, let answerArray = dict["LONGHISTORYANSWER"] as? NSArray {
                     
@@ -734,8 +689,6 @@ class EquationStore {
                     for number in 0...totalItems - 1 {
                         if let question = questionArray[number] as? String, let answer = answerArray[number] as? String {
                             
-                         // print("\(question) = \(answer)")
-                            
                             let dE = DeprecatedEquation(answer: answer, question: question)
                             importedEquations.append(dE)
                         }
@@ -745,7 +698,6 @@ class EquationStore {
                     for de in importedEquations {
                         
                         if count < 100 {
-                            //print("\(count): \(de.question) = \(de.answer)")
                             
                             let equation = self.newEquation()
                             equation.answer = de.answer
@@ -766,7 +718,7 @@ class EquationStore {
                             complete?(true)
                             return
                         } catch {
-                         // print("Could not delete old equations file")
+                            print("Could not delete old equations file")
                             complete?(false)
                             return
                         }
@@ -786,7 +738,7 @@ class EquationStore {
     }
     
     func deleteHistory(block:((_ complete: Bool) -> Void)?) {
-        self.saveContext()
+        let _ = self.saveContext()
         
         self.backgroundContext.perform {
             if let currentEquations = self.fetchAllUndeletedEquations() {
@@ -797,7 +749,7 @@ class EquationStore {
                 }
                 
                 self.viewContext.perform {
-                    self.saveContext()
+                    let _ = self.saveContext()
                     
                     // Also need to clear the current equation
                     

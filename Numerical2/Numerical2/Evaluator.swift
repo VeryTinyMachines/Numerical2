@@ -263,7 +263,8 @@ open class Evaluator {
         let cleanedString = cleanString(string)
         
         if let bracketsResolvedString = solveBracketsInString(cleanedString) {
-            return solveOperatorsInString(bracketsResolvedString)
+            let result = solveOperatorsInString(bracketsResolvedString)
+            return result
         } else {
             
             return AnswerBundle(error: ErrorType.unknown)

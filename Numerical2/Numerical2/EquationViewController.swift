@@ -73,8 +73,6 @@ class EquationViewController: UIViewController, CalculatorBrainDelete, UITextFie
         if let theAnswerView = answerView, let answer = currentAnswer {
             TimeTester.shared.printTime(string: "24 - Ånswer view about to be set")
             
-            print(answer)
-            
             theAnswerView.questionBundle = answer
         }
     }

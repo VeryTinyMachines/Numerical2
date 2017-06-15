@@ -42,9 +42,6 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                 answer = theAnswer
             }
             
-            print("answer: \(answer)!")
-            
-            
             
             // Divide up the questionString into components
             if let bundle = self.questionBundle {
@@ -75,6 +72,10 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                                     possibleAnswers = [possibleAnswers.first!] // Get the possibly fractional answer
                                 }
                             }
+                            
+//                            possibleAnswers = possibleAnswers.map({ (string) -> String in
+//                                return Glossary.formattedStringForAnswer(string)
+//                            })
                             
                             let answersString = possibleAnswers.joined(separator: " or ")
                             
@@ -139,8 +140,6 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                             
                             let boundingRect = attrString.boundingRect(with: CGSize(width: self.view.frame.width - 6 - 6, height: 2000), options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
                             
-                            print(boundingRect.height)
-                            
                             if boundingRect.height > 50 || isEditing {
                                 updateEquationViewHeight(height: 80)
                             } else {
@@ -177,8 +176,6 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
                     }
                 } else if let errorType = bundle.errorType {
                     let formattedAnswer = Glossary.formattedStringForAnswer(errorType.rawValue)
-                    print(formattedAnswer)
-                    print("")
                     
                     let questionComponents = formattedAnswer.components(separatedBy: " ")
                     
@@ -863,12 +860,6 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
     func isQuestionEditting() -> Bool {
         return isEditing
     }
-    
-    
-    @IBAction func userSwipedLeft(_ sender: UISwipeGestureRecognizer) {
-        print("Swiped")
-    }
-    
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         

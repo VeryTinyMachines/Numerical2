@@ -29,6 +29,7 @@ open class CalculatorBrain {
     }
     
     open func solveString(_ string: String) -> String {
+        
         let answer = Evaluator.solveString(string)
         
         if let answerString = answer.answer {

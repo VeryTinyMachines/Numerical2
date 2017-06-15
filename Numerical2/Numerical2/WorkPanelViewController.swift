@@ -196,16 +196,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         NotificationCenter.default.addObserver(self, selector: #selector(WorkPanelViewController.historyDeleted), name: Notification.Name(rawValue: EquationStoreNotification.historyDeleted), object: nil)
         
-        // currentEquation = EquationStore.sharedStore.currentEquation()
-        
-        // initial equation
-        //currentEquation.question = "2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+"
-        //currentEquation.question = "2+2+2+2+2+2+2+2+"
-        
-        self.loadCurrentEquationFromUserDefaults()
-        
-        //workPanelDelegate?.updateEquation(currentEquation)
-        
         updateViews(currentCursor: nil)
         
         self.themeChanged()
@@ -310,12 +300,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 if originalRequestQuestion == WorkingEquationManager.sharedManager.currentEquation() {
                     // Result is relevant
                     
-//                    if let error = answer.errorType {
-//                        self.currentEquation.answer = error.rawValue
-//                    } else {
-//                        self.currentEquation.answer = answer.answer
-//                    }
-                    
                     theView.setAnswer(answer)
                 }
             })
@@ -381,10 +365,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         TimeTester.shared.printTime(string: "2 - WorkPanelVC, pressed key \(key)")
         
         if let keyPanelView = keyPanelView {
-            if keyPanelView.isPageScrolling() {
-                // We are scrolling. Abort this.
-                //return
-            }
             
             // Disable the keyPanelView, set a timer to turn it back on.
             
@@ -458,7 +438,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [key])
             }
             
-            
             //newCursorPosition = updateCurrentQuestionByAppendingCharacters(characters: [key])
             
             //EquationStore.sharedStore.equationUpdated(equation: equation)
@@ -477,6 +456,24 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         }
         
         self.saveCurrentEquationToUserDefaults()
+    }
+    
+    func newEquation(question: String) {
+        
+        let currentEquation = WorkingEquationManager.sharedManager.currentEquation()
+        
+        if question != currentEquation {
+            saveCurrentEquationToHistoryIfNeeded()
+            
+            // Make a new equation
+            WorkingEquationManager.sharedManager.insertToHistory(question: question)
+            
+            self.finishEquationChange()
+            
+            updateLegalKeys()
+            updateViews(currentCursor: nil)
+            saveCurrentEquationToUserDefaults()
+        }
     }
     
     func clearEquationAnimation() {
@@ -873,17 +870,13 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
             
         } else {
             
-            
             var newQuestion = WorkingEquationManager.sharedManager.currentEquation()
             
             let stringToInsert = String(characters)
             
             newQuestion += stringToInsert
             
-            
             WorkingEquationManager.sharedManager.insertToHistory(question: newQuestion)
-            
-            //currentEquation.question += stringToInsert
         }
         
         // If there is a selected range we need to replace that range with these characters
@@ -956,22 +949,6 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
                 
                 WorkingEquationManager.sharedManager.insertToHistory(question: newQuestion)
             }
-            
-            // If this equation is now empty then we need to delete the equation from the store.
-            /*
-            if "" == currentEquation.question {
-                
-                EquationStore.sharedStore.deleteEquation(equation: equation)
-                
-                currentEquation = nil
-                
-                if let theWorkPanelDelegate = workPanelDelegate {
-                    theWorkPanelDelegate.updateEquation(currentEquation)
-                }
-            } else {
-                EquationStore.sharedStore.equationUpdated(equation: equation)
-            }
-             */
         }
         
         return newCursorPosition

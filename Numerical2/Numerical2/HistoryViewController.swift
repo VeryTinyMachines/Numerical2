@@ -454,7 +454,6 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
     ask `NSFetchedResultsController` for the model */
     func configureCell(_ cell: HistoryCell, atIndexPath indexPath: IndexPath) {
         
-        
         var indexPath = indexPath
         indexPath.section = 0
         
@@ -464,51 +463,6 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
             cell.selectable = true
             cell.mainLabel.attributedText = attributedString(equation: equation)
         }
-        
-        
-        
-        
-        /*
-        var answer = "No answer"
-        var question = "No question"
-        
-        if let theAnswer = equation.answer {
-            answer = Glossary.formattedStringForAnswer(theAnswer)
-        }
-        
-        if let theQuestion = equation.question {
-            question = Glossary.formattedStringForQuestion(theQuestion)
-        }
-        
-        var color = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(0.8)
-        
-        var questionFont = UIFont.systemFont(ofSize: 15.0)
-        var answerFont = UIFont.systemFont(ofSize: 20.0)
-        
-        if equation == currentEquation {
-            color = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(1.0)
-            questionFont = UIFont.boldSystemFont(ofSize: 15.0)
-            answerFont = UIFont.boldSystemFont(ofSize: 20.0)
-        }
-        
-        let attributedString = NSMutableAttributedString(string: answer, attributes: [NSFontAttributeName:answerFont, NSForegroundColorAttributeName:color])
-        
-        attributedString.append(NSMutableAttributedString(string: " = \(question)", attributes: [NSFontAttributeName:questionFont, NSForegroundColorAttributeName:color]))
-        
-        cell.textLabel?.attributedText = attributedString
-        cell.detailTextLabel?.text = nil
-        */
-        
-        /*
-        if let posted = equation.posted?.boolValue {
-            if posted == false && NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && EquationStore.sharedStore.accountStatus != CKAccountStatus.available {
-                cell.detailTextLabel?.text = "⚠"
-            }
-        }
-        */
-        
-//        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 15.0)
-//        cell.detailTextLabel?.textColor = UIColor(white: 1.0, alpha: 0.8)
     }
     
     // fetched results controller delegate

@@ -16,18 +16,19 @@ class TimeTester {
     var startTime:Int64 = 0
     
     func startTimeTester() {
-        startTime = self.currentTimeMillis()
+        //startTime = self.currentTimeMillis()
     }
     
     func printTime(string: String) {
-        let readyTime = self.currentTimeMillis()
-        let readyTimeDelta = readyTime - startTime
-        print("\(string) - \(readyTimeDelta)")
+        //let readyTime = self.currentTimeMillis()
+        //let readyTimeDelta = readyTime - startTime
+        //print("\(string) - \(readyTimeDelta)")
     }
     
     func currentTimeMillis() -> Int64 {
-        let nowDouble = Date().timeIntervalSince1970
-        return Int64(nowDouble*1000)
+        return 0
+        //let nowDouble = Date().timeIntervalSince1970
+        //return Int64(nowDouble*1000)
     }
     
 }

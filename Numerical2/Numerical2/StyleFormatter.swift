@@ -15,6 +15,8 @@ public enum FontDisplayContext {
     case answerFraction
     case answerOr
     case about
+    case questionWidget
+    case answerWidget
 }
 
 public enum KeyStyle {
@@ -32,20 +34,17 @@ class StyleFormatter {
         switch context {
         case .question:
             pointSize = 26
-            //return UIFont.systemFont(ofSize: 20.0)
         case .questionFraction:
-            //return UIFont.systemFont(ofSize: 14.0)
             pointSize = 26
-        case .answer:
+        case .questionWidget:
+            pointSize = 22
+        case .answer, .answerWidget:
             pointSize = 80
             fontName = "HelveticaNeue-Thin"
-            //return UIFont(name: fontName, size: pointSize)!
         case .answerFraction:
             pointSize = 34
-            //return UIFont.systemFont(ofSize: 28.0)
         case .answerOr:
             pointSize = 18
-            //return UIFont.systemFont(ofSize: 18.0)
         case .about:
             pointSize = 16
             fontName = "Avenir-Light"
@@ -73,6 +72,9 @@ class StyleFormatter {
                 pointSize *= 1.3
             } else if smallOperands.contains(key) {
                 pointSize *= 1.2
+            } else if key == SymbolCharacter.app {
+                pointSize *= 0.8
+                fontName = "HelveticaNeue"
             }
         }
         

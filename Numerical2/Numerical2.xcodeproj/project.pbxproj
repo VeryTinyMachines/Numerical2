@@ -42,6 +42,7 @@
 		513197301B6ADD5900E9B802 /* Numerical2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131972F1B6ADD5900E9B802 /* Numerical2UITests.swift */; };
 		51354FE51ECC842600A01585 /* WorkingEquationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51354FE41ECC842600A01585 /* WorkingEquationManager.swift */; };
 		51354FE71ECCA02600A01585 /* mellow.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 51354FE61ECCA02600A01585 /* mellow.aiff */; };
+		5135589A1EF04510002F89C2 /* URLHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513558991EF04510002F89C2 /* URLHandler.swift */; };
 		513A9E051EA284690017D9A5 /* SimpleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513A9E041EA284690017D9A5 /* SimpleLogger.swift */; };
 		513C77131EAE4A950037121B /* SwipePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513C77121EAE4A950037121B /* SwipePageViewController.swift */; };
 		5142AE3C1DA420EE0076D117 /* 5_Star-(alt).png in Resources */ = {isa = PBXBuildFile; fileRef = 5142AE361DA420EE0076D117 /* 5_Star-(alt).png */; };
@@ -96,6 +97,19 @@
 		51D28B4E1B6D1BA9009A0AEC /* FractionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51D28B4D1B6D1BA9009A0AEC /* FractionViewCell.xib */; };
 		51D28B501B6D1C0F009A0AEC /* FractionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */; };
 		51D3AB2F1BC89AD40019B601 /* KeypadPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */; };
+		51D5E5341EF0097A00556140 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D5E5331EF0097A00556140 /* NotificationCenter.framework */; };
+		51D5E5371EF0097A00556140 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D5E5361EF0097A00556140 /* TodayViewController.swift */; };
+		51D5E53A1EF0097A00556140 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51D5E5381EF0097A00556140 /* MainInterface.storyboard */; };
+		51D5E53E1EF0097A00556140 /* Today Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 51D5E5321EF0097A00556140 /* Today Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		51D5E5421EF012C000556140 /* Glossary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB91B6B657F00D1A07F /* Glossary.swift */; };
+		51D5E5431EF012CB00556140 /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB81B6B657F00D1A07F /* Evaluator.swift */; };
+		51D5E5441EF012CE00556140 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510D3AB51B6B657F00D1A07F /* CalculatorBrain.swift */; };
+		51D5E5451EF012E700556140 /* UIColor+Numerical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BE48B91E13AA38002A2B92 /* UIColor+Numerical.swift */; };
+		51D5E5461EF012EB00556140 /* NumericalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512137BC1D969C760042EFC1 /* NumericalHelper.swift */; };
+		51D5E5471EF012F800556140 /* ThemeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511D2A931E3480EE00957ADB /* ThemeFormatter.swift */; };
+		51D5E5481EF012FC00556140 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511D2A961E3485CB00957ADB /* Theme.swift */; };
+		51D5E5491EF0131400556140 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623BDF41BD40FDB0046B84D /* Constants.swift */; };
+		51D5E54A1EF0137A00556140 /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; };
 		51D7A8421BBA7F2D0064AA4B /* StyleFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */; };
 		51D941A41E6CFBB300844568 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D941A31E6CFBB300844568 /* SwitchCell.swift */; };
 		51E032861E76C6F20000A2A5 /* AppIcon120x120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51E032851E76C6F20000A2A5 /* AppIcon120x120@2x.png */; };
@@ -135,6 +149,13 @@
 			remoteGlobalIDString = 51BE489E1E13990B002A2B92;
 			remoteInfo = Keyboard;
 		};
+		51D5E53C1EF0097A00556140 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 513197041B6ADD5900E9B802 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 51D5E5311EF0097A00556140;
+			remoteInfo = "Today Widget";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -145,6 +166,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				51BE48A61E13990C002A2B92 /* Keyboard.appex in Embed App Extensions */,
+				51D5E53E1EF0097A00556140 /* Today Widget.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -199,6 +221,7 @@
 		513197311B6ADD5900E9B802 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51354FE41ECC842600A01585 /* WorkingEquationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkingEquationManager.swift; sourceTree = "<group>"; };
 		51354FE61ECCA02600A01585 /* mellow.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mellow.aiff; sourceTree = "<group>"; };
+		513558991EF04510002F89C2 /* URLHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLHandler.swift; sourceTree = "<group>"; };
 		513A9E041EA284690017D9A5 /* SimpleLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleLogger.swift; sourceTree = "<group>"; };
 		513C77121EAE4A950037121B /* SwipePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipePageViewController.swift; sourceTree = "<group>"; };
 		5142AE361DA420EE0076D117 /* 5_Star-(alt).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5_Star-(alt).png"; sourceTree = "<group>"; };
@@ -237,6 +260,7 @@
 		51C40E8A1DCC167200930BFD /* SoundManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		51C40ECB1DCC492200930BFD /* CustomAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnimationController.swift; sourceTree = "<group>"; };
 		51C40ECC1DCC492200930BFD /* CustomDismissAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDismissAnimationController.swift; sourceTree = "<group>"; };
+		51C92BB21EF06BCF0027CA62 /* Today Widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Today Widget.entitlements"; sourceTree = "<group>"; };
 		51D116751E8278700059C342 /* Theme_Phone_Keypad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Theme_Phone_Keypad.png; sourceTree = "<group>"; };
 		51D116761E8278700059C342 /* Theme_Phone_StatusBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Theme_Phone_StatusBar.png; sourceTree = "<group>"; };
 		51D116791E827A730059C342 /* Theme_Pad_Keypad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Theme_Pad_Keypad.png; sourceTree = "<group>"; };
@@ -248,6 +272,11 @@
 		51D28B4D1B6D1BA9009A0AEC /* FractionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FractionViewCell.xib; sourceTree = "<group>"; };
 		51D28B4F1B6D1C0F009A0AEC /* FractionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FractionViewCell.swift; sourceTree = "<group>"; };
 		51D3AB2E1BC89AD40019B601 /* KeypadPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeypadPageViewController.swift; sourceTree = "<group>"; };
+		51D5E5321EF0097A00556140 /* Today Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Today Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		51D5E5331EF0097A00556140 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		51D5E5361EF0097A00556140 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		51D5E5391EF0097A00556140 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		51D5E53B1EF0097A00556140 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51D7A8411BBA7F2D0064AA4B /* StyleFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleFormatter.swift; sourceTree = "<group>"; };
 		51D941A31E6CFBB300844568 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		51E032851E76C6F20000A2A5 /* AppIcon120x120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon120x120@2x.png"; sourceTree = "<group>"; };
@@ -308,6 +337,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		51D5E52F1EF0097A00556140 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51D5E5341EF0097A00556140 /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -321,6 +358,7 @@
 				513197231B6ADD5900E9B802 /* Numerical2Tests */,
 				5131972E1B6ADD5900E9B802 /* Numerical2UITests */,
 				51BE48A01E13990C002A2B92 /* Keyboard */,
+				51D5E5351EF0097A00556140 /* Today Widget */,
 				5131970D1B6ADD5900E9B802 /* Products */,
 				518A8BA71D9703E0001D8B12 /* Frameworks */,
 				7F63CC758F8F02505C805196 /* Pods */,
@@ -334,6 +372,7 @@
 				513197201B6ADD5900E9B802 /* Numerical2Tests.xctest */,
 				5131972B1B6ADD5900E9B802 /* Numerical2UITests.xctest */,
 				51BE489F1E13990B002A2B92 /* Keyboard.appex */,
+				51D5E5321EF0097A00556140 /* Today Widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -342,6 +381,7 @@
 			isa = PBXGroup;
 			children = (
 				5131970F1B6ADD5900E9B802 /* AppDelegate.swift */,
+				513558991EF04510002F89C2 /* URLHandler.swift */,
 				511EA1FD1EA8D6D700E843C0 /* Numerical2b_120@2x.png */,
 				51E3262E1ED0CA030031DEE6 /* alticon@2x.png */,
 				513A9E041EA284690017D9A5 /* SimpleLogger.swift */,
@@ -455,6 +495,7 @@
 				5A3F107D8FF5009611D301AD /* Pods_Numerical2.framework */,
 				887EC6CEF501CADB94EDDAB7 /* Pods_Numerical2Tests.framework */,
 				F3CED7E09580B4D03F9B89C2 /* Pods_Numerical2UITests.framework */,
+				51D5E5331EF0097A00556140 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -481,6 +522,17 @@
 				51C40E831DCC135C00930BFD /* slide-paper.aiff */,
 			);
 			name = Sounds;
+			sourceTree = "<group>";
+		};
+		51D5E5351EF0097A00556140 /* Today Widget */ = {
+			isa = PBXGroup;
+			children = (
+				51C92BB21EF06BCF0027CA62 /* Today Widget.entitlements */,
+				51D5E5361EF0097A00556140 /* TodayViewController.swift */,
+				51D5E5381EF0097A00556140 /* MainInterface.storyboard */,
+				51D5E53B1EF0097A00556140 /* Info.plist */,
+			);
+			path = "Today Widget";
 			sourceTree = "<group>";
 		};
 		51D7A8361BBA7D060064AA4B /* Evaluator */ = {
@@ -607,6 +659,7 @@
 			);
 			dependencies = (
 				51BE48A51E13990C002A2B92 /* PBXTargetDependency */,
+				51D5E53D1EF0097A00556140 /* PBXTargetDependency */,
 			);
 			name = Numerical2;
 			productName = Numerical2;
@@ -671,6 +724,23 @@
 			productReference = 51BE489F1E13990B002A2B92 /* Keyboard.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		51D5E5311EF0097A00556140 /* Today Widget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 51D5E5411EF0097A00556140 /* Build configuration list for PBXNativeTarget "Today Widget" */;
+			buildPhases = (
+				51D5E52E1EF0097A00556140 /* Sources */,
+				51D5E52F1EF0097A00556140 /* Frameworks */,
+				51D5E5301EF0097A00556140 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Today Widget";
+			productName = "Today Widget";
+			productReference = 51D5E5321EF0097A00556140 /* Today Widget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -723,6 +793,16 @@
 							};
 						};
 					};
+					51D5E5311EF0097A00556140 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = C583RN882K;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = 513197071B6ADD5900E9B802 /* Build configuration list for PBXProject "Numerical2" */;
@@ -742,6 +822,7 @@
 				5131971F1B6ADD5900E9B802 /* Numerical2Tests */,
 				5131972A1B6ADD5900E9B802 /* Numerical2UITests */,
 				51BE489E1E13990B002A2B92 /* Keyboard */,
+				51D5E5311EF0097A00556140 /* Today Widget */,
 			);
 		};
 /* End PBXProject section */
@@ -806,6 +887,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				51BE48B71E139BDF002A2B92 /* KeyboardView.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		51D5E5301EF0097A00556140 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51D5E53A1EF0097A00556140 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -996,6 +1085,7 @@
 				51B2A29F1D95C304002A9AD8 /* Pad.swift in Sources */,
 				51C40ECE1DCC492200930BFD /* CustomDismissAnimationController.swift in Sources */,
 				513197101B6ADD5900E9B802 /* AppDelegate.swift in Sources */,
+				5135589A1EF04510002F89C2 /* URLHandler.swift in Sources */,
 				51C40ECD1DCC492200930BFD /* CustomAnimationController.swift in Sources */,
 				51354FE51ECC842600A01585 /* WorkingEquationManager.swift in Sources */,
 				515EB8FB1DA6A0150081D9FB /* SalesViewController.swift in Sources */,
@@ -1038,6 +1128,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		51D5E52E1EF0097A00556140 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51D5E5371EF0097A00556140 /* TodayViewController.swift in Sources */,
+				51D5E5481EF012FC00556140 /* Theme.swift in Sources */,
+				51D5E5451EF012E700556140 /* UIColor+Numerical.swift in Sources */,
+				51D5E5421EF012C000556140 /* Glossary.swift in Sources */,
+				51D5E5471EF012F800556140 /* ThemeFormatter.swift in Sources */,
+				51D5E5441EF012CE00556140 /* CalculatorBrain.swift in Sources */,
+				51D5E5461EF012EB00556140 /* NumericalHelper.swift in Sources */,
+				51D5E5431EF012CB00556140 /* Evaluator.swift in Sources */,
+				51D5E54A1EF0137A00556140 /* StyleFormatter.swift in Sources */,
+				51D5E5491EF0131400556140 /* Constants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1056,6 +1163,11 @@
 			target = 51BE489E1E13990B002A2B92 /* Keyboard */;
 			targetProxy = 51BE48A41E13990C002A2B92 /* PBXContainerItemProxy */;
 		};
+		51D5E53D1EF0097A00556140 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 51D5E5311EF0097A00556140 /* Today Widget */;
+			targetProxy = 51D5E53C1EF0097A00556140 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1073,6 +1185,14 @@
 				513197191B6ADD5900E9B802 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		51D5E5381EF0097A00556140 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				51D5E5391EF0097A00556140 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1319,6 +1439,50 @@
 			};
 			name = Release;
 		};
+		51D5E53F1EF0097A00556140 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CODE_SIGN_ENTITLEMENTS = "Today Widget/Today Widget.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = C583RN882K;
+				INFOPLIST_FILE = "Today Widget/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.andrewjclark.numericalapp.Today-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		51D5E5401EF0097A00556140 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CODE_SIGN_ENTITLEMENTS = "Today Widget/Today Widget.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = C583RN882K;
+				INFOPLIST_FILE = "Today Widget/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.andrewjclark.numericalapp.Today-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1363,6 +1527,15 @@
 			buildConfigurations = (
 				51BE48A71E13990C002A2B92 /* Debug */,
 				51BE48A81E13990C002A2B92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		51D5E5411EF0097A00556140 /* Build configuration list for PBXNativeTarget "Today Widget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				51D5E53F1EF0097A00556140 /* Debug */,
+				51D5E5401EF0097A00556140 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -69,8 +69,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
     
     @IBOutlet weak var testView: UIView!
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -110,10 +108,10 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         if let previousVersion = UserDefaults.standard.string(forKey: "CurrentVersion") {
             print("previousVersion: \(previousVersion)")
             print("")
-            if currentVersion != previousVersion && previousVersion <= "v2.0.5" {
+            if currentVersion != previousVersion {
                 // Display a tool tip
                 DispatchQueue.main.async {
-                    let alertView = UIAlertController(title: "Numerical² has been\nupdated to \(currentVersion)!", message: "You can now swipe left/right to undo/redo, swipe up to clear, swipe down to start new! You can also name and rename themes now :)", preferredStyle: UIAlertControllerStyle.alert)
+                    let alertView = UIAlertController(title: "Numerical² has been\nupdated to \(currentVersion)!", message: "You can now access Numerical² using the Today widget! Swipe down to open Notification center, swipe left for Today, then click Edit and add Numerical²  :D It works much the same as the Numerical² Keyboard, which you can enable in Settings.", preferredStyle: UIAlertControllerStyle.alert)
                     
                     alertView.addAction(UIAlertAction(title: "What Else Is New?", style: UIAlertActionStyle.default, handler: { (action) in
                         self.attemptToOpenURL(urlString: "http://www.verytinymachines.com/numerical2-whatsnew/")
@@ -354,7 +352,6 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             currentStatus = statusBarStyleForHeight()
         }
     }
-    
     
     func selectedEquation(_ equation: Equation) {
         
@@ -975,6 +972,20 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         // Focus the history view on the current equation
         //historyView?.focusOnCurrentEquation()
         themeChanged() // Just in case we have rotated in another view.
+        processURLIfNeeded()
+    }
+    
+    func processURLIfNeeded() {
+        print("processURLIfNeeded()")
+        
+        if let question = URLHandler.sharedHandler.questionFromURL() {
+            
+            if let workPanelView = workPanelView {
+                workPanelView.newEquation(question: question)
+                
+                URLHandler.sharedHandler.url = nil
+            }
+        }
     }
     
     func updateHistoryContentInsets(heightPercentage: CGFloat, viewSize: CGSize) {

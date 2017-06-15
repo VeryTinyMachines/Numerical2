@@ -46,15 +46,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            UIApplication.shared.setAlternateIconName("AppIcon-2")
 //        }
         
-        print(Glossary.numberWithCommas(string: "1000000"))
-        print(Glossary.numberWithCommas(string: "1000000."))
-        print(Glossary.numberWithCommas(string: "1000000.000000"))
-        print(Glossary.numberWithCommas(string: ".1000000"))
-        
+        if let url = launchOptions?[UIApplicationLaunchOptionsKey.url] as? NSURL {
+            if let scheme = url.scheme {
+                if scheme == "numerical" {
+                    processURL(url: url as URL)
+                }
+            }
+        }
         
         return true
     }
 
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        // User opened a URL while the app was open
+        
+        if let scheme = url.scheme {
+            if scheme == "numerical" {
+                processURL(url: url)
+                
+                if let rootView = UIApplication.shared.keyWindow?.rootViewController as? ViewController {
+                    rootView.processURLIfNeeded()
+                }
+            }
+        }
+        
+        return true
+    }
+    
+    func processURL(url: URL) {
+        URLHandler.sharedHandler.url = url
+    }
+    
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -82,8 +106,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("")
-        
         
         let notification: CKNotification =
             CKNotification(fromRemoteNotificationDictionary:
@@ -108,15 +130,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        print("")
+        
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print("")
+        
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("")
+        
     }
 }
 

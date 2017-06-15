@@ -57,7 +57,7 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
         }
     }
     
-    func email(emailAddress: String, subject: String) {
+    func email(emailAddress: String, subject: String, message: String?) {
         if MFMailComposeViewController.canSendMail() {
             
             let picker = MFMailComposeViewController()
@@ -67,6 +67,10 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
             picker.setToRecipients(toReceipts)
             
             picker.setSubject(subject + NumericalHelper.currentDeviceInfo(includeBuildNumber: true))
+            
+            if let message = message {
+                picker.setMessageBody(message, isHTML: false)
+            }
             
             if let info = Bundle.main.infoDictionary {
                 if let version = info["CFBundleShortVersionString"] as? String, let buildNumber = info["CFBundleVersion"] as? String {

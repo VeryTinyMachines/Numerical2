@@ -149,7 +149,7 @@ class SalesViewController: NumericalViewController {
         }))
         
         alert.addAction(UIAlertAction(title: "Contact Support", style: UIAlertActionStyle.default, handler: { (action) in
-            self.email(emailAddress: "verytinymachines@gmail.com", subject: "Subscription Issues")
+            self.email(emailAddress: "verytinymachines@gmail.com", subject: "Subscription Issues", message: "I'm having an issue with my Numerical² subscription and that issue is...")
         }))
         
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
