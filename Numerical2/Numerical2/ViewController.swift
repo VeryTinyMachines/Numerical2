@@ -108,7 +108,7 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         if let previousVersion = UserDefaults.standard.string(forKey: "CurrentVersion") {
             print("previousVersion: \(previousVersion)")
             print("")
-            if currentVersion != previousVersion {
+            if (currentVersion > previousVersion && previousVersion < "v2.0.8") {
                 // Display a tool tip
                 DispatchQueue.main.async {
                     let alertView = UIAlertController(title: "Numerical² has been\nupdated to \(currentVersion)!", message: "You can now access Numerical² using the Today widget! Swipe down to open Notification center, swipe left for Today, then click Edit and add Numerical²  :D It works much the same as the Numerical² Keyboard, which you can enable in Settings.", preferredStyle: UIAlertControllerStyle.alert)
@@ -120,6 +120,8 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
                     alertView.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
                         
                     }))
+                    
+                    alertView.popoverPresentationController?.sourceView = self.view
                     
                     self.present(alertView, animated: true, completion: {
                         
@@ -835,7 +837,9 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
             
             let newEquationHeight = equationHeight(workPanelHeight: heightPercentage, viewSize: viewSize)
             
-            workPanelView.equationViewHeightConstraint.constant = newEquationHeight
+            if newEquationHeight > 0 {
+                workPanelView.equationViewHeightConstraint.constant = newEquationHeight
+            }
         }
         
         var panelSize:CGFloat = 0

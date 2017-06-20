@@ -496,6 +496,12 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                     
                 }))
                 
+                if let cell = tableView.cellForRow(at: indexPath) {
+                    alert.popoverPresentationController?.sourceView = cell
+                } else {
+                    alert.popoverPresentationController?.sourceView = self.view
+                }
+                
                 self.present(alert, animated: true, completion: {
                     
                 })
@@ -510,6 +516,12 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
                 alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action) in
                     
                 }))
+                
+                if let cell = tableView.cellForRow(at: indexPath) {
+                    alert.popoverPresentationController?.sourceView = cell
+                } else {
+                    alert.popoverPresentationController?.sourceView = self.view
+                }
                 
                 self.present(alert, animated: true, completion: {
                     

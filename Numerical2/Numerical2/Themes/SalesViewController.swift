@@ -156,6 +156,8 @@ class SalesViewController: NumericalViewController {
             
         }))
         
+        alert.popoverPresentationController?.sourceView = self.view
+        
         self.present(alert, animated: true) { 
             
         }

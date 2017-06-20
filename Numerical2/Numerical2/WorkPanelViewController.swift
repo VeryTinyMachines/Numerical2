@@ -359,6 +359,16 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         }
     }
     
+    private func isKeyScientific(character: Character) -> Bool {
+        
+        if SymbolCharacter.premiumOperators.contains(character) {
+            return true
+        }
+        
+        return false
+    }
+    
+    
     func pressedKey(_ key: Character, sourceView: UIView?) {
         // print("key: \(key)")
         
@@ -398,6 +408,17 @@ class WorkPanelViewController: NumericalViewController, KeypadDelegate, KeypadPa
         
         // A key has been pressed, determine if we should be inserting this character at the end of the string or somewhere in the middle
         var newCursorPosition:Int?
+        
+        
+        if self.isKeyScientific(character: key) {
+            Answers.logCustomEvent(withName: "userPressed.key.scientific", customAttributes: nil)
+        } else if key == SymbolCharacter.clear {
+            Answers.logCustomEvent(withName: "userPressed.key.clear", customAttributes: nil)
+        } else if key == SymbolCharacter.delete {
+            Answers.logCustomEvent(withName: "userPressed.key.delete", customAttributes: nil)
+        } else {
+            Answers.logCustomEvent(withName: "userPressed.key.regular", customAttributes: nil)
+        }
         
         if key == SymbolCharacter.clear {
             

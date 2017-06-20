@@ -602,7 +602,9 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
             
         }))
         
-        self.present(alertView, animated: true) { 
+        alertView.popoverPresentationController?.sourceView = self.view
+        
+        self.present(alertView, animated: true) {
             
         }
     }

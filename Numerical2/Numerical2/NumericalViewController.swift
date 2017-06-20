@@ -9,7 +9,6 @@
 import UIKit
 import MessageUI
 
-
 public enum SalesScreenType {
     case theme
     case themeCreator
@@ -21,7 +20,6 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
     
     var loadingScreen:UIView?
     var menuDismissButton:UIButton?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +34,8 @@ class NumericalViewController: UIViewController, MFMailComposeViewControllerDele
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (action) in
                 
             }))
+            
+            alert.popoverPresentationController?.sourceView = self.view
             
             self.present(alert, animated: true, completion: {
                 

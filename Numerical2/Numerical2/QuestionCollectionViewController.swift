@@ -612,7 +612,17 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
             width = collectionView.bounds.width - 20
         }
         
-        return CGSize(width: width, height: collectionView.bounds.height)
+        var height = collectionView.bounds.height
+        
+        if width < 0 {
+            width = 0
+        }
+        
+        if height < 0 {
+            height = 0
+        }
+        
+        return CGSize(width: width, height: height)
     }
     
     

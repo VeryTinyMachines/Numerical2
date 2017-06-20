@@ -48,11 +48,14 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         updateEquationHeight(size: self.view.frame.size)
         
-        self.preferredContentSize = CGSize(width:self.view.frame.width, height:expandedHeight)
+        // self.preferredContentSize = CGSize(width:self.view.frame.width, height:expandedHeight)
         
         if #available(iOSApplicationExtension 10.0, *) {
-            //self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
+            self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
         }
+        
+        
+        self.updatePreferredContentSize()
         
         if interfaceSetup == false {
             layoutInterface()
@@ -362,12 +365,27 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     @available(iOS 10.0, *)
     @available(iOSApplicationExtension 10.0, *)
     func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
+        
         if activeDisplayMode == .expanded {
             self.preferredContentSize = CGSize(width: maxSize.width, height: expandedHeight)
-        } else if activeDisplayMode == .compact{
+        } else if activeDisplayMode == .compact {
             self.preferredContentSize = CGSize(width: maxSize.width, height: compactHeight)
         }
     }
+    
+    func updatePreferredContentSize() {
+        if let extensionContext = extensionContext {
+            
+            let maxWidth = extensionContext.widgetMaximumSize(for: extensionContext.widgetActiveDisplayMode).width
+            
+            if extensionContext.widgetActiveDisplayMode == .expanded {
+                self.preferredContentSize = CGSize(width: maxWidth, height: expandedHeight)
+            } else {
+                self.preferredContentSize = CGSize(width: maxWidth, height: compactHeight)
+            }
+        }
+    }
+    
     
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         // Perform any setup necessary in order to update the view.

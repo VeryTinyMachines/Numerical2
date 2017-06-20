@@ -600,6 +600,8 @@ class PremiumCoordinator: NSObject, SKProductsRequestDelegate, SKPaymentTransact
     }
     
     
+    
+    
     func keyStyleFor(character: Character) -> KeyStyle? {
         if isKeyPremium(character: character) {
             // This key is usually premium, determine what kind of style is required.
