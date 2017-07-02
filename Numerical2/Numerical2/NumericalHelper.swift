@@ -21,6 +21,7 @@ public struct NumericalHelperSetting {
     public static let showScientific = "showScientific"
     public static let preferHistoryBehind = "preferHistoryBehind"
     public static let decimalLength = "decimalLength"
+    public static let boldFont = "boldFont"
 }
 
 public enum HistoryViewType {

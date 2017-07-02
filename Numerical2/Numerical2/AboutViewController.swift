@@ -32,8 +32,7 @@ public enum AboutViewItem {
     case showscientific
     case historybehind
     case decimallength
-    
-    
+    case boldfont
 }
 
 class AboutViewController: NumericalViewController, UITableViewDelegate, UITableViewDataSource {
@@ -128,6 +127,10 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         items.append(AboutViewItem.decimallength)
         items.append(AboutViewItem.seperator)
         
+        // Bold Font size
+        items.append(AboutViewItem.boldfont)
+        items.append(AboutViewItem.seperator)
+        
         // Prefer History Behind
         items.append(AboutViewItem.historybehind)
         items.append(AboutViewItem.seperator)
@@ -190,7 +193,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             break
         }
         
-        return 66
+        return 80
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -216,10 +219,11 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             var string = "Auto Brackets"
             
             if !NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.autoBrackets) {
-                string += "\n(Remeber your Order Of Evaluation)"
+                //string += "\n(Remember, equations are solved in the order: ÷ × + -)"
+                string += "\n(This off may produce unexpected answers if you don't understand B.O.D.M.A.S)"
             }
             
-            setSwitchCell(text: "Auto Brackets", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.autoBrackets), row: indexPath.row, switchCell: switchCell)
+            setSwitchCell(text: string, isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.autoBrackets), row: indexPath.row, switchCell: switchCell)
             
             return switchCell
             
@@ -353,6 +357,13 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             sliderCell.backgroundColor = UIColor.clear
             
             return sliderCell
+        case .boldfont:
+            let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
+            
+            setSwitchCell(text: "Use Bold Font", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.boldFont), row: indexPath.row, switchCell: switchCell)
+            
+            return switchCell
+            
         case .todaywidget:
             cell.textLabel?.text = "Today Widget"
         }
@@ -369,7 +380,7 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         switchCell.selectionStyle = UITableViewCellSelectionStyle.none
         
         switchCell.mainLabel.font =  NumericalHelper.aboutMenuFont()
-        switchCell.mainLabel.numberOfLines = 2
+        switchCell.mainLabel.numberOfLines = 0
         switchCell.mainLabel.adjustsFontSizeToFitWidth = true
         switchCell.mainLabel.minimumScaleFactor = 0.5
         switchCell.mainLabel.textColor = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
@@ -433,6 +444,10 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             NumericalHelper.flipSetting(string: NumericalHelperSetting.preferdecimal)
             // Reload the answer
             NotificationCenter.default.post(name: Notification.Name(rawValue: EquationStoreNotification.equationLogicChanged), object: nil)
+        case .boldfont:
+            // Bold Font
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.boldFont)
+            ThemeCoordinator.shared.postThemeChangedNotification()
         case .preferradians:
             NumericalHelper.flipSetting(string: NumericalHelperSetting.preferRadians)
             
@@ -547,6 +562,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             case .historybehind:
                 break
             case .decimallength:
+                break
+            case .boldfont:
                 break
             }
         }

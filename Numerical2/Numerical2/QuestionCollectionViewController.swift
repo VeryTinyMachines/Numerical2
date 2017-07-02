@@ -28,20 +28,11 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
         didSet {
             TimeTester.shared.printTime(string: "30 - Question bundle set")
             
-            if self.isAnswerView {
-                print(questionBundle?.answer)
-                print(questionBundle?.error)
-                print(questionBundle?.errorType)
-                
-                print("")
-            }
-            
             var answer = ""
             
             if let theAnswer = self.questionBundle?.answer {
                 answer = theAnswer
             }
-            
             
             // Divide up the questionString into components
             if let bundle = self.questionBundle {
@@ -394,7 +385,7 @@ class QuestionCollectionViewController:NumericalViewController, UICollectionView
             self.questionBundle = bundle // this updates the states of all the different display methods.
             
             self.textField.isEditable = false
-            self.textFieldTrailing.constant = 0.0
+            self.textFieldTrailing.constant = 10.0 // Add a small buffer between the textField and the edge of the view
             
             if let theAnswer = self.questionBundle?.answer {
                 textField.text = Glossary.formattedStringForQuestion(theAnswer, addSpaces: true)

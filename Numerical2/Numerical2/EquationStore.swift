@@ -292,6 +292,22 @@ class EquationStore {
         }
     }
     
+    func forceSave() {
+        let context = persistentContainer.viewContext
+        
+        do {
+            try context.save()
+        } catch {
+            // Replace this implementation with code to handle the error appropriately.
+            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            let nserror = error as NSError
+            
+            SimpleLogger.appendLog(string: "EquationStore.saveContext error: \(nserror.code) \(nserror.localizedDescription)")
+            
+            Crashlytics.sharedInstance().recordError(nserror)
+        }
+    }
+    
     func updateCloudKit() {
         if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && self.accountStatus == CKAccountStatus.available {
             // Fetch items from the data base that are posted == nil or posted == 1
@@ -426,6 +442,11 @@ class EquationStore {
     } ()
     
     func cloudFetchLatestEquations() {
+        
+        // temp disable for testing
+        
+        
+        
         if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.iCloudHistorySync) && self.accountStatus == CKAccountStatus.available {
             let fetchDate = NSDate()
             
@@ -444,6 +465,7 @@ class EquationStore {
                 }
             }
         }
+        
     }
     
     func compareRecords(records: [CKRecord]) {
@@ -472,6 +494,16 @@ class EquationStore {
                                         // The remoteModDate is newer thatn the local one, therefore we prefer the local version.
                                         preferRemoteCopy = true
                                     }
+                                    
+                                    // Unless this local version is deleted, in which case don't update it
+                                    
+                                    if let userDeleted = fetchedEquation.userDeleted {
+                                        if userDeleted.boolValue == true {
+                                            // This equation was manually deleted, so don't update it.
+                                            preferRemoteCopy = false
+                                        }
+                                    }
+                                    
                                     
                                     if preferRemoteCopy {
                                         fetchedEquation.updateTo(record: record)
@@ -530,7 +562,7 @@ class EquationStore {
     
     func fetchAllUndeletedEquations() -> [Equation]? {
         
-        let fetchRequest = equationsFetchRequest(NSPredicate(format: "userDeleted != 1"))
+        let fetchRequest = equationsFetchRequest(NSPredicate(format: "userDeleted == nil || userDeleted == 0")) // This fetches all undeleted equations
         
         do {
             let results = try self.viewContext.fetch(fetchRequest)
@@ -738,18 +770,24 @@ class EquationStore {
     }
     
     func deleteHistory(block:((_ complete: Bool) -> Void)?) {
+        print("deleteHistory")
+        
         let _ = self.saveContext()
         
         self.backgroundContext.perform {
             if let currentEquations = self.fetchAllUndeletedEquations() {
+                
+                print("currentEquations.count: \(currentEquations.count)")
+                
                 for equation in currentEquations {
+                    print("equation: \(equation)")
                     equation.posted =  NSNumber(value: false)
                     equation.lastModifiedDate = NSDate()
                     equation.userDeleted = NSNumber(value: true)
                 }
                 
                 self.viewContext.perform {
-                    let _ = self.saveContext()
+                    self.forceSave()
                     
                     // Also need to clear the current equation
                     

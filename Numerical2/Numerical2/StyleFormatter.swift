@@ -17,6 +17,7 @@ public enum FontDisplayContext {
     case about
     case questionWidget
     case answerWidget
+    case historyList
 }
 
 public enum KeyStyle {
@@ -30,6 +31,7 @@ class StyleFormatter {
     class func preferredFontForContext(_ context: FontDisplayContext) -> UIFont {
         var pointSize:CGFloat = 20
         var fontName = "HelveticaNeue-Light"
+        var canBoldContext = false
         
         switch context {
         case .question:
@@ -48,6 +50,17 @@ class StyleFormatter {
         case .about:
             pointSize = 16
             fontName = "Avenir-Light"
+            canBoldContext = true
+        case .historyList:
+            return UIFont.systemFont(ofSize: 20)
+        }
+        
+        if canBoldContext && NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.boldFont) {
+            if fontName == "Avenir-Light" {
+                fontName = "AvenirNext-Medium"
+            } else {
+                fontName = "HelveticaNeue-Medium"
+            }
         }
         
         if let font = UIFont(name: fontName, size: pointSize) {
@@ -78,13 +91,16 @@ class StyleFormatter {
             }
         }
         
+        if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.boldFont) {
+            fontName = "HelveticaNeue"
+        }
+        
         if let font = UIFont(name: fontName, size: pointSize) {
             return font
         } else {
             return UIFont.systemFont(ofSize: pointSize)
         }
-    }
-    
+    }   
 }
 
 extension UserDefaults {

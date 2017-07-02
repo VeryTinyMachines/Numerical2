@@ -586,15 +586,26 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
         
         alertView.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.destructive, handler: { (action) in
             
+            self.fetchedResultsController.delegate = nil // Turn off the delegate so that the delete doesn't remove cells.
+            
             EquationStore.sharedStore.deleteHistory(block: { (complete) in
-                if complete {
-                    
-                } else {
+                if !complete {
                     self.displayAlert(title: "Error", message: "Uh oh. Something went wrong deleting your history.")
                 }
                 
-                self.tableView.setEditing(false, animated: true)
-                self.updateButtons()
+                print("self.fetchedResultsController.fetchedObjects?.count: \(self.fetchedResultsController.fetchedObjects?.count)")
+                
+                DispatchQueue.main.async {
+                    self.fetchedResultsController.delegate = self
+                    self.performFetch()
+                    
+                    print("self.fetchedResultsController.fetchedObjects?.count: \(self.fetchedResultsController.fetchedObjects?.count)")
+                    
+                    self.tableView.reloadData()
+                    
+                    self.updateButtons()
+                    self.tableView.setEditing(false, animated: true)
+                }
             })
         }))
         
@@ -642,17 +653,21 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
             question = Glossary.formattedStringForQuestion(theQuestion)
         }
         
+        if let deleted = equation.userDeleted {
+            answer += "(\(deleted))"
+        } else {
+            answer += " (nil)"
+        }
+        
         var color = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(1.0)
-        var questionFont = UIFont.systemFont(ofSize: 15.0)
-        var answerFont = UIFont.systemFont(ofSize: 20.0)
+        
+        // zzz
+        let questionFont = StyleFormatter.preferredFontForContext(FontDisplayContext.historyList)
+        let answerFont = StyleFormatter.preferredFontForContext(FontDisplayContext.historyList)
         
         if equation == currentEquation {
             color = ThemeCoordinator.shared.foregroundColorForCurrentTheme()
-            //questionFont = UIFont.boldSystemFont(ofSize: 15.0)
-            //answerFont = UIFont.boldSystemFont(ofSize: 20.0)
         }
-        
-        questionFont = answerFont
         
         let attributedString = NSMutableAttributedString(string: question, attributes: [NSFontAttributeName:answerFont, NSForegroundColorAttributeName:color])
         

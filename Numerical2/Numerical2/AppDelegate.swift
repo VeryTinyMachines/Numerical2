@@ -34,6 +34,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             SoundManager.primeSounds()
         }
         
+        // temp for testing - make 30 equations.
+        
+        DispatchQueue.main.async {
+            for number in 1...30 {
+                EquationStore.sharedStore.newEquation(question: "\(number)+0", answer: "\(number)")
+            }
+            EquationStore.sharedStore.queueSave()
+            EquationStore.sharedStore.queueCloudKitNeedsUpdate()
+        }
+        
+        
         //Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
 //            print(WorkingEquationManager.sharedManager.printHistory())
 //        }
@@ -42,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Current Version saving and presentation is now in ViewController
         
-        //DispatchQueue.main.async {
+//        DispatchQueue.main.async {
 //            UIApplication.shared.setAlternateIconName("AppIcon-2")
 //        }
         
