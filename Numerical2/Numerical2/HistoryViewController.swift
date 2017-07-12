@@ -652,12 +652,12 @@ class HistoryViewController: NumericalViewController, NSFetchedResultsController
         if let theQuestion = equation.question {
             question = Glossary.formattedStringForQuestion(theQuestion)
         }
-        
-        if let deleted = equation.userDeleted {
-            answer += "(\(deleted))"
-        } else {
-            answer += " (nil)"
-        }
+//        
+//        if let deleted = equation.userDeleted {
+//            answer += "(\(deleted))"
+//        } else {
+//            answer += " (nil)"
+//        }
         
         var color = ThemeCoordinator.shared.foregroundColorForCurrentTheme().withAlphaComponent(1.0)
         

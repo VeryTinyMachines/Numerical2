@@ -94,66 +94,37 @@ class ViewController: NumericalViewController, KeypadDelegate, HistoryViewContro
         
         currentStatus = self.preferredStatusBarStyle
         
-        
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
-//            if let offset = self.workPanelView?.keyPanelView?.currentPageOffset() {
-//                print("offset: \(offset)")
-//            } else {
-//                print("no offset")
-//            }
-        })
-        
         let currentVersion = NumericalHelper.currentDeviceInfo(includeBuildNumber: false)
         
         if let previousVersion = UserDefaults.standard.string(forKey: "CurrentVersion") {
-            print("previousVersion: \(previousVersion)")
-            print("")
-            if (currentVersion > previousVersion && previousVersion < "v2.0.8") {
+            //print("previousVersion: \(previousVersion)")
+            
+            if currentVersion > previousVersion {
                 // Display a tool tip
                 DispatchQueue.main.async {
-                    let alertView = UIAlertController(title: "Numerical² has been\nupdated to \(currentVersion)!", message: "You can now access Numerical² using the Today widget! Swipe down to open Notification center, swipe left for Today, then click Edit and add Numerical²  :D It works much the same as the Numerical² Keyboard, which you can enable in Settings.", preferredStyle: UIAlertControllerStyle.alert)
                     
-                    alertView.addAction(UIAlertAction(title: "What Else Is New?", style: UIAlertActionStyle.default, handler: { (action) in
-                        self.attemptToOpenURL(urlString: "http://www.verytinymachines.com/numerical2-whatsnew/")
-                    }))
-                    
-                    alertView.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
+                    if #available(iOS 10.3, *) {
                         
-                    }))
-                    
-                    alertView.popoverPresentationController?.sourceView = self.view
-                    
-                    self.present(alertView, animated: true, completion: {
+                        let alertView = UIAlertController(title: "Numerical² has been\nupdated to \(currentVersion)!", message: "The app icon for Numerical² will now change to match Default themes (not custom themes due to Apple limitations)! You can disable this behaviour in Settings if you prefer the Pink default.", preferredStyle: UIAlertControllerStyle.alert)
                         
-                    })
-                }
-                
-                /*
-                DispatchQueue.main.async {
-                    let alertView = UIAlertController(title: "Numerical² has been\nupdated to \(currentVersion)!", message: "You can now customise the History List and keyboard! Let's begin.\n\nDo you want your History List...", preferredStyle: UIAlertControllerStyle.alert)
-                    
-                    alertView.addAction(UIAlertAction(title: "Behind Keypad", style: UIAlertActionStyle.default, handler: { (action) in
-                        NumericalHelper.setSetting(string: NumericalHelperSetting.preferHistoryBehind, enabled: true)
-                        self.askScientificQuestion()
-                    }))
-                    
-                    if NumericalViewHelper.isDeviceLiterallyPad() {
-                        alertView.addAction(UIAlertAction(title: "Left Of Keypad", style: UIAlertActionStyle.default, handler: { (action) in
-                            NumericalHelper.setSetting(string: NumericalHelperSetting.preferHistoryBehind, enabled: false)
-                            self.askScientificQuestion()
+                        alertView.addAction(UIAlertAction(title: "What Else Is New?", style: UIAlertActionStyle.default, handler: { (action) in
+                            self.attemptToOpenURL(urlString: "http://www.verytinymachines.com/numerical2-whatsnew/")
                         }))
+                        
+                        alertView.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel, handler: { (action) in
+                            ThemeCoordinator.shared.updateAppIcon()
+                        }))
+                        
+                        alertView.popoverPresentationController?.sourceView = self.view
+                        
+                        self.present(alertView, animated: true, completion: {
+                            
+                        })
+                        
                     } else {
-                        alertView.addAction(UIAlertAction(title: "Right Of Keypad", style: UIAlertActionStyle.default, handler: { (action) in
-                            NumericalHelper.setSetting(string: NumericalHelperSetting.preferHistoryBehind, enabled: false)
-                            self.askScientificQuestion()
-                        }))
+                        // Fallback on earlier versions
                     }
-                    
-                    self.present(alertView, animated: true, completion: { 
-                        
-                    })
                 }
-                 */
             }
         }
         

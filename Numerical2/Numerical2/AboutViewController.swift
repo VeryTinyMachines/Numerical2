@@ -33,6 +33,7 @@ public enum AboutViewItem {
     case historybehind
     case decimallength
     case boldfont
+    case changeIcon
 }
 
 class AboutViewController: NumericalViewController, UITableViewDelegate, UITableViewDataSource {
@@ -92,6 +93,13 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
         if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.themes) {
             items.append(AboutViewItem.themeSelector)
             items.append(AboutViewItem.seperator)
+        }
+        
+        if #available(iOS 10.3, *) {
+            items.append(AboutViewItem.changeIcon)
+            items.append(AboutViewItem.seperator)
+        } else {
+            
         }
         
         items.append(AboutViewItem.sounds)
@@ -366,6 +374,13 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             
         case .todaywidget:
             cell.textLabel?.text = "Today Widget"
+        case .changeIcon:
+            let switchCell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as! SwitchCell
+            
+            setSwitchCell(text: "Themes Change App Icon\n(Default themes only)", isOn: NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.changeIcon), row: indexPath.row, switchCell: switchCell)
+            
+            return switchCell
+            
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -461,6 +476,17 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: NumericalHelperSetting.preferHistoryBehind), object: nil)
             }
+        case .changeIcon:
+            NumericalHelper.flipSetting(string: NumericalHelperSetting.changeIcon)
+            
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.changeIcon) {
+                // Update the app icon
+                ThemeCoordinator.shared.updateAppIcon()
+            } else {
+                // Default
+                ThemeCoordinator.shared.resetAppIcon()
+            }
+            
         default:
             break
         }
@@ -564,6 +590,8 @@ class AboutViewController: NumericalViewController, UITableViewDelegate, UITable
             case .decimallength:
                 break
             case .boldfont:
+                break
+            case .changeIcon:
                 break
             }
         }

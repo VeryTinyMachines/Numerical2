@@ -127,7 +127,69 @@ class ThemeCoordinator {
         postThemeChangedNotification()
         self.saveCurrentThemeForKeyboard()
         
+        let deadlineTime = DispatchTime.now() + .milliseconds(700)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+            if NumericalHelper.isSettingEnabled(string: NumericalHelperSetting.changeIcon) {
+                self.updateAppIcon()
+            }
+        }
+        
         SimpleLogger.appendLog(string: "ThemeCoordinator.changeTheme to \(theme)")
+    }
+    
+    func updateAppIcon() {
+        
+        if #available(iOS 10.3, *) {
+            
+            let theme = self.currentTheme()
+            
+            // Try and change the icon.
+            if theme.isUserCreated {
+                // Reset the theme
+                self.resetAppIcon()
+            } else {
+                // Change the icon
+                
+                if let currentIcon = UIApplication.shared.alternateIconName {
+                
+                    if currentIcon != theme.themeID {
+                        UIApplication.shared.setAlternateIconName(theme.themeID, completionHandler: { (error) in
+                            print(error?.localizedDescription)
+                        })
+                    }
+                } else {
+                    // No current icon. Set it, but only if this isn't candy, since that's the default
+                    
+                    if theme.themeID != ThemeFormatter.defaultTheme().themeID {
+                        UIApplication.shared.setAlternateIconName(theme.themeID, completionHandler: { (error) in
+                            print(error?.localizedDescription)
+                        })
+                    }
+                }
+            }
+            
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    func resetAppIcon() {
+        if #available(iOS 10.3, *) {
+            
+            if let currentIcon = UIApplication.shared.alternateIconName {
+                
+                // There is an icon set, reset it but only if it's not the default
+                
+                if currentIcon != ThemeFormatter.defaultTheme().themeID {
+                    UIApplication.shared.setAlternateIconName(nil, completionHandler: { (error) in
+                        print(error?.localizedDescription)
+                    })
+                }
+            }
+            
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     func addNewUserTheme(theme: Theme) {

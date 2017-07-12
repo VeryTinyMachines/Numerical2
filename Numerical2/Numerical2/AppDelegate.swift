@@ -35,27 +35,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         // temp for testing - make 30 equations.
-        
-        DispatchQueue.main.async {
-            for number in 1...30 {
-                EquationStore.sharedStore.newEquation(question: "\(number)+0", answer: "\(number)")
-            }
-            EquationStore.sharedStore.queueSave()
-            EquationStore.sharedStore.queueCloudKitNeedsUpdate()
-        }
-        
-        
-        //Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (timer) in
-//            print(WorkingEquationManager.sharedManager.printHistory())
+//        DispatchQueue.main.async {
+//            for number in 1...30 {
+//                EquationStore.sharedStore.newEquation(question: "\(number)+0", answer: "\(number)")
+//            }
+//            EquationStore.sharedStore.queueSave()
+//            EquationStore.sharedStore.queueCloudKitNeedsUpdate()
 //        }
-        
+//        
         SimpleLogger.appendLog(string: "application.didFinishLaunchingWithOptions")
         
         // Current Version saving and presentation is now in ViewController
-        
-//        DispatchQueue.main.async {
-//            UIApplication.shared.setAlternateIconName("AppIcon-2")
-//        }
         
         if let url = launchOptions?[UIApplicationLaunchOptionsKey.url] as? NSURL {
             if let scheme = url.scheme {

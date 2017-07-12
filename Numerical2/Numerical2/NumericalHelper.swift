@@ -22,6 +22,7 @@ public struct NumericalHelperSetting {
     public static let preferHistoryBehind = "preferHistoryBehind"
     public static let decimalLength = "decimalLength"
     public static let boldFont = "boldFont"
+    public static let changeIcon = "changeIcon"
 }
 
 public enum HistoryViewType {
@@ -66,7 +67,7 @@ class NumericalHelper {
     }
     
     class func defaultTrueForSetting(string: String) -> Bool {
-        if string == NumericalHelperSetting.iCloudHistorySync || string == NumericalHelperSetting.autoBrackets || string == NumericalHelperSetting.preferRadians || string == NumericalHelperSetting.showScientific {
+        if string == NumericalHelperSetting.iCloudHistorySync || string == NumericalHelperSetting.autoBrackets || string == NumericalHelperSetting.preferRadians || string == NumericalHelperSetting.showScientific || string == NumericalHelperSetting.changeIcon {
             return true
         }
         
